@@ -146,7 +146,13 @@ export type Dictionary = {
     work: string;
     community: string;
     education: string;
-    backToWebsite: string;
+    otherServices: string;
+    profile: string;
+    settings: string;
+    logout: string;
+  };
+  topbar: {
+    upgrade: string;
   };
   documents: {
     title: string;
@@ -647,7 +653,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Work",
       community: "Community",
       education: "Education",
-      backToWebsite: "Back to website",
+      otherServices: "Other Services",
+      profile: "Profile",
+      settings: "Settings",
+      logout: "Log out",
+    },
+    topbar: {
+      upgrade: "Upgrade",
     },
     documents: {
       title: "Documents",
@@ -1233,7 +1245,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Работа",
       community: "Сообщество",
       education: "Образование",
-      backToWebsite: "На сайт",
+      otherServices: "Другие услуги",
+      profile: "Профиль",
+      settings: "Настройки",
+      logout: "Выход",
+    },
+    topbar: {
+      upgrade: "Улучшить",
     },
     documents: {
       title: "Документы",
@@ -1819,7 +1837,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Ish",
       community: "Jamiyat",
       education: "Ta'lim",
-      backToWebsite: "Saytga qaytish",
+      otherServices: "Boshqa xizmatlar",
+      profile: "Profil",
+      settings: "Sozlamalar",
+      logout: "Chiqish",
+    },
+    topbar: {
+      upgrade: "Yangilash",
     },
     documents: {
       title: "Hujjatlar",
@@ -2404,7 +2428,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "İş",
       community: "Topluluk",
       education: "Eğitim",
-      backToWebsite: "Siteye dön",
+      otherServices: "Diğer Hizmetler",
+      profile: "Profil",
+      settings: "Ayarlar",
+      logout: "Çıkış yap",
+    },
+    topbar: {
+      upgrade: "Yükselt",
     },
     documents: {
       title: "Belgeler",
@@ -2989,7 +3019,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Кор",
       community: "Ҷамъият",
       education: "Таҳсил",
-      backToWebsite: "Бозгашт ба сайт",
+      otherServices: "Дигар хизматҳо",
+      profile: "Профил",
+      settings: "Танзимот",
+      logout: "Баромадан",
+    },
+    topbar: {
+      upgrade: "Беҳтар кардан",
     },
     documents: {
       title: "Ҳуҷҷатҳо",
