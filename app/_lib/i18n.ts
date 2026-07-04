@@ -324,6 +324,8 @@ export type Dictionary = {
     steps: {
       language: { question: string; subheading: string };
       country: { question: string; subheading: string };
+      citizenship: { question: string; subheading: string };
+      currentCountry: { question: string; subheading: string };
       goal: { question: string; subheading: string };
       situation: { question: string; subheading: string };
     };
@@ -332,6 +334,20 @@ export type Dictionary = {
       default: { work: string; study: string; family: string; digitalNomad: string };
     };
     situationOptions: { home: string; visa: string; shortstay: string; exploring: string };
+    countryNames: {
+      poland: string;
+      ukraine: string;
+      russia: string;
+      belarus: string;
+      kazakhstan: string;
+      uzbekistan: string;
+      tajikistan: string;
+      turkey: string;
+      germany: string;
+      spain: string;
+      other: string;
+    };
+    alreadyHereSuffix: string;
   };
 };
 
@@ -886,6 +902,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
         country: { question: "Where are you moving to?", subheading: "We'll tailor your roadmap to this country." },
+        citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
+        currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         goal: { question: "What's your main goal?", subheading: "This decides which visa track we'll guide you through." },
         situation: { question: "What's your current situation?", subheading: "Helps us skip steps you've already completed." },
       },
@@ -899,6 +917,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         shortstay: "Already there on a short stay",
         exploring: "Just exploring my options",
       },
+      countryNames: {
+        poland: "Poland",
+        ukraine: "Ukraine",
+        russia: "Russia",
+        belarus: "Belarus",
+        kazakhstan: "Kazakhstan",
+        uzbekistan: "Uzbekistan",
+        tajikistan: "Tajikistan",
+        turkey: "Turkey",
+        germany: "Germany",
+        spain: "Spain",
+        other: "Other",
+      },
+      alreadyHereSuffix: "(already here)",
     },
   },
   ru: {
@@ -1451,6 +1483,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
         country: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
+        citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
+        currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         goal: { question: "Какова ваша основная цель?", subheading: "Это определит, по какому визовому пути мы вас поведём." },
         situation: { question: "Какая у вас текущая ситуация?", subheading: "Поможет пропустить уже пройденные шаги." },
       },
@@ -1464,6 +1498,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         shortstay: "Уже здесь по краткосрочному пребыванию",
         exploring: "Просто изучаю варианты",
       },
+      countryNames: {
+        poland: "Польша",
+        ukraine: "Украина",
+        russia: "Россия",
+        belarus: "Беларусь",
+        kazakhstan: "Казахстан",
+        uzbekistan: "Узбекистан",
+        tajikistan: "Таджикистан",
+        turkey: "Турция",
+        germany: "Германия",
+        spain: "Испания",
+        other: "Другое",
+      },
+      alreadyHereSuffix: "(уже здесь)",
     },
   },
   uz: {
@@ -2016,6 +2064,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
         country: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
+        citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
+        currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu qaysi viza yo'lini tanlashimizni belgilaydi." },
         situation: { question: "Hozirgi holatingiz qanday?", subheading: "Allaqachon bajargan qadamlaringizni o'tkazib yuborishga yordam beradi." },
       },
@@ -2029,6 +2079,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         shortstay: "Qisqa muddatli tashrif bilan allaqachon u yerdaman",
         exploring: "Shunchaki variantlarni ko'rib chiqyapman",
       },
+      countryNames: {
+        poland: "Polsha",
+        ukraine: "Ukraina",
+        russia: "Rossiya",
+        belarus: "Belarus",
+        kazakhstan: "Qozog'iston",
+        uzbekistan: "O'zbekiston",
+        tajikistan: "Tojikiston",
+        turkey: "Turkiya",
+        germany: "Germaniya",
+        spain: "Ispaniya",
+        other: "Boshqa",
+      },
+      alreadyHereSuffix: "(allaqachon shu yerda)",
     },
   },
   tr: {
@@ -2580,6 +2644,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
         country: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
+        citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
+        currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizi hangi vize sürecinde yönlendireceğimizi belirler." },
         situation: { question: "Mevcut durumunuz nedir?", subheading: "Zaten tamamladığınız adımları atlamamıza yardımcı olur." },
       },
@@ -2593,6 +2659,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         shortstay: "Kısa süreli kalışla zaten oradayım",
         exploring: "Sadece seçenekleri araştırıyorum",
       },
+      countryNames: {
+        poland: "Polonya",
+        ukraine: "Ukrayna",
+        russia: "Rusya",
+        belarus: "Belarus",
+        kazakhstan: "Kazakistan",
+        uzbekistan: "Özbekistan",
+        tajikistan: "Tacikistan",
+        turkey: "Türkiye",
+        germany: "Almanya",
+        spain: "İspanya",
+        other: "Diğer",
+      },
+      alreadyHereSuffix: "(zaten buradayım)",
     },
   },
   tg: {
@@ -3144,6 +3224,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
         country: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
+        citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
+        currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки шуморо аз кадом роҳи раводид роҳнамоӣ кунем." },
         situation: { question: "Вазъи ҳозираи шумо чӣ гуна аст?", subheading: "Кӯмак мекунад, ки қадамҳои аллакай иҷрошударо гузаронем." },
       },
@@ -3157,6 +3239,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         shortstay: "Аллакай бо иқомати кӯтоҳмуддат он ҷоям",
         exploring: "Танҳо гузинаҳоро меомӯзам",
       },
+      countryNames: {
+        poland: "Полша",
+        ukraine: "Украина",
+        russia: "Русия",
+        belarus: "Белоруссия",
+        kazakhstan: "Қазоқистон",
+        uzbekistan: "Ӯзбекистон",
+        tajikistan: "Тоҷикистон",
+        turkey: "Туркия",
+        germany: "Олмон",
+        spain: "Испания",
+        other: "Дигар",
+      },
+      alreadyHereSuffix: "(аллакай ин ҷоям)",
     },
   },
 };

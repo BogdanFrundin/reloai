@@ -104,6 +104,38 @@ function buildSteps(
       ],
     },
     {
+      question: t.onboarding.steps.citizenship.question,
+      subheading: t.onboarding.steps.citizenship.subheading,
+      options: [
+        { id: "Ukraine", label: t.onboarding.countryNames.ukraine, icon: <span className="text-3xl">🇺🇦</span> },
+        { id: "Russia", label: t.onboarding.countryNames.russia, icon: <span className="text-3xl">🇷🇺</span> },
+        { id: "Belarus", label: t.onboarding.countryNames.belarus, icon: <span className="text-3xl">🇧🇾</span> },
+        { id: "Kazakhstan", label: t.onboarding.countryNames.kazakhstan, icon: <span className="text-3xl">🇰🇿</span> },
+        { id: "Uzbekistan", label: t.onboarding.countryNames.uzbekistan, icon: <span className="text-3xl">🇺🇿</span> },
+        { id: "Tajikistan", label: t.onboarding.countryNames.tajikistan, icon: <span className="text-3xl">🇹🇯</span> },
+        { id: "Turkey", label: t.onboarding.countryNames.turkey, icon: <span className="text-3xl">🇹🇷</span> },
+        { id: "Other", label: t.onboarding.countryNames.other, icon: <span className="text-3xl">🌍</span> },
+      ],
+    },
+    {
+      question: t.onboarding.steps.currentCountry.question,
+      subheading: t.onboarding.steps.currentCountry.subheading,
+      options: [
+        {
+          id: "Poland",
+          label: `${t.onboarding.countryNames.poland} ${t.onboarding.alreadyHereSuffix}`,
+          icon: <span className="text-3xl">🇵🇱</span>,
+        },
+        { id: "Ukraine", label: t.onboarding.countryNames.ukraine, icon: <span className="text-3xl">🇺🇦</span> },
+        { id: "Russia", label: t.onboarding.countryNames.russia, icon: <span className="text-3xl">🇷🇺</span> },
+        { id: "Belarus", label: t.onboarding.countryNames.belarus, icon: <span className="text-3xl">🇧🇾</span> },
+        { id: "Kazakhstan", label: t.onboarding.countryNames.kazakhstan, icon: <span className="text-3xl">🇰🇿</span> },
+        { id: "Germany", label: t.onboarding.countryNames.germany, icon: <span className="text-3xl">🇩🇪</span> },
+        { id: "Spain", label: t.onboarding.countryNames.spain, icon: <span className="text-3xl">🇪🇸</span> },
+        { id: "Other", label: t.onboarding.countryNames.other, icon: <span className="text-3xl">🌍</span> },
+      ],
+    },
+    {
       question: t.onboarding.steps.goal.question,
       subheading: t.onboarding.steps.goal.subheading,
       options: country === "Poland" ? polandGoalOptions : defaultGoalOptions,
@@ -150,7 +182,7 @@ export default function OnboardingPage() {
       const next = { ...prev, [step]: id };
       // The goal options differ by country — drop a stale goal pick if the country changed.
       if (step === 1 && prev[1] !== id) {
-        delete next[2];
+        delete next[4];
       }
       return next;
     });
@@ -165,13 +197,17 @@ export default function OnboardingPage() {
 
       const language = answers[0] ?? "ru";
       const country = answers[1] ?? "Poland";
-      const goal = answers[2] ?? "Work";
+      const citizenship = answers[2] ?? "Other";
+      const currentCountry = answers[3] ?? "Poland";
+      const goal = answers[4] ?? "Work";
 
       const { error: profileError } = await supabase.from("profiles").upsert({
         id: user.id,
         name: (user.user_metadata?.name as string | undefined) ?? null,
         email: user.email,
         country,
+        citizenship,
+        current_country: currentCountry,
         goal,
         language,
       });
