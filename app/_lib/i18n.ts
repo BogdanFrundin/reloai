@@ -315,6 +315,24 @@ export type Dictionary = {
       default: string;
     };
   };
+  onboarding: {
+    stepLabel: string;
+    back: string;
+    continueBtn: string;
+    finish: string;
+    saving: string;
+    steps: {
+      language: { question: string; subheading: string };
+      country: { question: string; subheading: string };
+      goal: { question: string; subheading: string };
+      situation: { question: string; subheading: string };
+    };
+    goalOptions: {
+      poland: { employment: string; business: string; familyReunification: string; study: string };
+      default: { work: string; study: string; family: string; digitalNomad: string };
+    };
+    situationOptions: { home: string; visa: string; shortstay: string; exploring: string };
+  };
 };
 
 export const dictionaries: Record<Lang, Dictionary> = {
@@ -859,6 +877,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         default: "I can help with documents, housing, banks, healthcare, or work. What would you like to know more about?",
       },
     },
+    onboarding: {
+      stepLabel: "Step {current} of {total}",
+      back: "Back",
+      continueBtn: "Continue",
+      finish: "Finish",
+      saving: "Saving...",
+      steps: {
+        language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
+        country: { question: "Where are you moving to?", subheading: "We'll tailor your roadmap to this country." },
+        goal: { question: "What's your main goal?", subheading: "This decides which visa track we'll guide you through." },
+        situation: { question: "What's your current situation?", subheading: "Helps us skip steps you've already completed." },
+      },
+      goalOptions: {
+        poland: { employment: "Employment contract", business: "Own business", familyReunification: "Family reunification", study: "Study" },
+        default: { work: "Work", study: "Study", family: "Family", digitalNomad: "Digital Nomad" },
+      },
+      situationOptions: {
+        home: "Still in my home country",
+        visa: "I already hold a visa",
+        shortstay: "Already there on a short stay",
+        exploring: "Just exploring my options",
+      },
+    },
   },
   ru: {
     nav: {
@@ -1399,6 +1440,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         documents: "Обычно нужны следующие документы: паспорт, заявление на визу или вид на жительство, подтверждение адреса, справка о PESEL, полис медицинской страховки и (если работаете) трудовой договор или разрешение на работу. Могу подробнее рассказать про любой из них.",
         visa: "Визовые требования зависят от вашего гражданства и страны назначения. Для Польши большинству граждан не из ЕС нужна национальная виза или вид на жительство (Karta Pobytu), связанные с работой, учёбой или семьёй. Для Германии рассмотрите Job Seeker Visa, Aufenthaltstitel или EU Blue Card. Для Испании — Digital Nomad Visa или обычные пути через рабочий/жительский статус и регистрацию NIE.",
         default: "Я могу помочь с документами, жильём, банками, медициной или работой. Что вас интересует подробнее?",
+      },
+    },
+    onboarding: {
+      stepLabel: "Шаг {current} из {total}",
+      back: "Назад",
+      continueBtn: "Продолжить",
+      finish: "Готово",
+      saving: "Сохранение...",
+      steps: {
+        language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
+        country: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
+        goal: { question: "Какова ваша основная цель?", subheading: "Это определит, по какому визовому пути мы вас поведём." },
+        situation: { question: "Какая у вас текущая ситуация?", subheading: "Поможет пропустить уже пройденные шаги." },
+      },
+      goalOptions: {
+        poland: { employment: "Работа по найму", business: "Собственный бизнес", familyReunification: "Воссоединение семьи", study: "Учёба" },
+        default: { work: "Работа", study: "Учёба", family: "Семья", digitalNomad: "Цифровой кочевник" },
+      },
+      situationOptions: {
+        home: "Ещё в своей стране",
+        visa: "У меня уже есть виза",
+        shortstay: "Уже здесь по краткосрочному пребыванию",
+        exploring: "Просто изучаю варианты",
       },
     },
   },
@@ -1943,6 +2007,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         default: "Men hujjatlar, uy-joy, banklar, tibbiyot yoki ish bo'yicha yordam bera olaman. Qaysi biri haqida batafsilroq bilmoqchisiz?",
       },
     },
+    onboarding: {
+      stepLabel: "{total} dan {current}-qadam",
+      back: "Orqaga",
+      continueBtn: "Davom etish",
+      finish: "Tayyor",
+      saving: "Saqlanmoqda...",
+      steps: {
+        language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
+        country: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
+        goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu qaysi viza yo'lini tanlashimizni belgilaydi." },
+        situation: { question: "Hozirgi holatingiz qanday?", subheading: "Allaqachon bajargan qadamlaringizni o'tkazib yuborishga yordam beradi." },
+      },
+      goalOptions: {
+        poland: { employment: "Mehnat shartnomasi", business: "O'z biznesi", familyReunification: "Oilaviy birlashuv", study: "O'qish" },
+        default: { work: "Ish", study: "O'qish", family: "Oila", digitalNomad: "Raqamli ko'chmanchi" },
+      },
+      situationOptions: {
+        home: "Hali o'z davlatimdaman",
+        visa: "Vizam allaqachon bor",
+        shortstay: "Qisqa muddatli tashrif bilan allaqachon u yerdaman",
+        exploring: "Shunchaki variantlarni ko'rib chiqyapman",
+      },
+    },
   },
   tr: {
     nav: {
@@ -2484,6 +2571,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         default: "Belgeler, konut, bankalar, sağlık veya iş konusunda yardımcı olabilirim. Hangisi hakkında daha fazla bilgi almak istersiniz?",
       },
     },
+    onboarding: {
+      stepLabel: "Adım {current} / {total}",
+      back: "Geri",
+      continueBtn: "Devam et",
+      finish: "Bitir",
+      saving: "Kaydediliyor...",
+      steps: {
+        language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
+        country: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
+        goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizi hangi vize sürecinde yönlendireceğimizi belirler." },
+        situation: { question: "Mevcut durumunuz nedir?", subheading: "Zaten tamamladığınız adımları atlamamıza yardımcı olur." },
+      },
+      goalOptions: {
+        poland: { employment: "İş sözleşmesi", business: "Kendi işi", familyReunification: "Aile birleşimi", study: "Eğitim" },
+        default: { work: "İş", study: "Eğitim", family: "Aile", digitalNomad: "Dijital göçebe" },
+      },
+      situationOptions: {
+        home: "Hâlâ kendi ülkemdeyim",
+        visa: "Zaten bir vizem var",
+        shortstay: "Kısa süreli kalışla zaten oradayım",
+        exploring: "Sadece seçenekleri araştırıyorum",
+      },
+    },
   },
   tg: {
     nav: {
@@ -3023,6 +3133,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         documents: "Одатан ин ҳуҷҷатҳо лозиманд: шиноснома, аризаи раводид ё иҷозати истиқомат, тасдиқи суроға, тасдиқи PESEL, шаҳодатномаи суғуртаи тиббӣ ва (агар кор кунед) шартномаи меҳнатӣ ё иҷозати кор. Метавонам дар бораи ҳар кадоми онҳо муфассалтар нақл кунам.",
         visa: "Талаботи раводид аз шаҳрвандӣ ва кишвари мақсади шумо вобаста аст. Барои Полша аксари шаҳрвандони ғайри ИА ба раводиди миллӣ ё иҷозати истиқомат (Karta Pobytu), ки бо кор, таҳсил ё оила алоқаманд аст, ниёз доранд. Барои Олмон ба Job Seeker Visa, Aufenthaltstitel ё EU Blue Card нигаред. Барои Испания Digital Nomad Visa ё роҳҳои муқаррарии кор/истиқомат тавассути қайди NIE-ро санҷед.",
         default: "Ман метавонам дар бораи ҳуҷҷатҳо, манзил, бонкҳо, тиб ё кор кӯмак расонам. Дар бораи кадоме бештар донистан мехоҳед?",
+      },
+    },
+    onboarding: {
+      stepLabel: "Қадами {current} аз {total}",
+      back: "Бозгашт",
+      continueBtn: "Идома",
+      finish: "Тамом",
+      saving: "Захира мешавад...",
+      steps: {
+        language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
+        country: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
+        goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки шуморо аз кадом роҳи раводид роҳнамоӣ кунем." },
+        situation: { question: "Вазъи ҳозираи шумо чӣ гуна аст?", subheading: "Кӯмак мекунад, ки қадамҳои аллакай иҷрошударо гузаронем." },
+      },
+      goalOptions: {
+        poland: { employment: "Шартномаи меҳнатӣ", business: "Бизнеси худ", familyReunification: "Муттаҳидшавии оила", study: "Таҳсил" },
+        default: { work: "Кор", study: "Таҳсил", family: "Оила", digitalNomad: "Бодиянишини рақамӣ" },
+      },
+      situationOptions: {
+        home: "Ҳанӯз дар кишвари худам",
+        visa: "Ман аллакай раводид дорам",
+        shortstay: "Аллакай бо иқомати кӯтоҳмуддат он ҷоям",
+        exploring: "Танҳо гузинаҳоро меомӯзам",
       },
     },
   },
