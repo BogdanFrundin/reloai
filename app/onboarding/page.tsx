@@ -46,6 +46,11 @@ const NOMAD_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 19.5h18M5 19.5V8.25A1.5 1.5 0 016.5 6.75h11A1.5 1.5 0 0119 8.25V19.5M10 6.75V4.5a1 1 0 011-1h2a1 1 0 011 1v2.25" />
   </svg>
 );
+const BUSINESS_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M4 21V10.5L12 4l8 6.5V21M9 21v-6h6v6" />
+  </svg>
+);
 const SITUATION_ICONS = [
   <svg {...ICON_PROPS} key="home">
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
@@ -75,7 +80,21 @@ const TIMELINE_ICONS = [
   </svg>,
 ];
 
-function buildSteps(): { question: string; subheading: string; options: Option[] }[] {
+const POLAND_GOAL_OPTIONS: Option[] = [
+  { id: "Employment", label: "Employment contract", icon: WORK_ICON },
+  { id: "Business", label: "Own business", icon: BUSINESS_ICON },
+  { id: "Family Reunification", label: "Family reunification", icon: FAMILY_ICON },
+  { id: "Study", label: "Study", icon: STUDY_ICON },
+];
+
+const DEFAULT_GOAL_OPTIONS: Option[] = [
+  { id: "Work", label: "Work", icon: WORK_ICON },
+  { id: "Study", label: "Study", icon: STUDY_ICON },
+  { id: "Family", label: "Family", icon: FAMILY_ICON },
+  { id: "Digital Nomad", label: "Digital Nomad", icon: NOMAD_ICON },
+];
+
+function buildSteps(country: string | undefined): { question: string; subheading: string; options: Option[] }[] {
   return [
     {
       question: "Where are you moving to?",
@@ -89,12 +108,7 @@ function buildSteps(): { question: string; subheading: string; options: Option[]
     {
       question: "What's your main goal?",
       subheading: "This decides which visa track we'll guide you through.",
-      options: [
-        { id: "Work", label: "Work", icon: WORK_ICON },
-        { id: "Study", label: "Study", icon: STUDY_ICON },
-        { id: "Family", label: "Family", icon: FAMILY_ICON },
-        { id: "Digital Nomad", label: "Digital Nomad", icon: NOMAD_ICON },
-      ],
+      options: country === "Poland" ? POLAND_GOAL_OPTIONS : DEFAULT_GOAL_OPTIONS,
     },
     {
       question: "What's your current situation?",
@@ -132,11 +146,11 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { setLang } = useLanguage();
   const { user, loading: authLoading } = useAuth();
-  const steps = buildSteps();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const steps = buildSteps(answers[0]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -149,7 +163,14 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   function selectOption(id: string) {
-    setAnswers((prev) => ({ ...prev, [step]: id }));
+    setAnswers((prev) => {
+      const next = { ...prev, [step]: id };
+      // The goal options differ by country — drop a stale goal pick if the country changed.
+      if (step === 0 && prev[0] !== id) {
+        delete next[1];
+      }
+      return next;
+    });
   }
 
   async function handleContinue() {
