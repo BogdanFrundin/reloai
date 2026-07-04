@@ -273,6 +273,10 @@ export type Dictionary = {
     and: string;
     privacyPolicy: string;
     payFailed: string;
+    payBtn: string;
+    welcomeToast: string;
+    premiumFeatures: [string, string, string, string, string];
+    proFeatures: [string, string, string, string, string];
   };
   education: {
     coursesTab: string;
@@ -841,6 +845,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "and",
       privacyPolicy: "Privacy Policy",
       payFailed: "Payment failed. Please try again.",
+      payBtn: "Pay",
+      welcomeToast: "Welcome to {plan}! 🎉",
+      premiumFeatures: ["All 3 countries", "Full checklist", "50 AI messages/day", "Document storage", "Email support"],
+      proFeatures: ["Everything in Premium", "Unlimited AI messages", "AI fills documents", "Priority 24/7 support", "Monthly consultation call"],
     },
     education: {
       coursesTab: "Language courses",
@@ -1423,6 +1431,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "и",
       privacyPolicy: "Политикой конфиденциальности",
       payFailed: "Оплата не прошла. Попробуйте ещё раз.",
+      payBtn: "Оплатить",
+      welcomeToast: "Добро пожаловать в {plan}! 🎉",
+      premiumFeatures: ["Все 3 страны", "Полный чек-лист", "50 AI-сообщений в день", "Хранение документов", "Поддержка по email"],
+      proFeatures: ["Всё из Premium", "Безлимитные AI-сообщения", "AI заполняет документы", "Приоритетная поддержка 24/7", "Ежемесячная консультация"],
     },
     education: {
       coursesTab: "Языковые курсы",
@@ -2005,6 +2017,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "va",
       privacyPolicy: "Maxfiylik siyosati",
       payFailed: "To'lov amalga oshmadi. Iltimos, qayta urinib ko'ring.",
+      payBtn: "To'lash",
+      welcomeToast: "{plan}ga xush kelibsiz! 🎉",
+      premiumFeatures: ["Barcha 3 mamlakat", "To'liq ro'yxat", "Kuniga 50 ta AI xabar", "Hujjatlarni saqlash", "Email orqali yordam"],
+      proFeatures: ["Premiumdagi hamma narsa", "Cheksiz AI xabarlar", "AI hujjatlarni to'ldiradi", "24/7 ustuvor yordam", "Oylik konsultatsiya"],
     },
     education: {
       coursesTab: "Til kurslari",
@@ -2586,6 +2602,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "ve",
       privacyPolicy: "Gizlilik Politikası",
       payFailed: "Ödeme başarısız oldu. Lütfen tekrar deneyin.",
+      payBtn: "Öde",
+      welcomeToast: "{plan}'a hoş geldiniz! 🎉",
+      premiumFeatures: ["3 ülkenin tamamı", "Tam kontrol listesi", "Günde 50 AI mesajı", "Belge saklama", "E-posta desteği"],
+      proFeatures: ["Premium'daki her şey", "Sınırsız AI mesajı", "AI belgeleri doldurur", "7/24 öncelikli destek", "Aylık danışma görüşmesi"],
     },
     education: {
       coursesTab: "Dil kursları",
@@ -3167,6 +3187,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "ва",
       privacyPolicy: "Сиёсати махфият",
       payFailed: "Пардохт иҷро нашуд. Лутфан, боз кӯшиш кунед.",
+      payBtn: "Пардохт",
+      welcomeToast: "Хуш омадед ба {plan}! 🎉",
+      premiumFeatures: ["Ҳар 3 кишвар", "Рӯйхати пурраи корҳо", "Дар як рӯз 50 паёми AI", "Нигоҳдории ҳуҷҷатҳо", "Дастгирӣ тавассути email"],
+      proFeatures: ["Ҳама чизи Премиум", "Паёмҳои беохири AI", "AI ҳуҷҷатҳоро пур мекунад", "Дастгирии афзалиятнок 24/7", "Машварати моҳона"],
     },
     education: {
       coursesTab: "Курсҳои забон",
