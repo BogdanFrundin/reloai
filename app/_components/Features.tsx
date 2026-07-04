@@ -1,0 +1,70 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { useLanguage } from "./LanguageProvider";
+import Reveal from "./Reveal";
+import { cardHover } from "../_lib/motion";
+
+const ICON_PROPS = {
+  className: "h-6 w-6",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor",
+  strokeWidth: 1.75,
+} as const;
+
+const ICONS: ReactNode[] = [
+  <svg {...ICON_PROPS} key="visa">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>,
+  <svg {...ICON_PROPS} key="documents">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+  </svg>,
+  <svg {...ICON_PROPS} key="housing">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
+  </svg>,
+  <svg {...ICON_PROPS} key="banking">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5L12 4l9 6.5M4.5 10.5V19a1 1 0 001 1h13a1 1 0 001-1v-8.5M9 20v-6h6v6" />
+  </svg>,
+  <svg {...ICON_PROPS} key="healthcare">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1.5 4 2.5.5-1 2-2.5 4-2.5 3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
+  </svg>,
+  <svg {...ICON_PROPS} key="chat">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.97-4.03 9-9 9-1.5 0-2.91-.37-4.15-1.02L3 21l1.07-3.78A8.96 8.96 0 013 12c0-4.97 4.03-9 9-9s9 4.03 9 9z" />
+  </svg>,
+];
+
+export default function Features() {
+  const { t } = useLanguage();
+
+  return (
+    <section id="features" className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {t.features.heading}
+          </h2>
+          <p className="mt-4 text-lg text-slate-400">{t.features.subheading}</p>
+        </Reveal>
+
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {t.features.items.map((feature, index) => (
+            <Reveal key={feature.title} delay={index * 60}>
+              <div
+                className={`group h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm ${cardHover}`}
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent-bright transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110">
+                  {ICONS[index]}
+                </div>
+                <h3 className="mt-5 text-lg font-semibold text-white">{feature.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  {feature.description}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
