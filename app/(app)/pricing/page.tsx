@@ -6,6 +6,8 @@ import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
 import { pressScale } from "../../_lib/motion";
 import { useAuth } from "../../_components/AuthProvider";
+import { useLanguage } from "../../_components/LanguageProvider";
+import type { Dictionary } from "../../_lib/i18n";
 import { supabase } from "../../../lib/supabase";
 
 type PlanKey = "free" | "premium" | "pro";
@@ -27,69 +29,57 @@ interface PlanDef {
   features: FeatItem[];
 }
 
-const PLANS: PlanDef[] = [
-  {
-    key: "free",
-    name: "Free",
-    price: "€0",
-    period: "forever",
-    description: "Try before you commit.",
-    badge: null,
-    highlighted: false,
-    cta: "Start free",
-    features: [
-      { text: "Poland — 1 country available", included: true },
-      { text: "Checklist: 5 steps preview", included: true },
-      { text: "5 AI messages per day", included: true },
-      { text: "Document upload & storage", included: false },
-      { text: "Full address database", included: false },
-      { text: "Community access", included: false },
-      { text: "Email support", included: false },
-    ],
-  },
-  {
-    key: "premium",
-    name: "Premium",
-    price: "€29",
-    period: "/month",
-    description: "Full guidance for your move.",
-    badge: "Most popular",
-    highlighted: true,
-    cta: "Get Premium",
-    features: [
-      { text: "All 3 countries (Poland, Germany, Spain)", included: true },
-      { text: "Full checklist — all steps", included: true },
-      { text: "50 AI messages per day", included: true },
-      { text: "Document upload & storage", included: true },
-      { text: "Full address database (banks, clinics, offices)", included: true },
-      { text: "Community access", included: true },
-      { text: "Email support", included: true },
-    ],
-  },
-  {
-    key: "pro",
-    name: "Pro",
-    price: "€49",
-    period: "/month",
-    description: "For families and complex moves.",
-    badge: null,
-    highlighted: false,
-    cta: "Get Pro",
-    features: [
-      { text: "Everything in Premium", included: true },
-      { text: "Unlimited AI messages", included: true },
-      { text: "AI fills documents automatically", included: true },
-      { text: "Priority support 24/7", included: true },
-      { text: "Consultation call (1× / month)", included: true },
-      { text: "Early access to new countries", included: true },
-      { text: "PDF export for documents", included: true },
-    ],
-  },
-];
+function buildPlans(t: Dictionary): PlanDef[] {
+  const { appPricing } = t;
+  return [
+    {
+      key: "free",
+      name: appPricing.freeName,
+      price: "€0",
+      period: appPricing.forever,
+      description: appPricing.freeDesc,
+      badge: null,
+      highlighted: false,
+      cta: appPricing.freeCta,
+      features: [
+        { text: appPricing.freeFeatures[0], included: true },
+        { text: appPricing.freeFeatures[1], included: true },
+        { text: appPricing.freeFeatures[2], included: true },
+        { text: appPricing.freeFeatures[3], included: false },
+        { text: appPricing.freeFeatures[4], included: false },
+        { text: appPricing.freeFeatures[5], included: false },
+        { text: appPricing.freeFeatures[6], included: false },
+      ],
+    },
+    {
+      key: "premium",
+      name: "Premium",
+      price: "€29",
+      period: appPricing.perMonth,
+      description: appPricing.premiumDesc,
+      badge: appPricing.mostPopular,
+      highlighted: true,
+      cta: appPricing.premiumCta,
+      features: appPricing.premiumFeatures.map((text) => ({ text, included: true })),
+    },
+    {
+      key: "pro",
+      name: "Pro",
+      price: "€49",
+      period: appPricing.perMonth,
+      description: appPricing.proDesc,
+      badge: null,
+      highlighted: false,
+      cta: appPricing.proCta,
+      features: appPricing.proFeatures.map((text) => ({ text, included: true })),
+    },
+  ];
+}
 
 function PlanButton({ plan }: { plan: PlanDef }) {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
@@ -121,14 +111,14 @@ function PlanButton({ plan }: { plan: PlanDef }) {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
           </svg>
         )}
-        {loading ? "Activating…" : plan.cta}
+        {loading ? t.appPricing.activating : plan.cta}
       </button>
       {plan.key !== "free" && (
         <p className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
           <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z" />
           </svg>
-          Secured by Stripe
+          {t.appPricing.securedByStripe}
         </p>
       )}
     </div>
@@ -136,16 +126,16 @@ function PlanButton({ plan }: { plan: PlanDef }) {
 }
 
 export default function PricingPage() {
+  const { t } = useLanguage();
+  const plans = buildPlans(t);
+
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader
-        title="Choose your plan"
-        subtitle="Pick the right plan for your move. Upgrade or downgrade any time."
-      />
+      <PageHeader title={t.appPricing.title} subtitle={t.appPricing.subtitle} />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
-        {PLANS.map((plan, index) => (
-          <Reveal key={plan.name} delay={index * 60} className="h-full">
+        {plans.map((plan, index) => (
+          <Reveal key={plan.key} delay={index * 60} className="h-full">
             <div
               className={`relative flex h-full flex-col rounded-2xl border p-7 backdrop-blur-sm ${
                 plan.highlighted

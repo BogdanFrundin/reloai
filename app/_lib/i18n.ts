@@ -244,6 +244,7 @@ export type Dictionary = {
     mostPopular: string;
     forever: string;
     perMonth: string;
+    freeName: string;
     freeDesc: string;
     premiumDesc: string;
     proDesc: string;
@@ -787,6 +788,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Most popular",
       forever: "forever",
       perMonth: "/month",
+      freeName: "Free",
       freeDesc: "Try before you commit.",
       premiumDesc: "Full guidance for your move.",
       proDesc: "For families and complex moves.",
@@ -1361,19 +1363,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     appPricing: {
-      title: "Выберите план",
+      title: "Выберите тариф",
       subtitle: "Подберите подходящий план для переезда. Меняйте его в любое время.",
       activating: "Активация…",
       securedByStripe: "Защищено Stripe",
-      mostPopular: "Самый популярный",
+      mostPopular: "Популярный",
       forever: "навсегда",
-      perMonth: "/месяц",
+      perMonth: "в месяц",
+      freeName: "Бесплатно",
       freeDesc: "Попробуйте, прежде чем платить.",
       premiumDesc: "Полное сопровождение вашего переезда.",
       proDesc: "Для семей и сложных переездов.",
       freeCta: "Начать бесплатно",
-      premiumCta: "Подключить Premium",
-      proCta: "Подключить Pro",
+      premiumCta: "Получить Premium",
+      proCta: "Получить Pro",
       freeFeatures: [
         "Польша — 1 страна доступна",
         "Чек-лист: превью из 5 шагов",
@@ -1949,6 +1952,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Eng mashhur",
       forever: "doimiy",
       perMonth: "/oy",
+      freeName: "Bepul",
       freeDesc: "Qaror qilishdan oldin sinab ko'ring.",
       premiumDesc: "Ko'chishingiz uchun to'liq yo'l-yo'riq.",
       proDesc: "Oilalar va murakkab ko'chishlar uchun.",
@@ -2529,6 +2533,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "En popüler",
       forever: "sonsuza dek",
       perMonth: "/ay",
+      freeName: "Ücretsiz",
       freeDesc: "Taahhüt etmeden önce deneyin.",
       premiumDesc: "Taşınmanız için tam rehberlik.",
       proDesc: "Aileler ve karmaşık taşınmalar için.",
@@ -3109,6 +3114,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Маъмултарин",
       forever: "доимӣ",
       perMonth: "/моҳ",
+      freeName: "Ройгон",
       freeDesc: "Пеш аз қарор додан санҷед.",
       premiumDesc: "Роҳнамоии пурра барои кӯчиданатон.",
       proDesc: "Барои оилаҳо ва кӯчиданҳои мураккаб.",
