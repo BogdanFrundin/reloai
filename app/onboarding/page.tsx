@@ -65,21 +65,6 @@ const SITUATION_ICONS = [
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>,
 ];
-const TIMELINE_ICONS = [
-  <svg {...ICON_PROPS} key="bolt">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="calendar1">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="calendar2">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="clock">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>,
-];
-
 const POLAND_GOAL_OPTIONS: Option[] = [
   { id: "Employment", label: "Employment contract", icon: WORK_ICON },
   { id: "Business", label: "Own business", icon: BUSINESS_ICON },
@@ -118,16 +103,6 @@ function buildSteps(country: string | undefined): { question: string; subheading
         { id: "visa", label: "I already hold a visa", icon: SITUATION_ICONS[1] },
         { id: "shortstay", label: "Already there on a short stay", icon: SITUATION_ICONS[2] },
         { id: "exploring", label: "Just exploring my options", icon: SITUATION_ICONS[3] },
-      ],
-    },
-    {
-      question: "What's your timeline?",
-      subheading: "We'll prioritize your checklist around this.",
-      options: [
-        { id: "asap", label: "As soon as possible", icon: TIMELINE_ICONS[0] },
-        { id: "1-3", label: "Within 1–3 months", icon: TIMELINE_ICONS[1] },
-        { id: "3-6", label: "Within 3–6 months", icon: TIMELINE_ICONS[2] },
-        { id: "researching", label: "Just researching, no rush", icon: TIMELINE_ICONS[3] },
       ],
     },
     {
