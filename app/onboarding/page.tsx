@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import PageTransition from "../_components/PageTransition";
 import Reveal from "../_components/Reveal";
 import { useLanguage } from "../_components/LanguageProvider";
@@ -25,19 +25,19 @@ type Answers = {
   citizenship?: string;
   currentLocation?: string;
   goal?: string;
-  jobOffer?: string;
-  alreadyAdmitted?: string;
+  jobOffer?: boolean;
+  alreadyAdmitted?: boolean;
 };
 
 type ProfileFields = {
   language?: string;
   country?: string;
-  city?: string;
+  destination_city?: string;
   citizenship?: string;
-  current_country?: string;
+  current_location?: string;
   goal?: string;
-  job_offer?: string;
-  already_admitted?: string;
+  has_job_offer?: boolean | null;
+  already_admitted?: boolean | null;
   onboarding_skipped?: boolean;
 };
 
@@ -124,6 +124,8 @@ export default function OnboardingPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSkipTip, setShowSkipTip] = useState(false);
+  const [citizenshipOpen, setCitizenshipOpen] = useState(false);
+  const citizenshipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -131,11 +133,25 @@ export default function OnboardingPage() {
     }
   }, [authLoading, user, router]);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (citizenshipRef.current && !citizenshipRef.current.contains(event.target as Node)) {
+        setCitizenshipOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const stepKey: StepKey = STEP_ORDER[step];
   const isLast = step === STEP_ORDER.length - 1;
 
   const goalNeedsSubAnswer =
-    answers.goal === "work" ? !answers.jobOffer : answers.goal === "study" ? !answers.alreadyAdmitted : false;
+    answers.goal === "work"
+      ? answers.jobOffer === undefined
+      : answers.goal === "study"
+        ? answers.alreadyAdmitted === undefined
+        : false;
 
   const canContinue =
     stepKey === "language"
@@ -176,7 +192,7 @@ export default function OnboardingPage() {
 
   function selectCurrentLocation(id: string) {
     setAnswers((prev) => ({ ...prev, currentLocation: id }));
-    saveFields({ current_country: id });
+    saveFields({ current_location: id });
   }
 
   function selectGoal(id: string) {
@@ -184,18 +200,18 @@ export default function OnboardingPage() {
     saveFields({ goal: id });
   }
 
-  function selectJobOffer(id: string) {
-    setAnswers((prev) => ({ ...prev, jobOffer: id }));
-    saveFields({ job_offer: id });
+  function selectJobOffer(value: boolean) {
+    setAnswers((prev) => ({ ...prev, jobOffer: value }));
+    saveFields({ has_job_offer: value });
   }
 
-  function selectAlreadyAdmitted(id: string) {
-    setAnswers((prev) => ({ ...prev, alreadyAdmitted: id }));
-    saveFields({ already_admitted: id });
+  function selectAlreadyAdmitted(value: boolean) {
+    setAnswers((prev) => ({ ...prev, alreadyAdmitted: value }));
+    saveFields({ already_admitted: value });
   }
 
   function handleCityBlur() {
-    if (answers.city !== undefined) saveFields({ city: answers.city });
+    if (answers.city !== undefined) saveFields({ destination_city: answers.city });
   }
 
   async function handleSkip() {
@@ -222,11 +238,11 @@ export default function OnboardingPage() {
         email: user.email,
         language: answers.language ?? "ru",
         country: answers.destination ?? "Poland",
-        city: answers.city ?? null,
+        destination_city: answers.city ?? null,
         citizenship: answers.citizenship ?? "Other",
-        current_country: answers.currentLocation ?? "home",
+        current_location: answers.currentLocation ?? "home",
         goal: answers.goal ?? "work",
-        job_offer: answers.jobOffer ?? null,
+        has_job_offer: answers.jobOffer ?? null,
         already_admitted: answers.alreadyAdmitted ?? null,
       });
 
@@ -305,6 +321,8 @@ export default function OnboardingPage() {
     { id: "Other", label: t.onboarding.citizenshipOptions.other, flag: "🌍" },
   ];
 
+  const selectedCitizenship = citizenshipOptions.find((option) => option.id === answers.citizenship);
+
   const currentLocationOptions: Option[] = [
     { id: "home", label: t.onboarding.currentLocationOptions.home, icon: HOME_ICON },
     { id: "destination", label: t.onboarding.currentLocationOptions.destination, icon: DESTINATION_ICON },
@@ -357,15 +375,15 @@ export default function OnboardingPage() {
     );
   }
 
-  function renderYesNo(value: string | undefined, onSelect: (id: string) => void) {
+  function renderYesNo(value: boolean | undefined, onSelect: (value: boolean) => void) {
     return (
       <div className="flex gap-2">
         {[
-          { id: "yes", label: t.onboarding.yes },
-          { id: "no", label: t.onboarding.no },
+          { id: true, label: t.onboarding.yes },
+          { id: false, label: t.onboarding.no },
         ].map((opt) => (
           <button
-            key={opt.id}
+            key={String(opt.id)}
             type="button"
             onClick={() => onSelect(opt.id)}
             className={`rounded-full border px-5 py-2 text-sm font-semibold transition-colors duration-150 ${
@@ -397,32 +415,9 @@ export default function OnboardingPage() {
               </span>
               <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
             </Link>
-            <div className="flex items-center gap-3">
-              <p className="text-sm text-slate-500">
-                {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
-              </p>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={handleSkip}
-                  onMouseEnter={() => setShowSkipTip(true)}
-                  onMouseLeave={() => setShowSkipTip(false)}
-                  onFocus={() => setShowSkipTip(true)}
-                  onBlur={() => setShowSkipTip(false)}
-                  className="text-xs font-medium text-slate-500 underline decoration-dotted underline-offset-4 transition-colors duration-150 hover:text-slate-300"
-                >
-                  {t.onboarding.skip}
-                </button>
-                {showSkipTip && (
-                  <div
-                    role="tooltip"
-                    className="absolute right-0 top-full z-10 mt-2 w-56 rounded-xl border border-white/10 bg-[#0d0d0f]/95 px-3 py-2 text-xs leading-relaxed text-slate-300 shadow-xl shadow-black/40 backdrop-blur-xl"
-                  >
-                    {t.onboarding.skipTooltip}
-                  </div>
-                )}
-              </div>
-            </div>
+            <p className="text-sm text-slate-500">
+              {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
+            </p>
           </div>
 
           <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
@@ -470,21 +465,59 @@ export default function OnboardingPage() {
               )}
 
               {stepKey === "citizenship" && (
-                <div className="mt-10">
-                  <select
-                    value={answers.citizenship ?? ""}
-                    onChange={(event) => selectCitizenship(event.target.value)}
-                    className={`${inputCls} appearance-none bg-[#0d0d0f]`}
+                <div className="relative mt-10" ref={citizenshipRef}>
+                  <button
+                    type="button"
+                    onClick={() => setCitizenshipOpen((prev) => !prev)}
+                    aria-haspopup="listbox"
+                    aria-expanded={citizenshipOpen}
+                    className="flex w-full items-center justify-between rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white transition-colors duration-150 hover:border-white/30 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
                   >
-                    <option value="" disabled>
-                      —
-                    </option>
-                    {citizenshipOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.flag} {option.label}
-                      </option>
-                    ))}
-                  </select>
+                    {selectedCitizenship ? (
+                      <span className="flex items-center gap-2">
+                        <span className="text-base leading-none">{selectedCitizenship.flag}</span>
+                        {selectedCitizenship.label}
+                      </span>
+                    ) : (
+                      <span className="text-slate-500">—</span>
+                    )}
+                    <svg
+                      className={`h-4 w-4 flex-shrink-0 text-slate-500 transition-transform duration-150 ${citizenshipOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {citizenshipOpen && (
+                    <ul
+                      role="listbox"
+                      className="absolute z-20 mt-2 max-h-72 w-full overflow-y-auto rounded-xl border border-white/10 bg-[#0d0d0f] py-1 shadow-xl shadow-black/50 backdrop-blur-xl"
+                    >
+                      {citizenshipOptions.map((option) => (
+                        <li key={option.id}>
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={answers.citizenship === option.id}
+                            onClick={() => {
+                              selectCitizenship(option.id);
+                              setCitizenshipOpen(false);
+                            }}
+                            className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
+                              answers.citizenship === option.id ? "font-semibold text-accent-bright" : "text-slate-200"
+                            }`}
+                          >
+                            <span className="text-base leading-none">{option.flag}</span>
+                            {option.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
 
@@ -535,14 +568,37 @@ export default function OnboardingPage() {
             </button>
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}
-              <button
-                type="button"
-                onClick={handleContinue}
-                disabled={!canContinue || saving}
-                className={`rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
-              >
-                {saving ? t.onboarding.saving : isLast ? t.onboarding.finish : t.onboarding.continueBtn}
-              </button>
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={handleSkip}
+                    onMouseEnter={() => setShowSkipTip(true)}
+                    onMouseLeave={() => setShowSkipTip(false)}
+                    onFocus={() => setShowSkipTip(true)}
+                    onBlur={() => setShowSkipTip(false)}
+                    className={`rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/40 hover:bg-white/10 hover:text-white ${pressScale}`}
+                  >
+                    {t.onboarding.skip}
+                  </button>
+                  {showSkipTip && (
+                    <div
+                      role="tooltip"
+                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-white/10 bg-[#0d0d0f]/95 px-3 py-2 text-xs leading-relaxed text-slate-300 shadow-xl shadow-black/40 backdrop-blur-xl"
+                    >
+                      {t.onboarding.skipTooltip}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  disabled={!canContinue || saving}
+                  className={`rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+                >
+                  {saving ? t.onboarding.saving : isLast ? t.onboarding.finish : t.onboarding.continueBtn}
+                </button>
+              </div>
             </div>
           </div>
         </div>

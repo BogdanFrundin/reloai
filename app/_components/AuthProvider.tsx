@@ -9,12 +9,12 @@ export type Profile = {
   name: string | null;
   email: string | null;
   country: string | null;
-  city: string | null;
+  destination_city: string | null;
   citizenship: string | null;
-  current_country: string | null;
+  current_location: string | null;
   goal: string | null;
-  job_offer: string | null;
-  already_admitted: string | null;
+  has_job_offer: boolean | null;
+  already_admitted: boolean | null;
   onboarding_skipped: boolean | null;
   plan: string | null;
   language: string | null;

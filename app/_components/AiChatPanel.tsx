@@ -74,11 +74,11 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
           profile: profile
             ? {
                 country: profile.country,
-                city: profile.city,
+                city: profile.destination_city,
                 citizenship: profile.citizenship,
-                currentLocation: profile.current_country,
+                currentLocation: profile.current_location,
                 goal: profile.goal,
-                jobOffer: profile.job_offer,
+                jobOffer: profile.has_job_offer,
                 alreadyAdmitted: profile.already_admitted,
               }
             : null,

@@ -12,8 +12,8 @@ type ProfileContext = {
   citizenship?: string | null;
   currentLocation?: string | null;
   goal?: string | null;
-  jobOffer?: string | null;
-  alreadyAdmitted?: string | null;
+  jobOffer?: boolean | null;
+  alreadyAdmitted?: boolean | null;
 } | null;
 
 function buildProfileContext(profile: ProfileContext): string {
@@ -27,8 +27,12 @@ function buildProfileContext(profile: ProfileContext): string {
   if (profile.currentLocation) parts.push(`current location status: ${profile.currentLocation}`);
   if (profile.goal) {
     let goalText = `main goal is ${profile.goal}`;
-    if (profile.goal === "work" && profile.jobOffer) goalText += ` (has a job offer: ${profile.jobOffer})`;
-    if (profile.goal === "study" && profile.alreadyAdmitted) goalText += ` (already admitted: ${profile.alreadyAdmitted})`;
+    if (profile.goal === "work" && typeof profile.jobOffer === "boolean") {
+      goalText += ` (has a job offer: ${profile.jobOffer ? "yes" : "no"})`;
+    }
+    if (profile.goal === "study" && typeof profile.alreadyAdmitted === "boolean") {
+      goalText += ` (already admitted: ${profile.alreadyAdmitted ? "yes" : "no"})`;
+    }
     parts.push(goalText);
   }
 

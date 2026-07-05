@@ -10,12 +10,12 @@ create table public.profiles (
   name text,
   email text,
   country text,
-  city text,
+  destination_city text,
   citizenship text,
-  current_country text,
+  current_location text,
   goal text,
-  job_offer text,
-  already_admitted text,
+  has_job_offer boolean,
+  already_admitted boolean,
   onboarding_skipped boolean default false,
   plan text default 'free',
   language text default 'ru',
@@ -23,14 +23,14 @@ create table public.profiles (
 );
 
 -- Safe to re-run against a database created before these columns existed.
+alter table public.profiles add column if not exists already_admitted boolean;
+alter table public.profiles add column if not exists has_job_offer boolean;
 alter table public.profiles add column if not exists citizenship text;
-alter table public.profiles add column if not exists current_country text;
-alter table public.profiles add column if not exists city text;
-alter table public.profiles add column if not exists job_offer text;
-alter table public.profiles add column if not exists already_admitted text;
+alter table public.profiles add column if not exists current_location text;
+alter table public.profiles add column if not exists destination_city text;
 alter table public.profiles add column if not exists onboarding_skipped boolean default false;
 
--- current_country now stores a relationship status ("home" / "destination" / "transit" / "other_eu")
+-- current_location stores a relationship status ("home" / "destination" / "transit" / "otherEu")
 -- rather than a specific country name — see app/onboarding/page.tsx.
 
 alter table public.profiles enable row level security;
