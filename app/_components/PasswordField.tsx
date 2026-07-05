@@ -7,21 +7,7 @@ import {
   isPasswordValid,
   type PasswordChecks,
 } from "../_lib/passwordValidation";
-
-const REQUIREMENTS: { key: keyof PasswordChecks; label: string }[] = [
-  { key: "minLength", label: "Minimum 8 characters" },
-  { key: "hasUppercase", label: "At least one uppercase letter (A–Z)" },
-  { key: "hasLowercase", label: "At least one lowercase letter (a–z)" },
-  { key: "hasNumber", label: "At least one number (0–9)" },
-  { key: "hasSpecialOrNumber", label: "Special character (!@#$%^&*) — or number counts double" },
-  { key: "noForeign", label: "English letters only (no Cyrillic)" },
-];
-
-const STRENGTH = {
-  weak: { label: "Weak", textColor: "text-red-400", barColor: "bg-red-500", segments: 1 },
-  medium: { label: "Medium", textColor: "text-yellow-400", barColor: "bg-yellow-400", segments: 2 },
-  strong: { label: "Strong", textColor: "text-green-400", barColor: "bg-green-500", segments: 3 },
-} as const;
+import type { Dictionary } from "../_lib/i18n";
 
 const inputClasses =
   "mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
@@ -32,7 +18,8 @@ interface Props {
   onValidChange?: (isValid: boolean) => void;
   id?: string;
   name?: string;
-  label?: string;
+  label: string;
+  t: Dictionary["password"];
 }
 
 export default function PasswordField({
@@ -41,8 +28,24 @@ export default function PasswordField({
   onValidChange,
   id = "password",
   name = "password",
-  label = "Password",
+  label,
+  t,
 }: Props) {
+  const REQUIREMENTS: { key: keyof PasswordChecks; label: string }[] = [
+    { key: "minLength", label: t.minLength },
+    { key: "hasUppercase", label: t.hasUppercase },
+    { key: "hasLowercase", label: t.hasLowercase },
+    { key: "hasNumber", label: t.hasNumber },
+    { key: "hasSpecialOrNumber", label: t.hasSpecialOrNumber },
+    { key: "noForeign", label: t.noForeign },
+  ];
+
+  const STRENGTH = {
+    weak: { label: t.weak, textColor: "text-red-400", barColor: "bg-red-500", segments: 1 },
+    medium: { label: t.medium, textColor: "text-yellow-400", barColor: "bg-yellow-400", segments: 2 },
+    strong: { label: t.strong, textColor: "text-green-400", barColor: "bg-green-500", segments: 3 },
+  } as const;
+
   const checks = checkPassword(value);
   const strength = getPasswordStrength(value, checks);
   const { label: strengthLabel, textColor, barColor, segments } = STRENGTH[strength];

@@ -39,7 +39,7 @@ export default function WorkPage() {
 
   const CONTRACT_TYPES = [
     { name: "Umowa o pracę", subtitle: t.work.employmentSubtitle, features: t.work.employmentFeatures },
-    { name: "B2B Contract", subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
+    { name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
   ];
 
   return (
@@ -47,8 +47,8 @@ export default function WorkPage() {
       <PageHeader title={t.work.title} subtitle={t.work.subtitle} />
 
       <Reveal delay={40} className="mt-10">
-        <h2 className="text-lg font-semibold text-white">{t.work.contractVsB2B}</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.contractVsB2B}</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2">
           {CONTRACT_TYPES.map((type, index) => (
             <Reveal key={type.name} delay={index * 40}>
               <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
@@ -71,7 +71,7 @@ export default function WorkPage() {
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
-        <h2 className="text-lg font-semibold text-white">{t.work.salarySearch}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.salarySearch}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.work.salarySearchSub}</p>
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
           <input
@@ -102,8 +102,8 @@ export default function WorkPage() {
       </Reveal>
 
       <Reveal delay={120} className="mt-12">
-        <h2 className="text-lg font-semibold text-white">{t.work.jobSites}</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.jobSites}</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {JOB_SITES.map((site, index) => (
             <Reveal key={site.key} delay={index * 40}>
               <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">

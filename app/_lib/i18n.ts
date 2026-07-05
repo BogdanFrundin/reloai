@@ -99,6 +99,7 @@ export type Dictionary = {
     rights: string;
   };
   auth: {
+    or: string;
     login: {
       heading: string;
       subtext: string;
@@ -112,14 +113,29 @@ export type Dictionary = {
     };
     register: {
       heading: string;
+      subtitle: string;
       googleSignUp: string;
+      redirecting: string;
       fullName: string;
       email: string;
       passwordLabel: string;
+      passwordTooltip: string;
       submit: string;
       hasAccount: string;
       login: string;
+      confirmEmail: { heading: string; body: string; goToLogin: string };
     };
+  };
+  password: {
+    minLength: string;
+    hasUppercase: string;
+    hasLowercase: string;
+    hasNumber: string;
+    hasSpecialOrNumber: string;
+    noForeign: string;
+    weak: string;
+    medium: string;
+    strong: string;
   };
   profile: {
     title: string;
@@ -137,6 +153,11 @@ export type Dictionary = {
     notifDocumentsDesc: string;
     notifProduct: string;
     notifProductDesc: string;
+  };
+  topbar: {
+    searchPlaceholder: string;
+    upgrade: string;
+    openMenuAria: string;
   };
   sidebar: {
     documents: string;
@@ -189,6 +210,8 @@ export type Dictionary = {
     privateLabel: string;
     clinicsTitle: string;
     clinicsSub: string;
+    warsaw: string;
+    languages: { ruUa: string; en: string; ru: string; ua: string };
     rows: [
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
@@ -210,6 +233,7 @@ export type Dictionary = {
     visitSite: string;
     employmentSubtitle: string;
     b2bSubtitle: string;
+    b2bContractName: string;
     employmentFeatures: [string, string, string];
     b2bFeatures: [string, string, string];
     jobSiteDescs: { pracuj: string; nofluff: string; linkedin: string };
@@ -244,6 +268,9 @@ export type Dictionary = {
     mostPopular: string;
     forever: string;
     perMonth: string;
+    freeName: string;
+    premiumName: string;
+    proName: string;
     freeDesc: string;
     premiumDesc: string;
     proDesc: string;
@@ -274,6 +301,8 @@ export type Dictionary = {
     payFailed: string;
   };
   education: {
+    title: string;
+    subtitle: string;
     coursesTab: string;
     schoolsTab: string;
     kindergartensTab: string;
@@ -305,6 +334,7 @@ export type Dictionary = {
     quickReplies: [string, string, string, string];
     placeholder: string;
     sendAria: string;
+    closeAria: string;
     connectionError: string;
     fallback: {
       pesel: string;
@@ -314,6 +344,14 @@ export type Dictionary = {
       visa: string;
       default: string;
     };
+  };
+  demo: {
+    bannerText: string;
+    registerNow: string;
+    floatingGreeting: string;
+    promptHeading: string;
+    promptBody: string;
+    promptDismiss: string;
   };
 };
 
@@ -561,6 +599,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rights: "All rights reserved.",
     },
     auth: {
+      or: "or",
       login: {
         heading: "Welcome back",
         subtext: "Sign in to continue your relocation plan.",
@@ -574,14 +613,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       register: {
         heading: "Create your account",
+        subtitle: "Start your free relocation roadmap in minutes.",
         googleSignUp: "Sign up with Google",
+        redirecting: "Redirecting…",
         fullName: "Full name",
         email: "Email",
         passwordLabel: "Password",
+        passwordTooltip: "Password doesn't meet requirements",
         submit: "Register",
         hasAccount: "Already have an account?",
         login: "Log in",
+        confirmEmail: {
+          heading: "Check your inbox",
+          body: "We sent a confirmation link to {email}. Click it to activate your account, then log in to continue.",
+          goToLogin: "Go to login",
+        },
       },
+    },
+    password: {
+      minLength: "Minimum 8 characters",
+      hasUppercase: "At least one uppercase letter (A–Z)",
+      hasLowercase: "At least one lowercase letter (a–z)",
+      hasNumber: "At least one number (0–9)",
+      hasSpecialOrNumber: "Special character (!@#$%^&*) — or number counts double",
+      noForeign: "English letters only (no Cyrillic)",
+      weak: "Weak",
+      medium: "Medium",
+      strong: "Strong",
     },
     profile: {
       title: "Profile",
@@ -599,6 +657,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       notifDocumentsDesc: "Alerts before a deadline is due.",
       notifProduct: "Product news",
       notifProductDesc: "New features and roadmap updates.",
+    },
+    topbar: {
+      searchPlaceholder: "Search documents, tasks...",
+      upgrade: "Upgrade",
+      openMenuAria: "Open menu",
     },
     sidebar: {
       documents: "Documents",
@@ -686,6 +749,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       privateLabel: "Private",
       clinicsTitle: "Clinics",
       clinicsSub: "English, Russian, and Ukrainian-speaking options.",
+      warsaw: "Warsaw",
+      languages: {
+        ruUa: "Russian & Ukrainian speaking",
+        en: "English speaking",
+        ru: "Russian speaking",
+        ua: "Ukrainian speaking",
+      },
       rows: [
         { label: "Cost", nfz: "Free with employment contributions", pvt: "150–400 PLN/month" },
         { label: "Wait times", nfz: "Weeks to months for specialists", pvt: "Same day to a few days" },
@@ -707,6 +777,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitSite: "Visit site",
       employmentSubtitle: "Employment contract",
       b2bSubtitle: "Self-employment",
+      b2bContractName: "B2B Contract",
       employmentFeatures: [
         "Paid leave, sick leave, and notice period",
         "Employer pays ZUS social contributions",
@@ -753,6 +824,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Most popular",
       forever: "forever",
       perMonth: "/month",
+      freeName: "Free",
+      premiumName: "Premium",
+      proName: "Pro",
       freeDesc: "Try before you commit.",
       premiumDesc: "Full guidance for your move.",
       proDesc: "For families and complex moves.",
@@ -807,6 +881,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       payFailed: "Payment failed. Please try again.",
     },
     education: {
+      title: "Education",
+      subtitle: "Language courses, schools, kindergartens and universities — filtered for your country.",
       coursesTab: "Language courses",
       schoolsTab: "Schools",
       kindergartensTab: "Kindergartens",
@@ -849,6 +925,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       quickReplies: ["How do I get a PESEL?", "Which bank should I open?", "How do I find housing?", "What documents do I need?"],
       placeholder: "Ask ReloAI anything...",
       sendAria: "Send message",
+      closeAria: "Close",
       connectionError: "I couldn't reach the server. Please check your connection and try again.",
       fallback: {
         pesel: "To get a PESEL number in Poland: 1) Book an appointment at the Urząd Miasta (city office) in your district. 2) Bring your passport, your visa or residence permit, and proof of address (a rental contract works). 3) Fill out form EL-ZAM on site. Processing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
@@ -858,6 +935,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Visa needs depend on your citizenship and destination. For Poland, most non-EU citizens need a national visa or residence permit (Karta Pobytu) tied to work, study, or family. For Germany, look into a Job Seeker Visa, Aufenthaltstitel, or EU Blue Card. For Spain, check the Digital Nomad Visa or standard work/residence routes via NIE registration.",
         default: "I can help with documents, housing, banks, healthcare, or work. What would you like to know more about?",
       },
+    },
+    demo: {
+      bannerText: "You are in preview mode. Register to save your progress and access all features.",
+      registerNow: "Register Now",
+      floatingGreeting: "👋 You're exploring ReloAI — Register free to save progress",
+      promptHeading: "Register to unlock this feature",
+      promptBody: "Create a free account to save your progress and unlock every feature.",
+      promptDismiss: "Maybe later",
     },
   },
   ru: {
@@ -1103,6 +1188,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rights: "Все права защищены.",
     },
     auth: {
+      or: "или",
       login: {
         heading: "С возвращением",
         subtext: "Войдите чтобы продолжить переезд.",
@@ -1116,14 +1202,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       register: {
         heading: "Создайте аккаунт",
+        subtitle: "Постройте бесплатный план переезда за несколько минут.",
         googleSignUp: "Зарегистрироваться через Google",
+        redirecting: "Перенаправление…",
         fullName: "Полное имя",
         email: "Email",
         passwordLabel: "Пароль",
+        passwordTooltip: "Пароль не соответствует требованиям",
         submit: "Зарегистрироваться",
         hasAccount: "Уже есть аккаунт?",
         login: "Войти",
+        confirmEmail: {
+          heading: "Проверьте почту",
+          body: "Мы отправили ссылку для подтверждения на {email}. Перейдите по ней, чтобы активировать аккаунт, а затем войдите.",
+          goToLogin: "Перейти ко входу",
+        },
       },
+    },
+    password: {
+      minLength: "Минимум 8 символов",
+      hasUppercase: "Хотя бы одна заглавная буква (A–Z)",
+      hasLowercase: "Хотя бы одна строчная буква (a–z)",
+      hasNumber: "Хотя бы одна цифра (0–9)",
+      hasSpecialOrNumber: "Спецсимвол (!@#$%^&*) — или цифра засчитывается вдвойне",
+      noForeign: "Только английские буквы (без кириллицы)",
+      weak: "Слабый",
+      medium: "Средний",
+      strong: "Надёжный",
     },
     profile: {
       title: "Профиль",
@@ -1141,6 +1246,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       notifDocumentsDesc: "Предупреждения перед истечением срока.",
       notifProduct: "Новости продукта",
       notifProductDesc: "Новые функции и обновления.",
+    },
+    topbar: {
+      searchPlaceholder: "Поиск документов, задач...",
+      upgrade: "Улучшить",
+      openMenuAria: "Открыть меню",
     },
     sidebar: {
       documents: "Документы",
@@ -1228,6 +1338,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       privateLabel: "Частная",
       clinicsTitle: "Клиники",
       clinicsSub: "Варианты с англо-, русско- и украиноязычным персоналом.",
+      warsaw: "Варшава",
+      languages: {
+        ruUa: "Говорят по-русски и по-украински",
+        en: "Говорят по-английски",
+        ru: "Говорят по-русски",
+        ua: "Говорят по-украински",
+      },
       rows: [
         { label: "Стоимость", nfz: "Бесплатно при трудовых отчислениях", pvt: "150–400 злотых/месяц" },
         { label: "Время ожидания", nfz: "От недель до месяцев к специалистам", pvt: "От пары дней до того же дня" },
@@ -1249,6 +1366,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitSite: "Перейти на сайт",
       employmentSubtitle: "Трудовой договор",
       b2bSubtitle: "Самозанятость",
+      b2bContractName: "Договор B2B",
       employmentFeatures: [
         "Оплачиваемый отпуск, больничный и срок предупреждения",
         "Работодатель платит взносы в ZUS",
@@ -1295,6 +1413,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Самый популярный",
       forever: "навсегда",
       perMonth: "/месяц",
+      freeName: "Бесплатный",
+      premiumName: "Premium",
+      proName: "Pro",
       freeDesc: "Попробуйте, прежде чем платить.",
       premiumDesc: "Полное сопровождение вашего переезда.",
       proDesc: "Для семей и сложных переездов.",
@@ -1349,6 +1470,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       payFailed: "Оплата не прошла. Попробуйте ещё раз.",
     },
     education: {
+      title: "Образование",
+      subtitle: "Языковые курсы, школы, детские сады и университеты — с учётом вашей страны.",
       coursesTab: "Языковые курсы",
       schoolsTab: "Школы",
       kindergartensTab: "Детские сады",
@@ -1391,6 +1514,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       quickReplies: ["Как получить PESEL?", "Какой банк открыть?", "Как найти жильё?", "Какие документы нужны?"],
       placeholder: "Спросите ReloAI о чём угодно...",
       sendAria: "Отправить сообщение",
+      closeAria: "Закрыть",
       connectionError: "Не удалось связаться с сервером. Проверьте соединение и попробуйте снова.",
       fallback: {
         pesel: "Чтобы получить номер PESEL в Польше: 1) Запишитесь на приём в Urząd Miasta (городское управление) вашего района. 2) Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды). 3) Заполните на месте форму EL-ZAM. Обработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
@@ -1400,6 +1524,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Визовые требования зависят от вашего гражданства и страны назначения. Для Польши большинству граждан не из ЕС нужна национальная виза или вид на жительство (Karta Pobytu), связанные с работой, учёбой или семьёй. Для Германии рассмотрите Job Seeker Visa, Aufenthaltstitel или EU Blue Card. Для Испании — Digital Nomad Visa или обычные пути через рабочий/жительский статус и регистрацию NIE.",
         default: "Я могу помочь с документами, жильём, банками, медициной или работой. Что вас интересует подробнее?",
       },
+    },
+    demo: {
+      bannerText: "Вы находитесь в режиме предпросмотра. Зарегистрируйтесь, чтобы сохранить прогресс и получить доступ ко всем функциям.",
+      registerNow: "Зарегистрироваться",
+      floatingGreeting: "👋 Вы изучаете ReloAI — зарегистрируйтесь бесплатно, чтобы сохранить прогресс",
+      promptHeading: "Зарегистрируйтесь, чтобы разблокировать эту функцию",
+      promptBody: "Создайте бесплатный аккаунт, чтобы сохранить прогресс и открыть все функции.",
+      promptDismiss: "Может быть позже",
     },
   },
   uz: {
@@ -1645,6 +1777,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rights: "Barcha huquqlar himoyalangan.",
     },
     auth: {
+      or: "yoki",
       login: {
         heading: "Xush kelibsiz",
         subtext: "Ko'chishni davom ettirish uchun kiring.",
@@ -1658,14 +1791,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       register: {
         heading: "Hisob yaratish",
+        subtitle: "Bir necha daqiqada bepul ko'chish rejangizni tuzing.",
         googleSignUp: "Google orqali ro'yxatdan o'tish",
+        redirecting: "Yo'naltirilmoqda…",
         fullName: "To'liq ism",
         email: "Email",
         passwordLabel: "Parol",
+        passwordTooltip: "Parol talablarga javob bermaydi",
         submit: "Ro'yxatdan o'tish",
         hasAccount: "Allaqachon hisobingiz bormi?",
         login: "Kirish",
+        confirmEmail: {
+          heading: "Pochtangizni tekshiring",
+          body: "{email} manziliga tasdiqlash havolasini yubordik. Hisobingizni faollashtirish uchun uni bosing, so'ng tizimga kiring.",
+          goToLogin: "Kirish sahifasiga o'tish",
+        },
       },
+    },
+    password: {
+      minLength: "Kamida 8 ta belgi",
+      hasUppercase: "Kamida bitta katta harf (A–Z)",
+      hasLowercase: "Kamida bitta kichik harf (a–z)",
+      hasNumber: "Kamida bitta raqam (0–9)",
+      hasSpecialOrNumber: "Maxsus belgi (!@#$%^&*) — yoki raqam ikki barobar hisoblanadi",
+      noForeign: "Faqat ingliz harflari (kirill harflarisiz)",
+      weak: "Zaif",
+      medium: "O'rta",
+      strong: "Kuchli",
     },
     profile: {
       title: "Profil",
@@ -1683,6 +1835,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       notifDocumentsDesc: "Muddatlar yaqinlashganda ogohlantirishlar.",
       notifProduct: "Mahsulot yangiliklari",
       notifProductDesc: "Yangi funksiyalar va yangilanishlar.",
+    },
+    topbar: {
+      searchPlaceholder: "Hujjatlar, vazifalarni qidirish...",
+      upgrade: "Yaxshilash",
+      openMenuAria: "Menyuni ochish",
     },
     sidebar: {
       documents: "Hujjatlar",
@@ -1770,6 +1927,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       privateLabel: "Xususiy",
       clinicsTitle: "Klinikalar",
       clinicsSub: "Ingliz, rus va ukrain tilida xizmat ko'rsatuvchi variantlar.",
+      warsaw: "Varshava",
+      languages: {
+        ruUa: "Rus va ukrain tilida xizmat",
+        en: "Ingliz tilida xizmat",
+        ru: "Rus tilida xizmat",
+        ua: "Ukrain tilida xizmat",
+      },
       rows: [
         { label: "Narxi", nfz: "Ish haqidan ajratmalar to'langanda bepul", pvt: "Oyiga 150–400 PLN" },
         { label: "Kutish muddati", nfz: "Mutaxassislar uchun bir necha haftadan oygacha", pvt: "Bir kundan bir necha kungacha" },
@@ -1791,6 +1955,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitSite: "Saytga o'tish",
       employmentSubtitle: "Mehnat shartnomasi",
       b2bSubtitle: "O'z ishi (B2B)",
+      b2bContractName: "B2B shartnoma",
       employmentFeatures: [
         "Haq to'lanadigan ta'til, kasallik varaqasi va ogohlantirish muddati",
         "Ish beruvchi ZUS ijtimoiy ajratmalarini to'laydi",
@@ -1837,6 +2002,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Eng mashhur",
       forever: "doimiy",
       perMonth: "/oy",
+      freeName: "Bepul",
+      premiumName: "Premium",
+      proName: "Pro",
       freeDesc: "Qaror qilishdan oldin sinab ko'ring.",
       premiumDesc: "Ko'chishingiz uchun to'liq yo'l-yo'riq.",
       proDesc: "Oilalar va murakkab ko'chishlar uchun.",
@@ -1891,6 +2059,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       payFailed: "To'lov amalga oshmadi. Iltimos, qayta urinib ko'ring.",
     },
     education: {
+      title: "Ta'lim",
+      subtitle: "Til kurslari, maktablar, bolalar bog'chalari va universitetlar — mamlakatingizga mos.",
       coursesTab: "Til kurslari",
       schoolsTab: "Maktablar",
       kindergartensTab: "Bolalar bog'chalari",
@@ -1933,6 +2103,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       quickReplies: ["PESEL qanday olinadi?", "Qaysi bankda hisob ochsam bo'ladi?", "Uy-joyni qanday topsam bo'ladi?", "Qanday hujjatlar kerak?"],
       placeholder: "ReloAI'dan istalgan narsani so'rang...",
       sendAria: "Xabar yuborish",
+      closeAria: "Yopish",
       connectionError: "Serverga ulanib bo'lmadi. Internet aloqangizni tekshirib, qayta urinib ko'ring.",
       fallback: {
         pesel: "Polshada PESEL raqamini olish uchun: 1) Tumaningizdagi Urząd Miasta (shahar idorasi)ga uchrashuvga yoziling. 2) Pasportingiz, viza yoki yashash ruxsatnomangiz va manzil tasdiqnomasini (ijara shartnomasi ham bo'ladi) olib boring. 3) Joyida EL-ZAM shaklini to'ldiring. Odatda bir kundan bir necha kungacha vaqt oladi. PESEL keyinchalik deyarli hamma narsa uchun kerak bo'ladi — bank hisobi ochish, tibbiy sug'urtaga yozilish va shartnomalarni imzolash.",
@@ -1942,6 +2113,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Viza talablari fuqaroligingiz va boradigan davlatingizga bog'liq. Polsha uchun ko'pchilik EI fuqarosi bo'lmaganlarga ish, o'qish yoki oila asosida milliy viza yoki yashash ruxsatnomasi (Karta Pobytu) kerak bo'ladi. Germaniya uchun Job Seeker Visa, Aufenthaltstitel yoki EU Blue Card'ni ko'rib chiqing. Ispaniya uchun Digital Nomad Visa yoki NIE ro'yxatidan o'tish orqali oddiy ish/yashash yo'llarini tekshiring.",
         default: "Men hujjatlar, uy-joy, banklar, tibbiyot yoki ish bo'yicha yordam bera olaman. Qaysi biri haqida batafsilroq bilmoqchisiz?",
       },
+    },
+    demo: {
+      bannerText: "Siz ko'rib chiqish rejimidasiz. Jarayoningizni saqlash va barcha funksiyalardan foydalanish uchun ro'yxatdan o'ting.",
+      registerNow: "Hozir ro'yxatdan o'ting",
+      floatingGreeting: "👋 Siz ReloAI'ni ko'rib chiqyapsiz — jarayoningizni saqlash uchun bepul ro'yxatdan o'ting",
+      promptHeading: "Bu funksiyani ochish uchun ro'yxatdan o'ting",
+      promptBody: "Jarayoningizni saqlash va barcha funksiyalarni ochish uchun bepul hisob yarating.",
+      promptDismiss: "Keyinroq",
     },
   },
   tr: {
@@ -2186,6 +2365,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rights: "Tüm hakları saklıdır.",
     },
     auth: {
+      or: "veya",
       login: {
         heading: "Tekrar hoş geldiniz",
         subtext: "Taşınma planınıza devam etmek için giriş yapın.",
@@ -2199,14 +2379,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       register: {
         heading: "Hesabınızı oluşturun",
+        subtitle: "Ücretsiz taşınma yol haritanızı dakikalar içinde oluşturun.",
         googleSignUp: "Google ile kayıt ol",
+        redirecting: "Yönlendiriliyor…",
         fullName: "Ad Soyad",
         email: "E-posta",
         passwordLabel: "Şifre",
+        passwordTooltip: "Şifre gereksinimleri karşılamıyor",
         submit: "Kayıt ol",
         hasAccount: "Zaten hesabınız var mı?",
         login: "Giriş yap",
+        confirmEmail: {
+          heading: "Gelen kutunuzu kontrol edin",
+          body: "{email} adresine bir onay bağlantısı gönderdik. Hesabınızı etkinleştirmek için tıklayın, ardından giriş yapın.",
+          goToLogin: "Girişe git",
+        },
       },
+    },
+    password: {
+      minLength: "En az 8 karakter",
+      hasUppercase: "En az bir büyük harf (A–Z)",
+      hasLowercase: "En az bir küçük harf (a–z)",
+      hasNumber: "En az bir rakam (0–9)",
+      hasSpecialOrNumber: "Özel karakter (!@#$%^&*) — veya rakam iki kat sayılır",
+      noForeign: "Yalnızca İngilizce harfler (Kiril alfabesi olmadan)",
+      weak: "Zayıf",
+      medium: "Orta",
+      strong: "Güçlü",
     },
     profile: {
       title: "Profil",
@@ -2224,6 +2423,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       notifDocumentsDesc: "Bir son tarih yaklaşınca uyarılar.",
       notifProduct: "Ürün haberleri",
       notifProductDesc: "Yeni özellikler ve güncellemeler.",
+    },
+    topbar: {
+      searchPlaceholder: "Belge, görev ara...",
+      upgrade: "Yükselt",
+      openMenuAria: "Menüyü aç",
     },
     sidebar: {
       documents: "Belgeler",
@@ -2311,6 +2515,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       privateLabel: "Özel",
       clinicsTitle: "Klinikler",
       clinicsSub: "İngilizce, Rusça ve Ukraynaca konuşan seçenekler.",
+      warsaw: "Varşova",
+      languages: {
+        ruUa: "Rusça ve Ukraynaca konuşuluyor",
+        en: "İngilizce konuşuluyor",
+        ru: "Rusça konuşuluyor",
+        ua: "Ukraynaca konuşuluyor",
+      },
       rows: [
         { label: "Maliyet", nfz: "İstihdam katkı payları ile ücretsiz", pvt: "Ayda 150–400 PLN" },
         { label: "Bekleme süresi", nfz: "Uzmanlar için haftalar-aylar", pvt: "Aynı günden birkaç güne" },
@@ -2332,6 +2543,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitSite: "Siteyi ziyaret et",
       employmentSubtitle: "İş sözleşmesi",
       b2bSubtitle: "Serbest çalışma",
+      b2bContractName: "B2B Sözleşmesi",
       employmentFeatures: [
         "Ücretli izin, hastalık izni ve ihbar süresi",
         "İşveren ZUS sosyal güvenlik katkı paylarını öder",
@@ -2378,6 +2590,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "En popüler",
       forever: "sonsuza dek",
       perMonth: "/ay",
+      freeName: "Ücretsiz",
+      premiumName: "Premium",
+      proName: "Pro",
       freeDesc: "Taahhüt etmeden önce deneyin.",
       premiumDesc: "Taşınmanız için tam rehberlik.",
       proDesc: "Aileler ve karmaşık taşınmalar için.",
@@ -2432,6 +2647,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       payFailed: "Ödeme başarısız oldu. Lütfen tekrar deneyin.",
     },
     education: {
+      title: "Eğitim",
+      subtitle: "Dil kursları, okullar, anaokulları ve üniversiteler — ülkenize göre filtrelendi.",
       coursesTab: "Dil kursları",
       schoolsTab: "Okullar",
       kindergartensTab: "Anaokulları",
@@ -2474,6 +2691,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       quickReplies: ["PESEL nasıl alınır?", "Hangi bankada hesap açmalıyım?", "Konutu nasıl bulabilirim?", "Hangi belgeler gerekli?"],
       placeholder: "ReloAI'ya istediğinizi sorun...",
       sendAria: "Mesaj gönder",
+      closeAria: "Kapat",
       connectionError: "Sunucuya ulaşılamadı. Lütfen bağlantınızı kontrol edip tekrar deneyin.",
       fallback: {
         pesel: "Polonya'da PESEL numarası almak için: 1) Bölgenizdeki Urząd Miasta'da (belediye) randevu alın. 2) Pasaportunuzu, vize veya oturma izninizi ve adres kanıtınızı (kira sözleşmesi de olur) yanınıza alın. 3) Orada EL-ZAM formunu doldurun. İşlem genellikle aynı gün ile birkaç gün arasında sürer. PESEL'e sonrasında neredeyse her şey için ihtiyacınız olacak — banka hesabı açmak, sağlık sigortasına kaydolmak ve sözleşme imzalamak gibi.",
@@ -2483,6 +2701,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Vize ihtiyaçları vatandaşlığınıza ve gideceğiniz ülkeye göre değişir. Polonya için çoğu AB dışı vatandaşın iş, eğitim veya aile temelli ulusal vize veya oturma iznine (Karta Pobytu) ihtiyacı vardır. Almanya için Job Seeker Visa, Aufenthaltstitel veya EU Blue Card'a bakın. İspanya için Digital Nomad Visa'yı veya NIE kaydı üzerinden standart çalışma/oturma yollarını inceleyin.",
         default: "Belgeler, konut, bankalar, sağlık veya iş konusunda yardımcı olabilirim. Hangisi hakkında daha fazla bilgi almak istersiniz?",
       },
+    },
+    demo: {
+      bannerText: "Önizleme modundasınız. İlerlemenizi kaydetmek ve tüm özelliklere erişmek için kayıt olun.",
+      registerNow: "Şimdi Kayıt Ol",
+      floatingGreeting: "👋 ReloAI'yi keşfediyorsunuz — ilerlemenizi kaydetmek için ücretsiz kayıt olun",
+      promptHeading: "Bu özelliğin kilidini açmak için kayıt olun",
+      promptBody: "İlerlemenizi kaydetmek ve tüm özelliklerin kilidini açmak için ücretsiz bir hesap oluşturun.",
+      promptDismiss: "Daha sonra",
     },
   },
   tg: {
@@ -2727,6 +2953,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rights: "Ҳамаи ҳуқуқҳо ҳифз шудаанд.",
     },
     auth: {
+      or: "ё",
       login: {
         heading: "Хуш омадед",
         subtext: "Барои идома додани нақшаи кӯчиш ворид шавед.",
@@ -2740,14 +2967,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       register: {
         heading: "Аккаунт созед",
+        subtitle: "Дар якчанд дақиқа нақшаи ройгони кӯчиши худро созед.",
         googleSignUp: "Тавассути Google бақайдгирӣ кунед",
+        redirecting: "Равона карда мешавад…",
         fullName: "Номи пурра",
         email: "Email",
         passwordLabel: "Парол",
+        passwordTooltip: "Парол ба талабот ҷавобгӯ нест",
         submit: "Бақайдгирӣ",
         hasAccount: "Аллакай аккаунт доред?",
         login: "Ворид шавед",
+        confirmEmail: {
+          heading: "Почтаи худро тафтиш кунед",
+          body: "Мо ба {email} пайванди тасдиқ фиристодем. Барои фаъол кардани аккаунт болои он клик кунед, сипас ворид шавед.",
+          goToLogin: "Гузариш ба вуруд",
+        },
       },
+    },
+    password: {
+      minLength: "Ҳадди ақал 8 аломат",
+      hasUppercase: "Ҳадди ақал як ҳарфи калон (A–Z)",
+      hasLowercase: "Ҳадди ақал як ҳарфи хурд (a–z)",
+      hasNumber: "Ҳадди ақал як рақам (0–9)",
+      hasSpecialOrNumber: "Аломати махсус (!@#$%^&*) — ё рақам ду баробар ҳисоб мешавад",
+      noForeign: "Танҳо ҳарфҳои англисӣ (бе кириллӣ)",
+      weak: "Заиф",
+      medium: "Миёна",
+      strong: "Қавӣ",
     },
     profile: {
       title: "Профил",
@@ -2765,6 +3011,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       notifDocumentsDesc: "Огоҳиҳо пеш аз мӯҳлат.",
       notifProduct: "Хабарҳои маҳсулот",
       notifProductDesc: "Хусусиятҳои нав ва навсозиҳо.",
+    },
+    topbar: {
+      searchPlaceholder: "Ҷустуҷӯи ҳуҷҷатҳо, вазифаҳо...",
+      upgrade: "Беҳтар кардан",
+      openMenuAria: "Кушодани меню",
     },
     sidebar: {
       documents: "Ҳуҷҷатҳо",
@@ -2852,6 +3103,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       privateLabel: "Хусусӣ",
       clinicsTitle: "Клиникаҳо",
       clinicsSub: "Гузинаҳо бо забонҳои англисӣ, русӣ ва украинӣ.",
+      warsaw: "Варшава",
+      languages: {
+        ruUa: "Бо забонҳои русӣ ва украинӣ",
+        en: "Бо забони англисӣ",
+        ru: "Бо забони русӣ",
+        ua: "Бо забони украинӣ",
+      },
       rows: [
         { label: "Арзиш", nfz: "Ҳангоми пардохти андозҳои меҳнатӣ ройгон", pvt: "150–400 PLN дар моҳ" },
         { label: "Мӯҳлати интизорӣ", nfz: "Барои мутахассисон аз чанд ҳафта то чанд моҳ", pvt: "Аз ҳамон рӯз то якчанд рӯз" },
@@ -2872,6 +3130,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       jobSites: "Сомонаҳои корӣ",
       visitSite: "Ба сомона гузаред",
       employmentSubtitle: "Шартномаи меҳнатӣ",
+      b2bContractName: "Шартномаи B2B",
       b2bSubtitle: "Кори мустақил (B2B)",
       employmentFeatures: [
         "Рухсатии пулакӣ, рухсатии бемористон ва мӯҳлати огоҳонӣ",
@@ -2919,6 +3178,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       mostPopular: "Маъмултарин",
       forever: "доимӣ",
       perMonth: "/моҳ",
+      freeName: "Ройгон",
+      premiumName: "Premium",
+      proName: "Pro",
       freeDesc: "Пеш аз қарор додан санҷед.",
       premiumDesc: "Роҳнамоии пурра барои кӯчиданатон.",
       proDesc: "Барои оилаҳо ва кӯчиданҳои мураккаб.",
@@ -2973,6 +3235,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       payFailed: "Пардохт иҷро нашуд. Лутфан, боз кӯшиш кунед.",
     },
     education: {
+      title: "Таҳсилот",
+      subtitle: "Курсҳои забон, мактабҳо, боғчаҳои бачагона ва донишгоҳҳо — барои кишвари шумо.",
       coursesTab: "Курсҳои забон",
       schoolsTab: "Мактабҳо",
       kindergartensTab: "Боғчаҳои кӯдакон",
@@ -3015,6 +3279,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       quickReplies: ["Чӣ тавр PESEL гирифта мешавад?", "Кадом бонкро кушоям?", "Чӣ тавр манзил ёбам?", "Кадом ҳуҷҷатҳо лозиманд?"],
       placeholder: "Аз ReloAI дилхоҳ чизро бипурсед...",
       sendAria: "Фиристодани паём",
+      closeAria: "Пӯшидан",
       connectionError: "Пайваст шудан ба сервер имконнопазир буд. Лутфан пайвастшавии худро санҷед ва боз кӯшиш кунед.",
       fallback: {
         pesel: "Барои гирифтани рақами PESEL дар Полша: 1) Дар Urząd Miasta (идораи шаҳр)-и ноҳияи худ вохӯрӣ ба қайд гиред. 2) Шиноснома, раводид ё иҷозати истиқомат ва тасдиқи суроғаи худро (шартномаи иҷора ҳам мешавад) бо худ гиред. 3) Дар ҷо шакли EL-ZAM-ро пур кунед. Коркард одатан аз як рӯз то якчанд рӯзро мегирад. PESEL баъдан барои қариб ҳама чиз лозим мешавад — кушодани ҳисоби бонкӣ, номнависӣ барои суғуртаи тиббӣ ва имзои шартномаҳо.",
@@ -3024,6 +3289,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Талаботи раводид аз шаҳрвандӣ ва кишвари мақсади шумо вобаста аст. Барои Полша аксари шаҳрвандони ғайри ИА ба раводиди миллӣ ё иҷозати истиқомат (Karta Pobytu), ки бо кор, таҳсил ё оила алоқаманд аст, ниёз доранд. Барои Олмон ба Job Seeker Visa, Aufenthaltstitel ё EU Blue Card нигаред. Барои Испания Digital Nomad Visa ё роҳҳои муқаррарии кор/истиқомат тавассути қайди NIE-ро санҷед.",
         default: "Ман метавонам дар бораи ҳуҷҷатҳо, манзил, бонкҳо, тиб ё кор кӯмак расонам. Дар бораи кадоме бештар донистан мехоҳед?",
       },
+    },
+    demo: {
+      bannerText: "Шумо дар реҷаи пешнамоиш ҳастед. Барои нигоҳ доштани пешрафт ва дастрасӣ ба ҳамаи хусусиятҳо бақайд гиред.",
+      registerNow: "Ҳозир бақайд гиред",
+      floatingGreeting: "👋 Шумо ReloAI-ро меомӯзед — барои нигоҳ доштани пешрафт ройгон бақайд гиред",
+      promptHeading: "Барои кушодани ин хусусият бақайд гиред",
+      promptBody: "Барои нигоҳ доштани пешрафт ва кушодани ҳамаи хусусиятҳо аккаунти ройгон созед.",
+      promptDismiss: "Дертар",
     },
   },
 };

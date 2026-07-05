@@ -3,8 +3,10 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Reveal from "../../_components/Reveal";
+import RegisterPromptModal from "../../_components/RegisterPromptModal";
 import { pressScale } from "../../_lib/motion";
 import { useLanguage } from "../../_components/LanguageProvider";
+import { useAuth } from "../../_components/AuthProvider";
 import type { Dictionary } from "../../_lib/i18n";
 
 type Category = "all" | "passport" | "pesel" | "workPermit" | "insurance" | "bank";
@@ -41,21 +43,33 @@ function UploadZone({
   name,
   uploadLabel,
   onUpload,
+  demoMode,
+  onDemoBlocked,
 }: {
   doc: DocumentItem;
   name: string;
   uploadLabel: string;
   onUpload: (id: string, file: File) => void;
+  demoMode: boolean;
+  onDemoBlocked: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleActivate() {
+    if (demoMode) {
+      onDemoBlocked();
+      return;
+    }
+    inputRef.current?.click();
+  }
 
   return (
     <div
       role="button"
       tabIndex={0}
-      onClick={() => inputRef.current?.click()}
+      onClick={handleActivate}
       onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") inputRef.current?.click();
+        if (event.key === "Enter" || event.key === " ") handleActivate();
       }}
       className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02] p-6 text-center transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
     >
@@ -81,8 +95,11 @@ function UploadZone({
 
 export default function DocumentsPage() {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const demoMode = !user;
   const [activeTab, setActiveTab] = useState<Category>("all");
   const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
+  const [promptOpen, setPromptOpen] = useState(false);
 
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
     verified: { label: t.documents.status.verified, className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400" },
@@ -108,13 +125,13 @@ export default function DocumentsPage() {
       </Reveal>
 
       <Reveal delay={60}>
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
+              className={`flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                 activeTab === tab
                   ? "border-accent/50 bg-accent/10 text-accent-bright"
                   : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
@@ -126,14 +143,21 @@ export default function DocumentsPage() {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((doc, index) => {
           const name = t.documents.docNames[doc.nameKey];
 
           if (doc.status === "missing") {
             return (
               <Reveal key={doc.id} delay={index * 40}>
-                <UploadZone doc={doc} name={name} uploadLabel={t.documents.upload} onUpload={handleUpload} />
+                <UploadZone
+                  doc={doc}
+                  name={name}
+                  uploadLabel={t.documents.upload}
+                  onUpload={handleUpload}
+                  demoMode={demoMode}
+                  onDemoBlocked={() => setPromptOpen(true)}
+                />
               </Reveal>
             );
           }
@@ -153,12 +177,22 @@ export default function DocumentsPage() {
                       </svg>
                     </span>
                     <p className="text-xs font-medium text-slate-300">{name}</p>
-                    <Link
-                      href="/pricing"
-                      className={`mt-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-                    >
-                      {t.documents.unlockBtn}
-                    </Link>
+                    {demoMode ? (
+                      <button
+                        type="button"
+                        onClick={() => setPromptOpen(true)}
+                        className={`mt-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                      >
+                        {t.documents.unlockBtn}
+                      </button>
+                    ) : (
+                      <Link
+                        href="/pricing"
+                        className={`mt-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                      >
+                        {t.documents.unlockBtn}
+                      </Link>
+                    )}
                   </div>
                 </div>
               </Reveal>
@@ -194,6 +228,8 @@ export default function DocumentsPage() {
           );
         })}
       </div>
+
+      <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
     </div>
   );
 }
