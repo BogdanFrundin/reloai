@@ -5,7 +5,8 @@ import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
-import type { Dictionary } from "../../_lib/i18n";
+import type { Dictionary, Lang } from "../../_lib/i18n";
+import { trField, trPlace } from "./translations";
 
 type ItemType = "public" | "private";
 type TabId = "courses" | "schools" | "kindergartens" | "universities";
@@ -181,22 +182,10 @@ const UNIVERSITIES: Record<CountryKey, University[]> = {
   ],
 };
 
-// ── Info banners ──────────────────────────────────────────────────────────────
-
-const INFO_BANNERS: Partial<Record<CountryKey, Partial<Record<TabId, string>>>> = {
-  Poland: {
-    courses: "Holder of ochrona czasowa (temporary protection)? Many Warsaw city courses are free. Ask at your local urząd dzielnicy or Powiatowy Urząd Pracy (PUP).",
-    schools: "Polish public schools are FREE for all children — including Ukrainian refugees with temporary protection status. Schools offer Oddziały Przygotowawcze: preparatory classes with intensive Polish language support.",
-    universities: "Ukrainian citizens with ochrona czasowa (temporary protection) may study at Polish public universities under the same conditions as Polish citizens — typically with no tuition fees.",
-  },
-  Germany: {
-    courses: "The BAMF Integration Course is your first port of call: 700 hours of German (A1–B1) plus civic orientation, heavily subsidized or free for many residence permit types.",
-    schools: "School attendance is mandatory in Germany (Schulpflicht). Newcomer children are placed in Willkommensklassen (welcome classes) with intensive German support before joining regular classes. Always free.",
-  },
-  Spain: {
-    courses: "EOI (Escuelas Oficiales de Idiomas) are state schools offering incredibly affordable Spanish, English and more — enrol each September. Some districts offer free community Spanish classes for newcomers.",
-    schools: "All children in Spain have a constitutional right to education regardless of immigration status. Public schools are free for all residents. Ask your local Ajuntament about aula d'acollida language support.",
-  },
+const BANNER_COUNTRY_KEY: Record<CountryKey, keyof Dictionary["education"]["banners"]> = {
+  Poland: "poland",
+  Germany: "germany",
+  Spain: "spain",
 };
 
 // ── UI helpers ────────────────────────────────────────────────────────────────
@@ -237,22 +226,22 @@ function Row({ label, value, highlight }: { label: string; value: string; highli
 
 // ── Card components ───────────────────────────────────────────────────────────
 
-function CourseCard({ course, t }: { course: Course; t: EduDict }) {
+function CourseCard({ course, t, lang }: { course: Course; t: EduDict; lang: Lang }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{course.name}</p>
         <TypeBadge type={course.type} t={t} />
       </div>
-      <p className="mt-1.5 text-xs font-medium text-accent-bright">{course.language}</p>
+      <p className="mt-1.5 text-xs font-medium text-accent-bright">{trField(course.language, lang)}</p>
       <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
-        <Row label={t.rowFormat} value={course.format} />
-        <Row label={t.rowLevel} value={course.level} />
-        <Row label={t.rowPrice} value={course.price} highlight />
+        <Row label={t.rowFormat} value={trField(course.format, lang)} />
+        <Row label={t.rowLevel} value={trField(course.level, lang)} />
+        <Row label={t.rowPrice} value={trField(course.price, lang)} highlight />
       </div>
       {course.note && (
         <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
-          {course.note}
+          {trField(course.note, lang)}
         </p>
       )}
       <div className="mt-auto pt-4">
@@ -264,22 +253,22 @@ function CourseCard({ course, t }: { course: Course; t: EduDict }) {
   );
 }
 
-function SchoolCard({ school, t }: { school: School; t: EduDict }) {
+function SchoolCard({ school, t, lang }: { school: School; t: EduDict; lang: Lang }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{school.name}</p>
         <TypeBadge type={school.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{school.area}</p>
+      <p className="mt-1 text-xs text-slate-500">{trPlace(school.area, lang)}</p>
       <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
-        <Row label={t.rowInstruction} value={school.instruction} />
+        <Row label={t.rowInstruction} value={trField(school.instruction, lang)} />
         <Row label={t.rowAges} value={school.ages} />
-        <Row label={t.rowPrice} value={school.price} highlight />
+        <Row label={t.rowPrice} value={trField(school.price, lang)} highlight />
       </div>
       {school.note && (
         <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
-          {school.note}
+          {trField(school.note, lang)}
         </p>
       )}
       <div className="mt-auto pt-4">
@@ -291,22 +280,22 @@ function SchoolCard({ school, t }: { school: School; t: EduDict }) {
   );
 }
 
-function KindergartenCard({ k, t }: { k: Kindergarten; t: EduDict }) {
+function KindergartenCard({ k, t, lang }: { k: Kindergarten; t: EduDict; lang: Lang }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{k.name}</p>
         <TypeBadge type={k.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{k.area}</p>
+      <p className="mt-1 text-xs text-slate-500">{trPlace(k.area, lang)}</p>
       <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
         <Row label={t.rowAges} value={k.ages} />
-        <Row label={t.rowPrice} value={k.price} highlight />
-        {k.waitingList && <Row label={t.rowWaiting} value={k.waitingList} />}
+        <Row label={t.rowPrice} value={trField(k.price, lang)} highlight />
+        {k.waitingList && <Row label={t.rowWaiting} value={trField(k.waitingList, lang)} />}
       </div>
       {k.note && (
         <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
-          {k.note}
+          {trField(k.note, lang)}
         </p>
       )}
       <div className="mt-auto pt-4">
@@ -318,17 +307,17 @@ function KindergartenCard({ k, t }: { k: Kindergarten; t: EduDict }) {
   );
 }
 
-function UniversityCard({ uni, t }: { uni: University; t: EduDict }) {
+function UniversityCard({ uni, t, lang }: { uni: University; t: EduDict; lang: Lang }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{uni.name}</p>
         <TypeBadge type={uni.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{uni.location}</p>
+      <p className="mt-1 text-xs text-slate-500">{trPlace(uni.location, lang)}</p>
       <div className="mt-3 flex flex-wrap gap-1">
         {uni.programs.slice(0, 3).map((p) => (
-          <span key={p} className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-400">{p}</span>
+          <span key={p} className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-400">{trField(p, lang)}</span>
         ))}
         {uni.programs.length > 3 && (
           <span className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-500">
@@ -337,13 +326,13 @@ function UniversityCard({ uni, t }: { uni: University; t: EduDict }) {
         )}
       </div>
       <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
-        <Row label={t.rowInstruction} value={uni.instruction} />
-        <Row label={t.rowTuition} value={uni.tuition} highlight />
-        {uni.deadline && <Row label={t.rowDeadline} value={uni.deadline} />}
+        <Row label={t.rowInstruction} value={trField(uni.instruction, lang)} />
+        <Row label={t.rowTuition} value={trField(uni.tuition, lang)} highlight />
+        {uni.deadline && <Row label={t.rowDeadline} value={trField(uni.deadline, lang)} />}
       </div>
       {uni.note && (
         <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
-          {uni.note}
+          {trField(uni.note, lang)}
         </p>
       )}
       <div className="mt-auto pt-4">
@@ -361,7 +350,7 @@ const COUNTRY_FLAG: Record<CountryKey, string> = { Poland: "🇵🇱", Germany: 
 
 export default function EducationPage() {
   const { profile } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const country = ((profile?.country ?? "Poland") as CountryKey);
 
   const TABS: { id: TabId; label: string }[] = [
@@ -395,15 +384,15 @@ export default function EducationPage() {
   const kindergartens = applyFilter(KINDERGARTENS[country] ?? []);
   const universities = applyFilter(UNIVERSITIES[country] ?? []);
 
-  const infoBanner = INFO_BANNERS[country]?.[activeTab];
+  const countryBanners = t.education.banners[BANNER_COUNTRY_KEY[country]] as
+    | Partial<Record<TabId, string>>
+    | undefined;
+  const infoBanner = countryBanners?.[activeTab];
   const flag = COUNTRY_FLAG[country] ?? "🌍";
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader
-        title={`Education ${flag}`}
-        subtitle="Language courses, schools, kindergartens and universities — filtered for your country."
-      />
+      <PageHeader title={`${t.education.title} ${flag}`} subtitle={t.education.subtitle} />
 
       {/* Tab bar */}
       <div className="mt-8 flex gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -452,10 +441,10 @@ export default function EducationPage() {
       <div className="mt-6">
         {activeTab === "courses" && (
           courses.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {courses.map((c, i) => (
                 <Reveal key={c.name} delay={i * 40} className="h-full">
-                  <CourseCard course={c} t={t.education} />
+                  <CourseCard course={c} t={t.education} lang={lang} />
                 </Reveal>
               ))}
             </div>
@@ -464,10 +453,10 @@ export default function EducationPage() {
 
         {activeTab === "schools" && (
           schools.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {schools.map((s, i) => (
                 <Reveal key={s.name} delay={i * 40} className="h-full">
-                  <SchoolCard school={s} t={t.education} />
+                  <SchoolCard school={s} t={t.education} lang={lang} />
                 </Reveal>
               ))}
             </div>
@@ -476,10 +465,10 @@ export default function EducationPage() {
 
         {activeTab === "kindergartens" && (
           kindergartens.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {kindergartens.map((k, i) => (
                 <Reveal key={k.name} delay={i * 40} className="h-full">
-                  <KindergartenCard k={k} t={t.education} />
+                  <KindergartenCard k={k} t={t.education} lang={lang} />
                 </Reveal>
               ))}
             </div>
@@ -488,10 +477,10 @@ export default function EducationPage() {
 
         {activeTab === "universities" && (
           universities.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {universities.map((u, i) => (
                 <Reveal key={u.name} delay={i * 40} className="h-full">
-                  <UniversityCard uni={u} t={t.education} />
+                  <UniversityCard uni={u} t={t.education} lang={lang} />
                 </Reveal>
               ))}
             </div>

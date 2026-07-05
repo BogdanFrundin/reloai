@@ -5,9 +5,13 @@ import { useEffect, useState, type ReactNode } from "react";
 import Sidebar from "../_components/Sidebar";
 import Topbar from "../_components/Topbar";
 import PageTransition from "../_components/PageTransition";
+import DemoBanner from "../_components/DemoBanner";
+import DemoFloatingCard from "../_components/DemoFloatingCard";
 import { useAuth } from "../_components/AuthProvider";
 
 const PUBLIC_PATHS = ["/pricing"];
+// Routes that show real personal data and make no sense in demo/preview mode.
+const AUTH_REQUIRED_PATHS = ["/profile"];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -15,11 +19,13 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const isPublicPath = PUBLIC_PATHS.includes(pathname);
+  const requiresAuth = AUTH_REQUIRED_PATHS.includes(pathname);
+  const isDemoMode = !loading && !user && !requiresAuth && !isPublicPath;
 
   useEffect(() => {
     if (loading) return;
 
-    if (!user && !isPublicPath) {
+    if (!user && requiresAuth) {
       router.replace("/login");
       return;
     }
@@ -31,11 +37,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         router.replace("/pricing");
       }
     }
-  }, [loading, user, profile, profileLoading, isPublicPath, pathname, router]);
+  }, [loading, user, profile, profileLoading, isPublicPath, requiresAuth, pathname, router]);
 
   const showSpinner =
     loading ||
-    (!user && !isPublicPath) ||
+    (!user && requiresAuth) ||
     (!!user && !isPublicPath && profileLoading) ||
     (!!user && !isPublicPath && !profileLoading && (!profile || !profile.plan));
 
@@ -55,10 +61,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <Sidebar open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
+        {isDemoMode && <DemoBanner />}
         <main className="flex-1 overflow-y-auto">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
+      {isDemoMode && <DemoFloatingCard />}
     </div>
   );
 }

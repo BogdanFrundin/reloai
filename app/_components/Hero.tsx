@@ -27,7 +27,9 @@ export default function Hero() {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent-bright">
               <span className="h-1.5 w-1.5 rounded-full bg-accent-bright animate-glow-pulse motion-reduce:animate-none" />
-              {t.hero.badge}
+              <span className="animate-text-glow-pulse motion-reduce:animate-none">
+                {t.hero.badge}
+              </span>
             </span>
           </Reveal>
 

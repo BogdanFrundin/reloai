@@ -19,7 +19,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       <button
         type="button"
         onClick={onMenuClick}
-        aria-label="Open menu"
+        aria-label={t.topbar.openMenuAria}
         className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white lg:hidden ${pressScale}`}
       >
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -39,7 +39,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         </svg>
         <input
           type="search"
-          placeholder="Search documents, tasks..."
+          placeholder={t.topbar.searchPlaceholder}
           className="w-full rounded-xl border border-white/10 bg-white/5 py-2 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
         />
       </div>

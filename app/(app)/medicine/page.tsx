@@ -8,33 +8,33 @@ import { useLanguage } from "../../_components/LanguageProvider";
 const CLINICS = [
   {
     name: "Medicover Centrum",
-    address: "ul. Marszałkowska 1, Warsaw",
+    street: "ul. Marszałkowska 1",
     phone: "+48 22 555 1234",
-    languages: "Russian & Ukrainian speaking",
+    languagesKey: "ruUa",
     rating: 4.7,
   },
   {
     name: "LUX MED Mokotów",
-    address: "ul. Wołoska 5, Warsaw",
+    street: "ul. Wołoska 5",
     phone: "+48 22 333 5678",
-    languages: "English speaking",
+    languagesKey: "en",
     rating: 4.5,
   },
   {
     name: "Damian Medical Center",
-    address: "ul. Wałbrzyska 46, Warsaw",
+    street: "ul. Wałbrzyska 46",
     phone: "+48 22 566 2222",
-    languages: "Russian speaking",
+    languagesKey: "ru",
     rating: 4.6,
   },
   {
     name: "CM LIM",
-    address: "ul. Puławska 39, Warsaw",
+    street: "ul. Puławska 39",
     phone: "+48 22 853 9999",
-    languages: "Ukrainian speaking",
+    languagesKey: "ua",
     rating: 4.3,
   },
-];
+] as const;
 
 export default function MedicinePage() {
   const { t } = useLanguage();
@@ -44,7 +44,7 @@ export default function MedicinePage() {
       <PageHeader title={t.medicine.title} subtitle={t.medicine.subtitle} />
 
       <Reveal delay={40} className="mt-10">
-        <h2 className="text-lg font-semibold text-white">{t.medicine.nfzVsPrivate}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.nfzVsPrivate}</h2>
         <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
           <div className="grid grid-cols-3 border-b border-white/10 bg-white/[0.03] text-xs font-semibold uppercase tracking-wider text-slate-400">
             <div className="p-4"></div>
@@ -67,17 +67,17 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
-        <h2 className="text-lg font-semibold text-white">{t.medicine.clinicsTitle}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.clinicsTitle}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.medicine.clinicsSub}</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLINICS.map((clinic, index) => (
             <Reveal key={clinic.name} delay={index * 40}>
               <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
                 <p className="text-sm font-semibold text-white">{clinic.name}</p>
-                <p className="mt-1 text-xs text-slate-500">{clinic.address}</p>
+                <p className="mt-1 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
                 <p className="mt-1 text-xs text-slate-500">{clinic.phone}</p>
                 <span className="mt-3 inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
-                  {clinic.languages}
+                  {t.medicine.languages[clinic.languagesKey]}
                 </span>
                 <div className="mt-3">
                   <StarRating rating={clinic.rating} />

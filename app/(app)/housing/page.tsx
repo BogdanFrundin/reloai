@@ -32,9 +32,9 @@ export default function HousingPage() {
       <PageHeader title={t.housing.title} subtitle={t.housing.subtitle} />
 
       <Reveal delay={40} className="mt-10">
-        <h2 className="text-lg font-semibold text-white">{t.housing.rentMarket}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.housing.rentMarket}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.housing.rentMarketSub}</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {WARSAW_DISTRICTS.map((district, index) => (
             <Reveal key={district.id} delay={index * 25}>
               <div className={`rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm ${cardHover}`}>
@@ -66,9 +66,9 @@ export default function HousingPage() {
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
-        <h2 className="text-lg font-semibold text-white">{t.housing.topWebsites}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.housing.topWebsites}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.housing.topWebsitesSub}</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {WEBSITES.map((site, index) => (
             <Reveal key={site.key} delay={index * 40}>
               <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
@@ -93,9 +93,9 @@ export default function HousingPage() {
       </Reveal>
 
       <Reveal delay={120} className="mt-12">
-        <h2 className="text-lg font-semibold text-white">{t.housing.aiTips}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.housing.aiTips}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.housing.aiTipsSub}</p>
-        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <div className="mt-4 grid gap-5 lg:grid-cols-3">
           {t.housing.tips.map((tip, index) => (
             <Reveal key={tip.title} delay={index * 40}>
               <div className="h-full rounded-2xl border border-accent/20 bg-accent/[0.04] p-5 backdrop-blur-sm">

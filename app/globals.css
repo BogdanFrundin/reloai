@@ -74,6 +74,20 @@ body {
   animation: glow-pulse 5s var(--ease-in-out-strong) infinite;
 }
 
+@keyframes text-glow-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 0px rgba(91, 141, 239, 0);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(91, 141, 239, 0.65);
+  }
+}
+
+.animate-text-glow-pulse {
+  animation: text-glow-pulse 2.5s var(--ease-in-out-strong) infinite;
+}
+
 @keyframes card-float {
   0%,
   100% {

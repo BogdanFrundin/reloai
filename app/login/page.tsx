@@ -94,7 +94,7 @@ export default function LoginPage() {
 
         <div className="my-6 flex items-center gap-3">
           <span className="h-px flex-1 bg-white/10" />
-          <span className="text-xs uppercase tracking-wider text-slate-500">or</span>
+          <span className="text-xs uppercase tracking-wider text-slate-500">{dictionaries[lang].auth.or}</span>
           <span className="h-px flex-1 bg-white/10" />
         </div>
 
@@ -116,7 +116,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="jane@example.com"
+              placeholder={dictionaries[lang].contact.form.placeholderEmail}
               className={inputClasses}
             />
           </div>
@@ -125,6 +125,7 @@ export default function LoginPage() {
             value={password}
             onChange={setPassword}
             label={a.passwordLabel}
+            t={dictionaries[lang].password}
           />
 
           <div className="flex justify-end">

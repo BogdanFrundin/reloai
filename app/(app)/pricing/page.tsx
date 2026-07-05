@@ -29,57 +29,49 @@ interface PlanDef {
   features: FeatItem[];
 }
 
-function buildPlans(t: Dictionary): PlanDef[] {
-  const { appPricing } = t;
+const FREE_INCLUDED = [true, true, true, false, false, false, false];
+
+function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
   return [
     {
       key: "free",
-      name: appPricing.freeName,
+      name: ap.freeName,
       price: "€0",
-      period: appPricing.forever,
-      description: appPricing.freeDesc,
+      period: ap.forever,
+      description: ap.freeDesc,
       badge: null,
       highlighted: false,
-      cta: appPricing.freeCta,
-      features: [
-        { text: appPricing.freeFeatures[0], included: true },
-        { text: appPricing.freeFeatures[1], included: true },
-        { text: appPricing.freeFeatures[2], included: true },
-        { text: appPricing.freeFeatures[3], included: false },
-        { text: appPricing.freeFeatures[4], included: false },
-        { text: appPricing.freeFeatures[5], included: false },
-        { text: appPricing.freeFeatures[6], included: false },
-      ],
+      cta: ap.freeCta,
+      features: ap.freeFeatures.map((text, i) => ({ text, included: FREE_INCLUDED[i] })),
     },
     {
       key: "premium",
-      name: "Premium",
+      name: ap.premiumName,
       price: "€29",
-      period: appPricing.perMonth,
-      description: appPricing.premiumDesc,
-      badge: appPricing.mostPopular,
+      period: ap.perMonth,
+      description: ap.premiumDesc,
+      badge: ap.mostPopular,
       highlighted: true,
-      cta: appPricing.premiumCta,
-      features: appPricing.premiumFeatures.map((text) => ({ text, included: true })),
+      cta: ap.premiumCta,
+      features: ap.premiumFeatures.map((text) => ({ text, included: true })),
     },
     {
       key: "pro",
-      name: "Pro",
+      name: ap.proName,
       price: "€49",
-      period: appPricing.perMonth,
-      description: appPricing.proDesc,
+      period: ap.perMonth,
+      description: ap.proDesc,
       badge: null,
       highlighted: false,
-      cta: appPricing.proCta,
-      features: appPricing.proFeatures.map((text) => ({ text, included: true })),
+      cta: ap.proCta,
+      features: ap.proFeatures.map((text) => ({ text, included: true })),
     },
   ];
 }
 
-function PlanButton({ plan }: { plan: PlanDef }) {
+function PlanButton({ plan, ap }: { plan: PlanDef; ap: Dictionary["appPricing"] }) {
   const router = useRouter();
   const { user } = useAuth();
-  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
@@ -111,14 +103,14 @@ function PlanButton({ plan }: { plan: PlanDef }) {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
           </svg>
         )}
-        {loading ? t.appPricing.activating : plan.cta}
+        {loading ? ap.activating : plan.cta}
       </button>
       {plan.key !== "free" && (
         <p className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
           <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z" />
           </svg>
-          {t.appPricing.securedByStripe}
+          {ap.securedByStripe}
         </p>
       )}
     </div>
@@ -127,11 +119,12 @@ function PlanButton({ plan }: { plan: PlanDef }) {
 
 export default function PricingPage() {
   const { t } = useLanguage();
-  const plans = buildPlans(t);
+  const ap = t.appPricing;
+  const plans = buildPlans(ap);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.appPricing.title} subtitle={t.appPricing.subtitle} />
+      <PageHeader title={ap.title} subtitle={ap.subtitle} />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {plans.map((plan, index) => (
@@ -200,7 +193,7 @@ export default function PricingPage() {
               </ul>
 
               <div className="mt-7">
-                <PlanButton plan={plan} />
+                <PlanButton plan={plan} ap={ap} />
               </div>
             </div>
           </Reveal>

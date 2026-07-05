@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import AiChatPanel from "./AiChatPanel";
 import WelcomeToast from "./WelcomeToast";
+import RegisterPromptModal from "./RegisterPromptModal";
 import { useAuth } from "./AuthProvider";
-import { buildChecklistSteps } from "../_lib/checklist";
+import { STEPS_COMPLETED_ON_ONBOARDING, buildChecklistSteps } from "../_lib/checklist";
 import { supabase } from "../../lib/supabase";
 import { useLanguage } from "./LanguageProvider";
 
@@ -34,12 +35,18 @@ export default function DashboardContent() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
+  const [promptOpen, setPromptOpen] = useState(false);
 
   const country = profile?.country || searchParams.get("country") || "Poland";
   const checklistSteps = buildChecklistSteps(t, country, profile?.goal, profile?.citizenship);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      // Demo/preview mode: seed believable sample progress instead of hitting Supabase.
+      setCompleted(new Set(STEPS_COMPLETED_ON_ONBOARDING));
+      setLoading(false);
+      return;
+    }
     let active = true;
 
     supabase
@@ -65,7 +72,11 @@ export default function DashboardContent() {
   const progressPercent = Math.round((completed.size / checklistSteps.length) * 100);
 
   async function toggleStep(documentType: string) {
-    if (!user || saving) return;
+    if (!user) {
+      setPromptOpen(true);
+      return;
+    }
+    if (saving) return;
     const isChecked = completed.has(documentType);
     const nextChecked = !isChecked;
 
@@ -128,7 +139,7 @@ export default function DashboardContent() {
             </div>
           </Reveal>
 
-          <div className="mt-8 space-y-3">
+          <div className="mt-8 space-y-4">
             {!loading &&
               checklistSteps.map((step, index) => {
                 const checked = completed.has(step.documentType);
@@ -176,6 +187,8 @@ export default function DashboardContent() {
           <AiChatPanel />
         </Reveal>
       </div>
+
+      <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
     </div>
   );
 }

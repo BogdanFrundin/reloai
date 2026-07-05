@@ -152,10 +152,10 @@ export default function Sidebar({
                 key={key}
                 href={href}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
                   isActive
-                    ? "bg-accent/10 text-accent-bright"
-                    : "text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 {NAV_ICONS[key]}

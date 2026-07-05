@@ -79,22 +79,24 @@ export default function RegisterPage() {
   }
 
   if (confirmEmailSent) {
+    const [beforeEmail, afterEmail] = a.confirmEmail.body.split("{email}");
     return (
       <PageTransition>
         <div className="fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
           <MiniLangSwitcher />
         </div>
         <AuthShell>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Check your inbox</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">{a.confirmEmail.heading}</h1>
           <p className="mt-3 text-sm text-slate-400">
-            We sent a confirmation link to <span className="text-white">{email}</span>. Click it
-            to activate your account, then log in to continue.
+            {beforeEmail}
+            <span className="text-white">{email}</span>
+            {afterEmail}
           </p>
           <Link
             href="/login"
             className={`mt-6 flex w-full items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
-            Go to login
+            {a.confirmEmail.goToLogin}
           </Link>
         </AuthShell>
       </PageTransition>
@@ -111,9 +113,7 @@ export default function RegisterPage() {
 
       <AuthShell>
         <h1 className="text-2xl font-bold tracking-tight text-white">{a.heading}</h1>
-        <p className="mt-1.5 text-sm text-slate-400">
-          Start your free relocation roadmap in minutes.
-        </p>
+        <p className="mt-1.5 text-sm text-slate-400">{a.subtitle}</p>
 
         <button
           type="button"
@@ -127,12 +127,12 @@ export default function RegisterPage() {
             <path fill="#FBBC05" d="M5.27 14.26A7.16 7.16 0 0 1 4.89 12c0-.78.14-1.55.38-2.26V6.62H1.27A11.97 11.97 0 0 0 0 12c0 1.93.46 3.76 1.27 5.38l4-3.12z" />
             <path fill="#EA4335" d="M12 4.78c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.27 0 3.24 2.7 1.27 6.62l4 3.12C6.22 6.9 8.87 4.78 12 4.78z" />
           </svg>
-          {googleLoading ? "Redirecting..." : a.googleSignUp}
+          {googleLoading ? a.redirecting : a.googleSignUp}
         </button>
 
         <div className="my-6 flex items-center gap-3">
           <span className="h-px flex-1 bg-white/10" />
-          <span className="text-xs uppercase tracking-wider text-slate-500">or</span>
+          <span className="text-xs uppercase tracking-wider text-slate-500">{dictionaries[lang].auth.or}</span>
           <span className="h-px flex-1 bg-white/10" />
         </div>
 
@@ -154,7 +154,7 @@ export default function RegisterPage() {
               required
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Jane Doe"
+              placeholder={dictionaries[lang].contact.form.placeholderName}
               className={inputClasses}
             />
           </div>
@@ -170,7 +170,7 @@ export default function RegisterPage() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="jane@example.com"
+              placeholder={dictionaries[lang].contact.form.placeholderEmail}
               className={inputClasses}
             />
           </div>
@@ -180,6 +180,7 @@ export default function RegisterPage() {
             onChange={setPassword}
             onValidChange={setPasswordValid}
             label={a.passwordLabel}
+            t={dictionaries[lang].password}
           />
 
           {/* Tooltip wrapper — disabled buttons don't fire mouse events, so hover lives on the div */}
@@ -193,7 +194,7 @@ export default function RegisterPage() {
             </button>
             {!passwordValid && !loading && (
               <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-slate-800 px-3 py-1.5 text-xs text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover/submit:opacity-100">
-                Password doesn&apos;t meet requirements
+                {a.passwordTooltip}
                 <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-slate-800" />
               </div>
             )}

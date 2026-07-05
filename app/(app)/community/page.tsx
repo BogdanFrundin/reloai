@@ -3,8 +3,10 @@
 import { useState } from "react";
 import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
+import RegisterPromptModal from "../../_components/RegisterPromptModal";
 import { pressScale } from "../../_lib/motion";
 import { useLanguage } from "../../_components/LanguageProvider";
+import { useAuth } from "../../_components/AuthProvider";
 
 type Category = "all" | "housing" | "work" | "sport" | "family" | "general";
 
@@ -25,7 +27,9 @@ const CHANNELS: { name: string; members: string; flag: string; category: Exclude
 
 export default function CommunityPage() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<Category>("all");
+  const [promptOpen, setPromptOpen] = useState(false);
 
   const filtered =
     activeTab === "all" ? CHANNELS : CHANNELS.filter((channel) => channel.category === activeTab);
@@ -53,7 +57,7 @@ export default function CommunityPage() {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((channel, index) => (
           <Reveal key={channel.name} delay={index * 40}>
             <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
@@ -69,6 +73,7 @@ export default function CommunityPage() {
               </p>
               <button
                 type="button"
+                onClick={() => !user && setPromptOpen(true)}
                 className={`mt-4 self-start rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
               >
                 {t.community.join}
@@ -77,6 +82,8 @@ export default function CommunityPage() {
           </Reveal>
         ))}
       </div>
+
+      <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
     </div>
   );
 }

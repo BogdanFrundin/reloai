@@ -20,7 +20,7 @@ export default function BanksPage() {
     <div className="px-6 py-8 lg:px-10 lg:py-10">
       <PageHeader title={t.banks.title} subtitle={t.banks.subtitle} />
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {BANKS.map((bank, index) => (
           <Reveal key={bank.key} delay={index * 50}>
             <div
