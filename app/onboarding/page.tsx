@@ -7,7 +7,7 @@ import PageTransition from "../_components/PageTransition";
 import Reveal from "../_components/Reveal";
 import { useLanguage } from "../_components/LanguageProvider";
 import { useAuth } from "../_components/AuthProvider";
-import { LANGUAGES, type Lang } from "../_lib/i18n";
+import { LANGUAGES, type Dictionary, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
 import { pressScale } from "../_lib/motion";
 import { supabase } from "../../lib/supabase";
@@ -46,6 +46,11 @@ const NOMAD_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 19.5h18M5 19.5V8.25A1.5 1.5 0 016.5 6.75h11A1.5 1.5 0 0119 8.25V19.5M10 6.75V4.5a1 1 0 011-1h2a1 1 0 011 1v2.25" />
   </svg>
 );
+const BUSINESS_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M4 21V10.5L12 4l8 6.5V21M9 21v-6h6v6" />
+  </svg>
+);
 const SITUATION_ICONS = [
   <svg {...ICON_PROPS} key="home">
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
@@ -60,83 +65,103 @@ const SITUATION_ICONS = [
     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>,
 ];
-const TIMELINE_ICONS = [
-  <svg {...ICON_PROPS} key="bolt">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="calendar1">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="calendar2">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" />
-  </svg>,
-  <svg {...ICON_PROPS} key="clock">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>,
-];
 
-function buildSteps(): { question: string; subheading: string; options: Option[] }[] {
+function buildSteps(
+  t: Dictionary,
+  country: string | undefined,
+): { question: string; subheading: string; options: Option[] }[] {
+  const polandGoalOptions: Option[] = [
+    { id: "Employment", label: t.onboarding.goalOptions.poland.employment, icon: WORK_ICON },
+    { id: "Business", label: t.onboarding.goalOptions.poland.business, icon: BUSINESS_ICON },
+    { id: "Family Reunification", label: t.onboarding.goalOptions.poland.familyReunification, icon: FAMILY_ICON },
+    { id: "Study", label: t.onboarding.goalOptions.poland.study, icon: STUDY_ICON },
+  ];
+
+  const defaultGoalOptions: Option[] = [
+    { id: "Work", label: t.onboarding.goalOptions.default.work, icon: WORK_ICON },
+    { id: "Study", label: t.onboarding.goalOptions.default.study, icon: STUDY_ICON },
+    { id: "Family", label: t.onboarding.goalOptions.default.family, icon: FAMILY_ICON },
+    { id: "Digital Nomad", label: t.onboarding.goalOptions.default.digitalNomad, icon: NOMAD_ICON },
+  ];
+
   return [
     {
-      question: "Where are you moving to?",
-      subheading: "We'll tailor your roadmap to this country.",
-      options: [
-        { id: "Poland", label: "Poland", icon: <span className="text-3xl">🇵🇱</span> },
-        { id: "Germany", label: "Germany", icon: <span className="text-3xl">🇩🇪</span> },
-        { id: "Spain", label: "Spain", icon: <span className="text-3xl">🇪🇸</span> },
-      ],
-    },
-    {
-      question: "What's your main goal?",
-      subheading: "This decides which visa track we'll guide you through.",
-      options: [
-        { id: "Work", label: "Work", icon: WORK_ICON },
-        { id: "Study", label: "Study", icon: STUDY_ICON },
-        { id: "Family", label: "Family", icon: FAMILY_ICON },
-        { id: "Digital Nomad", label: "Digital Nomad", icon: NOMAD_ICON },
-      ],
-    },
-    {
-      question: "What's your current situation?",
-      subheading: "Helps us skip steps you've already completed.",
-      options: [
-        { id: "home", label: "Still in my home country", icon: SITUATION_ICONS[0] },
-        { id: "visa", label: "I already hold a visa", icon: SITUATION_ICONS[1] },
-        { id: "shortstay", label: "Already there on a short stay", icon: SITUATION_ICONS[2] },
-        { id: "exploring", label: "Just exploring my options", icon: SITUATION_ICONS[3] },
-      ],
-    },
-    {
-      question: "What's your timeline?",
-      subheading: "We'll prioritize your checklist around this.",
-      options: [
-        { id: "asap", label: "As soon as possible", icon: TIMELINE_ICONS[0] },
-        { id: "1-3", label: "Within 1–3 months", icon: TIMELINE_ICONS[1] },
-        { id: "3-6", label: "Within 3–6 months", icon: TIMELINE_ICONS[2] },
-        { id: "researching", label: "Just researching, no rush", icon: TIMELINE_ICONS[3] },
-      ],
-    },
-    {
-      question: "Choose your language",
-      subheading: "ReloAI will speak with you in this language.",
+      question: t.onboarding.steps.language.question,
+      subheading: t.onboarding.steps.language.subheading,
       options: LANGUAGES.map((l) => ({
         id: l.code,
         label: l.name,
         icon: <span className="text-3xl">{l.flag}</span>,
       })),
     },
+    {
+      question: t.onboarding.steps.country.question,
+      subheading: t.onboarding.steps.country.subheading,
+      options: [
+        { id: "Poland", label: t.countries.list[0].name, icon: <span className="text-3xl">🇵🇱</span> },
+        { id: "Germany", label: t.countries.list[1].name, icon: <span className="text-3xl">🇩🇪</span> },
+        { id: "Spain", label: t.countries.list[2].name, icon: <span className="text-3xl">🇪🇸</span> },
+      ],
+    },
+    {
+      question: t.onboarding.steps.citizenship.question,
+      subheading: t.onboarding.steps.citizenship.subheading,
+      options: [
+        { id: "Ukraine", label: t.onboarding.countryNames.ukraine, icon: <span className="text-3xl">🇺🇦</span> },
+        { id: "Russia", label: t.onboarding.countryNames.russia, icon: <span className="text-3xl">🇷🇺</span> },
+        { id: "Belarus", label: t.onboarding.countryNames.belarus, icon: <span className="text-3xl">🇧🇾</span> },
+        { id: "Kazakhstan", label: t.onboarding.countryNames.kazakhstan, icon: <span className="text-3xl">🇰🇿</span> },
+        { id: "Uzbekistan", label: t.onboarding.countryNames.uzbekistan, icon: <span className="text-3xl">🇺🇿</span> },
+        { id: "Tajikistan", label: t.onboarding.countryNames.tajikistan, icon: <span className="text-3xl">🇹🇯</span> },
+        { id: "Turkey", label: t.onboarding.countryNames.turkey, icon: <span className="text-3xl">🇹🇷</span> },
+        { id: "Other", label: t.onboarding.countryNames.other, icon: <span className="text-3xl">🌍</span> },
+      ],
+    },
+    {
+      question: t.onboarding.steps.currentCountry.question,
+      subheading: t.onboarding.steps.currentCountry.subheading,
+      options: [
+        {
+          id: "Poland",
+          label: `${t.onboarding.countryNames.poland} ${t.onboarding.alreadyHereSuffix}`,
+          icon: <span className="text-3xl">🇵🇱</span>,
+        },
+        { id: "Ukraine", label: t.onboarding.countryNames.ukraine, icon: <span className="text-3xl">🇺🇦</span> },
+        { id: "Russia", label: t.onboarding.countryNames.russia, icon: <span className="text-3xl">🇷🇺</span> },
+        { id: "Belarus", label: t.onboarding.countryNames.belarus, icon: <span className="text-3xl">🇧🇾</span> },
+        { id: "Kazakhstan", label: t.onboarding.countryNames.kazakhstan, icon: <span className="text-3xl">🇰🇿</span> },
+        { id: "Germany", label: t.onboarding.countryNames.germany, icon: <span className="text-3xl">🇩🇪</span> },
+        { id: "Spain", label: t.onboarding.countryNames.spain, icon: <span className="text-3xl">🇪🇸</span> },
+        { id: "Other", label: t.onboarding.countryNames.other, icon: <span className="text-3xl">🌍</span> },
+      ],
+    },
+    {
+      question: t.onboarding.steps.goal.question,
+      subheading: t.onboarding.steps.goal.subheading,
+      options: country === "Poland" ? polandGoalOptions : defaultGoalOptions,
+    },
+    {
+      question: t.onboarding.steps.situation.question,
+      subheading: t.onboarding.steps.situation.subheading,
+      options: [
+        { id: "home", label: t.onboarding.situationOptions.home, icon: SITUATION_ICONS[0] },
+        { id: "visa", label: t.onboarding.situationOptions.visa, icon: SITUATION_ICONS[1] },
+        { id: "shortstay", label: t.onboarding.situationOptions.shortstay, icon: SITUATION_ICONS[2] },
+        { id: "exploring", label: t.onboarding.situationOptions.exploring, icon: SITUATION_ICONS[3] },
+      ],
+    },
   ];
 }
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { setLang } = useLanguage();
+  const { t, setLang } = useLanguage();
   const { user, loading: authLoading } = useAuth();
-  const steps = buildSteps();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const steps = buildSteps(t, answers[1]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -149,7 +174,18 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   function selectOption(id: string) {
-    setAnswers((prev) => ({ ...prev, [step]: id }));
+    if (step === 0 && LANGUAGES.some((l) => l.code === id)) {
+      setLang(id as Lang);
+    }
+
+    setAnswers((prev) => {
+      const next = { ...prev, [step]: id };
+      // The goal options differ by country — drop a stale goal pick if the country changed.
+      if (step === 1 && prev[1] !== id) {
+        delete next[4];
+      }
+      return next;
+    });
   }
 
   async function handleContinue() {
@@ -159,16 +195,21 @@ export default function OnboardingPage() {
       setError(null);
       setSaving(true);
 
-      const country = answers[0] ?? "Poland";
-      const goal = answers[1] ?? "Work";
+      const language = answers[0] ?? "ru";
+      const country = answers[1] ?? "Poland";
+      const citizenship = answers[2] ?? "Other";
+      const currentCountry = answers[3] ?? "Poland";
+      const goal = answers[4] ?? "Work";
 
       const { error: profileError } = await supabase.from("profiles").upsert({
         id: user.id,
         name: (user.user_metadata?.name as string | undefined) ?? null,
         email: user.email,
         country,
+        citizenship,
+        current_country: currentCountry,
         goal,
-        language: selected,
+        language,
       });
 
       if (profileError) {
@@ -195,9 +236,6 @@ export default function OnboardingPage() {
         return;
       }
 
-      if (LANGUAGES.some((l) => l.code === selected)) {
-        setLang(selected as Lang);
-      }
       router.push("/pricing");
       return;
     }
@@ -239,7 +277,7 @@ export default function OnboardingPage() {
               <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
             </Link>
             <p className="text-sm text-slate-500">
-              Step {step + 1} of {steps.length}
+              {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(steps.length))}
             </p>
           </div>
 
@@ -306,7 +344,7 @@ export default function OnboardingPage() {
               disabled={step === 0}
               className={`rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-white/30 disabled:cursor-not-allowed disabled:opacity-0 ${pressScale}`}
             >
-              Back
+              {t.onboarding.back}
             </button>
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}
@@ -316,7 +354,7 @@ export default function OnboardingPage() {
                 disabled={!selected || saving}
                 className={`rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
               >
-                {saving ? "Saving..." : isLast ? "Finish" : "Continue"}
+                {saving ? t.onboarding.saving : isLast ? t.onboarding.finish : t.onboarding.continueBtn}
               </button>
             </div>
           </div>

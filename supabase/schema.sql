@@ -10,11 +10,17 @@ create table public.profiles (
   name text,
   email text,
   country text,
+  citizenship text,
+  current_country text,
   goal text,
   plan text default 'free',
   language text default 'ru',
   created_at timestamptz default now()
 );
+
+-- Safe to re-run against a database created before these columns existed.
+alter table public.profiles add column if not exists citizenship text;
+alter table public.profiles add column if not exists current_country text;
 
 alter table public.profiles enable row level security;
 

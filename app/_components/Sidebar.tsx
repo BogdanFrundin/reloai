@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
+import { useAuth } from "./AuthProvider";
 
 const ICON_PROPS = {
   className: "h-5 w-5",
@@ -13,9 +14,10 @@ const ICON_PROPS = {
   strokeWidth: 1.75,
 } as const;
 
-type NavKey = "documents" | "housing" | "banks" | "medicine" | "work" | "education" | "community";
+type MainKey = "documents" | "housing" | "banks";
+type OtherKey = "medicine" | "work" | "community" | "education";
 
-const NAV_ICONS: Record<NavKey, ReactNode> = {
+const NAV_ICONS: Record<MainKey | OtherKey, ReactNode> = {
   documents: (
     <svg {...ICON_PROPS}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
@@ -53,17 +55,48 @@ const NAV_ICONS: Record<NavKey, ReactNode> = {
   ),
 };
 
-const NAV_HREFS: Record<NavKey, string> = {
+const OTHER_SERVICES_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25M21 7.5v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+  </svg>
+);
+const CHEVRON_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+);
+const PROFILE_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+  </svg>
+);
+const SETTINGS_ICON = (
+  <svg {...ICON_PROPS}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.558-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"
+    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const LOGOUT_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+  </svg>
+);
+
+const MAIN_ORDER: MainKey[] = ["documents", "housing", "banks"];
+const OTHER_ORDER: OtherKey[] = ["medicine", "work", "community", "education"];
+const HREFS: Record<MainKey | OtherKey, string> = {
   documents: "/documents",
   housing: "/housing",
   banks: "/banks",
   medicine: "/medicine",
   work: "/work",
-  education: "/education",
   community: "/community",
+  education: "/education",
 };
-
-const NAV_ORDER: NavKey[] = ["documents", "housing", "banks", "medicine", "work", "education", "community"];
 
 export default function Sidebar({
   open = false,
@@ -73,8 +106,19 @@ export default function Sidebar({
   onClose?: () => void;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { t } = useLanguage();
+  const { signOut } = useAuth();
   const s = t.sidebar;
+
+  const isOtherActive = OTHER_ORDER.some((key) => pathname === HREFS[key]);
+  const [otherOpen, setOtherOpen] = useState(isOtherActive);
+
+  async function handleLogOut() {
+    onClose?.();
+    await signOut();
+    router.push("/login");
+  }
 
   return (
     <>
@@ -97,9 +141,10 @@ export default function Sidebar({
           <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
         </Link>
 
-        <nav className="flex-1 space-y-1 px-3 py-2">
-          {NAV_ORDER.map((key) => {
-            const href = NAV_HREFS[key];
+        {/* Main navigation */}
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
+          {MAIN_ORDER.map((key) => {
+            const href = HREFS[key];
             const isActive = pathname === href;
 
             return (
@@ -118,18 +163,82 @@ export default function Sidebar({
               </Link>
             );
           })}
+
+          <div>
+            <button
+              type="button"
+              onClick={() => setOtherOpen((prev) => !prev)}
+              aria-expanded={otherOpen}
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                isOtherActive
+                  ? "bg-accent/10 text-accent-bright"
+                  : "text-slate-300 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              {OTHER_SERVICES_ICON}
+              <span className="flex-1 text-left">{s.otherServices}</span>
+              <span className={`transition-transform duration-150 ${otherOpen ? "rotate-180" : ""}`}>
+                {CHEVRON_ICON}
+              </span>
+            </button>
+
+            {otherOpen && (
+              <div className="mt-1 space-y-1 border-l border-white/10 pl-4">
+                {OTHER_ORDER.map((key) => {
+                  const href = HREFS[key];
+                  const isActive = pathname === href;
+
+                  return (
+                    <Link
+                      key={key}
+                      href={href}
+                      onClick={onClose}
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                        isActive
+                          ? "bg-accent/10 text-accent-bright"
+                          : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      {NAV_ICONS[key]}
+                      <span>{s[key]}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </nav>
 
-        <div className="border-t border-white/10 p-4">
+        {/* User actions */}
+        <div className="space-y-1 border-t border-white/10 p-3">
           <Link
-            href="/"
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400 transition-colors duration-150 hover:text-white"
+            href="/profile"
+            onClick={onClose}
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+              pathname === "/profile"
+                ? "bg-accent/10 text-accent-bright"
+                : "text-slate-300 hover:bg-white/5 hover:text-white"
+            }`}
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            {s.backToWebsite}
+            {PROFILE_ICON}
+            <span>{s.profile}</span>
           </Link>
+          <Link
+            href="/profile"
+            onClick={onClose}
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+          >
+            {SETTINGS_ICON}
+            <span>{s.settings}</span>
+          </Link>
+          <button
+            type="button"
+            onClick={handleLogOut}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+          >
+            {LOGOUT_ICON}
+            <span>{s.logout}</span>
+          </button>
         </div>
       </aside>
     </>

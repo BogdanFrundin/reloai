@@ -167,7 +167,10 @@ export type Dictionary = {
     work: string;
     community: string;
     education: string;
-    backToWebsite: string;
+    otherServices: string;
+    profile: string;
+    settings: string;
+    logout: string;
   };
   documents: {
     title: string;
@@ -299,6 +302,10 @@ export type Dictionary = {
     and: string;
     privacyPolicy: string;
     payFailed: string;
+    payBtn: string;
+    welcomeToast: string;
+    premiumFeatures: [string, string, string, string, string];
+    proFeatures: [string, string, string, string, string];
   };
   education: {
     title: string;
@@ -352,6 +359,40 @@ export type Dictionary = {
     promptHeading: string;
     promptBody: string;
     promptDismiss: string;
+  };
+  onboarding: {
+    stepLabel: string;
+    back: string;
+    continueBtn: string;
+    finish: string;
+    saving: string;
+    steps: {
+      language: { question: string; subheading: string };
+      country: { question: string; subheading: string };
+      citizenship: { question: string; subheading: string };
+      currentCountry: { question: string; subheading: string };
+      goal: { question: string; subheading: string };
+      situation: { question: string; subheading: string };
+    };
+    goalOptions: {
+      poland: { employment: string; business: string; familyReunification: string; study: string };
+      default: { work: string; study: string; family: string; digitalNomad: string };
+    };
+    situationOptions: { home: string; visa: string; shortstay: string; exploring: string };
+    countryNames: {
+      poland: string;
+      ukraine: string;
+      russia: string;
+      belarus: string;
+      kazakhstan: string;
+      uzbekistan: string;
+      tajikistan: string;
+      turkey: string;
+      germany: string;
+      spain: string;
+      other: string;
+    };
+    alreadyHereSuffix: string;
   };
 };
 
@@ -671,7 +712,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Work",
       community: "Community",
       education: "Education",
-      backToWebsite: "Back to website",
+      otherServices: "Other Services",
+      profile: "Profile",
+      settings: "Settings",
+      logout: "Log out",
     },
     documents: {
       title: "Documents",
@@ -879,6 +923,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "and",
       privacyPolicy: "Privacy Policy",
       payFailed: "Payment failed. Please try again.",
+      payBtn: "Pay",
+      welcomeToast: "Welcome to {plan}! 🎉",
+      premiumFeatures: ["All 3 countries", "Full checklist", "50 AI messages/day", "Document storage", "Email support"],
+      proFeatures: ["Everything in Premium", "Unlimited AI messages", "AI fills documents", "Priority 24/7 support", "Monthly consultation call"],
     },
     education: {
       title: "Education",
@@ -943,6 +991,45 @@ export const dictionaries: Record<Lang, Dictionary> = {
       promptHeading: "Register to unlock this feature",
       promptBody: "Create a free account to save your progress and unlock every feature.",
       promptDismiss: "Maybe later",
+    },
+    onboarding: {
+      stepLabel: "Step {current} of {total}",
+      back: "Back",
+      continueBtn: "Continue",
+      finish: "Finish",
+      saving: "Saving...",
+      steps: {
+        language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
+        country: { question: "Where are you moving to?", subheading: "We'll tailor your roadmap to this country." },
+        citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
+        currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
+        goal: { question: "What's your main goal?", subheading: "This decides which visa track we'll guide you through." },
+        situation: { question: "What's your current situation?", subheading: "Helps us skip steps you've already completed." },
+      },
+      goalOptions: {
+        poland: { employment: "Employment contract", business: "Own business", familyReunification: "Family reunification", study: "Study" },
+        default: { work: "Work", study: "Study", family: "Family", digitalNomad: "Digital Nomad" },
+      },
+      situationOptions: {
+        home: "Still in my home country",
+        visa: "I already hold a visa",
+        shortstay: "Already there on a short stay",
+        exploring: "Just exploring my options",
+      },
+      countryNames: {
+        poland: "Poland",
+        ukraine: "Ukraine",
+        russia: "Russia",
+        belarus: "Belarus",
+        kazakhstan: "Kazakhstan",
+        uzbekistan: "Uzbekistan",
+        tajikistan: "Tajikistan",
+        turkey: "Turkey",
+        germany: "Germany",
+        spain: "Spain",
+        other: "Other",
+      },
+      alreadyHereSuffix: "(already here)",
     },
   },
   ru: {
@@ -1260,7 +1347,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Работа",
       community: "Сообщество",
       education: "Образование",
-      backToWebsite: "На сайт",
+      otherServices: "Другие услуги",
+      profile: "Профиль",
+      settings: "Настройки",
+      logout: "Выход",
     },
     documents: {
       title: "Документы",
@@ -1406,11 +1496,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     appPricing: {
-      title: "Выберите план",
+      title: "Выберите тариф",
       subtitle: "Подберите подходящий план для переезда. Меняйте его в любое время.",
       activating: "Активация…",
       securedByStripe: "Защищено Stripe",
-      mostPopular: "Самый популярный",
+      mostPopular: "Популярный",
       forever: "навсегда",
       perMonth: "/месяц",
       freeName: "Бесплатный",
@@ -1420,8 +1510,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       premiumDesc: "Полное сопровождение вашего переезда.",
       proDesc: "Для семей и сложных переездов.",
       freeCta: "Начать бесплатно",
-      premiumCta: "Подключить Premium",
-      proCta: "Подключить Pro",
+      premiumCta: "Получить Premium",
+      proCta: "Получить Pro",
       freeFeatures: [
         "Польша — 1 страна доступна",
         "Чек-лист: превью из 5 шагов",
@@ -1468,6 +1558,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "и",
       privacyPolicy: "Политикой конфиденциальности",
       payFailed: "Оплата не прошла. Попробуйте ещё раз.",
+      payBtn: "Оплатить",
+      welcomeToast: "Добро пожаловать в {plan}! 🎉",
+      premiumFeatures: ["Все 3 страны", "Полный чек-лист", "50 AI-сообщений в день", "Хранение документов", "Поддержка по email"],
+      proFeatures: ["Всё из Premium", "Безлимитные AI-сообщения", "AI заполняет документы", "Приоритетная поддержка 24/7", "Ежемесячная консультация"],
     },
     education: {
       title: "Образование",
@@ -1532,6 +1626,45 @@ export const dictionaries: Record<Lang, Dictionary> = {
       promptHeading: "Зарегистрируйтесь, чтобы разблокировать эту функцию",
       promptBody: "Создайте бесплатный аккаунт, чтобы сохранить прогресс и открыть все функции.",
       promptDismiss: "Может быть позже",
+    },
+    onboarding: {
+      stepLabel: "Шаг {current} из {total}",
+      back: "Назад",
+      continueBtn: "Продолжить",
+      finish: "Готово",
+      saving: "Сохранение...",
+      steps: {
+        language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
+        country: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
+        citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
+        currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
+        goal: { question: "Какова ваша основная цель?", subheading: "Это определит, по какому визовому пути мы вас поведём." },
+        situation: { question: "Какая у вас текущая ситуация?", subheading: "Поможет пропустить уже пройденные шаги." },
+      },
+      goalOptions: {
+        poland: { employment: "Работа по найму", business: "Собственный бизнес", familyReunification: "Воссоединение семьи", study: "Учёба" },
+        default: { work: "Работа", study: "Учёба", family: "Семья", digitalNomad: "Цифровой кочевник" },
+      },
+      situationOptions: {
+        home: "Ещё в своей стране",
+        visa: "У меня уже есть виза",
+        shortstay: "Уже здесь по краткосрочному пребыванию",
+        exploring: "Просто изучаю варианты",
+      },
+      countryNames: {
+        poland: "Польша",
+        ukraine: "Украина",
+        russia: "Россия",
+        belarus: "Беларусь",
+        kazakhstan: "Казахстан",
+        uzbekistan: "Узбекистан",
+        tajikistan: "Таджикистан",
+        turkey: "Турция",
+        germany: "Германия",
+        spain: "Испания",
+        other: "Другое",
+      },
+      alreadyHereSuffix: "(уже здесь)",
     },
   },
   uz: {
@@ -1849,7 +1982,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Ish",
       community: "Jamiyat",
       education: "Ta'lim",
-      backToWebsite: "Saytga qaytish",
+      otherServices: "Boshqa xizmatlar",
+      profile: "Profil",
+      settings: "Sozlamalar",
+      logout: "Chiqish",
     },
     documents: {
       title: "Hujjatlar",
@@ -2057,6 +2193,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "va",
       privacyPolicy: "Maxfiylik siyosati",
       payFailed: "To'lov amalga oshmadi. Iltimos, qayta urinib ko'ring.",
+      payBtn: "To'lash",
+      welcomeToast: "{plan}ga xush kelibsiz! 🎉",
+      premiumFeatures: ["Barcha 3 mamlakat", "To'liq ro'yxat", "Kuniga 50 ta AI xabar", "Hujjatlarni saqlash", "Email orqali yordam"],
+      proFeatures: ["Premiumdagi hamma narsa", "Cheksiz AI xabarlar", "AI hujjatlarni to'ldiradi", "24/7 ustuvor yordam", "Oylik konsultatsiya"],
     },
     education: {
       title: "Ta'lim",
@@ -2121,6 +2261,45 @@ export const dictionaries: Record<Lang, Dictionary> = {
       promptHeading: "Bu funksiyani ochish uchun ro'yxatdan o'ting",
       promptBody: "Jarayoningizni saqlash va barcha funksiyalarni ochish uchun bepul hisob yarating.",
       promptDismiss: "Keyinroq",
+    },
+    onboarding: {
+      stepLabel: "{total} dan {current}-qadam",
+      back: "Orqaga",
+      continueBtn: "Davom etish",
+      finish: "Tayyor",
+      saving: "Saqlanmoqda...",
+      steps: {
+        language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
+        country: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
+        citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
+        currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
+        goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu qaysi viza yo'lini tanlashimizni belgilaydi." },
+        situation: { question: "Hozirgi holatingiz qanday?", subheading: "Allaqachon bajargan qadamlaringizni o'tkazib yuborishga yordam beradi." },
+      },
+      goalOptions: {
+        poland: { employment: "Mehnat shartnomasi", business: "O'z biznesi", familyReunification: "Oilaviy birlashuv", study: "O'qish" },
+        default: { work: "Ish", study: "O'qish", family: "Oila", digitalNomad: "Raqamli ko'chmanchi" },
+      },
+      situationOptions: {
+        home: "Hali o'z davlatimdaman",
+        visa: "Vizam allaqachon bor",
+        shortstay: "Qisqa muddatli tashrif bilan allaqachon u yerdaman",
+        exploring: "Shunchaki variantlarni ko'rib chiqyapman",
+      },
+      countryNames: {
+        poland: "Polsha",
+        ukraine: "Ukraina",
+        russia: "Rossiya",
+        belarus: "Belarus",
+        kazakhstan: "Qozog'iston",
+        uzbekistan: "O'zbekiston",
+        tajikistan: "Tojikiston",
+        turkey: "Turkiya",
+        germany: "Germaniya",
+        spain: "Ispaniya",
+        other: "Boshqa",
+      },
+      alreadyHereSuffix: "(allaqachon shu yerda)",
     },
   },
   tr: {
@@ -2437,7 +2616,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "İş",
       community: "Topluluk",
       education: "Eğitim",
-      backToWebsite: "Siteye dön",
+      otherServices: "Diğer Hizmetler",
+      profile: "Profil",
+      settings: "Ayarlar",
+      logout: "Çıkış yap",
     },
     documents: {
       title: "Belgeler",
@@ -2645,6 +2827,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "ve",
       privacyPolicy: "Gizlilik Politikası",
       payFailed: "Ödeme başarısız oldu. Lütfen tekrar deneyin.",
+      payBtn: "Öde",
+      welcomeToast: "{plan}'a hoş geldiniz! 🎉",
+      premiumFeatures: ["3 ülkenin tamamı", "Tam kontrol listesi", "Günde 50 AI mesajı", "Belge saklama", "E-posta desteği"],
+      proFeatures: ["Premium'daki her şey", "Sınırsız AI mesajı", "AI belgeleri doldurur", "7/24 öncelikli destek", "Aylık danışma görüşmesi"],
     },
     education: {
       title: "Eğitim",
@@ -2709,6 +2895,45 @@ export const dictionaries: Record<Lang, Dictionary> = {
       promptHeading: "Bu özelliğin kilidini açmak için kayıt olun",
       promptBody: "İlerlemenizi kaydetmek ve tüm özelliklerin kilidini açmak için ücretsiz bir hesap oluşturun.",
       promptDismiss: "Daha sonra",
+    },
+    onboarding: {
+      stepLabel: "Adım {current} / {total}",
+      back: "Geri",
+      continueBtn: "Devam et",
+      finish: "Bitir",
+      saving: "Kaydediliyor...",
+      steps: {
+        language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
+        country: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
+        citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
+        currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
+        goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizi hangi vize sürecinde yönlendireceğimizi belirler." },
+        situation: { question: "Mevcut durumunuz nedir?", subheading: "Zaten tamamladığınız adımları atlamamıza yardımcı olur." },
+      },
+      goalOptions: {
+        poland: { employment: "İş sözleşmesi", business: "Kendi işi", familyReunification: "Aile birleşimi", study: "Eğitim" },
+        default: { work: "İş", study: "Eğitim", family: "Aile", digitalNomad: "Dijital göçebe" },
+      },
+      situationOptions: {
+        home: "Hâlâ kendi ülkemdeyim",
+        visa: "Zaten bir vizem var",
+        shortstay: "Kısa süreli kalışla zaten oradayım",
+        exploring: "Sadece seçenekleri araştırıyorum",
+      },
+      countryNames: {
+        poland: "Polonya",
+        ukraine: "Ukrayna",
+        russia: "Rusya",
+        belarus: "Belarus",
+        kazakhstan: "Kazakistan",
+        uzbekistan: "Özbekistan",
+        tajikistan: "Tacikistan",
+        turkey: "Türkiye",
+        germany: "Almanya",
+        spain: "İspanya",
+        other: "Diğer",
+      },
+      alreadyHereSuffix: "(zaten buradayım)",
     },
   },
   tg: {
@@ -3025,7 +3250,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       work: "Кор",
       community: "Ҷамъият",
       education: "Таҳсил",
-      backToWebsite: "Бозгашт ба сайт",
+      otherServices: "Дигар хизматҳо",
+      profile: "Профил",
+      settings: "Танзимот",
+      logout: "Баромадан",
     },
     documents: {
       title: "Ҳуҷҷатҳо",
@@ -3233,6 +3461,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       and: "ва",
       privacyPolicy: "Сиёсати махфият",
       payFailed: "Пардохт иҷро нашуд. Лутфан, боз кӯшиш кунед.",
+      payBtn: "Пардохт",
+      welcomeToast: "Хуш омадед ба {plan}! 🎉",
+      premiumFeatures: ["Ҳар 3 кишвар", "Рӯйхати пурраи корҳо", "Дар як рӯз 50 паёми AI", "Нигоҳдории ҳуҷҷатҳо", "Дастгирӣ тавассути email"],
+      proFeatures: ["Ҳама чизи Премиум", "Паёмҳои беохири AI", "AI ҳуҷҷатҳоро пур мекунад", "Дастгирии афзалиятнок 24/7", "Машварати моҳона"],
     },
     education: {
       title: "Таҳсилот",
@@ -3297,6 +3529,45 @@ export const dictionaries: Record<Lang, Dictionary> = {
       promptHeading: "Барои кушодани ин хусусият бақайд гиред",
       promptBody: "Барои нигоҳ доштани пешрафт ва кушодани ҳамаи хусусиятҳо аккаунти ройгон созед.",
       promptDismiss: "Дертар",
+    },
+    onboarding: {
+      stepLabel: "Қадами {current} аз {total}",
+      back: "Бозгашт",
+      continueBtn: "Идома",
+      finish: "Тамом",
+      saving: "Захира мешавад...",
+      steps: {
+        language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
+        country: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
+        citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
+        currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
+        goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки шуморо аз кадом роҳи раводид роҳнамоӣ кунем." },
+        situation: { question: "Вазъи ҳозираи шумо чӣ гуна аст?", subheading: "Кӯмак мекунад, ки қадамҳои аллакай иҷрошударо гузаронем." },
+      },
+      goalOptions: {
+        poland: { employment: "Шартномаи меҳнатӣ", business: "Бизнеси худ", familyReunification: "Муттаҳидшавии оила", study: "Таҳсил" },
+        default: { work: "Кор", study: "Таҳсил", family: "Оила", digitalNomad: "Бодиянишини рақамӣ" },
+      },
+      situationOptions: {
+        home: "Ҳанӯз дар кишвари худам",
+        visa: "Ман аллакай раводид дорам",
+        shortstay: "Аллакай бо иқомати кӯтоҳмуддат он ҷоям",
+        exploring: "Танҳо гузинаҳоро меомӯзам",
+      },
+      countryNames: {
+        poland: "Полша",
+        ukraine: "Украина",
+        russia: "Русия",
+        belarus: "Белоруссия",
+        kazakhstan: "Қазоқистон",
+        uzbekistan: "Ӯзбекистон",
+        tajikistan: "Тоҷикистон",
+        turkey: "Туркия",
+        germany: "Олмон",
+        spain: "Испания",
+        other: "Дигар",
+      },
+      alreadyHereSuffix: "(аллакай ин ҷоям)",
     },
   },
 };

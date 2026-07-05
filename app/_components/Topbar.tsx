@@ -1,40 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { pressScale } from "../_lib/motion";
-import { getInitials } from "../_lib/initials";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
+import MiniLangSwitcher from "./MiniLangSwitcher";
+import { pressScale } from "../_lib/motion";
 
 export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { user, profile, signOut } = useAuth();
+  const { profile } = useAuth();
   const { t } = useLanguage();
-  const router = useRouter();
 
-  const initials = getInitials(profile?.name, user?.email);
-  const planLabel = profile?.plan
-    ? profile.plan.charAt(0).toUpperCase() + profile.plan.slice(1)
-    : t.appPricing.freeName;
-
-  async function handleLogOut() {
-    setOpen(false);
-    await signOut();
-    router.push("/login");
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const planValue = profile?.plan ?? "free";
+  const isFree = planValue === "free";
+  const planLabel = isFree ? t.appPricing.freeName : planValue.charAt(0).toUpperCase() + planValue.slice(1);
 
   return (
     <header className="relative z-50 flex items-center justify-between gap-4 border-b border-white/10 bg-black/40 px-4 py-4 backdrop-blur-xl sm:px-6">
@@ -67,59 +45,15 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex items-center gap-3">
+        <MiniLangSwitcher />
+
         <Link
           href="/pricing"
           className="hidden items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 sm:flex"
         >
-          {planLabel} {t.profile.planSuffix}
-          <span className="text-slate-400">· {t.topbar.upgrade}</span>
+          {planLabel}
+          {isFree && <span className="text-slate-400">· {t.topbar.upgrade}</span>}
         </Link>
-
-        <div className="relative" ref={containerRef}>
-          <button
-            type="button"
-            onClick={() => setOpen((prev) => !prev)}
-            aria-haspopup="menu"
-            aria-expanded={open}
-            className={`flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white ${pressScale}`}
-          >
-            {initials}
-          </button>
-
-          {open && (
-            <ul
-              role="menu"
-              style={{ transformOrigin: "top right" }}
-              className="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-white/10 bg-[#0d0d0f]/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
-            >
-              <li>
-                <Link
-                  href="/profile"
-                  className="block px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright"
-                >
-                  {t.profile.title}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/"
-                  className="block px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright"
-                >
-                  {t.sidebar.backToWebsite}
-                </Link>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={handleLogOut}
-                  className="block w-full px-3 py-2 text-left text-sm text-slate-200 transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright"
-                >
-                  {t.profile.logOut}
-                </button>
-              </li>
-            </ul>
-          )}
-        </div>
       </div>
     </header>
   );

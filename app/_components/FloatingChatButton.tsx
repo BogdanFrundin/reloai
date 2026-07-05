@@ -1,26 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import AiChatPanel from "./AiChatPanel";
 import { pressScale } from "../_lib/motion";
 
 const SEEN_KEY = "reloai_chat_seen";
 
+function subscribe() {
+  return () => {};
+}
+
+function getSeenSnapshot() {
+  return window.localStorage.getItem(SEEN_KEY) === "1";
+}
+
+function getSeenServerSnapshot() {
+  return true;
+}
+
 export default function FloatingChatButton() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [showBadge, setShowBadge] = useState(false);
-
-  useEffect(() => {
-    setShowBadge(window.localStorage.getItem(SEEN_KEY) !== "1");
-  }, []);
+  const [dismissed, setDismissed] = useState(false);
+  const seen = useSyncExternalStore(subscribe, getSeenSnapshot, getSeenServerSnapshot);
+  const showBadge = !seen && !dismissed;
 
   function handleToggle() {
     setOpen((prev) => !prev);
     if (showBadge) {
-      setShowBadge(false);
       window.localStorage.setItem(SEEN_KEY, "1");
+      setDismissed(true);
     }
   }
 
