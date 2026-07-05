@@ -256,7 +256,16 @@ export type Dictionary = {
     steps: {
       account: { title: string; desc: string };
       onboarding: { title: string; desc: string };
-      visa: { title: string; desc: string };
+      visa: {
+        title: string;
+        euDesc: string;
+        byCountry: {
+          poland: { work: string; study: string; business: string; family: string };
+          germany: { work: string; study: string; business: string; family: string };
+          spain: { work: string; study: string; business: string; family: string };
+        };
+      };
+      business: { title: string; desc: string };
       documents: { title: string; desc: string };
       biometric: { title: string; desc: string };
       residence: { title: string; desc: string };
@@ -366,21 +375,24 @@ export type Dictionary = {
     continueBtn: string;
     finish: string;
     saving: string;
+    skip: string;
+    skipTooltip: string;
+    cityLabel: string;
+    cityPlaceholder: string;
+    yes: string;
+    no: string;
     steps: {
       language: { question: string; subheading: string };
-      country: { question: string; subheading: string };
+      destination: { question: string; subheading: string };
       citizenship: { question: string; subheading: string };
-      currentCountry: { question: string; subheading: string };
+      currentLocation: { question: string; subheading: string };
       goal: { question: string; subheading: string };
-      situation: { question: string; subheading: string };
     };
-    goalOptions: {
-      poland: { employment: string; business: string; familyReunification: string; study: string };
-      default: { work: string; study: string; family: string; digitalNomad: string };
+    subQuestions: {
+      jobOffer: string;
+      alreadyAdmitted: string;
     };
-    situationOptions: { home: string; visa: string; shortstay: string; exploring: string };
-    countryNames: {
-      poland: string;
+    citizenshipOptions: {
       ukraine: string;
       russia: string;
       belarus: string;
@@ -388,11 +400,24 @@ export type Dictionary = {
       uzbekistan: string;
       tajikistan: string;
       turkey: string;
-      germany: string;
-      spain: string;
+      otherEu: string;
       other: string;
     };
-    alreadyHereSuffix: string;
+    currentLocationOptions: {
+      home: string;
+      destination: string;
+      transit: string;
+      otherEu: string;
+    };
+    goalOptions: {
+      work: string;
+      study: string;
+      business: string;
+      familyReunification: string;
+      digitalNomad: string;
+      investment: string;
+      other: string;
+    };
   };
 };
 
@@ -853,7 +878,34 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         account: { title: "Create your account", desc: "You're all set up." },
         onboarding: { title: "Complete onboarding questionnaire", desc: "We used this to build your roadmap." },
-        visa: { title: "Check visa eligibility", desc: "You qualify for a Job Seeker Visa or EU Blue Card." },
+        visa: {
+          title: "Check visa eligibility",
+          euDesc: "As an EU/EEA citizen, you don't need a visa — just register your address once you arrive.",
+          byCountry: {
+            poland: {
+              work: "You may qualify for a national work visa or Karta Pobytu tied to your employer.",
+              study: "You'll need a national visa or Karta Pobytu tied to your studies.",
+              business: "Business owners can apply for a residence permit tied to running a company in Poland.",
+              family: "Family reunification permits are available if you have a family member with legal residence in Poland.",
+            },
+            germany: {
+              work: "You may qualify for a Job Seeker Visa, EU Blue Card, or work-based Aufenthaltstitel.",
+              study: "You'll need a student visa (Aufenthaltstitel zum Studium) tied to your enrollment.",
+              business: "Germany offers a self-employment residence permit (Aufenthaltserlaubnis für selbständige Tätigkeit).",
+              family: "Family reunification visas (Familiennachzug) may apply if you have close family already residing in Germany.",
+            },
+            spain: {
+              work: "You may qualify for a standard work visa or the EU Blue Card.",
+              study: "You'll need a student visa tied to your enrollment and financial means.",
+              business: "Spain's entrepreneur or investor visa (including the Golden Visa route) may apply.",
+              family: "Family reunification (reagrupación familiar) visas may apply if you have close family already residing in Spain.",
+            },
+          },
+        },
+        business: {
+          title: "Register your business",
+          desc: "Set up your company structure and tax registration before applying for a business residence permit.",
+        },
         documents: { title: "Upload required documents", desc: "7 documents needed — 2 you already have." },
         biometric: { title: "Schedule biometric appointment", desc: "Unlocks once your documents are verified." },
         residence: { title: "Apply for residence permit", desc: "Unlocks after your biometric appointment." },
@@ -998,26 +1050,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
       continueBtn: "Continue",
       finish: "Finish",
       saving: "Saving...",
+      skip: "Skip and fill later",
+      skipTooltip: "Answer 5 questions to get your personal relocation plan",
+      cityLabel: "Do you know which city? (optional)",
+      cityPlaceholder: "e.g. Warsaw",
+      yes: "Yes",
+      no: "No",
       steps: {
         language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
-        country: { question: "Where are you moving to?", subheading: "We'll tailor your roadmap to this country." },
+        destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
-        currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
+        currentLocation: { question: "Where are you now?", subheading: "Lets us tailor next steps to where you are right now." },
         goal: { question: "What's your main goal?", subheading: "This decides which visa track we'll guide you through." },
-        situation: { question: "What's your current situation?", subheading: "Helps us skip steps you've already completed." },
       },
-      goalOptions: {
-        poland: { employment: "Employment contract", business: "Own business", familyReunification: "Family reunification", study: "Study" },
-        default: { work: "Work", study: "Study", family: "Family", digitalNomad: "Digital Nomad" },
+      subQuestions: {
+        jobOffer: "Do you have a job offer?",
+        alreadyAdmitted: "Already admitted?",
       },
-      situationOptions: {
-        home: "Still in my home country",
-        visa: "I already hold a visa",
-        shortstay: "Already there on a short stay",
-        exploring: "Just exploring my options",
-      },
-      countryNames: {
-        poland: "Poland",
+      citizenshipOptions: {
         ukraine: "Ukraine",
         russia: "Russia",
         belarus: "Belarus",
@@ -1025,11 +1075,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistan: "Uzbekistan",
         tajikistan: "Tajikistan",
         turkey: "Turkey",
-        germany: "Germany",
-        spain: "Spain",
+        otherEu: "Other EU",
         other: "Other",
       },
-      alreadyHereSuffix: "(already here)",
+      currentLocationOptions: {
+        home: "Still in my home country",
+        destination: "Already in the destination country",
+        transit: "In transit",
+        otherEu: "Other EU country",
+      },
+      goalOptions: {
+        work: "Work",
+        study: "Study",
+        business: "Business",
+        familyReunification: "Family reunification",
+        digitalNomad: "Digital Nomad",
+        investment: "Investment",
+        other: "Other",
+      },
     },
   },
   ru: {
@@ -1488,7 +1551,34 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         account: { title: "Создайте аккаунт", desc: "Всё готово." },
         onboarding: { title: "Заполните анкету онбординга", desc: "Мы использовали её, чтобы составить ваш план." },
-        visa: { title: "Проверьте визовую подходимость", desc: "Вы подходите под Job Seeker Visa или EU Blue Card." },
+        visa: {
+          title: "Проверьте визовую подходимость",
+          euDesc: "Как гражданину ЕС/ЕЭЗ, вам не нужна виза — просто зарегистрируйте адрес по прибытии.",
+          byCountry: {
+            poland: {
+              work: "Вам может подойти национальная рабочая виза или Karta Pobytu, привязанная к работодателю.",
+              study: "Вам понадобится национальная виза или Karta Pobytu, привязанная к учёбе.",
+              business: "Владельцы бизнеса могут подать на вид на жительство, связанный с ведением компании в Польше.",
+              family: "Разрешения на воссоединение семьи доступны, если у вас есть родственник с легальным видом на жительство в Польше.",
+            },
+            germany: {
+              work: "Вам может подойти Job Seeker Visa, EU Blue Card или трудовой Aufenthaltstitel.",
+              study: "Вам понадобится студенческая виза (Aufenthaltstitel zum Studium), привязанная к зачислению.",
+              business: "В Германии есть вид на жительство для самозанятых (Aufenthaltserlaubnis für selbständige Tätigkeit).",
+              family: "Могут подойти визы воссоединения семьи (Familiennachzug), если у вас есть близкие родственники, уже проживающие в Германии.",
+            },
+            spain: {
+              work: "Вам может подойти обычная рабочая виза или EU Blue Card.",
+              study: "Вам понадобится студенческая виза, привязанная к зачислению и финансовым средствам.",
+              business: "Может подойти виза предпринимателя или инвестора (включая маршрут Golden Visa).",
+              family: "Могут подойти визы воссоединения семьи (reagrupación familiar), если у вас есть близкие родственники, уже проживающие в Испании.",
+            },
+          },
+        },
+        business: {
+          title: "Зарегистрируйте бизнес",
+          desc: "Оформите структуру компании и налоговую регистрацию перед подачей на вид на жительство для бизнеса.",
+        },
         documents: { title: "Загрузите необходимые документы", desc: "Нужно 7 документов — 2 у вас уже есть." },
         biometric: { title: "Запишитесь на биометрию", desc: "Откроется после проверки ваших документов." },
         residence: { title: "Подайте на вид на жительство", desc: "Откроется после приёма по биометрии." },
@@ -1633,26 +1723,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
       continueBtn: "Продолжить",
       finish: "Готово",
       saving: "Сохранение...",
+      skip: "Пропустить и заполнить позже",
+      skipTooltip: "Ответьте на 5 вопросов, чтобы получить персональный план переезда",
+      cityLabel: "Знаете, в какой город? (необязательно)",
+      cityPlaceholder: "например, Варшава",
+      yes: "Да",
+      no: "Нет",
       steps: {
         language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
-        country: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
+        destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
-        currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
+        currentLocation: { question: "Где вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         goal: { question: "Какова ваша основная цель?", subheading: "Это определит, по какому визовому пути мы вас поведём." },
-        situation: { question: "Какая у вас текущая ситуация?", subheading: "Поможет пропустить уже пройденные шаги." },
       },
-      goalOptions: {
-        poland: { employment: "Работа по найму", business: "Собственный бизнес", familyReunification: "Воссоединение семьи", study: "Учёба" },
-        default: { work: "Работа", study: "Учёба", family: "Семья", digitalNomad: "Цифровой кочевник" },
+      subQuestions: {
+        jobOffer: "У вас есть предложение о работе?",
+        alreadyAdmitted: "Вы уже зачислены?",
       },
-      situationOptions: {
-        home: "Ещё в своей стране",
-        visa: "У меня уже есть виза",
-        shortstay: "Уже здесь по краткосрочному пребыванию",
-        exploring: "Просто изучаю варианты",
-      },
-      countryNames: {
-        poland: "Польша",
+      citizenshipOptions: {
         ukraine: "Украина",
         russia: "Россия",
         belarus: "Беларусь",
@@ -1660,11 +1748,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistan: "Узбекистан",
         tajikistan: "Таджикистан",
         turkey: "Турция",
-        germany: "Германия",
-        spain: "Испания",
+        otherEu: "Другая страна ЕС",
         other: "Другое",
       },
-      alreadyHereSuffix: "(уже здесь)",
+      currentLocationOptions: {
+        home: "Ещё в своей стране",
+        destination: "Уже в стране назначения",
+        transit: "В пути",
+        otherEu: "В другой стране ЕС",
+      },
+      goalOptions: {
+        work: "Работа",
+        study: "Учёба",
+        business: "Бизнес",
+        familyReunification: "Воссоединение семьи",
+        digitalNomad: "Цифровой кочевник",
+        investment: "Инвестиции",
+        other: "Другое",
+      },
     },
   },
   uz: {
@@ -2123,7 +2224,34 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         account: { title: "Hisobingizni yarating", desc: "Hammasi tayyor." },
         onboarding: { title: "Kirish so'rovnomasini to'ldiring", desc: "Biz buni yo'l xaritangizni tuzish uchun ishlatdik." },
-        visa: { title: "Viza olish huquqini tekshiring", desc: "Siz Ish qidiruvchi vizasi yoki EU Blue Card olish huquqiga egasiz." },
+        visa: {
+          title: "Viza olish huquqini tekshiring",
+          euDesc: "EI/EEA fuqarosi sifatida sizga viza kerak emas — kelganingizdan so'ng manzilingizni ro'yxatdan o'tkazing.",
+          byCountry: {
+            poland: {
+              work: "Sizga ish beruvchingizga bog'liq milliy ish vizasi yoki Karta Pobytu mos kelishi mumkin.",
+              study: "Sizga o'qishingizga bog'liq milliy viza yoki Karta Pobytu kerak bo'ladi.",
+              business: "Biznes egalari Polshada kompaniya yuritish bilan bog'liq yashash ruxsatnomasiga ariza bera oladi.",
+              family: "Agar Polshada qonuniy yashash huquqiga ega qarindoshingiz bo'lsa, oilaviy birlashuv ruxsatnomalari mavjud.",
+            },
+            germany: {
+              work: "Sizga Job Seeker Visa, EU Blue Card yoki ishga asoslangan Aufenthaltstitel mos kelishi mumkin.",
+              study: "Sizga o'qishga yozilishingizga bog'liq talaba vizasi (Aufenthaltstitel zum Studium) kerak bo'ladi.",
+              business: "Germaniya o'zini o'zi band qilganlar uchun yashash ruxsatnomasini taklif etadi (Aufenthaltserlaubnis für selbständige Tätigkeit).",
+              family: "Agar Germaniyada yaqin qarindoshingiz allaqachon istiqomat qilsa, oilaviy birlashuv vizalari (Familiennachzug) mos kelishi mumkin.",
+            },
+            spain: {
+              work: "Sizga oddiy ish vizasi yoki EU Blue Card mos kelishi mumkin.",
+              study: "Sizga o'qishga yozilishingiz va moliyaviy imkoniyatingizga bog'liq talaba vizasi kerak bo'ladi.",
+              business: "Ispaniyaning tadbirkor yoki investor vizasi (Golden Visa yo'nalishi bilan birga) mos kelishi mumkin.",
+              family: "Agar Ispaniyada yaqin qarindoshingiz allaqachon istiqomat qilsa, oilaviy birlashuv (reagrupación familiar) vizalari mos kelishi mumkin.",
+            },
+          },
+        },
+        business: {
+          title: "Biznesingizni ro'yxatdan o'tkazing",
+          desc: "Biznes uchun yashash ruxsatnomasiga ariza berishdan oldin kompaniya tuzilmasi va soliq ro'yxatidan o'tishni tashkil qiling.",
+        },
         documents: { title: "Kerakli hujjatlarni yuklang", desc: "7 ta hujjat kerak — 2 tasi sizda allaqachon bor." },
         biometric: { title: "Biometrik uchrashuvni belgilang", desc: "Hujjatlaringiz tasdiqlangach ochiladi." },
         residence: { title: "Yashash ruxsatnomasiga ariza bering", desc: "Biometrik uchrashuvingizdan so'ng ochiladi." },
@@ -2268,26 +2396,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
       continueBtn: "Davom etish",
       finish: "Tayyor",
       saving: "Saqlanmoqda...",
+      skip: "O'tkazib yuborish va keyinroq to'ldirish",
+      skipTooltip: "Shaxsiy ko'chish rejangizni olish uchun 5 ta savolga javob bering",
+      cityLabel: "Qaysi shaharligini bilasizmi? (ixtiyoriy)",
+      cityPlaceholder: "masalan, Varshava",
+      yes: "Ha",
+      no: "Yo'q",
       steps: {
         language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
-        country: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
+        destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
-        currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
+        currentLocation: { question: "Hozir qayerdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu qaysi viza yo'lini tanlashimizni belgilaydi." },
-        situation: { question: "Hozirgi holatingiz qanday?", subheading: "Allaqachon bajargan qadamlaringizni o'tkazib yuborishga yordam beradi." },
       },
-      goalOptions: {
-        poland: { employment: "Mehnat shartnomasi", business: "O'z biznesi", familyReunification: "Oilaviy birlashuv", study: "O'qish" },
-        default: { work: "Ish", study: "O'qish", family: "Oila", digitalNomad: "Raqamli ko'chmanchi" },
+      subQuestions: {
+        jobOffer: "Ish taklifi bormi?",
+        alreadyAdmitted: "Allaqachon qabul qilinganmisiz?",
       },
-      situationOptions: {
-        home: "Hali o'z davlatimdaman",
-        visa: "Vizam allaqachon bor",
-        shortstay: "Qisqa muddatli tashrif bilan allaqachon u yerdaman",
-        exploring: "Shunchaki variantlarni ko'rib chiqyapman",
-      },
-      countryNames: {
-        poland: "Polsha",
+      citizenshipOptions: {
         ukraine: "Ukraina",
         russia: "Rossiya",
         belarus: "Belarus",
@@ -2295,11 +2421,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistan: "O'zbekiston",
         tajikistan: "Tojikiston",
         turkey: "Turkiya",
-        germany: "Germaniya",
-        spain: "Ispaniya",
+        otherEu: "Boshqa EI davlati",
         other: "Boshqa",
       },
-      alreadyHereSuffix: "(allaqachon shu yerda)",
+      currentLocationOptions: {
+        home: "Hali o'z davlatimdaman",
+        destination: "Allaqachon boradigan davlatimdaman",
+        transit: "Yo'lda",
+        otherEu: "Boshqa EI davlatida",
+      },
+      goalOptions: {
+        work: "Ish",
+        study: "O'qish",
+        business: "Biznes",
+        familyReunification: "Oilaviy birlashuv",
+        digitalNomad: "Raqamli ko'chmanchi",
+        investment: "Investitsiya",
+        other: "Boshqa",
+      },
     },
   },
   tr: {
@@ -2757,7 +2896,34 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         account: { title: "Hesabınızı oluşturun", desc: "Her şey hazır." },
         onboarding: { title: "Başlangıç anketini tamamlayın", desc: "Bunu yol haritanızı oluşturmak için kullandık." },
-        visa: { title: "Vize uygunluğunu kontrol edin", desc: "Job Seeker Visa veya EU Blue Card için uygunsunuz." },
+        visa: {
+          title: "Vize uygunluğunu kontrol edin",
+          euDesc: "AB/AEA vatandaşı olarak vizeye ihtiyacınız yok — sadece vardığınızda adresinizi kaydettirin.",
+          byCountry: {
+            poland: {
+              work: "İşvereninize bağlı ulusal çalışma vizesi veya Karta Pobytu size uygun olabilir.",
+              study: "Eğitiminize bağlı ulusal vize veya Karta Pobytu'ya ihtiyacınız olacak.",
+              business: "İşletme sahipleri Polonya'da şirket yürütmeye bağlı oturma izni için başvurabilir.",
+              family: "Polonya'da yasal ikamet sahibi bir aile üyeniz varsa aile birleşimi izinleri mevcuttur.",
+            },
+            germany: {
+              work: "Job Seeker Visa, EU Blue Card veya işe dayalı Aufenthaltstitel size uygun olabilir.",
+              study: "Kaydınıza bağlı bir öğrenci vizesine (Aufenthaltstitel zum Studium) ihtiyacınız olacak.",
+              business: "Almanya, serbest meslek sahipleri için bir oturma izni sunar (Aufenthaltserlaubnis für selbständige Tätigkeit).",
+              family: "Almanya'da zaten ikamet eden yakın bir aile üyeniz varsa aile birleşimi vizeleri (Familiennachzug) uygulanabilir.",
+            },
+            spain: {
+              work: "Standart çalışma vizesi veya EU Blue Card size uygun olabilir.",
+              study: "Kaydınıza ve mali imkanlarınıza bağlı bir öğrenci vizesine ihtiyacınız olacak.",
+              business: "İspanya'nın girişimci veya yatırımcı vizesi (Golden Visa yolu dahil) uygulanabilir.",
+              family: "İspanya'da zaten ikamet eden yakın bir aile üyeniz varsa aile birleşimi (reagrupación familiar) vizeleri uygulanabilir.",
+            },
+          },
+        },
+        business: {
+          title: "İşletmenizi kaydettirin",
+          desc: "İşletme oturma izni için başvurmadan önce şirket yapınızı ve vergi kaydınızı oluşturun.",
+        },
         documents: { title: "Gerekli belgeleri yükleyin", desc: "7 belge gerekiyor — 2'si zaten sizde." },
         biometric: { title: "Biyometrik randevu planlayın", desc: "Belgeleriniz onaylandığında açılır." },
         residence: { title: "Oturma izni için başvurun", desc: "Biyometrik randevunuzdan sonra açılır." },
@@ -2902,26 +3068,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
       continueBtn: "Devam et",
       finish: "Bitir",
       saving: "Kaydediliyor...",
+      skip: "Atla ve daha sonra doldur",
+      skipTooltip: "Kişisel taşınma planınızı almak için 5 soruyu yanıtlayın",
+      cityLabel: "Hangi şehir olduğunu biliyor musunuz? (isteğe bağlı)",
+      cityPlaceholder: "örn. Varşova",
+      yes: "Evet",
+      no: "Hayır",
       steps: {
         language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
-        country: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
+        destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
-        currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
+        currentLocation: { question: "Şu anda neredesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizi hangi vize sürecinde yönlendireceğimizi belirler." },
-        situation: { question: "Mevcut durumunuz nedir?", subheading: "Zaten tamamladığınız adımları atlamamıza yardımcı olur." },
       },
-      goalOptions: {
-        poland: { employment: "İş sözleşmesi", business: "Kendi işi", familyReunification: "Aile birleşimi", study: "Eğitim" },
-        default: { work: "İş", study: "Eğitim", family: "Aile", digitalNomad: "Dijital göçebe" },
+      subQuestions: {
+        jobOffer: "İş teklifiniz var mı?",
+        alreadyAdmitted: "Zaten kabul edildiniz mi?",
       },
-      situationOptions: {
-        home: "Hâlâ kendi ülkemdeyim",
-        visa: "Zaten bir vizem var",
-        shortstay: "Kısa süreli kalışla zaten oradayım",
-        exploring: "Sadece seçenekleri araştırıyorum",
-      },
-      countryNames: {
-        poland: "Polonya",
+      citizenshipOptions: {
         ukraine: "Ukrayna",
         russia: "Rusya",
         belarus: "Belarus",
@@ -2929,11 +3093,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistan: "Özbekistan",
         tajikistan: "Tacikistan",
         turkey: "Türkiye",
-        germany: "Almanya",
-        spain: "İspanya",
+        otherEu: "Diğer AB ülkesi",
         other: "Diğer",
       },
-      alreadyHereSuffix: "(zaten buradayım)",
+      currentLocationOptions: {
+        home: "Hâlâ kendi ülkemdeyim",
+        destination: "Zaten hedef ülkedeyim",
+        transit: "Yolculuktayım",
+        otherEu: "Başka bir AB ülkesindeyim",
+      },
+      goalOptions: {
+        work: "İş",
+        study: "Eğitim",
+        business: "İş kurma",
+        familyReunification: "Aile birleşimi",
+        digitalNomad: "Dijital göçebe",
+        investment: "Yatırım",
+        other: "Diğer",
+      },
     },
   },
   tg: {
@@ -3391,7 +3568,34 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         account: { title: "Аккаунти худро эҷод кунед", desc: "Ҳама чиз омода аст." },
         onboarding: { title: "Анкетаи аввалияро пур кунед", desc: "Мо инро барои сохтани нақшаи роҳи шумо истифода бурдем." },
-        visa: { title: "Ҳуқуқи гирифтани раводидро санҷед", desc: "Шумо барои Раводиди ҷустуҷӯи кор ё EU Blue Card ҳуқуқ доред." },
+        visa: {
+          title: "Ҳуқуқи гирифтани раводидро санҷед",
+          euDesc: "Ҳамчун шаҳрванди ИА/ҲИА ба шумо раводид лозим нест — танҳо баъди омадан суроғаи худро сабт кунед.",
+          byCountry: {
+            poland: {
+              work: "Раводиди миллии корӣ ё Karta Pobytu, ки бо корфармои шумо алоқаманд аст, метавонад мувофиқ бошад.",
+              study: "Ба шумо раводиди миллӣ ё Karta Pobytu, ки бо таҳсилатон алоқаманд аст, лозим мешавад.",
+              business: "Соҳибони бизнес метавонанд ба иҷозати истиқомат, ки бо пеш бурдани ширкат дар Полша алоқаманд аст, ариза диҳанд.",
+              family: "Агар шумо хешованди дорои иҷозати истиқомати қонунӣ дар Полша дошта бошед, иҷозатҳои муттаҳидшавии оила дастрасанд.",
+            },
+            germany: {
+              work: "Job Seeker Visa, EU Blue Card ё Aufenthaltstitel-и ба кор асосёфта метавонад мувофиқ бошад.",
+              study: "Ба шумо раводиди донишҷӯӣ (Aufenthaltstitel zum Studium), ки бо қабули шумо алоқаманд аст, лозим мешавад.",
+              business: "Олмон иҷозати истиқомат барои шахсони худкорфаъолиятро пешниҳод мекунад (Aufenthaltserlaubnis für selbständige Tätigkeit).",
+              family: "Агар хешованди наздики шумо аллакай дар Олмон истиқомат дошта бошад, раводидҳои муттаҳидшавии оила (Familiennachzug) метавонанд мувофиқ бошанд.",
+            },
+            spain: {
+              work: "Раводиди муқаррарии корӣ ё EU Blue Card метавонад мувофиқ бошад.",
+              study: "Ба шумо раводиди донишҷӯӣ, ки бо қабул ва имконоти молиявии шумо алоқаманд аст, лозим мешавад.",
+              business: "Раводиди соҳибкор ё сармоягузори Испания (аз ҷумла роҳи Golden Visa) метавонад мувофиқ бошад.",
+              family: "Агар хешованди наздики шумо аллакай дар Испания истиқомат дошта бошад, раводидҳои муттаҳидшавии оила (reagrupación familiar) метавонанд мувофиқ бошанд.",
+            },
+          },
+        },
+        business: {
+          title: "Бизнеси худро ба қайд гиред",
+          desc: "Пеш аз дархости иҷозати истиқомат барои бизнес сохтори ширкат ва бақайдгирии андозро ташкил кунед.",
+        },
         documents: { title: "Ҳуҷҷатҳои лозимиро бор кунед", desc: "7 ҳуҷҷат лозим аст — 2-тои онҳо аллакай назди шумост." },
         biometric: { title: "Вохӯрии биометриро таъин кунед", desc: "Пас аз тасдиқи ҳуҷҷатҳоятон кушода мешавад." },
         residence: { title: "Барои иҷозати истиқомат ариза диҳед", desc: "Пас аз вохӯрии биометриатон кушода мешавад." },
@@ -3536,26 +3740,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
       continueBtn: "Идома",
       finish: "Тамом",
       saving: "Захира мешавад...",
+      skip: "Гузарондан ва баъдтар пур кардан",
+      skipTooltip: "Барои гирифтани нақшаи шахсии кӯчидан ба 5 савол ҷавоб диҳед",
+      cityLabel: "Кадом шаҳрро медонед? (ихтиёрӣ)",
+      cityPlaceholder: "масалан, Варшава",
+      yes: "Ҳа",
+      no: "Не",
       steps: {
         language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
-        country: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
+        destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
-        currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
+        currentLocation: { question: "Ҳозир дар куҷо ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки шуморо аз кадом роҳи раводид роҳнамоӣ кунем." },
-        situation: { question: "Вазъи ҳозираи шумо чӣ гуна аст?", subheading: "Кӯмак мекунад, ки қадамҳои аллакай иҷрошударо гузаронем." },
       },
-      goalOptions: {
-        poland: { employment: "Шартномаи меҳнатӣ", business: "Бизнеси худ", familyReunification: "Муттаҳидшавии оила", study: "Таҳсил" },
-        default: { work: "Кор", study: "Таҳсил", family: "Оила", digitalNomad: "Бодиянишини рақамӣ" },
+      subQuestions: {
+        jobOffer: "Оё пешниҳоди кор доред?",
+        alreadyAdmitted: "Аллакай қабул шудаед?",
       },
-      situationOptions: {
-        home: "Ҳанӯз дар кишвари худам",
-        visa: "Ман аллакай раводид дорам",
-        shortstay: "Аллакай бо иқомати кӯтоҳмуддат он ҷоям",
-        exploring: "Танҳо гузинаҳоро меомӯзам",
-      },
-      countryNames: {
-        poland: "Полша",
+      citizenshipOptions: {
         ukraine: "Украина",
         russia: "Русия",
         belarus: "Белоруссия",
@@ -3563,11 +3765,24 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistan: "Ӯзбекистон",
         tajikistan: "Тоҷикистон",
         turkey: "Туркия",
-        germany: "Олмон",
-        spain: "Испания",
+        otherEu: "Кишвари дигари ИА",
         other: "Дигар",
       },
-      alreadyHereSuffix: "(аллакай ин ҷоям)",
+      currentLocationOptions: {
+        home: "Ҳанӯз дар кишвари худам",
+        destination: "Аллакай дар кишвари мақсад",
+        transit: "Дар роҳ",
+        otherEu: "Дар кишвари дигари ИА",
+      },
+      goalOptions: {
+        work: "Кор",
+        study: "Таҳсил",
+        business: "Бизнес",
+        familyReunification: "Муттаҳидшавии оила",
+        digitalNomad: "Бодиянишини рақамӣ",
+        investment: "Сармоягузорӣ",
+        other: "Дигар",
+      },
     },
   },
 };

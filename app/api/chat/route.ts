@@ -6,6 +6,36 @@ const SYSTEM_PROMPT =
 
 type IncomingMessage = { from: "user" | "ai"; text: string };
 
+type ProfileContext = {
+  country?: string | null;
+  city?: string | null;
+  citizenship?: string | null;
+  currentLocation?: string | null;
+  goal?: string | null;
+  jobOffer?: string | null;
+  alreadyAdmitted?: string | null;
+} | null;
+
+function buildProfileContext(profile: ProfileContext): string {
+  if (!profile) return "";
+  const parts: string[] = [];
+
+  if (profile.country) {
+    parts.push(`is relocating to ${profile.country}${profile.city ? ` (city: ${profile.city})` : ""}`);
+  }
+  if (profile.citizenship) parts.push(`holds ${profile.citizenship} citizenship`);
+  if (profile.currentLocation) parts.push(`current location status: ${profile.currentLocation}`);
+  if (profile.goal) {
+    let goalText = `main goal is ${profile.goal}`;
+    if (profile.goal === "work" && profile.jobOffer) goalText += ` (has a job offer: ${profile.jobOffer})`;
+    if (profile.goal === "study" && profile.alreadyAdmitted) goalText += ` (already admitted: ${profile.alreadyAdmitted})`;
+    parts.push(goalText);
+  }
+
+  if (parts.length === 0) return "";
+  return ` The current user's profile: ${parts.join("; ")}. Tailor your advice to this specific situation instead of giving generic answers.`;
+}
+
 const KEYWORDS: Record<"pesel" | "bank" | "housing" | "documents" | "visa", string[]> = {
   pesel: ["pesel"],
   bank: ["bank", "банк", "bonk"],
@@ -32,9 +62,10 @@ function getMockReply(userMessage: string, lang: Lang): string {
 }
 
 export async function POST(request: Request) {
-  const { messages, lang: rawLang } = (await request.json()) as {
+  const { messages, lang: rawLang, profile } = (await request.json()) as {
     messages: IncomingMessage[];
     lang?: string;
+    profile?: ProfileContext;
   };
   const lang = resolveLang(rawLang);
   const apiKey = process.env.OPENAI_API_KEY;
@@ -45,7 +76,7 @@ export async function POST(request: Request) {
   }
 
   const openaiMessages = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: SYSTEM_PROMPT + buildProfileContext(profile ?? null) },
     ...messages.map((message) => ({
       role: message.from === "user" ? "user" : "assistant",
       content: message.text,
