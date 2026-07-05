@@ -7,22 +7,9 @@ import Reveal from "./Reveal";
 import AiChatPanel from "./AiChatPanel";
 import WelcomeToast from "./WelcomeToast";
 import { useAuth } from "./AuthProvider";
-import { CHECKLIST_STEPS } from "../_lib/checklist";
+import { buildChecklistSteps } from "../_lib/checklist";
 import { supabase } from "../../lib/supabase";
 import { useLanguage } from "./LanguageProvider";
-import type { Dictionary } from "../_lib/i18n";
-
-type StepKey = keyof Dictionary["dashboard"]["steps"];
-
-const STEP_KEY_BY_DOCUMENT_TYPE: Record<string, StepKey> = {
-  account: "account",
-  onboarding: "onboarding",
-  visa_eligibility: "visa",
-  documents: "documents",
-  biometric: "biometric",
-  residence_permit: "residence",
-  address_registration: "address",
-};
 
 function Checkbox({ checked }: { checked: boolean }) {
   return (
@@ -49,6 +36,7 @@ export default function DashboardContent() {
   const [saving, setSaving] = useState<string | null>(null);
 
   const country = profile?.country || searchParams.get("country") || "Poland";
+  const checklistSteps = buildChecklistSteps(t, country, profile?.goal, profile?.citizenship);
 
   useEffect(() => {
     if (!user) return;
@@ -74,7 +62,7 @@ export default function DashboardContent() {
     };
   }, [user]);
 
-  const progressPercent = Math.round((completed.size / CHECKLIST_STEPS.length) * 100);
+  const progressPercent = Math.round((completed.size / checklistSteps.length) * 100);
 
   async function toggleStep(documentType: string) {
     if (!user || saving) return;
@@ -142,9 +130,8 @@ export default function DashboardContent() {
 
           <div className="mt-8 space-y-3">
             {!loading &&
-              CHECKLIST_STEPS.map((step, index) => {
+              checklistSteps.map((step, index) => {
                 const checked = completed.has(step.documentType);
-                const stepText = t.dashboard.steps[STEP_KEY_BY_DOCUMENT_TYPE[step.documentType]];
                 return (
                   <Reveal key={step.documentType} delay={index * 50}>
                     <div
@@ -159,16 +146,16 @@ export default function DashboardContent() {
                         onClick={() => toggleStep(step.documentType)}
                         disabled={saving === step.documentType}
                         aria-pressed={checked}
-                        aria-label={stepText.title}
+                        aria-label={step.title}
                         className="flex-shrink-0 disabled:opacity-60"
                       >
                         <Checkbox checked={checked} />
                       </button>
                       <div className="flex-1">
                         <p className={`text-sm font-semibold ${checked ? "text-slate-300" : "text-white"}`}>
-                          {stepText.title}
+                          {step.title}
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-500">{stepText.desc}</p>
+                        <p className="mt-0.5 text-xs text-slate-500">{step.description}</p>
                       </div>
                       {step.documentType === "documents" && (
                         <Link

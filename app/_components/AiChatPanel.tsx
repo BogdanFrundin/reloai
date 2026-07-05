@@ -14,7 +14,7 @@ function now(): number {
 }
 
 export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { t, lang } = useLanguage();
   const [messages, setMessages] = useState<Message[]>(() => [{ from: "ai", text: t.aiChat.welcome, time: now() }]);
   const [input, setInput] = useState("");
@@ -71,6 +71,17 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
         body: JSON.stringify({
           messages: nextMessages.map(({ from, text }) => ({ from, text })),
           lang,
+          profile: profile
+            ? {
+                country: profile.country,
+                city: profile.city,
+                citizenship: profile.citizenship,
+                currentLocation: profile.current_country,
+                goal: profile.goal,
+                jobOffer: profile.job_offer,
+                alreadyAdmitted: profile.already_admitted,
+              }
+            : null,
         }),
       });
       const data = await response.json();
