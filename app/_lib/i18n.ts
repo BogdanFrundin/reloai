@@ -253,6 +253,21 @@ export type Dictionary = {
     subtitle: string;
     overallProgress: string;
     openBtn: string;
+    route: {
+      heading: string;
+      recommended: string;
+      viewFullPlan: string;
+      hidePlan: string;
+      successProbability: string;
+      timeline: string;
+      cost: string;
+      requiredDocuments: string;
+      pros: string;
+      cons: string;
+      reasoningTitle: string;
+      checklistHeading: string;
+      loading: string;
+    };
     steps: {
       account: { title: string; desc: string };
       onboarding: { title: string; desc: string };
@@ -347,6 +362,8 @@ export type Dictionary = {
   };
   aiChat: {
     welcome: string;
+    personalizedGreeting: string;
+    personalizedRecommendation: string;
     quickReplies: [string, string, string, string];
     placeholder: string;
     sendAria: string;
@@ -377,45 +394,25 @@ export type Dictionary = {
     saving: string;
     skip: string;
     skipTooltip: string;
-    cityLabel: string;
-    cityPlaceholder: string;
-    yes: string;
-    no: string;
+    citizenshipLabel: string;
+    citizenshipPlaceholder: string;
+    currentCountryLabel: string;
+    currentCountryPlaceholder: string;
+    comingSoon: string;
     steps: {
       language: { question: string; subheading: string };
-      destination: { question: string; subheading: string };
       citizenship: { question: string; subheading: string };
-      currentLocation: { question: string; subheading: string };
+      currentCountry: { question: string; subheading: string };
+      destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
-    };
-    subQuestions: {
-      jobOffer: string;
-      alreadyAdmitted: string;
-    };
-    citizenshipOptions: {
-      ukraine: string;
-      russia: string;
-      belarus: string;
-      kazakhstan: string;
-      uzbekistan: string;
-      tajikistan: string;
-      turkey: string;
-      otherEu: string;
-      other: string;
-    };
-    currentLocationOptions: {
-      home: string;
-      destination: string;
-      transit: string;
-      otherEu: string;
     };
     goalOptions: {
       work: string;
       study: string;
       business: string;
-      familyReunification: string;
+      passiveIncome: string;
       digitalNomad: string;
-      investment: string;
+      familyReunification: string;
       other: string;
     };
   };
@@ -875,6 +872,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Your personalized roadmap, updated in real time.",
       overallProgress: "Overall progress",
       openBtn: "Open",
+      route: {
+        heading: "Your relocation options",
+        recommended: "Recommended",
+        viewFullPlan: "View full plan",
+        hidePlan: "Hide plan",
+        successProbability: "Success probability",
+        timeline: "Timeline",
+        cost: "Estimated cost",
+        requiredDocuments: "Required documents",
+        pros: "Pros",
+        cons: "Cons",
+        reasoningTitle: "Why this pathway",
+        checklistHeading: "Your personalized checklist",
+        loading: "Analyzing your relocation options…",
+      },
       steps: {
         account: { title: "Create your account", desc: "You're all set up." },
         onboarding: { title: "Complete onboarding questionnaire", desc: "We used this to build your roadmap." },
@@ -1022,6 +1034,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     aiChat: {
       welcome:
         "Hi! I'm your ReloAI assistant. I can help with questions about moving to Poland, Germany, or Spain. Ask me about documents, housing, banks, healthcare, and work!",
+      personalizedGreeting: "Hi! I see you're planning to relocate to {country} for {goal}.",
+      personalizedRecommendation: "Based on your profile, your top pathway is: {pathway}. Want me to walk you through it?",
       quickReplies: ["How do I get a PESEL?", "Which bank should I open?", "How do I find housing?", "What documents do I need?"],
       placeholder: "Ask ReloAI anything...",
       sendAria: "Send message",
@@ -1052,45 +1066,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       saving: "Saving...",
       skip: "Skip and fill later",
       skipTooltip: "Answer 5 questions to get your personal relocation plan",
-      cityLabel: "Do you know which city? (optional)",
-      cityPlaceholder: "e.g. Warsaw",
-      yes: "Yes",
-      no: "No",
+      citizenshipLabel: "Citizenship",
+      citizenshipPlaceholder: "Search for your country of citizenship...",
+      currentCountryLabel: "Current country of residence",
+      currentCountryPlaceholder: "Search for a country...",
+      comingSoon: "Coming soon",
       steps: {
         language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
-        destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
-        currentLocation: { question: "Where are you now?", subheading: "Lets us tailor next steps to where you are right now." },
-        goal: { question: "What's your main goal?", subheading: "This decides which visa track we'll guide you through." },
-      },
-      subQuestions: {
-        jobOffer: "Do you have a job offer?",
-        alreadyAdmitted: "Already admitted?",
-      },
-      citizenshipOptions: {
-        ukraine: "Ukraine",
-        russia: "Russia",
-        belarus: "Belarus",
-        kazakhstan: "Kazakhstan",
-        uzbekistan: "Uzbekistan",
-        tajikistan: "Tajikistan",
-        turkey: "Turkey",
-        otherEu: "Other EU",
-        other: "Other",
-      },
-      currentLocationOptions: {
-        home: "Still in my home country",
-        destination: "Already in the destination country",
-        transit: "In transit",
-        otherEu: "Other EU country",
+        currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
+        destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
+        goal: { question: "What's your main goal?", subheading: "This decides which pathways we'll analyze for you." },
       },
       goalOptions: {
         work: "Work",
         study: "Study",
-        business: "Business",
-        familyReunification: "Family reunification",
+        business: "Open business",
+        passiveIncome: "Passive income",
         digitalNomad: "Digital Nomad",
-        investment: "Investment",
+        familyReunification: "Family reunification",
         other: "Other",
       },
     },
@@ -1548,6 +1542,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Ваш персональный план, обновляется в реальном времени.",
       overallProgress: "Общий прогресс",
       openBtn: "Открыть",
+      route: {
+        heading: "Ваши варианты переезда",
+        recommended: "Рекомендовано",
+        viewFullPlan: "Смотреть полный план",
+        hidePlan: "Скрыть план",
+        successProbability: "Вероятность успеха",
+        timeline: "Сроки",
+        cost: "Примерная стоимость",
+        requiredDocuments: "Необходимые документы",
+        pros: "Плюсы",
+        cons: "Минусы",
+        reasoningTitle: "Почему этот путь",
+        checklistHeading: "Ваш персональный чек-лист",
+        loading: "Анализируем ваши варианты переезда…",
+      },
       steps: {
         account: { title: "Создайте аккаунт", desc: "Всё готово." },
         onboarding: { title: "Заполните анкету онбординга", desc: "Мы использовали её, чтобы составить ваш план." },
@@ -1695,6 +1704,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     aiChat: {
       welcome:
         "Привет! Я ваш AI-ассистент ReloAI. Помогу с вопросами о переезде в Польшу, Германию или Испанию. Спрашивайте про документы, жильё, банки, медицину и работу!",
+      personalizedGreeting: "Привет! Вижу, вы планируете переезд в {country} с целью «{goal}».",
+      personalizedRecommendation: "Судя по вашему профилю, лучший вариант для вас: {pathway}. Рассказать подробнее?",
       quickReplies: ["Как получить PESEL?", "Какой банк открыть?", "Как найти жильё?", "Какие документы нужны?"],
       placeholder: "Спросите ReloAI о чём угодно...",
       sendAria: "Отправить сообщение",
@@ -1725,45 +1736,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       saving: "Сохранение...",
       skip: "Пропустить и заполнить позже",
       skipTooltip: "Ответьте на 5 вопросов, чтобы получить персональный план переезда",
-      cityLabel: "Знаете, в какой город? (необязательно)",
-      cityPlaceholder: "например, Варшава",
-      yes: "Да",
-      no: "Нет",
+      citizenshipLabel: "Гражданство",
+      citizenshipPlaceholder: "Найдите страну вашего гражданства...",
+      currentCountryLabel: "Страна текущего проживания",
+      currentCountryPlaceholder: "Найдите страну...",
+      comingSoon: "Скоро",
       steps: {
         language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
-        destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
-        currentLocation: { question: "Где вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
-        goal: { question: "Какова ваша основная цель?", subheading: "Это определит, по какому визовому пути мы вас поведём." },
-      },
-      subQuestions: {
-        jobOffer: "У вас есть предложение о работе?",
-        alreadyAdmitted: "Вы уже зачислены?",
-      },
-      citizenshipOptions: {
-        ukraine: "Украина",
-        russia: "Россия",
-        belarus: "Беларусь",
-        kazakhstan: "Казахстан",
-        uzbekistan: "Узбекистан",
-        tajikistan: "Таджикистан",
-        turkey: "Турция",
-        otherEu: "Другая страна ЕС",
-        other: "Другое",
-      },
-      currentLocationOptions: {
-        home: "Ещё в своей стране",
-        destination: "Уже в стране назначения",
-        transit: "В пути",
-        otherEu: "В другой стране ЕС",
+        currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
+        destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
+        goal: { question: "Какова ваша основная цель?", subheading: "Это определит, какие пути мы для вас проанализируем." },
       },
       goalOptions: {
         work: "Работа",
         study: "Учёба",
-        business: "Бизнес",
-        familyReunification: "Воссоединение семьи",
+        business: "Открыть бизнес",
+        passiveIncome: "Пассивный доход",
         digitalNomad: "Цифровой кочевник",
-        investment: "Инвестиции",
+        familyReunification: "Воссоединение семьи",
         other: "Другое",
       },
     },
@@ -2221,6 +2212,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Sizning shaxsiy yo'l xaritangiz, real vaqtda yangilanadi.",
       overallProgress: "Umumiy jarayon",
       openBtn: "Ochish",
+      route: {
+        heading: "Sizning ko'chish variantlaringiz",
+        recommended: "Tavsiya etilgan",
+        viewFullPlan: "To'liq rejani ko'rish",
+        hidePlan: "Rejani yashirish",
+        successProbability: "Muvaffaqiyat ehtimoli",
+        timeline: "Muddat",
+        cost: "Taxminiy narx",
+        requiredDocuments: "Kerakli hujjatlar",
+        pros: "Afzalliklar",
+        cons: "Kamchiliklar",
+        reasoningTitle: "Nega aynan shu yo'l",
+        checklistHeading: "Sizning shaxsiy bajarish ro'yxatingiz",
+        loading: "Ko'chish variantlaringiz tahlil qilinmoqda…",
+      },
       steps: {
         account: { title: "Hisobingizni yarating", desc: "Hammasi tayyor." },
         onboarding: { title: "Kirish so'rovnomasini to'ldiring", desc: "Biz buni yo'l xaritangizni tuzish uchun ishlatdik." },
@@ -2368,6 +2374,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     aiChat: {
       welcome:
         "Salom! Men sizning ReloAI yordamchingizman. Polsha, Germaniya yoki Ispaniyaga ko'chib o'tish haqidagi savollaringizga yordam bera olaman. Hujjatlar, uy-joy, banklar, tibbiyot va ish haqida so'rang!",
+      personalizedGreeting: "Salom! Ko'ryapmanki, siz {country}ga «{goal}» maqsadida ko'chmoqchisiz.",
+      personalizedRecommendation: "Profilingizga ko'ra, siz uchun eng yaxshi yo'l: {pathway}. Batafsil aytib beraymi?",
       quickReplies: ["PESEL qanday olinadi?", "Qaysi bankda hisob ochsam bo'ladi?", "Uy-joyni qanday topsam bo'ladi?", "Qanday hujjatlar kerak?"],
       placeholder: "ReloAI'dan istalgan narsani so'rang...",
       sendAria: "Xabar yuborish",
@@ -2398,45 +2406,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       saving: "Saqlanmoqda...",
       skip: "O'tkazib yuborish va keyinroq to'ldirish",
       skipTooltip: "Shaxsiy ko'chish rejangizni olish uchun 5 ta savolga javob bering",
-      cityLabel: "Qaysi shaharligini bilasizmi? (ixtiyoriy)",
-      cityPlaceholder: "masalan, Varshava",
-      yes: "Ha",
-      no: "Yo'q",
+      citizenshipLabel: "Fuqarolik",
+      citizenshipPlaceholder: "Fuqaroligingiz davlatini qidiring...",
+      currentCountryLabel: "Hozirgi yashash davlati",
+      currentCountryPlaceholder: "Davlatni qidiring...",
+      comingSoon: "Tez orada",
       steps: {
         language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
-        destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
-        currentLocation: { question: "Hozir qayerdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
-        goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu qaysi viza yo'lini tanlashimizni belgilaydi." },
-      },
-      subQuestions: {
-        jobOffer: "Ish taklifi bormi?",
-        alreadyAdmitted: "Allaqachon qabul qilinganmisiz?",
-      },
-      citizenshipOptions: {
-        ukraine: "Ukraina",
-        russia: "Rossiya",
-        belarus: "Belarus",
-        kazakhstan: "Qozog'iston",
-        uzbekistan: "O'zbekiston",
-        tajikistan: "Tojikiston",
-        turkey: "Turkiya",
-        otherEu: "Boshqa EI davlati",
-        other: "Boshqa",
-      },
-      currentLocationOptions: {
-        home: "Hali o'z davlatimdaman",
-        destination: "Allaqachon boradigan davlatimdaman",
-        transit: "Yo'lda",
-        otherEu: "Boshqa EI davlatida",
+        currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
+        destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
+        goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
       },
       goalOptions: {
         work: "Ish",
         study: "O'qish",
-        business: "Biznes",
-        familyReunification: "Oilaviy birlashuv",
+        business: "Biznes ochish",
+        passiveIncome: "Passiv daromad",
         digitalNomad: "Raqamli ko'chmanchi",
-        investment: "Investitsiya",
+        familyReunification: "Oilaviy birlashuv",
         other: "Boshqa",
       },
     },
@@ -2893,6 +2881,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Kişiselleştirilmiş yol haritanız, gerçek zamanlı güncellenir.",
       overallProgress: "Genel ilerleme",
       openBtn: "Aç",
+      route: {
+        heading: "Taşınma seçenekleriniz",
+        recommended: "Önerilen",
+        viewFullPlan: "Tam planı görüntüle",
+        hidePlan: "Planı gizle",
+        successProbability: "Başarı olasılığı",
+        timeline: "Süre",
+        cost: "Tahmini maliyet",
+        requiredDocuments: "Gerekli belgeler",
+        pros: "Artıları",
+        cons: "Eksileri",
+        reasoningTitle: "Neden bu yol",
+        checklistHeading: "Kişiselleştirilmiş kontrol listeniz",
+        loading: "Taşınma seçenekleriniz analiz ediliyor…",
+      },
       steps: {
         account: { title: "Hesabınızı oluşturun", desc: "Her şey hazır." },
         onboarding: { title: "Başlangıç anketini tamamlayın", desc: "Bunu yol haritanızı oluşturmak için kullandık." },
@@ -3040,6 +3043,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     aiChat: {
       welcome:
         "Merhaba! Ben ReloAI asistanınızım. Polonya, Almanya veya İspanya'ya taşınmayla ilgili sorularınızda yardımcı olabilirim. Belgeler, konut, bankalar, sağlık ve iş hakkında sorabilirsiniz!",
+      personalizedGreeting: "Merhaba! {country}'a «{goal}» amacıyla taşınmayı planladığınızı görüyorum.",
+      personalizedRecommendation: "Profilinize göre sizin için en iyi yol: {pathway}. Detaylandırmamı ister misiniz?",
       quickReplies: ["PESEL nasıl alınır?", "Hangi bankada hesap açmalıyım?", "Konutu nasıl bulabilirim?", "Hangi belgeler gerekli?"],
       placeholder: "ReloAI'ya istediğinizi sorun...",
       sendAria: "Mesaj gönder",
@@ -3070,45 +3075,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       saving: "Kaydediliyor...",
       skip: "Atla ve daha sonra doldur",
       skipTooltip: "Kişisel taşınma planınızı almak için 5 soruyu yanıtlayın",
-      cityLabel: "Hangi şehir olduğunu biliyor musunuz? (isteğe bağlı)",
-      cityPlaceholder: "örn. Varşova",
-      yes: "Evet",
-      no: "Hayır",
+      citizenshipLabel: "Vatandaşlık",
+      citizenshipPlaceholder: "Vatandaşlık ülkenizi arayın...",
+      currentCountryLabel: "Şu anda yaşadığınız ülke",
+      currentCountryPlaceholder: "Bir ülke arayın...",
+      comingSoon: "Yakında",
       steps: {
         language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
-        destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
-        currentLocation: { question: "Şu anda neredesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
-        goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizi hangi vize sürecinde yönlendireceğimizi belirler." },
-      },
-      subQuestions: {
-        jobOffer: "İş teklifiniz var mı?",
-        alreadyAdmitted: "Zaten kabul edildiniz mi?",
-      },
-      citizenshipOptions: {
-        ukraine: "Ukrayna",
-        russia: "Rusya",
-        belarus: "Belarus",
-        kazakhstan: "Kazakistan",
-        uzbekistan: "Özbekistan",
-        tajikistan: "Tacikistan",
-        turkey: "Türkiye",
-        otherEu: "Diğer AB ülkesi",
-        other: "Diğer",
-      },
-      currentLocationOptions: {
-        home: "Hâlâ kendi ülkemdeyim",
-        destination: "Zaten hedef ülkedeyim",
-        transit: "Yolculuktayım",
-        otherEu: "Başka bir AB ülkesindeyim",
+        currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
+        destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
+        goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizin için hangi yolları analiz edeceğimizi belirler." },
       },
       goalOptions: {
         work: "İş",
         study: "Eğitim",
         business: "İş kurma",
-        familyReunification: "Aile birleşimi",
+        passiveIncome: "Pasif gelir",
         digitalNomad: "Dijital göçebe",
-        investment: "Yatırım",
+        familyReunification: "Aile birleşimi",
         other: "Diğer",
       },
     },
@@ -3565,6 +3550,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Нақшаи роҳи шахсии шумо, ки дар вақти воқеӣ навсозӣ мешавад.",
       overallProgress: "Пешрафти умумӣ",
       openBtn: "Кушодан",
+      route: {
+        heading: "Вариантҳои кӯчидани шумо",
+        recommended: "Тавсияшуда",
+        viewFullPlan: "Дидани нақшаи пурра",
+        hidePlan: "Пинҳон кардани нақша",
+        successProbability: "Эҳтимоли муваффақият",
+        timeline: "Мӯҳлат",
+        cost: "Арзиши тахминӣ",
+        requiredDocuments: "Ҳуҷҷатҳои зарурӣ",
+        pros: "Бартариҳо",
+        cons: "Камбудиҳо",
+        reasoningTitle: "Чаро маҳз ин роҳ",
+        checklistHeading: "Рӯйхати корҳои шахсии шумо",
+        loading: "Вариантҳои кӯчидани шумо таҳлил мешаванд…",
+      },
       steps: {
         account: { title: "Аккаунти худро эҷод кунед", desc: "Ҳама чиз омода аст." },
         onboarding: { title: "Анкетаи аввалияро пур кунед", desc: "Мо инро барои сохтани нақшаи роҳи шумо истифода бурдем." },
@@ -3712,6 +3712,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     aiChat: {
       welcome:
         "Салом! Ман ёрирасони AI-и ReloAI ҳастам. Дар бораи саволҳои кӯчидан ба Полша, Олмон ё Испания кӯмак мерасонам. Дар бораи ҳуҷҷатҳо, манзил, бонкҳо, тиб ва кор бипурсед!",
+      personalizedGreeting: "Салом! Мебинам, ки шумо ба {country} бо ҳадафи «{goal}» кӯчидан мехоҳед.",
+      personalizedRecommendation: "Мувофиқи профили шумо, беҳтарин роҳ барои шумо: {pathway}. Муфассалтар нақл кунам?",
       quickReplies: ["Чӣ тавр PESEL гирифта мешавад?", "Кадом бонкро кушоям?", "Чӣ тавр манзил ёбам?", "Кадом ҳуҷҷатҳо лозиманд?"],
       placeholder: "Аз ReloAI дилхоҳ чизро бипурсед...",
       sendAria: "Фиристодани паём",
@@ -3742,45 +3744,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       saving: "Захира мешавад...",
       skip: "Гузарондан ва баъдтар пур кардан",
       skipTooltip: "Барои гирифтани нақшаи шахсии кӯчидан ба 5 савол ҷавоб диҳед",
-      cityLabel: "Кадом шаҳрро медонед? (ихтиёрӣ)",
-      cityPlaceholder: "масалан, Варшава",
-      yes: "Ҳа",
-      no: "Не",
+      citizenshipLabel: "Шаҳрвандӣ",
+      citizenshipPlaceholder: "Кишвари шаҳрвандии худро ҷустуҷӯ кунед...",
+      currentCountryLabel: "Кишвари истиқомати ҳозира",
+      currentCountryPlaceholder: "Кишварро ҷустуҷӯ кунед...",
+      comingSoon: "Ба зудӣ",
       steps: {
         language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
-        destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
-        currentLocation: { question: "Ҳозир дар куҷо ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
-        goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки шуморо аз кадом роҳи раводид роҳнамоӣ кунем." },
-      },
-      subQuestions: {
-        jobOffer: "Оё пешниҳоди кор доред?",
-        alreadyAdmitted: "Аллакай қабул шудаед?",
-      },
-      citizenshipOptions: {
-        ukraine: "Украина",
-        russia: "Русия",
-        belarus: "Белоруссия",
-        kazakhstan: "Қазоқистон",
-        uzbekistan: "Ӯзбекистон",
-        tajikistan: "Тоҷикистон",
-        turkey: "Туркия",
-        otherEu: "Кишвари дигари ИА",
-        other: "Дигар",
-      },
-      currentLocationOptions: {
-        home: "Ҳанӯз дар кишвари худам",
-        destination: "Аллакай дар кишвари мақсад",
-        transit: "Дар роҳ",
-        otherEu: "Дар кишвари дигари ИА",
+        currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
+        destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
+        goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
       },
       goalOptions: {
         work: "Кор",
         study: "Таҳсил",
-        business: "Бизнес",
-        familyReunification: "Муттаҳидшавии оила",
+        business: "Кушодани бизнес",
+        passiveIncome: "Даромади пассивӣ",
         digitalNomad: "Бодиянишини рақамӣ",
-        investment: "Сармоягузорӣ",
+        familyReunification: "Муттаҳидшавии оила",
         other: "Дигар",
       },
     },

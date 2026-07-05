@@ -7,6 +7,7 @@ import Reveal from "./Reveal";
 import AiChatPanel from "./AiChatPanel";
 import WelcomeToast from "./WelcomeToast";
 import RegisterPromptModal from "./RegisterPromptModal";
+import RelocationOptions from "./RelocationOptions";
 import { useAuth } from "./AuthProvider";
 import { STEPS_COMPLETED_ON_ONBOARDING, buildChecklistSteps } from "../_lib/checklist";
 import { supabase } from "../../lib/supabase";
@@ -139,7 +140,12 @@ export default function DashboardContent() {
             </div>
           </Reveal>
 
-          <div className="mt-8 space-y-4">
+          <RelocationOptions route={profile?.route} labels={t.dashboard.route} />
+
+          {!loading && checklistSteps.length > 0 && (
+            <h2 className="mt-8 text-lg font-semibold text-white">{t.dashboard.route.checklistHeading}</h2>
+          )}
+          <div className="mt-4 space-y-4">
             {!loading &&
               checklistSteps.map((step, index) => {
                 const checked = completed.has(step.documentType);

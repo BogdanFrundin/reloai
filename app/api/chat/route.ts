@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { DEFAULT_LANG, LANGUAGES, dictionaries, type Lang } from "../../_lib/i18n";
+import { getCountryName } from "../../_lib/countries";
 
 const SYSTEM_PROMPT =
   "You are ReloAI assistant helping people relocate to Poland, Germany and Spain. Answer questions about documents, housing, banks, medicine, work. Be concise, helpful and friendly. Always respond in the same language the user writes in. For Poland focus on: PESEL, Karta Pobytu, ZUS, NFZ, mBank, PKO BP. For Germany: Anmeldung, Aufenthaltstitel, TK insurance. For Spain: NIE, empadronamiento, Seguridad Social.";
@@ -14,6 +15,7 @@ type ProfileContext = {
   goal?: string | null;
   jobOffer?: string | null;
   alreadyAdmitted?: string | null;
+  recommendedPathway?: string | null;
 } | null;
 
 function buildProfileContext(profile: ProfileContext): string {
@@ -23,13 +25,16 @@ function buildProfileContext(profile: ProfileContext): string {
   if (profile.country) {
     parts.push(`is relocating to ${profile.country}${profile.city ? ` (city: ${profile.city})` : ""}`);
   }
-  if (profile.citizenship) parts.push(`holds ${profile.citizenship} citizenship`);
-  if (profile.currentLocation) parts.push(`current location status: ${profile.currentLocation}`);
+  if (profile.citizenship) parts.push(`holds ${getCountryName(profile.citizenship, "en")} citizenship`);
+  if (profile.currentLocation) parts.push(`currently resides in ${getCountryName(profile.currentLocation, "en")}`);
   if (profile.goal) {
     let goalText = `main goal is ${profile.goal}`;
     if (profile.goal === "work" && profile.jobOffer) goalText += ` (has a job offer: ${profile.jobOffer})`;
     if (profile.goal === "study" && profile.alreadyAdmitted) goalText += ` (already admitted: ${profile.alreadyAdmitted})`;
     parts.push(goalText);
+  }
+  if (profile.recommendedPathway) {
+    parts.push(`their recommended relocation pathway is "${profile.recommendedPathway}"`);
   }
 
   if (parts.length === 0) return "";

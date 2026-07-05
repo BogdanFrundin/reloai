@@ -17,6 +17,7 @@ create table public.profiles (
   job_offer text,
   already_admitted text,
   onboarding_skipped boolean default false,
+  route jsonb,
   plan text default 'free',
   language text default 'ru',
   created_at timestamptz default now()
@@ -29,9 +30,12 @@ alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists job_offer text;
 alter table public.profiles add column if not exists already_admitted text;
 alter table public.profiles add column if not exists onboarding_skipped boolean default false;
+alter table public.profiles add column if not exists route jsonb;
 
--- current_country now stores a relationship status ("home" / "destination" / "transit" / "other_eu")
--- rather than a specific country name — see app/onboarding/page.tsx.
+-- citizenship and current_country store ISO 3166-1 alpha-2 country codes (e.g. "UA", "PL")
+-- selected from the searchable country dropdown — see app/onboarding/page.tsx.
+-- route stores the AI Route Engine result for this profile: { pathways: Pathway[], recommended: string, reasoning: string }
+-- — see app/api/route/route.ts.
 
 alter table public.profiles enable row level security;
 

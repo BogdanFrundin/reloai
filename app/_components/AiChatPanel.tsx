@@ -13,13 +13,36 @@ function now(): number {
   return Date.now();
 }
 
+function buildPersonalizedGreeting(
+  t: ReturnType<typeof useLanguage>["t"],
+  profile: ReturnType<typeof useAuth>["profile"],
+): string {
+  if (!profile?.goal || !profile?.country) return t.aiChat.welcome;
+
+  const goalLabel = (t.onboarding.goalOptions as Record<string, string>)[profile.goal] ?? profile.goal;
+  const recommended = profile.route?.recommended;
+
+  const summary = t.aiChat.personalizedGreeting.replace("{country}", profile.country).replace("{goal}", goalLabel);
+
+  return recommended ? `${summary} ${t.aiChat.personalizedRecommendation.replace("{pathway}", recommended)}` : summary;
+}
+
 export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
   const { user, profile } = useAuth();
   const { t, lang } = useLanguage();
-  const [messages, setMessages] = useState<Message[]>(() => [{ from: "ai", text: t.aiChat.welcome, time: now() }]);
+  const [messages, setMessages] = useState<Message[]>(() => [
+    { from: "ai", text: buildPersonalizedGreeting(t, profile), time: now() },
+  ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length !== 1 || prev[0].from !== "ai") return prev;
+      return [{ from: "ai", text: buildPersonalizedGreeting(t, profile), time: prev[0].time }];
+    });
+  }, [profile, t, lang]);
 
   useEffect(() => {
     if (!user) return;
@@ -80,6 +103,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
                 goal: profile.goal,
                 jobOffer: profile.job_offer,
                 alreadyAdmitted: profile.already_admitted,
+                recommendedPathway: profile.route?.recommended ?? null,
               }
             : null,
         }),

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import PageTransition from "../_components/PageTransition";
 import Reveal from "../_components/Reveal";
+import SearchableCountrySelect from "../_components/SearchableCountrySelect";
 import { useLanguage } from "../_components/LanguageProvider";
 import { useAuth } from "../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../_lib/i18n";
@@ -20,28 +21,22 @@ type Option = {
 
 type Answers = {
   language?: string;
-  destination?: string;
-  city?: string;
   citizenship?: string;
-  currentLocation?: string;
+  currentCountry?: string;
+  destination?: string;
   goal?: string;
-  jobOffer?: string;
-  alreadyAdmitted?: string;
 };
 
 type ProfileFields = {
   language?: string;
-  country?: string;
-  city?: string;
   citizenship?: string;
   current_country?: string;
+  country?: string;
   goal?: string;
-  job_offer?: string;
-  already_admitted?: string;
   onboarding_skipped?: boolean;
 };
 
-const STEP_ORDER = ["language", "destination", "citizenship", "currentLocation", "goal"] as const;
+const STEP_ORDER = ["language", "citizenship", "currentCountry", "destination", "goal"] as const;
 type StepKey = (typeof STEP_ORDER)[number];
 
 const ICON_PROPS = {
@@ -91,33 +86,10 @@ const OTHER_ICON = (
     />
   </svg>
 );
-const HOME_ICON = (
-  <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
-  </svg>
-);
-const DESTINATION_ICON = (
-  <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);
-const TRANSIT_ICON = (
-  <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l1.5-5.5L3 12l1-2 8-1 3-6 2 1-1.5 6.5L21 12l-1 2-7 1-1.5 6z" />
-  </svg>
-);
-const GLOBE_ICON = (
-  <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 000 18M12.5 3a17 17 0 010 18" />
-  </svg>
-);
-
-const inputCls =
-  "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { t, setLang } = useLanguage();
+  const { t, lang, setLang } = useLanguage();
   const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
@@ -134,19 +106,16 @@ export default function OnboardingPage() {
   const stepKey: StepKey = STEP_ORDER[step];
   const isLast = step === STEP_ORDER.length - 1;
 
-  const goalNeedsSubAnswer =
-    answers.goal === "work" ? !answers.jobOffer : answers.goal === "study" ? !answers.alreadyAdmitted : false;
-
   const canContinue =
     stepKey === "language"
       ? !!answers.language
-      : stepKey === "destination"
-        ? !!answers.destination
-        : stepKey === "citizenship"
-          ? !!answers.citizenship
-          : stepKey === "currentLocation"
-            ? !!answers.currentLocation
-            : !!answers.goal && !goalNeedsSubAnswer;
+      : stepKey === "citizenship"
+        ? !!answers.citizenship
+        : stepKey === "currentCountry"
+          ? !!answers.currentCountry
+          : stepKey === "destination"
+            ? !!answers.destination
+            : !!answers.goal;
 
   async function saveFields(fields: ProfileFields) {
     if (!user) return;
@@ -164,38 +133,25 @@ export default function OnboardingPage() {
     saveFields({ language: id });
   }
 
+  function selectCitizenship(code: string) {
+    setAnswers((prev) => ({ ...prev, citizenship: code }));
+    saveFields({ citizenship: code });
+  }
+
+  function selectCurrentCountry(code: string) {
+    setAnswers((prev) => ({ ...prev, currentCountry: code }));
+    saveFields({ current_country: code });
+  }
+
   function selectDestination(id: string) {
+    if (id === "Other") return;
     setAnswers((prev) => ({ ...prev, destination: id }));
     saveFields({ country: id });
   }
 
-  function selectCitizenship(id: string) {
-    setAnswers((prev) => ({ ...prev, citizenship: id }));
-    saveFields({ citizenship: id });
-  }
-
-  function selectCurrentLocation(id: string) {
-    setAnswers((prev) => ({ ...prev, currentLocation: id }));
-    saveFields({ current_country: id });
-  }
-
   function selectGoal(id: string) {
-    setAnswers((prev) => ({ ...prev, goal: id, jobOffer: undefined, alreadyAdmitted: undefined }));
+    setAnswers((prev) => ({ ...prev, goal: id }));
     saveFields({ goal: id });
-  }
-
-  function selectJobOffer(id: string) {
-    setAnswers((prev) => ({ ...prev, jobOffer: id }));
-    saveFields({ job_offer: id });
-  }
-
-  function selectAlreadyAdmitted(id: string) {
-    setAnswers((prev) => ({ ...prev, alreadyAdmitted: id }));
-    saveFields({ already_admitted: id });
-  }
-
-  function handleCityBlur() {
-    if (answers.city !== undefined) saveFields({ city: answers.city });
   }
 
   async function handleSkip() {
@@ -206,7 +162,7 @@ export default function OnboardingPage() {
       { user_id: user.id, country: answers.destination ?? null, document_type: "account", steps_completed: 1, total_steps: 1 },
       { onConflict: "user_id,document_type" },
     );
-    router.push("/pricing");
+    router.push("/dashboard");
   }
 
   async function handleContinue() {
@@ -216,18 +172,19 @@ export default function OnboardingPage() {
       setError(null);
       setSaving(true);
 
+      const finalAnswers = {
+        language: answers.language ?? "ru",
+        country: answers.destination ?? "Poland",
+        citizenship: answers.citizenship ?? "Other",
+        current_country: answers.currentCountry ?? "Other",
+        goal: answers.goal ?? "work",
+      };
+
       const { error: profileError } = await supabase.from("profiles").upsert({
         id: user.id,
         name: (user.user_metadata?.name as string | undefined) ?? null,
         email: user.email,
-        language: answers.language ?? "ru",
-        country: answers.destination ?? "Poland",
-        city: answers.city ?? null,
-        citizenship: answers.citizenship ?? "Other",
-        current_country: answers.currentLocation ?? "home",
-        goal: answers.goal ?? "work",
-        job_offer: answers.jobOffer ?? null,
-        already_admitted: answers.alreadyAdmitted ?? null,
+        ...finalAnswers,
       });
 
       if (profileError) {
@@ -238,23 +195,29 @@ export default function OnboardingPage() {
 
       const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
         user_id: user.id,
-        country: answers.destination ?? "Poland",
+        country: finalAnswers.country,
         document_type: documentType,
         steps_completed: 1,
         total_steps: 1,
       }));
 
-      const { error: progressError } = await supabase
-        .from("progress")
-        .upsert(progressRows, { onConflict: "user_id,document_type" });
+      await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
 
-      if (progressError) {
-        setError(progressError.message);
-        setSaving(false);
-        return;
+      try {
+        const response = await fetch("/api/route", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(finalAnswers),
+        });
+        if (response.ok) {
+          const route = await response.json();
+          await supabase.from("profiles").update({ route }).eq("id", user.id);
+        }
+      } catch {
+        // Route generation failing shouldn't block the user from reaching the dashboard.
       }
 
-      router.push("/pricing");
+      router.push("/dashboard");
       return;
     }
 
@@ -287,51 +250,42 @@ export default function OnboardingPage() {
     icon: <span className="text-3xl">{l.flag}</span>,
   }));
 
-  const destinationOptions: Option[] = [
+  const destinationOptions: (Option & { disabled?: boolean })[] = [
     { id: "Poland", label: t.countries.list[0].name, icon: <span className="text-3xl">🇵🇱</span> },
     { id: "Germany", label: t.countries.list[1].name, icon: <span className="text-3xl">🇩🇪</span> },
     { id: "Spain", label: t.countries.list[2].name, icon: <span className="text-3xl">🇪🇸</span> },
-  ];
-
-  const citizenshipOptions: { id: string; label: string; flag: string }[] = [
-    { id: "Ukraine", label: t.onboarding.citizenshipOptions.ukraine, flag: "🇺🇦" },
-    { id: "Russia", label: t.onboarding.citizenshipOptions.russia, flag: "🇷🇺" },
-    { id: "Belarus", label: t.onboarding.citizenshipOptions.belarus, flag: "🇧🇾" },
-    { id: "Kazakhstan", label: t.onboarding.citizenshipOptions.kazakhstan, flag: "🇰🇿" },
-    { id: "Uzbekistan", label: t.onboarding.citizenshipOptions.uzbekistan, flag: "🇺🇿" },
-    { id: "Tajikistan", label: t.onboarding.citizenshipOptions.tajikistan, flag: "🇹🇯" },
-    { id: "Turkey", label: t.onboarding.citizenshipOptions.turkey, flag: "🇹🇷" },
-    { id: "OtherEU", label: t.onboarding.citizenshipOptions.otherEu, flag: "🇪🇺" },
-    { id: "Other", label: t.onboarding.citizenshipOptions.other, flag: "🌍" },
-  ];
-
-  const currentLocationOptions: Option[] = [
-    { id: "home", label: t.onboarding.currentLocationOptions.home, icon: HOME_ICON },
-    { id: "destination", label: t.onboarding.currentLocationOptions.destination, icon: DESTINATION_ICON },
-    { id: "transit", label: t.onboarding.currentLocationOptions.transit, icon: TRANSIT_ICON },
-    { id: "otherEu", label: t.onboarding.currentLocationOptions.otherEu, icon: GLOBE_ICON },
+    { id: "Other", label: t.onboarding.goalOptions.other, icon: <span className="text-3xl">🌍</span>, disabled: true },
   ];
 
   const goalOptions: Option[] = [
     { id: "work", label: t.onboarding.goalOptions.work, icon: WORK_ICON },
     { id: "study", label: t.onboarding.goalOptions.study, icon: STUDY_ICON },
     { id: "business", label: t.onboarding.goalOptions.business, icon: BUSINESS_ICON },
-    { id: "familyReunification", label: t.onboarding.goalOptions.familyReunification, icon: FAMILY_ICON },
+    { id: "passiveIncome", label: t.onboarding.goalOptions.passiveIncome, icon: INVESTMENT_ICON },
     { id: "digitalNomad", label: t.onboarding.goalOptions.digitalNomad, icon: NOMAD_ICON },
-    { id: "investment", label: t.onboarding.goalOptions.investment, icon: INVESTMENT_ICON },
+    { id: "familyReunification", label: t.onboarding.goalOptions.familyReunification, icon: FAMILY_ICON },
     { id: "other", label: t.onboarding.goalOptions.other, icon: OTHER_ICON },
   ];
 
-  function renderOptionCard(option: Option, isSelected: boolean, onClick: () => void) {
+  function renderOptionCard(
+    option: Option & { disabled?: boolean },
+    isSelected: boolean,
+    onClick: () => void,
+  ) {
     return (
       <button
         key={option.id}
         type="button"
         onClick={onClick}
-        className={`flex items-center gap-4 rounded-2xl border p-5 text-left backdrop-blur-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 ${
-          isSelected
-            ? "border-accent/60 bg-accent/10 shadow-[0_0_30px_-10px_var(--accent)]"
-            : "border-white/10 bg-white/[0.03] [@media(hover:hover)_and_(pointer:fine)]:hover:border-white/20 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06]"
+        disabled={option.disabled}
+        className={`relative flex items-center gap-4 rounded-2xl border p-5 text-left backdrop-blur-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--ease-out-strong)] ${
+          option.disabled
+            ? "cursor-not-allowed border-white/5 bg-white/[0.02] opacity-50"
+            : `[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 ${
+                isSelected
+                  ? "border-accent/60 bg-accent/10 shadow-[0_0_30px_-10px_var(--accent)]"
+                  : "border-white/10 bg-white/[0.03] [@media(hover:hover)_and_(pointer:fine)]:hover:border-white/20 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06]"
+              }`
         }`}
       >
         <span
@@ -342,42 +296,24 @@ export default function OnboardingPage() {
           {option.icon}
         </span>
         <span className="flex-1 text-sm font-semibold text-white">{option.label}</span>
-        <span
-          className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
-            isSelected ? "border-accent bg-accent text-white" : "border-white/20"
-          }`}
-        >
-          {isSelected && (
-            <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-            </svg>
-          )}
-        </span>
-      </button>
-    );
-  }
-
-  function renderYesNo(value: string | undefined, onSelect: (id: string) => void) {
-    return (
-      <div className="flex gap-2">
-        {[
-          { id: "yes", label: t.onboarding.yes },
-          { id: "no", label: t.onboarding.no },
-        ].map((opt) => (
-          <button
-            key={opt.id}
-            type="button"
-            onClick={() => onSelect(opt.id)}
-            className={`rounded-full border px-5 py-2 text-sm font-semibold transition-colors duration-150 ${
-              value === opt.id
-                ? "border-accent bg-accent/15 text-accent-bright"
-                : "border-white/15 bg-white/[0.03] text-slate-300 hover:border-white/30 hover:text-white"
+        {option.disabled ? (
+          <span className="rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+            {t.onboarding.comingSoon}
+          </span>
+        ) : (
+          <span
+            className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
+              isSelected ? "border-accent bg-accent text-white" : "border-white/20"
             }`}
           >
-            {opt.label}
-          </button>
-        ))}
-      </div>
+            {isSelected && (
+              <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+              </svg>
+            )}
+          </span>
+        )}
+      </button>
     );
   }
 
@@ -445,81 +381,48 @@ export default function OnboardingPage() {
                 </div>
               )}
 
-              {stepKey === "destination" && (
-                <>
-                  <div className="mt-10 grid gap-4 sm:grid-cols-2">
-                    {destinationOptions.map((option) =>
-                      renderOptionCard(option, answers.destination === option.id, () => selectDestination(option.id)),
-                    )}
-                  </div>
-                  <div className="mt-6">
-                    <label htmlFor="city" className="text-sm font-medium text-slate-300">
-                      {t.onboarding.cityLabel}
-                    </label>
-                    <input
-                      id="city"
-                      type="text"
-                      value={answers.city ?? ""}
-                      onChange={(event) => setAnswers((prev) => ({ ...prev, city: event.target.value }))}
-                      onBlur={handleCityBlur}
-                      placeholder={t.onboarding.cityPlaceholder}
-                      className={`mt-1.5 ${inputCls}`}
-                    />
-                  </div>
-                </>
-              )}
-
               {stepKey === "citizenship" && (
                 <div className="mt-10">
-                  <select
-                    value={answers.citizenship ?? ""}
-                    onChange={(event) => selectCitizenship(event.target.value)}
-                    className={`${inputCls} appearance-none bg-[#0d0d0f]`}
-                  >
-                    <option value="" disabled>
-                      —
-                    </option>
-                    {citizenshipOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.flag} {option.label}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="text-sm font-medium text-slate-300">{t.onboarding.citizenshipLabel}</label>
+                  <div className="mt-1.5">
+                    <SearchableCountrySelect
+                      lang={lang}
+                      value={answers.citizenship}
+                      onSelect={selectCitizenship}
+                      placeholder={t.onboarding.citizenshipPlaceholder}
+                    />
+                  </div>
                 </div>
               )}
 
-              {stepKey === "currentLocation" && (
+              {stepKey === "currentCountry" && (
+                <div className="mt-10">
+                  <label className="text-sm font-medium text-slate-300">{t.onboarding.currentCountryLabel}</label>
+                  <div className="mt-1.5">
+                    <SearchableCountrySelect
+                      lang={lang}
+                      value={answers.currentCountry}
+                      onSelect={selectCurrentCountry}
+                      placeholder={t.onboarding.currentCountryPlaceholder}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {stepKey === "destination" && (
                 <div className="mt-10 grid gap-4 sm:grid-cols-2">
-                  {currentLocationOptions.map((option) =>
-                    renderOptionCard(option, answers.currentLocation === option.id, () =>
-                      selectCurrentLocation(option.id),
-                    ),
+                  {destinationOptions.map((option) =>
+                    renderOptionCard(option, answers.destination === option.id, () => selectDestination(option.id)),
                   )}
                 </div>
               )}
 
               {stepKey === "goal" && (
-                <>
-                  <div className="mt-10 grid gap-4 sm:grid-cols-2">
-                    {goalOptions.map((option) =>
-                      renderOptionCard(option, answers.goal === option.id, () => selectGoal(option.id)),
-                    )}
-                  </div>
-
-                  {answers.goal === "work" && (
-                    <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/[0.04] p-5">
-                      <p className="text-sm font-semibold text-white">{t.onboarding.subQuestions.jobOffer}</p>
-                      <div className="mt-3">{renderYesNo(answers.jobOffer, selectJobOffer)}</div>
-                    </div>
+                <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                  {goalOptions.map((option) =>
+                    renderOptionCard(option, answers.goal === option.id, () => selectGoal(option.id)),
                   )}
-
-                  {answers.goal === "study" && (
-                    <div className="mt-6 rounded-2xl border border-accent/20 bg-accent/[0.04] p-5">
-                      <p className="text-sm font-semibold text-white">{t.onboarding.subQuestions.alreadyAdmitted}</p>
-                      <div className="mt-3">{renderYesNo(answers.alreadyAdmitted, selectAlreadyAdmitted)}</div>
-                    </div>
-                  )}
-                </>
+                </div>
               )}
             </Reveal>
           </div>
