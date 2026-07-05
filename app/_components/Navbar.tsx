@@ -33,8 +33,7 @@ function LanguageSelector() {
         aria-expanded={open}
         className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
       >
-        <span className="text-base leading-none">{current.flag}</span>
-        <span>{current.name}</span>
+        <span className="text-lg leading-none">{current.flag}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-4 w-4 text-slate-400 transition-transform duration-200 ease-[var(--ease-out-strong)] ${open ? "rotate-180" : ""}`}
