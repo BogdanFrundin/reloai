@@ -30,8 +30,7 @@ export default function MiniLangSwitcher() {
         aria-expanded={open}
         className={`flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/40 hover:bg-white/10 ${pressScale}`}
       >
-        <span className="text-base leading-none">{current.flag}</span>
-        <span className="text-xs text-slate-300">{current.code.toUpperCase()}</span>
+        <span className="text-lg leading-none">{current.flag}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-3 w-3 text-slate-500 transition-transform duration-150 ${open ? "rotate-180" : ""}`}

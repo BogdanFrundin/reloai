@@ -1749,7 +1749,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         tajikistan: "Таджикистан",
         turkey: "Турция",
         otherEu: "Другая страна ЕС",
-        other: "Другое",
+        other: "Другая страна",
       },
       currentLocationOptions: {
         home: "Ещё в своей стране",
