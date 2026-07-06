@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import ChatMockup from "./ChatMockup";
+import DashboardMockup from "./DashboardMockup";
 import Reveal from "./Reveal";
 import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
@@ -99,7 +99,7 @@ export default function Hero() {
               aria-hidden
               className="animate-glow-pulse absolute -inset-6 -z-10 rounded-[2rem] bg-accent/30 blur-3xl motion-reduce:animate-none"
             />
-            <ChatMockup />
+            <DashboardMockup />
           </div>
         </Reveal>
       </div>

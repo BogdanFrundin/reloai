@@ -93,6 +93,7 @@ export default function Footer() {
         <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-slate-500">
           © {new Date().getFullYear()} ReloAI. {t.footer.rights}
         </div>
+        <p className="mt-4 text-center text-xs leading-relaxed text-slate-600">{t.footer.disclaimer}</p>
       </div>
     </footer>
   );

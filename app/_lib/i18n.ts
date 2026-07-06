@@ -69,7 +69,7 @@ export type Dictionary = {
   reviews: {
     heading: string;
     subheading: string;
-    items: { name: string; role: string; quote: string; initials: string }[];
+    items: { name: string; role: string; quote: string; initials: string; documentBadge?: string }[];
   };
   contact: {
     heading: string;
@@ -97,6 +97,7 @@ export type Dictionary = {
     productLinks: string[];
     companyLinks: string[];
     rights: string;
+    disclaimer: string;
   };
   auth: {
     or: string;
@@ -179,8 +180,13 @@ export type Dictionary = {
     status: { verified: string; pending: string; missing: string; locked: string };
     upload: string;
     viewBtn: string;
+    deleteBtn: string;
     unlockBtn: string;
     docNames: { passportScan: string; passportPhoto: string; peselForm: string; peselLetter: string; workPermitApp: string; sponsorshipLetter: string; healthInsurance: string; travelInsurance: string; bankConfirmation: string; proofOfFunds: string; relocationLetter: string; taxResidency: string };
+    autoCompleteToast: string;
+    sectionCompleteHeading: string;
+    sectionCompleteBody: string;
+    sectionCompleteDismiss: string;
   };
   housing: {
     title: string;
@@ -377,6 +383,8 @@ export type Dictionary = {
       visa: string;
       default: string;
     };
+    actionLabel: string;
+    premiumLabel: string;
   };
   demo: {
     bannerText: string;
@@ -612,6 +620,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "ReloAI turned a mountain of paperwork into a checklist I actually understood. My Blue Card application took half the time I expected.",
           initials: "OK",
+          documentBadge: "🇩🇪 EU Blue Card",
         },
         {
           name: "Marco T.",
@@ -619,6 +628,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "The chat answered every weird question I had about PESEL and banking. Felt like having a relocation consultant in my pocket.",
           initials: "MT",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
         {
           name: "Sofia R.",
@@ -660,6 +670,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["How it works", "Features", "Pricing"],
       companyLinks: ["Reviews", "Contact"],
       rights: "All rights reserved.",
+      disclaimer: "ReloAI provides informational services. We are not a law firm and are not responsible for decisions made by immigration authorities. All information is for general guidance only. For legal assistance, please consult a licensed professional.",
     },
     auth: {
       or: "or",
@@ -746,6 +757,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Verified", pending: "Pending review", missing: "Missing", locked: "Premium" },
       upload: "Drag & drop or click to upload",
       viewBtn: "View",
+      deleteBtn: "Remove",
       unlockBtn: "Unlock with Premium",
       docNames: {
         passportScan: "Passport scan",
@@ -761,6 +773,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Employer relocation letter",
         taxResidency: "Tax residency certificate",
       },
+      autoCompleteToast: "✓ Step completed automatically",
+      sectionCompleteHeading: "🎉 Section complete!",
+      sectionCompleteBody: "Move on to the next step.",
+      sectionCompleteDismiss: "Continue",
     },
     housing: {
       title: "Housing in Poland 🇵🇱",
@@ -1042,13 +1058,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
       closeAria: "Close",
       connectionError: "I couldn't reach the server. Please check your connection and try again.",
       fallback: {
-        pesel: "To get a PESEL number in Poland: 1) Book an appointment at the Urząd Miasta (city office) in your district. 2) Bring your passport, your visa or residence permit, and proof of address (a rental contract works). 3) Fill out form EL-ZAM on site. Processing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
-        bank: "For banking: mBank is the most expat-friendly option — fully English app and support. Revolut works well even before you have a PESEL number. PKO BP has the largest branch network if you prefer in-person banking. Santander is a good pick if you need multi-currency accounts.",
+        pesel:
+          "To get a PESEL number in Poland:\n- Book an appointment at the Urząd Miasta (city office) in your district.\n- Bring your passport, your visa or residence permit, and proof of address (a rental contract works).\n- Fill out form EL-ZAM on site.\nProcessing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
+        bank:
+          "For banking:\n- mBank — most expat-friendly, fully English app and support.\n- Revolut — works well even before you have a PESEL number.\n- PKO BP — largest branch network if you prefer in-person banking.\n- Santander — good pick if you need multi-currency accounts.",
         housing: "Housing tips: search OLX, Otodom, or Gratka for listings. Never send a deposit before viewing the apartment in person or on a live video call. Get your rental contract in Polish — it has to be in Polish to be legally enforceable. Budget for a security deposit (1–2 months' rent) plus czynsz (building maintenance fees) on top of rent.",
         documents: "Common documents you'll need: passport, visa or residence permit application, proof of address, PESEL confirmation, health insurance certificate, and (if working) your employment contract or work permit. I can walk you through any of these in more detail.",
         visa: "Visa needs depend on your citizenship and destination. For Poland, most non-EU citizens need a national visa or residence permit (Karta Pobytu) tied to work, study, or family. For Germany, look into a Job Seeker Visa, Aufenthaltstitel, or EU Blue Card. For Spain, check the Digital Nomad Visa or standard work/residence routes via NIE registration.",
         default: "I can help with documents, housing, banks, healthcare, or work. What would you like to know more about?",
       },
+      actionLabel: "Do this in ReloAI →",
+      premiumLabel: "Available in Premium →",
     },
     demo: {
       bannerText: "You are in preview mode. Register to save your progress and access all features.",
@@ -1282,6 +1302,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "ReloAI превратил гору документов в понятный чек-лист. Заявку на Blue Card я оформила в два раза быстрее, чем ожидала.",
           initials: "OK",
+          documentBadge: "🇩🇪 EU Blue Card",
         },
         {
           name: "Marco T.",
@@ -1289,6 +1310,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "Чат ответил на все мои странные вопросы про PESEL и банк. Как будто у меня в кармане свой консультант по переезду.",
           initials: "MT",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
         {
           name: "Sofia R.",
@@ -1330,6 +1352,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Как это работает", "Возможности", "Цены"],
       companyLinks: ["Отзывы", "Контакты"],
       rights: "Все права защищены.",
+      disclaimer: "ReloAI предоставляет информационные услуги. Мы не являемся юридической фирмой и не несём ответственности за решения миграционных органов. Вся информация носит ознакомительный характер. Для юридической помощи обратитесь к лицензированному специалисту.",
     },
     auth: {
       or: "или",
@@ -1413,9 +1436,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Документы",
       subtitle: "Всё необходимое для переезда — в одном месте.",
       tabs: { all: "Все", passport: "Паспорт", pesel: "PESEL", workPermit: "Разрешение на работу", insurance: "Страховка", bank: "Банк" },
-      status: { verified: "Проверено", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
+      status: { verified: "Готово", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
       upload: "Перетащите файл или нажмите, чтобы загрузить",
       viewBtn: "Просмотр",
+      deleteBtn: "Удалить",
       unlockBtn: "Открыть с Premium",
       docNames: {
         passportScan: "Скан паспорта",
@@ -1431,6 +1455,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Письмо о переезде от работодателя",
         taxResidency: "Справка о налоговом резидентстве",
       },
+      autoCompleteToast: "✓ Шаг выполнен автоматически",
+      sectionCompleteHeading: "🎉 Раздел завершён!",
+      sectionCompleteBody: "Переходите к следующему шагу.",
+      sectionCompleteDismiss: "Продолжить",
     },
     housing: {
       title: "Жильё в Польше 🇵🇱",
@@ -1712,13 +1740,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
       closeAria: "Закрыть",
       connectionError: "Не удалось связаться с сервером. Проверьте соединение и попробуйте снова.",
       fallback: {
-        pesel: "Чтобы получить номер PESEL в Польше: 1) Запишитесь на приём в Urząd Miasta (городское управление) вашего района. 2) Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды). 3) Заполните на месте форму EL-ZAM. Обработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
-        bank: "По банкам: mBank — самый удобный вариант для экспатов, полностью на английском языке. Revolut отлично работает даже до получения PESEL. У PKO BP самая большая сеть отделений, если вы предпочитаете обслуживание лично. Santander хорош, если нужны мультивалютные счета.",
+        pesel:
+          "Чтобы получить номер PESEL в Польше:\n- Запишитесь на приём в Urząd Miasta (городское управление) вашего района.\n- Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды).\n- Заполните на месте форму EL-ZAM.\nОбработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
+        bank:
+          "По банкам:\n- mBank — самый удобный вариант для экспатов, полностью на английском языке.\n- Revolut — отлично работает даже до получения PESEL.\n- PKO BP — самая большая сеть отделений, если предпочитаете обслуживание лично.\n- Santander — хорош, если нужны мультивалютные счета.",
         housing: "Советы по жилью: ищите объявления на OLX, Otodom или Gratka. Никогда не переводите депозит, не осмотрев квартиру лично или по видеосвязи. Договор аренды должен быть на польском языке, чтобы иметь юридическую силу. Заложите в бюджет залог (аренда за 1–2 месяца) плюс czynsz (плата за обслуживание дома) сверх аренды.",
         documents: "Обычно нужны следующие документы: паспорт, заявление на визу или вид на жительство, подтверждение адреса, справка о PESEL, полис медицинской страховки и (если работаете) трудовой договор или разрешение на работу. Могу подробнее рассказать про любой из них.",
         visa: "Визовые требования зависят от вашего гражданства и страны назначения. Для Польши большинству граждан не из ЕС нужна национальная виза или вид на жительство (Karta Pobytu), связанные с работой, учёбой или семьёй. Для Германии рассмотрите Job Seeker Visa, Aufenthaltstitel или EU Blue Card. Для Испании — Digital Nomad Visa или обычные пути через рабочий/жительский статус и регистрацию NIE.",
         default: "Я могу помочь с документами, жильём, банками, медициной или работой. Что вас интересует подробнее?",
       },
+      actionLabel: "Сделать это в ReloAI →",
+      premiumLabel: "Доступно в Premium →",
     },
     demo: {
       bannerText: "Вы находитесь в режиме предпросмотра. Зарегистрируйтесь, чтобы сохранить прогресс и получить доступ ко всем функциям.",
@@ -1952,6 +1984,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "ReloAI qog'ozlar tog'ini men tushunadigan ro'yxatga aylantirdi. Blue Card arizam kutganimdan ikki marta tez tayyor bo'ldi.",
           initials: "OK",
+          documentBadge: "🇩🇪 EU Blue Card",
         },
         {
           name: "Marco T.",
@@ -1959,6 +1992,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "Chat PESEL va bank haqidagi g'alati savollarimning hammasiga javob berdi. Cho'ntagimda ko'chish bo'yicha maslahatchi bordek edi.",
           initials: "MT",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
         {
           name: "Sofia R.",
@@ -2000,6 +2034,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Qanday ishlaydi", "Imkoniyatlar", "Narxlar"],
       companyLinks: ["Sharhlar", "Aloqa"],
       rights: "Barcha huquqlar himoyalangan.",
+      disclaimer: "ReloAI axborot xizmatlarini taqdim etadi. Biz yuridik firma emasmiz va migratsiya organlarining qarorlari uchun javobgar emasmiz. Barcha ma'lumotlar faqat tanishtirish maqsadida berilgan. Yuridik yordam uchun litsenziyalangan mutaxassisga murojaat qiling.",
     },
     auth: {
       or: "yoki",
@@ -2086,6 +2121,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Tasdiqlangan", pending: "Ko'rib chiqilmoqda", missing: "Yo'q", locked: "Premium" },
       upload: "Yuklash uchun sudrab tashlang yoki bosing",
       viewBtn: "Ko'rish",
+      deleteBtn: "O'chirish",
       unlockBtn: "Premium bilan ochish",
       docNames: {
         passportScan: "Pasport skani",
@@ -2101,6 +2137,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Ish beruvchining ko'chirish xati",
         taxResidency: "Soliq rezidentligi sertifikati",
       },
+      autoCompleteToast: "✓ Qadam avtomatik bajarildi",
+      sectionCompleteHeading: "🎉 Bo'lim yakunlandi!",
+      sectionCompleteBody: "Keyingi qadamga o'ting.",
+      sectionCompleteDismiss: "Davom etish",
     },
     housing: {
       title: "Polshada uy-joy 🇵🇱",
@@ -2389,6 +2429,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Viza talablari fuqaroligingiz va boradigan davlatingizga bog'liq. Polsha uchun ko'pchilik EI fuqarosi bo'lmaganlarga ish, o'qish yoki oila asosida milliy viza yoki yashash ruxsatnomasi (Karta Pobytu) kerak bo'ladi. Germaniya uchun Job Seeker Visa, Aufenthaltstitel yoki EU Blue Card'ni ko'rib chiqing. Ispaniya uchun Digital Nomad Visa yoki NIE ro'yxatidan o'tish orqali oddiy ish/yashash yo'llarini tekshiring.",
         default: "Men hujjatlar, uy-joy, banklar, tibbiyot yoki ish bo'yicha yordam bera olaman. Qaysi biri haqida batafsilroq bilmoqchisiz?",
       },
+      actionLabel: "Buni ReloAI'da bajarish →",
+      premiumLabel: "Premium'da mavjud →",
     },
     demo: {
       bannerText: "Siz ko'rib chiqish rejimidasiz. Jarayoningizni saqlash va barcha funksiyalardan foydalanish uchun ro'yxatdan o'ting.",
@@ -2621,6 +2663,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "ReloAI bir evrak dağını anlayabildiğim bir kontrol listesine dönüştürdü. Mavi Kart başvurum beklediğimin yarı süresinde tamamlandı.",
           initials: "OK",
+          documentBadge: "🇩🇪 EU Blue Card",
         },
         {
           name: "Marco T.",
@@ -2628,6 +2671,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "Sohbet, PESEL ve bankacılıkla ilgili tuhaf sorularımın hepsini yanıtladı. Cebimde bir taşınma danışmanı varmış gibi hissettim.",
           initials: "MT",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
         {
           name: "Sofia R.",
@@ -2669,6 +2713,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Nasıl çalışır", "Özellikler", "Fiyatlandırma"],
       companyLinks: ["Yorumlar", "İletişim"],
       rights: "Tüm hakları saklıdır.",
+      disclaimer: "ReloAI bilgilendirme hizmetleri sunar. Bir hukuk firması değiliz ve göçmenlik makamlarının kararlarından sorumlu değiliz. Tüm bilgiler yalnızca genel bilgilendirme amaçlıdır. Hukuki yardım için lisanslı bir uzmana danışın.",
     },
     auth: {
       or: "veya",
@@ -2755,6 +2800,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Onaylandı", pending: "İnceleniyor", missing: "Eksik", locked: "Premium" },
       upload: "Yüklemek için sürükleyin veya tıklayın",
       viewBtn: "Görüntüle",
+      deleteBtn: "Kaldır",
       unlockBtn: "Premium ile Aç",
       docNames: {
         passportScan: "Pasaport taraması",
@@ -2770,6 +2816,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "İşveren taşınma mektubu",
         taxResidency: "Vergi mukimliği belgesi",
       },
+      autoCompleteToast: "✓ Adım otomatik olarak tamamlandı",
+      sectionCompleteHeading: "🎉 Bölüm tamamlandı!",
+      sectionCompleteBody: "Sonraki adıma geçin.",
+      sectionCompleteDismiss: "Devam et",
     },
     housing: {
       title: "Polonya'da Konut 🇵🇱",
@@ -3058,6 +3108,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Vize ihtiyaçları vatandaşlığınıza ve gideceğiniz ülkeye göre değişir. Polonya için çoğu AB dışı vatandaşın iş, eğitim veya aile temelli ulusal vize veya oturma iznine (Karta Pobytu) ihtiyacı vardır. Almanya için Job Seeker Visa, Aufenthaltstitel veya EU Blue Card'a bakın. İspanya için Digital Nomad Visa'yı veya NIE kaydı üzerinden standart çalışma/oturma yollarını inceleyin.",
         default: "Belgeler, konut, bankalar, sağlık veya iş konusunda yardımcı olabilirim. Hangisi hakkında daha fazla bilgi almak istersiniz?",
       },
+      actionLabel: "Bunu ReloAI'da yap →",
+      premiumLabel: "Premium'da mevcut →",
     },
     demo: {
       bannerText: "Önizleme modundasınız. İlerlemenizi kaydetmek ve tüm özelliklere erişmek için kayıt olun.",
@@ -3290,12 +3342,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
           quote:
             "ReloAI кӯҳи коғазҳоро ба рӯйхати фаҳмо табдил дод. Аризаи Blue Card ман дар нисфи вақти интизорам тайёр шуд.",
           initials: "OK",
+          documentBadge: "🇩🇪 EU Blue Card",
         },
         {
           name: "Marco T.",
           role: "Ба Варшава, Лаҳистон кӯчид",
           quote:
             "Чат ба ҳама саволҳои аҷиби ман дар бораи PESEL ва бонк ҷавоб дод. Ҳис мекардам, ки маслиҳатгари кӯчиш дар киса дорам.",
+          documentBadge: "🇵🇱 Karta Pobytu",
           initials: "MT",
         },
         {
@@ -3338,6 +3392,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Чӣ тавр кор мекунад", "Хусусиятҳо", "Нархгузорӣ"],
       companyLinks: ["Шарҳҳо", "Тамос"],
       rights: "Ҳамаи ҳуқуқҳо ҳифз шудаанд.",
+      disclaimer: "ReloAI хидматҳои иттилоотӣ пешниҳод мекунад. Мо ширкати ҳуқуқӣ нестем ва барои қарорҳои мақомоти муҳоҷират масъулият надорем. Тамоми маълумот танҳо хусусияти шиносоӣ дорад. Барои кӯмаки ҳуқуқӣ ба мутахассиси литсензиядор муроҷиат кунед.",
     },
     auth: {
       or: "ё",
@@ -3424,6 +3479,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Тасдиқшуда", pending: "Дар баррасӣ", missing: "Мавҷуд нест", locked: "Премиум" },
       upload: "Барои боркунӣ кашида гузоред ё зер кунед",
       viewBtn: "Дидан",
+      deleteBtn: "Нест кардан",
       unlockBtn: "Бо Премиум кушоед",
       docNames: {
         passportScan: "Скани шиноснома",
@@ -3439,6 +3495,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Мактуби кӯчонидани корфармо",
         taxResidency: "Шаҳодатномаи резиденти андоз",
       },
+      autoCompleteToast: "✓ Қадам ба таври худкор иҷро шуд",
+      sectionCompleteHeading: "🎉 Бахш ба анҷом расид!",
+      sectionCompleteBody: "Ба қадами навбатӣ гузаред.",
+      sectionCompleteDismiss: "Идома",
     },
     housing: {
       title: "Манзил дар Полша 🇵🇱",
@@ -3727,6 +3787,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Талаботи раводид аз шаҳрвандӣ ва кишвари мақсади шумо вобаста аст. Барои Полша аксари шаҳрвандони ғайри ИА ба раводиди миллӣ ё иҷозати истиқомат (Karta Pobytu), ки бо кор, таҳсил ё оила алоқаманд аст, ниёз доранд. Барои Олмон ба Job Seeker Visa, Aufenthaltstitel ё EU Blue Card нигаред. Барои Испания Digital Nomad Visa ё роҳҳои муқаррарии кор/истиқомат тавассути қайди NIE-ро санҷед.",
         default: "Ман метавонам дар бораи ҳуҷҷатҳо, манзил, бонкҳо, тиб ё кор кӯмак расонам. Дар бораи кадоме бештар донистан мехоҳед?",
       },
+      actionLabel: "Инро дар ReloAI иҷро кунед →",
+      premiumLabel: "Дар Premium дастрас аст →",
     },
     demo: {
       bannerText: "Шумо дар реҷаи пешнамоиш ҳастед. Барои нигоҳ доштани пешрафт ва дастрасӣ ба ҳамаи хусусиятҳо бақайд гиред.",
