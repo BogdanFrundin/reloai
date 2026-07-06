@@ -34,6 +34,12 @@ export type Dictionary = {
     online: string;
     messages: [string, string, string, string];
   };
+  heroDemo: {
+    question: string;
+    userReply: string;
+    response: string;
+    inputPlaceholder: string;
+  };
   stats: {
     items: { value: string; label: string }[];
   };
@@ -465,6 +471,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Yes, please.",
         "Done. 7 documents needed, 2 you already have. I'll remind you about deadlines along the way.",
       ],
+    },
+    heroDemo: {
+      question: "Where would you like to move?",
+      userReply: "Poland, I want to work",
+      response: "Great! Let me build you a step-by-step relocation roadmap for Poland.",
+      inputPlaceholder: "Ask about living in Poland...",
     },
     stats: {
       items: [
@@ -1217,6 +1229,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Готово. Нужно 7 документов, 2 у вас уже есть. Я буду напоминать о сроках.",
       ],
     },
+    heroDemo: {
+      question: "Куда вы хотите переехать?",
+      userReply: "Польша, хочу работать",
+      response: "Отлично! Сейчас составлю для вас пошаговый план переезда в Польшу.",
+      inputPlaceholder: "Спросите о жизни в Польше...",
+    },
     stats: {
       items: [
         { value: "3", label: "Страны" },
@@ -1968,6 +1986,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Tayyor. 7 ta hujjat kerak, 2 tasi sizda allaqachon bor. Muddatlar haqida sizga eslatib boraman.",
       ],
     },
+    heroDemo: {
+      question: "Qayerga ko'chib o'tmoqchisiz?",
+      userReply: "Polsha, ishlamoqchiman",
+      response: "Ajoyib! Hozir sizga Polshaga ko'chish uchun bosqichma-bosqich reja tuzib beraman.",
+      inputPlaceholder: "Polshada yashash haqida so'rang...",
+    },
     stats: {
       items: [
         { value: "3", label: "Davlat" },
@@ -2717,6 +2741,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Tamamdır. 7 belge gerekiyor, 2'si zaten sizde. Süreçte size son tarihleri hatırlatacağım.",
       ],
     },
+    heroDemo: {
+      question: "Nereye taşınmak istersiniz?",
+      userReply: "Polonya, çalışmak istiyorum",
+      response: "Harika! Sizin için Polonya'ya taşınma konusunda adım adım bir yol haritası hazırlıyorum.",
+      inputPlaceholder: "Polonya'da yaşam hakkında sorun...",
+    },
     stats: {
       items: [
         { value: "3", label: "Ülke" },
@@ -3464,6 +3494,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Ҳа, лутфан.",
         "Тайёр. 7 ҳуҷҷат лозим аст, 2-тои онро шумо аллакай доред. Ман дар бораи мӯҳлатҳо ба шумо ёдрасонӣ мекунам.",
       ],
+    },
+    heroDemo: {
+      question: "Ба куҷо мехоҳед кӯчед?",
+      userReply: "Полша, мехоҳам кор кунам",
+      response: "Аъло! Ҳозир барои шумо нақшаи қадам ба қадами кӯчидан ба Полша тартиб медиҳам.",
+      inputPlaceholder: "Дар бораи зиндагӣ дар Полша бипурсед...",
     },
     stats: {
       items: [
