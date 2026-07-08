@@ -202,6 +202,9 @@ export type Dictionary = {
     sectionCompleteHeading: string;
     sectionCompleteBody: string;
     sectionCompleteDismiss: string;
+    deleteConfirmTitle: string;
+    deleteConfirmBody: string;
+    cancelBtn: string;
   };
   housing: {
     title: string;
@@ -868,6 +871,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Section complete!",
       sectionCompleteBody: "Move on to the next step.",
       sectionCompleteDismiss: "Continue",
+      deleteConfirmTitle: "Delete document?",
+      deleteConfirmBody: "This action cannot be undone. The document will be permanently deleted.",
+      cancelBtn: "Cancel",
     },
     housing: {
       title: "Housing in Poland 🇵🇱",
@@ -1626,6 +1632,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Раздел завершён!",
       sectionCompleteBody: "Переходите к следующему шагу.",
       sectionCompleteDismiss: "Продолжить",
+      deleteConfirmTitle: "Удалить документ?",
+      deleteConfirmBody: "Это действие нельзя отменить. Документ будет удалён безвозвратно.",
+      cancelBtn: "Отмена",
     },
     housing: {
       title: "Жильё в Польше 🇵🇱",
@@ -2384,6 +2393,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Bo'lim yakunlandi!",
       sectionCompleteBody: "Keyingi qadamga o'ting.",
       sectionCompleteDismiss: "Davom etish",
+      deleteConfirmTitle: "Hujjatni o'chirasizmi?",
+      deleteConfirmBody: "Bu amalni bekor qilib bo'lmaydi. Hujjat butunlay o'chiriladi.",
+      cancelBtn: "Bekor qilish",
     },
     housing: {
       title: "Polshada uy-joy 🇵🇱",
@@ -3139,6 +3151,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Bölüm tamamlandı!",
       sectionCompleteBody: "Sonraki adıma geçin.",
       sectionCompleteDismiss: "Devam et",
+      deleteConfirmTitle: "Belge silinsin mi?",
+      deleteConfirmBody: "Bu işlem geri alınamaz. Belge kalıcı olarak silinecektir.",
+      cancelBtn: "İptal",
     },
     housing: {
       title: "Polonya'da Konut 🇵🇱",
@@ -3894,6 +3909,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Бахш ба анҷом расид!",
       sectionCompleteBody: "Ба қадами навбатӣ гузаред.",
       sectionCompleteDismiss: "Идома",
+      deleteConfirmTitle: "Ҳуҷҷат нест карда шавад?",
+      deleteConfirmBody: "Ин амалро бекор кардан мумкин нест. Ҳуҷҷат абадӣ нест карда мешавад.",
+      cancelBtn: "Бекор кардан",
     },
     housing: {
       title: "Манзил дар Полша 🇵🇱",

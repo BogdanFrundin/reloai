@@ -5,6 +5,7 @@ import Link from "next/link";
 import Reveal from "../../_components/Reveal";
 import RegisterPromptModal from "../../_components/RegisterPromptModal";
 import SectionCompleteModal from "../../_components/SectionCompleteModal";
+import DeleteConfirmModal from "../../_components/DeleteConfirmModal";
 import { pressScale } from "../../_lib/motion";
 import { useLanguage } from "../../_components/LanguageProvider";
 import { useAuth } from "../../_components/AuthProvider";
@@ -108,6 +109,7 @@ export default function DocumentsPage() {
   const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
   const [promptOpen, setPromptOpen] = useState(false);
   const [sectionCompleteOpen, setSectionCompleteOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -158,6 +160,11 @@ export default function DocumentsPage() {
     const next = documents.map((d) => (d.id === id ? { ...d, status: "missing" as Status, fileName: undefined } : d));
     setDocuments(next);
     syncProgress(next);
+  }
+
+  function confirmDelete() {
+    if (deleteTargetId) handleDelete(deleteTargetId);
+    setDeleteTargetId(null);
   }
 
   const filtered =
@@ -277,7 +284,7 @@ export default function DocumentsPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleDelete(doc.id)}
+                    onClick={() => setDeleteTargetId(doc.id)}
                     className={`rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-400 transition-colors duration-150 hover:border-red-500/40 hover:text-red-400 ${pressScale}`}
                   >
                     {t.documents.deleteBtn}
@@ -302,6 +309,11 @@ export default function DocumentsPage() {
 
       <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
       <SectionCompleteModal open={sectionCompleteOpen} onClose={() => setSectionCompleteOpen(false)} />
+      <DeleteConfirmModal
+        open={deleteTargetId !== null}
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
