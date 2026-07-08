@@ -242,6 +242,7 @@ export type Dictionary = {
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
     ];
+    bookBtn: string;
   };
   work: {
     title: string;
@@ -934,6 +935,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Language support", nfz: "Mostly Polish only", pvt: "English, often Russian/Ukrainian" },
         { label: "Coverage", nfz: "Broad, but limited choice of doctors", pvt: "Choose your own clinic & doctor" },
       ],
+      bookBtn: "Book appointment",
     },
     work: {
       title: "Work in Poland 🇵🇱",
@@ -1691,6 +1693,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Языковая поддержка", nfz: "В основном только польский", pvt: "Английский, часто русский/украинский" },
         { label: "Охват", nfz: "Широкий, но ограниченный выбор врачей", pvt: "Выбирайте свою клинику и врача" },
       ],
+      bookBtn: "Записаться",
     },
     work: {
       title: "Работа в Польше 🇵🇱",
@@ -2448,6 +2451,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Til qo'llab-quvvatlashi", nfz: "Asosan faqat polyak tilida", pvt: "Ingliz, ko'pincha rus/ukrain tilida ham" },
         { label: "Qamrov", nfz: "Keng, ammo shifokor tanlovi cheklangan", pvt: "O'zingiz klinika va shifokorni tanlaysiz" },
       ],
+      bookBtn: "Qabulga yozilish",
     },
     work: {
       title: "Polshada ish 🇵🇱",
@@ -3202,6 +3206,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Dil desteği", nfz: "Genellikle sadece Lehçe", pvt: "İngilizce, sık sık Rusça/Ukraynaca" },
         { label: "Kapsam", nfz: "Geniş ama sınırlı doktor seçimi", pvt: "Kendi kliniğinizi ve doktorunuzu seçin" },
       ],
+      bookBtn: "Randevu al",
     },
     work: {
       title: "Polonya'da İş 🇵🇱",
@@ -3956,6 +3961,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Дастгирии забонӣ", nfz: "Асосан танҳо бо забони полякӣ", pvt: "Англисӣ, аксар вақт русӣ/украинӣ" },
         { label: "Фарогирӣ", nfz: "Васеъ, вале интихоби духтур маҳдуд", pvt: "Клиника ва духтуратонро худатон интихоб кунед" },
       ],
+      bookBtn: "Навбат гирифтан",
     },
     work: {
       title: "Кор дар Полша 🇵🇱",
