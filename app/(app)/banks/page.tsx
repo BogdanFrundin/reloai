@@ -24,7 +24,7 @@ export default function BanksPage() {
         {BANKS.map((bank, index) => (
           <Reveal key={bank.key} delay={index * 50}>
             <div
-              className={`relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm ${
+              className={`group relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
                 bank.badge
                   ? "border-accent/50 bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
                   : "border-white/10 bg-white/[0.03]"
@@ -35,7 +35,10 @@ export default function BanksPage() {
                   {t.banks.bestForExpats}
                 </span>
               )}
-              <p className="text-lg font-semibold text-white">{bank.name}</p>
+              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
+                {bank.name.slice(0, 2).toUpperCase()}
+              </span>
+              <p className="mt-3 text-lg font-semibold text-white">{bank.name}</p>
               <div className="mt-2">
                 <StarRating rating={bank.rating} />
               </div>
@@ -53,7 +56,7 @@ export default function BanksPage() {
                 href={bank.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center justify-center rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+                className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
               >
                 {t.banks.openAccount}
               </Link>
