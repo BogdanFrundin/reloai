@@ -174,6 +174,10 @@ export type Dictionary = {
     searchPlaceholder: string;
     upgrade: string;
     openMenuAria: string;
+    avatarAria: string;
+    profileMenuProfile: string;
+    profileMenuSettings: string;
+    profileMenuLogout: string;
   };
   sidebar: {
     documents: string;
@@ -850,6 +854,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Search documents, tasks...",
       upgrade: "Upgrade",
       openMenuAria: "Open menu",
+      avatarAria: "Open profile menu",
+      profileMenuProfile: "👤 Profile",
+      profileMenuSettings: "⚙️ Settings",
+      profileMenuLogout: "🚪 Log out",
     },
     sidebar: {
       documents: "Documents",
@@ -1636,6 +1644,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Поиск документов, задач...",
       upgrade: "Улучшить",
       openMenuAria: "Открыть меню",
+      avatarAria: "Открыть меню профиля",
+      profileMenuProfile: "👤 Профиль",
+      profileMenuSettings: "⚙️ Настройки",
+      profileMenuLogout: "🚪 Выйти",
     },
     sidebar: {
       documents: "Документы",
@@ -2422,6 +2434,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Hujjatlar, vazifalarni qidirish...",
       upgrade: "Yaxshilash",
       openMenuAria: "Menyuni ochish",
+      avatarAria: "Profil menyusini ochish",
+      profileMenuProfile: "👤 Profil",
+      profileMenuSettings: "⚙️ Sozlamalar",
+      profileMenuLogout: "🚪 Chiqish",
     },
     sidebar: {
       documents: "Hujjatlar",
@@ -3205,6 +3221,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Belge, görev ara...",
       upgrade: "Yükselt",
       openMenuAria: "Menüyü aç",
+      avatarAria: "Profil menüsünü aç",
+      profileMenuProfile: "👤 Profil",
+      profileMenuSettings: "⚙️ Ayarlar",
+      profileMenuLogout: "🚪 Çıkış yap",
     },
     sidebar: {
       documents: "Belgeler",
@@ -3988,6 +4008,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Ҷустуҷӯи ҳуҷҷатҳо, вазифаҳо...",
       upgrade: "Беҳтар кардан",
       openMenuAria: "Кушодани меню",
+      avatarAria: "Кушодани менюи профил",
+      profileMenuProfile: "👤 Профил",
+      profileMenuSettings: "⚙️ Танзимот",
+      profileMenuLogout: "🚪 Баромадан",
     },
     sidebar: {
       documents: "Ҳуҷҷатҳо",
