@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
 import { useLanguage } from "../../_components/LanguageProvider";
@@ -26,6 +27,10 @@ function MetroBadge({ label }: { label: string }) {
 
 export default function HousingPage() {
   const { t } = useLanguage();
+  const [showAll, setShowAll] = useState(false);
+
+  const featuredDistricts = WARSAW_DISTRICTS.slice(0, 4);
+  const allDistricts = showAll ? WARSAW_DISTRICTS : featuredDistricts;
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -35,9 +40,18 @@ export default function HousingPage() {
         <h2 className="text-xl font-bold tracking-tight text-white">{t.housing.rentMarket}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.housing.rentMarketSub}</p>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {WARSAW_DISTRICTS.map((district, index) => (
+          {allDistricts.map((district, index) => (
             <Reveal key={district.id} delay={index * 25}>
-              <div className={`rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm ${cardHover}`}>
+              <div className={`relative rounded-2xl border backdrop-blur-sm transition-[border-color,background-color] duration-200 p-5 ${
+                district.recommended
+                  ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]"
+                  : `border-white/10 bg-white/[0.03] ${cardHover}`
+              }`}>
+                {district.recommended && (
+                  <span className="absolute -top-3 left-5 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
+                    Рекомендуем
+                  </span>
+                )}
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm font-semibold text-white">{district.name}</p>
                   {district.metro && <MetroBadge label={t.housing.metroAccess} />}
@@ -45,6 +59,9 @@ export default function HousingPage() {
                 <p className="mt-2 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
                   {district.priceMin.toLocaleString()}–{district.priceMax.toLocaleString()} PLN
                 </p>
+                {district.description && (
+                  <p className="mt-2 text-sm text-slate-300">{district.description}</p>
+                )}
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-slate-400">
                     {t.housing.distanceToCenter.replace("{km}", String(district.distanceKm))}
@@ -63,6 +80,15 @@ export default function HousingPage() {
             </Reveal>
           ))}
         </div>
+        {!showAll && (
+          <button
+            onClick={() => setShowAll(true)}
+            className={`mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+          >
+            Показать все районы
+            <span aria-hidden>→</span>
+          </button>
+        )}
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
