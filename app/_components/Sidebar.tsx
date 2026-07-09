@@ -130,7 +130,7 @@ export default function Sidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0a0c] backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:static lg:z-auto lg:translate-x-0 lg:bg-black/40 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0a0c] backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 lg:self-start lg:bg-black/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
