@@ -20,11 +20,11 @@ function buildPersonalizedGreeting(
   if (!profile?.goal || !profile?.country) return t.aiChat.welcome;
 
   const goalLabel = (t.onboarding.goalOptions as Record<string, string>)[profile.goal] ?? profile.goal;
-  const recommended = profile.route?.recommended;
+  const selectedRouteName = profile.selected_route?.name;
 
   const summary = t.aiChat.personalizedGreeting.replace("{country}", profile.country).replace("{goal}", goalLabel);
 
-  return recommended ? `${summary} ${t.aiChat.personalizedRecommendation.replace("{pathway}", recommended)}` : summary;
+  return selectedRouteName ? `${summary} ${t.aiChat.personalizedRecommendation.replace("{pathway}", selectedRouteName)}` : summary;
 }
 
 export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
@@ -103,7 +103,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
                 goal: profile.goal,
                 jobOffer: profile.job_offer,
                 alreadyAdmitted: profile.already_admitted,
-                recommendedPathway: profile.route?.recommended ?? null,
+                selectedRoute: profile.selected_route?.name ?? null,
               }
             : null,
         }),

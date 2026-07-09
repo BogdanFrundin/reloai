@@ -203,21 +203,7 @@ export default function OnboardingPage() {
 
       await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
 
-      try {
-        const response = await fetch("/api/route", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(finalAnswers),
-        });
-        if (response.ok) {
-          const route = await response.json();
-          await supabase.from("profiles").update({ route }).eq("id", user.id);
-        }
-      } catch {
-        // Route generation failing shouldn't block the user from reaching the dashboard.
-      }
-
-      router.push("/dashboard");
+      router.push("/onboarding/results");
       return;
     }
 

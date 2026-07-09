@@ -15,7 +15,8 @@ type ProfileContext = {
   goal?: string | null;
   jobOffer?: string | null;
   alreadyAdmitted?: string | null;
-  recommendedPathway?: string | null;
+  selectedRoute?: string | null;
+  checklistStep?: string | null;
 } | null;
 
 function buildProfileContext(profile: ProfileContext): string {
@@ -33,8 +34,11 @@ function buildProfileContext(profile: ProfileContext): string {
     if (profile.goal === "study" && profile.alreadyAdmitted) goalText += ` (already admitted: ${profile.alreadyAdmitted})`;
     parts.push(goalText);
   }
-  if (profile.recommendedPathway) {
-    parts.push(`their recommended relocation pathway is "${profile.recommendedPathway}"`);
+  if (profile.selectedRoute) {
+    parts.push(`chose the "${profile.selectedRoute}" relocation route`);
+  }
+  if (profile.checklistStep) {
+    parts.push(`is currently on checklist step: ${profile.checklistStep}`);
   }
 
   if (parts.length === 0) return "";

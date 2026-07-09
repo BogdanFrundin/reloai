@@ -35,6 +35,11 @@ export function isEuCountry(code: string | null | undefined): boolean {
   return !!code && EU_COUNTRY_CODES.has(code);
 }
 
+export function getFlagEmoji(code: string): string {
+  if (!/^[A-Za-z]{2}$/.test(code)) return "🌍";
+  return [...code.toUpperCase()].map((char) => String.fromCodePoint(127397 + char.charCodeAt(0))).join("");
+}
+
 const nameCache = new Map<string, Map<string, string>>();
 
 export function getCountryName(code: string, lang: string): string {
@@ -57,8 +62,8 @@ export function getCountryName(code: string, lang: string): string {
   return name;
 }
 
-export function getCountryList(lang: string): { code: string; name: string }[] {
-  return COUNTRY_CODES.map((code) => ({ code, name: getCountryName(code, lang) })).sort((a, b) =>
-    a.name.localeCompare(b.name, lang),
+export function getCountryList(lang: string): { code: string; name: string; flag: string }[] {
+  return COUNTRY_CODES.map((code) => ({ code, name: getCountryName(code, lang), flag: getFlagEmoji(code) })).sort(
+    (a, b) => a.name.localeCompare(b.name, lang),
   );
 }

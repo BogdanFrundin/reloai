@@ -7,7 +7,6 @@ import Reveal from "./Reveal";
 import AiChatPanel from "./AiChatPanel";
 import WelcomeToast from "./WelcomeToast";
 import RegisterPromptModal from "./RegisterPromptModal";
-import RelocationOptions from "./RelocationOptions";
 import { useAuth } from "./AuthProvider";
 import { STEPS_COMPLETED_ON_ONBOARDING, buildChecklistSteps } from "../_lib/checklist";
 import { supabase } from "../../lib/supabase";
@@ -37,9 +36,18 @@ export default function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   const country = profile?.country || searchParams.get("country") || "Poland";
   const checklistSteps = buildChecklistSteps(t, country, profile?.goal, profile?.citizenship);
+
+  useEffect(() => {
+    if (searchParams.get("welcome") === "1") {
+      setShowWelcome(true);
+      const timer = setTimeout(() => setShowWelcome(false), 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!user) {
@@ -140,7 +148,18 @@ export default function DashboardContent() {
             </div>
           </Reveal>
 
-          <RelocationOptions route={profile?.route} labels={t.dashboard.route} />
+          {showWelcome && profile?.selected_route && (
+            <Reveal>
+              <div className="mt-8 rounded-2xl border border-accent/30 bg-accent/[0.06] p-6 shadow-[0_0_40px_-14px_var(--accent)]">
+                <p className="font-semibold text-accent-bright">✓ Welcome!</p>
+                <h2 className="mt-2 text-xl font-bold text-white">Your relocation plan is ready</h2>
+                <p className="mt-2 text-sm text-slate-300">
+                  We've selected <span className="font-semibold">{profile.selected_route.name}</span> as your recommended route based on your profile.
+                </p>
+                <p className="mt-1 text-xs text-slate-400">{profile.selected_route.description}</p>
+              </div>
+            </Reveal>
+          )}
 
           {!loading && checklistSteps.length > 0 && (
             <h2 className="mt-8 text-lg font-semibold text-white">{t.dashboard.route.checklistHeading}</h2>

@@ -415,6 +415,21 @@ export type Dictionary = {
       familyReunification: string;
       other: string;
     };
+    results: {
+      heading: string;
+      loading: string;
+      selectButton: string;
+      recommended: string;
+      speedFast: string;
+      speedMedium: string;
+      speedSlow: string;
+      difficultyEasy: string;
+      difficultyMedium: string;
+      difficultyHard: string;
+      approvalRate: string;
+      timeline: string;
+      cost: string;
+    };
   };
 };
 
@@ -1087,6 +1102,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
         familyReunification: "Family reunification",
         other: "Other",
       },
+      results: {
+        heading: "We found 3 relocation routes for you",
+        loading: "Generating your personalized routes...",
+        selectButton: "Choose this route",
+        recommended: "Recommended",
+        speedFast: "Fast",
+        speedMedium: "Medium",
+        speedSlow: "Slow",
+        difficultyEasy: "Easy",
+        difficultyMedium: "Medium",
+        difficultyHard: "Hard",
+        approvalRate: "Approval rate",
+        timeline: "Timeline",
+        cost: "Cost",
+      },
     },
   },
   ru: {
@@ -1756,6 +1786,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
         digitalNomad: "Цифровой кочевник",
         familyReunification: "Воссоединение семьи",
         other: "Другое",
+      },
+      results: {
+        heading: "Мы нашли 3 маршрута переезда для вас",
+        loading: "Генерируем ваши персональные маршруты...",
+        selectButton: "Выбрать этот маршрут",
+        recommended: "Рекомендуем",
+        speedFast: "Быстрый",
+        speedMedium: "Средний",
+        speedSlow: "Долгий",
+        difficultyEasy: "Простой",
+        difficultyMedium: "Средний",
+        difficultyHard: "Сложный",
+        approvalRate: "Вероятность одобрения",
+        timeline: "Сроки",
+        cost: "Стоимость",
       },
     },
   },
@@ -2427,6 +2472,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
         familyReunification: "Oilaviy birlashuv",
         other: "Boshqa",
       },
+      results: {
+        heading: "Biz siz uchun 3 ta ko'chish mararhalarini topdik",
+        loading: "Sizning shaxsiy mararhalarini yaratmoqdamiz...",
+        selectButton: "Bu mararhanni tanlang",
+        recommended: "Tafsiya qilingan",
+        speedFast: "Tezkor",
+        speedMedium: "O'rta",
+        speedSlow: "Sekinroq",
+        difficultyEasy: "Oson",
+        difficultyMedium: "O'rta",
+        difficultyHard: "Qiyin",
+        approvalRate: "Tasdiqlanish ehtimoli",
+        timeline: "Muddatlar",
+        cost: "Narx",
+      },
     },
   },
   tr: {
@@ -3096,6 +3156,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
         familyReunification: "Aile birleşimi",
         other: "Diğer",
       },
+      results: {
+        heading: "Sizin için 3 taşınma yolu bulduk",
+        loading: "Kişiselleştirilmiş yollarınız oluşturuluyor...",
+        selectButton: "Bu yolu seçin",
+        recommended: "Önerilen",
+        speedFast: "Hızlı",
+        speedMedium: "Orta",
+        speedSlow: "Yavaş",
+        difficultyEasy: "Kolay",
+        difficultyMedium: "Orta",
+        difficultyHard: "Zor",
+        approvalRate: "Onay oranı",
+        timeline: "Zaman dilimi",
+        cost: "Maliyet",
+      },
     },
   },
   tg: {
@@ -3764,6 +3839,21 @@ export const dictionaries: Record<Lang, Dictionary> = {
         digitalNomad: "Бодиянишини рақамӣ",
         familyReunification: "Муттаҳидшавии оила",
         other: "Дигар",
+      },
+      results: {
+        heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем",
+        loading: "Роҳҳои шахсии шумо сохта мешаванд...",
+        selectButton: "Ин роҳро интихоб кунед",
+        recommended: "Тавсияшуда",
+        speedFast: "Тезкор",
+        speedMedium: "Миёнавӣ",
+        speedSlow: "Суст",
+        difficultyEasy: "Осон",
+        difficultyMedium: "Миёнавӣ",
+        difficultyHard: "Мушкил",
+        approvalRate: "Баҳри таҳқиқ",
+        timeline: "Мӯҳлат",
+        cost: "Нарх",
       },
     },
   },

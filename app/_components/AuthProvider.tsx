@@ -3,7 +3,7 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { supabase } from "../../lib/supabase";
-import type { RouteResult } from "../api/route/route";
+import type { Route, RouteEngineResult } from "../api/route/route";
 
 export type Profile = {
   id: string;
@@ -17,7 +17,8 @@ export type Profile = {
   job_offer: string | null;
   already_admitted: string | null;
   onboarding_skipped: boolean | null;
-  route: RouteResult | null;
+  route: RouteEngineResult | null;
+  selected_route: Route | null;
   plan: string | null;
   language: string | null;
   created_at: string;

@@ -40,22 +40,31 @@ export default function SearchableCountrySelect({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const showFlagPrefix = !open && !!selected;
+
   return (
     <div className="relative" ref={containerRef}>
-      <input
-        type="text"
-        value={open ? query : (selected?.name ?? "")}
-        onChange={(event) => {
-          setQuery(event.target.value);
-          if (!open) setOpen(true);
-        }}
-        onFocus={() => {
-          setQuery("");
-          setOpen(true);
-        }}
-        placeholder={placeholder}
-        className={inputCls}
-      />
+      <div className="relative">
+        {showFlagPrefix && (
+          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-base leading-none">
+            {selected.flag}
+          </span>
+        )}
+        <input
+          type="text"
+          value={open ? query : (selected?.name ?? "")}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            if (!open) setOpen(true);
+          }}
+          onFocus={() => {
+            setQuery("");
+            setOpen(true);
+          }}
+          placeholder={placeholder}
+          className={`${inputCls} ${showFlagPrefix ? "pl-10" : ""}`}
+        />
+      </div>
       {open && (
         <ul
           role="listbox"
@@ -75,10 +84,11 @@ export default function SearchableCountrySelect({
                   setQuery("");
                   setOpen(false);
                 }}
-                className={`flex w-full items-center px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
+                className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
                   country.code === value ? "font-semibold text-accent-bright" : "text-slate-300"
                 }`}
               >
+                <span className="text-base leading-none">{country.flag}</span>
                 {country.name}
               </button>
             </li>
