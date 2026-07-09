@@ -6,6 +6,7 @@ import { useState } from "react";
 import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
 import ToggleSwitch from "../../_components/ToggleSwitch";
+import LogoutConfirmModal from "../../_components/LogoutConfirmModal";
 import { useLanguage } from "../../_components/LanguageProvider";
 import { useAuth } from "../../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../../_lib/i18n";
@@ -26,6 +27,7 @@ export default function ProfilePage() {
     product: false,
   });
   const [savingLang, setSavingLang] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   const initials = getInitials(profile?.name, user?.email);
   const planLabel = profile?.plan
@@ -47,7 +49,8 @@ export default function ProfilePage() {
     setSavingLang(false);
   }
 
-  async function handleLogOut() {
+  async function confirmLogOut() {
+    setLogoutConfirmOpen(false);
     await signOut();
     router.push("/login");
   }
@@ -136,13 +139,19 @@ export default function ProfilePage() {
         <Reveal delay={150}>
           <button
             type="button"
-            onClick={handleLogOut}
+            onClick={() => setLogoutConfirmOpen(true)}
             className={`flex w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
           >
             {p.logOut}
           </button>
         </Reveal>
       </div>
+
+      <LogoutConfirmModal
+        open={logoutConfirmOpen}
+        onClose={() => setLogoutConfirmOpen(false)}
+        onConfirm={confirmLogOut}
+      />
     </div>
   );
 }

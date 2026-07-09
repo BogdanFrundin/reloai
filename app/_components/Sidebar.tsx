@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
 import { useAuth } from "./AuthProvider";
+import LogoutConfirmModal from "./LogoutConfirmModal";
 
 const ICON_PROPS = {
   className: "h-5 w-5",
@@ -113,8 +114,10 @@ export default function Sidebar({
 
   const isOtherActive = OTHER_ORDER.some((key) => pathname === HREFS[key]);
   const [otherOpen, setOtherOpen] = useState(isOtherActive);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
-  async function handleLogOut() {
+  async function confirmLogOut() {
+    setLogoutConfirmOpen(false);
     onClose?.();
     await signOut();
     router.push("/login");
@@ -233,7 +236,7 @@ export default function Sidebar({
           </Link>
           <button
             type="button"
-            onClick={handleLogOut}
+            onClick={() => setLogoutConfirmOpen(true)}
             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
           >
             {LOGOUT_ICON}
@@ -241,6 +244,12 @@ export default function Sidebar({
           </button>
         </div>
       </aside>
+
+      <LogoutConfirmModal
+        open={logoutConfirmOpen}
+        onClose={() => setLogoutConfirmOpen(false)}
+        onConfirm={confirmLogOut}
+      />
     </>
   );
 }

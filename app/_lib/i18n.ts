@@ -20,6 +20,12 @@ export type Dictionary = {
     login: string;
     getStarted: string;
   };
+  common: {
+    cancelBtn: string;
+    logoutBtn: string;
+    logoutConfirmTitle: string;
+    logoutConfirmBody: string;
+  };
   hero: {
     badge: string;
     headline1: string;
@@ -479,6 +485,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Reviews",
       login: "Log in",
       getStarted: "Get Started",
+    },
+    common: {
+      cancelBtn: "Cancel",
+      logoutBtn: "Log out",
+      logoutConfirmTitle: "Log out of your account?",
+      logoutConfirmBody: "Are you sure you want to log out?",
     },
     hero: {
       badge: "Your AI relocation guide",
@@ -1270,6 +1282,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       login: "Войти",
       getStarted: "Начать",
     },
+    common: {
+      cancelBtn: "Отмена",
+      logoutBtn: "Выйти",
+      logoutConfirmTitle: "Выйти из аккаунта?",
+      logoutConfirmBody: "Вы уверены, что хотите выйти?",
+    },
     hero: {
       badge: "Ваш AI-гид по переезду",
       headline1: "Переезд в Европу",
@@ -2060,6 +2078,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       login: "Kirish",
       getStarted: "Boshlash",
     },
+    common: {
+      cancelBtn: "Bekor qilish",
+      logoutBtn: "Chiqish",
+      logoutConfirmTitle: "Hisobdan chiqasizmi?",
+      logoutConfirmBody: "Chiqishga ishonchingiz komilmi?",
+    },
     hero: {
       badge: "Sizning AI ko'chish yordamchingiz",
       headline1: "Yevropaga ko'chish",
@@ -2848,6 +2872,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       login: "Giriş yap",
       getStarted: "Başla",
     },
+    common: {
+      cancelBtn: "İptal",
+      logoutBtn: "Çıkış yap",
+      logoutConfirmTitle: "Hesaptan çıkış yapılsın mı?",
+      logoutConfirmBody: "Çıkış yapmak istediğinizden emin misiniz?",
+    },
     hero: {
       badge: "Yapay zeka destekli taşınma rehberiniz",
       headline1: "Avrupa'ya taşınmak",
@@ -3634,6 +3664,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Шарҳҳо",
       login: "Воридшавӣ",
       getStarted: "Сар кардан",
+    },
+    common: {
+      cancelBtn: "Бекор кардан",
+      logoutBtn: "Баромадан",
+      logoutConfirmTitle: "Аз ҳисоб мебароед?",
+      logoutConfirmBody: "Оё мутмаин ҳастед, ки мехоҳед бароед?",
     },
     hero: {
       badge: "Роҳнамои сунъии аз ҷониби AI барои кӯчиш",

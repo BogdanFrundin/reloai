@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
+import LogoutConfirmModal from "./LogoutConfirmModal";
 
 export default function ProfileAvatar() {
   const { user, profile, signOut } = useAuth();
   const { t } = useLanguage();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   if (!user) return null;
 
@@ -18,8 +20,8 @@ export default function ProfileAvatar() {
   const initial = name.charAt(0).toUpperCase() || "?";
   const avatarUrl = (user.user_metadata as { avatar_url?: string } | undefined)?.avatar_url;
 
-  async function handleLogOut() {
-    setMenuOpen(false);
+  async function confirmLogOut() {
+    setLogoutConfirmOpen(false);
     await signOut();
     router.push("/login");
   }
@@ -68,7 +70,10 @@ export default function ProfileAvatar() {
             <button
               type="button"
               role="menuitem"
-              onClick={handleLogOut}
+              onClick={() => {
+                setMenuOpen(false);
+                setLogoutConfirmOpen(true);
+              }}
               className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
               {t.topbar.profileMenuLogout}
@@ -76,6 +81,12 @@ export default function ProfileAvatar() {
           </div>
         </>
       )}
+
+      <LogoutConfirmModal
+        open={logoutConfirmOpen}
+        onClose={() => setLogoutConfirmOpen(false)}
+        onConfirm={confirmLogOut}
+      />
     </div>
   );
 }
