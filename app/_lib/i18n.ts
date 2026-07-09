@@ -221,6 +221,10 @@ export type Dictionary = {
     visitSite: string;
     websiteDescs: { olx: string; otodom: string; gratka: string };
     tips: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
+    topDistrictDescs: { mokotow: string; ursynow: string; wola: string; zoliborz: string };
+    bestValueBadge: string;
+    showAllDistricts: string;
+    showFewerDistricts: string;
   };
   banks: {
     title: string;
@@ -922,6 +926,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
           body: "Expect a security deposit (1–2 months' rent) plus czynsz — building maintenance fees — billed separately from rent and utilities.",
         },
       ],
+      topDistrictDescs: {
+        mokotow: "Best balance of price and quality. Quiet, green, great infrastructure, metro access.",
+        ursynow: "The most affordable comfortable district. Metro, parks, family-friendly atmosphere.",
+        wola: "Modern district with lots of new developments, fast-growing, close to the center.",
+        zoliborz: "Cozy, safe, a favorite among expats. Excellent atmosphere.",
+      },
+      bestValueBadge: "Best value",
+      showAllDistricts: "Show all districts →",
+      showFewerDistricts: "Show fewer districts",
     },
     banks: {
       title: "Banks in Poland 🇵🇱",
@@ -1698,6 +1711,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
           body: "Ожидайте залог (1–2 месячные ставки) плюс czynsz — эксплуатационные расходы дома, которые оплачиваются отдельно от аренды и коммунальных услуг.",
         },
       ],
+      topDistrictDescs: {
+        mokotow: "Лучший баланс цены и качества. Тихий, зелёный, хорошая инфраструктура, метро.",
+        ursynow: "Самый доступный комфортный район. Метро, парки, семейная атмосфера.",
+        wola: "Современный район, много новостроек, быстро развивается, близко к центру.",
+        zoliborz: "Уютный, безопасный, любимый среди экспатов. Отличная атмосфера.",
+      },
+      bestValueBadge: "Рекомендуем",
+      showAllDistricts: "Показать все районы →",
+      showFewerDistricts: "Свернуть список районов",
     },
     banks: {
       title: "Банки в Польше 🇵🇱",
@@ -2474,6 +2496,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
           body: "Kafolat depoziti (1–2 oylik ijara puli), shuningdek czynsz — bino uchun texnik xizmat haqi — ijaradan va kommunal to'lovlardan alohida hisoblanishini kutib turing.",
         },
       ],
+      topDistrictDescs: {
+        mokotow: "Narx va sifatning eng yaxshi muvozanati. Tinch, ko'kalamzorlashtirilgan, infratuzilmasi yaxshi, metro bor.",
+        ursynow: "Eng arzon qulay tuman. Metro, parklar, oilaviy muhit.",
+        wola: "Zamonaviy tuman, yangi qurilishlar ko'p, tez rivojlanmoqda, markazga yaqin.",
+        zoliborz: "Qulay, xavfsiz, chet elliklar orasida sevimli. Ajoyib muhit.",
+      },
+      bestValueBadge: "Eng foydali",
+      showAllDistricts: "Barcha tumanlarni ko'rsatish →",
+      showFewerDistricts: "Ro'yxatni yig'ish",
     },
     banks: {
       title: "Polshadagi banklar 🇵🇱",
@@ -3247,6 +3278,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
           body: "Kiraya ek olarak bir güvenlik depozitosu (1–2 aylık kira) ve kira ile faturalardan ayrı tahsil edilen czynsz — bina bakım ücretleri — bekleyin.",
         },
       ],
+      topDistrictDescs: {
+        mokotow: "Fiyat ve kalite açısından en iyi denge. Sakin, yeşil, altyapısı iyi, metroya yakın.",
+        ursynow: "En uygun fiyatlı konforlu ilçe. Metro, parklar, aile dostu bir atmosfer.",
+        wola: "Modern bir ilçe, çok sayıda yeni inşaat, hızla gelişiyor, merkeze yakın.",
+        zoliborz: "Rahat, güvenli, göçmenler arasında favori. Mükemmel bir atmosfer.",
+      },
+      bestValueBadge: "En iyi değer",
+      showAllDistricts: "Tüm ilçeleri göster →",
+      showFewerDistricts: "Listeyi daralt",
     },
     banks: {
       title: "Polonya'da Bankalar 🇵🇱",
@@ -4020,6 +4060,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
           body: "Интизор бошед, ки пешпардохти кафолатӣ (иҷораи 1–2 моҳ), инчунин czynsz — ҳаққи нигоҳдории бино — алоҳида аз иҷора ва хизматрасониҳои коммуналӣ ҳисоб карда мешавад.",
         },
       ],
+      topDistrictDescs: {
+        mokotow: "Беҳтарин мувозинати нарх ва сифат. Ором, сербарг, инфрасохтори хуб, метро дорад.",
+        ursynow: "Ноҳияи қулайи арзонтарин. Метро, боғҳо, фазои оилавӣ.",
+        wola: "Ноҳияи муосир, бисёр биноҳои нав, зуд рушдёбанда, наздик ба марказ.",
+        zoliborz: "Форам, бехатар, дар байни муҳоҷирон маҳбуб. Фазои олиҷаноб.",
+      },
+      bestValueBadge: "Тавсия медиҳем",
+      showAllDistricts: "Ҳамаи ноҳияҳоро нишон диҳед →",
+      showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
     },
     banks: {
       title: "Бонкҳо дар Полша 🇵🇱",

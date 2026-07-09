@@ -5,17 +5,17 @@ export type WarsawDistrict = {
   priceMax: number;
   distanceKm: number;
   metro: boolean;
-  description?: string;
   recommended?: boolean;
 };
 
 // Average monthly rent (PLN) for a 1-bedroom apartment, 2025 market data.
 // First 4 are featured (shown by default), rest are available via "Show all" button.
+// Descriptions for the featured 4 live in the i18n dictionary (housing.topDistrictDescs) so they translate.
 export const WARSAW_DISTRICTS: WarsawDistrict[] = [
-  { id: "mokotow", name: "Mokotów", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true, description: "Лучший баланс цены и качества. Тихий, зелёный, хорошая инфраструктура, метро.", recommended: true },
-  { id: "ursynow", name: "Ursynów", priceMin: 3000, priceMax: 3800, distanceKm: 10, metro: true, description: "Самый доступный комфортный район. Метро, парки, семейная атмосфера." },
-  { id: "wola", name: "Wola", priceMin: 3000, priceMax: 4000, distanceKm: 4, metro: true, description: "Современный район, много новостроек, быстро развивается, близко к центру." },
-  { id: "zoliborz", name: "Żoliborz", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true, description: "Уютный, безопасный, любимый среди экспатов. Отличная атмосфера." },
+  { id: "mokotow", name: "Mokotów", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true, recommended: true },
+  { id: "ursynow", name: "Ursynów", priceMin: 3000, priceMax: 3800, distanceKm: 10, metro: true },
+  { id: "wola", name: "Wola", priceMin: 3000, priceMax: 4000, distanceKm: 4, metro: true },
+  { id: "zoliborz", name: "Żoliborz", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true },
 
   { id: "srodmiescie", name: "Śródmieście", priceMin: 4500, priceMax: 6000, distanceKm: 0, metro: true },
   { id: "praga-poludnie", name: "Praga-Południe", priceMin: 2800, priceMax: 3500, distanceKm: 5, metro: false },
