@@ -221,7 +221,7 @@ export type Dictionary = {
     visitSite: string;
     websiteDescs: { olx: string; otodom: string; gratka: string };
     tips: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
-    topDistrictDescs: { mokotow: string; ursynow: string; wola: string; zoliborz: string };
+    topDistrictDescs: { mokotow: string; wola: string; zoliborz: string; "praga-poludnie": string };
     bestValueBadge: string;
     expatsChoiceBadge: string;
     showAllDistricts: string;
@@ -928,10 +928,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       topDistrictDescs: {
-        mokotow: "Best balance of price and quality. Quiet, green, great infrastructure, metro access.",
-        ursynow: "The most affordable comfortable district. Metro, parks, family-friendly atmosphere.",
-        wola: "Modern district with lots of new developments, fast-growing, close to the center.",
-        zoliborz: "Cozy, safe, a favorite among expats. Excellent atmosphere.",
+        mokotow: "Best balance of price and quality. Quiet, green, metro access.",
+        wola: "Modern district with lots of new developments, close to the center.",
+        zoliborz: "Cozy, safe, a favorite among expats.",
+        "praga-poludnie": "Affordable prices, actively developing, good transport links.",
       },
       bestValueBadge: "Best value",
       expatsChoiceBadge: "Expats' choice",
@@ -1714,10 +1714,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       topDistrictDescs: {
-        mokotow: "Лучший баланс цены и качества. Тихий, зелёный, хорошая инфраструктура, метро.",
-        ursynow: "Самый доступный комфортный район. Метро, парки, семейная атмосфера.",
-        wola: "Современный район, много новостроек, быстро развивается, близко к центру.",
-        zoliborz: "Уютный, безопасный, любимый среди экспатов. Отличная атмосфера.",
+        mokotow: "Лучший баланс цены и качества. Тихий, зелёный, метро.",
+        wola: "Современный район, много новостроек, близко к центру.",
+        zoliborz: "Уютный, безопасный, любимый среди экспатов.",
+        "praga-poludnie": "Доступные цены, активно развивается, хорошая транспортная связь.",
       },
       bestValueBadge: "Рекомендуем",
       expatsChoiceBadge: "Выбор экспатов",
@@ -2500,10 +2500,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       topDistrictDescs: {
-        mokotow: "Narx va sifatning eng yaxshi muvozanati. Tinch, ko'kalamzorlashtirilgan, infratuzilmasi yaxshi, metro bor.",
-        ursynow: "Eng arzon qulay tuman. Metro, parklar, oilaviy muhit.",
-        wola: "Zamonaviy tuman, yangi qurilishlar ko'p, tez rivojlanmoqda, markazga yaqin.",
-        zoliborz: "Qulay, xavfsiz, chet elliklar orasida sevimli. Ajoyib muhit.",
+        mokotow: "Narx va sifatning eng yaxshi muvozanati. Tinch, ko'kalamzorlashtirilgan, metro bor.",
+        wola: "Zamonaviy tuman, yangi qurilishlar ko'p, markazga yaqin.",
+        zoliborz: "Qulay, xavfsiz, chet elliklar orasida sevimli.",
+        "praga-poludnie": "Arzon narxlar, faol rivojlanmoqda, transport aloqasi yaxshi.",
       },
       bestValueBadge: "Eng foydali",
       expatsChoiceBadge: "Chet elliklar tanlovi",
@@ -3283,10 +3283,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       topDistrictDescs: {
-        mokotow: "Fiyat ve kalite açısından en iyi denge. Sakin, yeşil, altyapısı iyi, metroya yakın.",
-        ursynow: "En uygun fiyatlı konforlu ilçe. Metro, parklar, aile dostu bir atmosfer.",
-        wola: "Modern bir ilçe, çok sayıda yeni inşaat, hızla gelişiyor, merkeze yakın.",
-        zoliborz: "Rahat, güvenli, göçmenler arasında favori. Mükemmel bir atmosfer.",
+        mokotow: "Fiyat ve kalite açısından en iyi denge. Sakin, yeşil, metroya yakın.",
+        wola: "Modern bir ilçe, çok sayıda yeni inşaat, merkeze yakın.",
+        zoliborz: "Rahat, güvenli, göçmenler arasında favori.",
+        "praga-poludnie": "Uygun fiyatlar, hızla gelişiyor, ulaşım bağlantısı iyi.",
       },
       bestValueBadge: "En iyi değer",
       expatsChoiceBadge: "Göçmenlerin tercihi",
@@ -4066,10 +4066,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       topDistrictDescs: {
-        mokotow: "Беҳтарин мувозинати нарх ва сифат. Ором, сербарг, инфрасохтори хуб, метро дорад.",
-        ursynow: "Ноҳияи қулайи арзонтарин. Метро, боғҳо, фазои оилавӣ.",
-        wola: "Ноҳияи муосир, бисёр биноҳои нав, зуд рушдёбанда, наздик ба марказ.",
-        zoliborz: "Форам, бехатар, дар байни муҳоҷирон маҳбуб. Фазои олиҷаноб.",
+        mokotow: "Беҳтарин мувозинати нарх ва сифат. Ором, сербарг, метро дорад.",
+        wola: "Ноҳияи муосир, бисёр биноҳои нав, наздик ба марказ.",
+        zoliborz: "Форам, бехатар, дар байни муҳоҷирон маҳбуб.",
+        "praga-poludnie": "Нархи дастрас, фаъолона рушдёбанда, робитаи нақлиётии хуб.",
       },
       bestValueBadge: "Тавсия медиҳем",
       expatsChoiceBadge: "Интихоби муҳоҷирон",

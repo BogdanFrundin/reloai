@@ -13,12 +13,12 @@ export type WarsawDistrict = {
 // Descriptions for the featured 4 live in the i18n dictionary (housing.topDistrictDescs) so they translate.
 export const WARSAW_DISTRICTS: WarsawDistrict[] = [
   { id: "mokotow", name: "Mokotów", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true, recommended: true },
-  { id: "ursynow", name: "Ursynów", priceMin: 3000, priceMax: 3800, distanceKm: 10, metro: true },
   { id: "wola", name: "Wola", priceMin: 3000, priceMax: 4000, distanceKm: 4, metro: true },
   { id: "zoliborz", name: "Żoliborz", priceMin: 3500, priceMax: 4500, distanceKm: 5, metro: true },
+  { id: "praga-poludnie", name: "Praga-Południe", priceMin: 2800, priceMax: 3500, distanceKm: 5, metro: false },
 
   { id: "srodmiescie", name: "Śródmieście", priceMin: 4500, priceMax: 6000, distanceKm: 0, metro: true },
-  { id: "praga-poludnie", name: "Praga-Południe", priceMin: 2800, priceMax: 3500, distanceKm: 5, metro: false },
+  { id: "ursynow", name: "Ursynów", priceMin: 3000, priceMax: 3800, distanceKm: 10, metro: true },
   { id: "praga-polnoc", name: "Praga-Północ", priceMin: 2500, priceMax: 3200, distanceKm: 3, metro: true },
   { id: "bemowo", name: "Bemowo", priceMin: 2800, priceMax: 3500, distanceKm: 9, metro: true },
   { id: "bielany", name: "Bielany", priceMin: 2800, priceMax: 3500, distanceKm: 8, metro: true },
