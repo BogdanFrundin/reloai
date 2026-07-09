@@ -275,17 +275,24 @@ export default function Countries() {
                       {/* CTA — always visible */}
                       <Link
                         href={ctaHref}
-                        className="inline-flex w-fit items-center gap-2.5 rounded-full text-sm font-semibold text-white"
-                        style={{
-                          padding: "10px 22px",
-                          background: `rgba(${r},${g},${b},0.2)`,
-                          border: `1px solid rgba(${r},${g},${b},0.45)`,
-                          backdropFilter: "blur(12px)",
-                          boxShadow: `0 0 24px rgba(${r},${g},${b},0.22)`,
-                        }}
+                        className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-[var(--cta-border)] bg-[var(--cta-bg)] text-sm font-semibold text-white shadow-[var(--cta-shadow)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:border-accent-bright hover:bg-accent-bright hover:shadow-[0_0_28px_-6px_var(--accent-bright)]"
+                        style={
+                          {
+                            padding: "10px 22px",
+                            backdropFilter: "blur(12px)",
+                            "--cta-bg": `rgba(${r},${g},${b},0.2)`,
+                            "--cta-border": `rgba(${r},${g},${b},0.45)`,
+                            "--cta-shadow": `0 0 24px rgba(${r},${g},${b},0.22)`,
+                          } as React.CSSProperties
+                        }
                       >
                         Начать
-                        <span aria-hidden>→</span>
+                        <span
+                          aria-hidden
+                          className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
                       </Link>
                     </div>
                   </div>
