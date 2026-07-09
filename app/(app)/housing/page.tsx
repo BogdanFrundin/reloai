@@ -5,7 +5,7 @@ import { useState } from "react";
 import PageHeader from "../../_components/PageHeader";
 import Reveal from "../../_components/Reveal";
 import { useLanguage } from "../../_components/LanguageProvider";
-import { cardHover, pressScale } from "../../_lib/motion";
+import { pressScale } from "../../_lib/motion";
 import { WARSAW_DISTRICTS, type WarsawDistrict } from "../../_lib/housingDistricts";
 import type { Dictionary } from "../../_lib/i18n";
 
@@ -31,14 +31,14 @@ function DistrictCard({ district, t }: { district: WarsawDistrict; t: Dictionary
 
   return (
     <div
-      className={`relative rounded-2xl border p-5 backdrop-blur-sm transition-[border-color,background-color] duration-200 ${
+      className={`relative rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/60 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
         district.recommended
           ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]"
-          : `border-white/10 bg-white/[0.03] ${cardHover}`
+          : "border-white/10 bg-white/[0.03]"
       }`}
     >
       {district.recommended && (
-        <span className="absolute -top-3 left-5 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
+        <span className="absolute -top-3 left-5 z-10 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
           {t.bestValueBadge}
         </span>
       )}
