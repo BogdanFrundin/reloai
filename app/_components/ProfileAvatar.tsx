@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import LogoutConfirmModal from "./LogoutConfirmModal";
+import { PROFILE_ICON, SETTINGS_ICON, LOGOUT_ICON } from "./AccountIcons";
 
 export default function ProfileAvatar() {
   const { user, profile, signOut } = useAuth();
@@ -55,17 +56,19 @@ export default function ProfileAvatar() {
               href="/profile"
               role="menuitem"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
-              {t.topbar.profileMenuProfile}
+              {PROFILE_ICON}
+              <span>{t.topbar.profileMenuProfile}</span>
             </Link>
             <Link
               href="/profile"
               role="menuitem"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
-              {t.topbar.profileMenuSettings}
+              {SETTINGS_ICON}
+              <span>{t.topbar.profileMenuSettings}</span>
             </Link>
             <button
               type="button"
@@ -74,9 +77,10 @@ export default function ProfileAvatar() {
                 setMenuOpen(false);
                 setLogoutConfirmOpen(true);
               }}
-              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"
             >
-              {t.topbar.profileMenuLogout}
+              {LOGOUT_ICON}
+              <span>{t.topbar.profileMenuLogout}</span>
             </button>
           </div>
         </>
