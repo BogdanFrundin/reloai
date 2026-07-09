@@ -4,9 +4,12 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import Reveal from "../../_components/Reveal";
 import RegisterPromptModal from "../../_components/RegisterPromptModal";
+import SectionCompleteModal from "../../_components/SectionCompleteModal";
+import DeleteConfirmModal from "../../_components/DeleteConfirmModal";
 import { pressScale } from "../../_lib/motion";
 import { useLanguage } from "../../_components/LanguageProvider";
 import { useAuth } from "../../_components/AuthProvider";
+import { supabase } from "../../../lib/supabase";
 import type { Dictionary } from "../../_lib/i18n";
 
 type Category = "all" | "passport" | "pesel" | "workPermit" | "insurance" | "bank";
@@ -37,6 +40,11 @@ const INITIAL_DOCUMENTS: DocumentItem[] = [
   { id: "relocation-letter", nameKey: "relocationLetter", category: "workPermit", status: "locked" },
   { id: "tax-residency", nameKey: "taxResidency", category: "bank", status: "locked" },
 ];
+
+function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
+  const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
+  return inCategory.length > 0 && inCategory.every((doc) => doc.status !== "missing");
+}
 
 function UploadZone({
   doc,
@@ -95,11 +103,15 @@ function UploadZone({
 
 export default function DocumentsPage() {
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const demoMode = !user;
   const [activeTab, setActiveTab] = useState<Category>("all");
   const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [sectionCompleteOpen, setSectionCompleteOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
     verified: { label: t.documents.status.verified, className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400" },
@@ -108,10 +120,51 @@ export default function DocumentsPage() {
     locked: { label: t.documents.status.locked, className: "border-accent/30 bg-accent/10 text-accent-bright" },
   };
 
-  function handleUpload(id: string, file: File) {
-    setDocuments((prev) =>
-      prev.map((doc) => (doc.id === id ? { ...doc, status: "pending", fileName: file.name } : doc)),
+  function showAutoCompleteToast() {
+    setToastVisible(true);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  }
+
+  async function syncProgress(docs: DocumentItem[]) {
+    if (!user) return;
+    const relevant = docs.filter((doc) => doc.status !== "locked");
+    const completedCount = relevant.filter((doc) => doc.status !== "missing").length;
+    await supabase.from("progress").upsert(
+      {
+        user_id: user.id,
+        country: profile?.country ?? null,
+        document_type: "documents",
+        steps_completed: completedCount,
+        total_steps: relevant.length,
+      },
+      { onConflict: "user_id,document_type" },
     );
+  }
+
+  function handleUpload(id: string, file: File) {
+    const doc = documents.find((d) => d.id === id);
+    if (!doc) return;
+
+    const next = documents.map((d) => (d.id === id ? { ...d, status: "verified" as Status, fileName: file.name } : d));
+    setDocuments(next);
+
+    if (!isCategoryComplete(documents, doc.category) && isCategoryComplete(next, doc.category)) {
+      setSectionCompleteOpen(true);
+    }
+    showAutoCompleteToast();
+    syncProgress(next);
+  }
+
+  function handleDelete(id: string) {
+    const next = documents.map((d) => (d.id === id ? { ...d, status: "missing" as Status, fileName: undefined } : d));
+    setDocuments(next);
+    syncProgress(next);
+  }
+
+  function confirmDelete() {
+    if (deleteTargetId) handleDelete(deleteTargetId);
+    setDeleteTargetId(null);
   }
 
   const filtered =
@@ -210,6 +263,11 @@ export default function DocumentsPage() {
                     <span
                       className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}
                     >
+                      {doc.status === "verified" && (
+                        <svg className="mr-0.5 -mt-0.5 inline h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                        </svg>
+                      )}
                       {badge.label}
                     </span>
                   </div>
@@ -217,19 +275,45 @@ export default function DocumentsPage() {
                     {doc.fileName ?? t.documents.tabs[doc.category]}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className={`mt-4 self-start rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
-                >
-                  {t.documents.viewBtn}
-                </button>
+                <div className="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    className={`flex-1 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+                  >
+                    {t.documents.viewBtn}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeleteTargetId(doc.id)}
+                    className={`rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-400 transition-colors duration-150 hover:border-red-500/40 hover:text-red-400 ${pressScale}`}
+                  >
+                    {t.documents.deleteBtn}
+                  </button>
+                </div>
               </div>
             </Reveal>
           );
         })}
       </div>
 
+      {toastVisible && (
+        <div className="animate-slide-up fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 shadow-xl shadow-black/40 backdrop-blur-xl">
+          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/20">
+            <svg className="h-4 w-4 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+            </svg>
+          </span>
+          <p className="text-sm font-semibold text-emerald-300">{t.documents.autoCompleteToast}</p>
+        </div>
+      )}
+
       <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
+      <SectionCompleteModal open={sectionCompleteOpen} onClose={() => setSectionCompleteOpen(false)} />
+      <DeleteConfirmModal
+        open={deleteTargetId !== null}
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

@@ -3,19 +3,24 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 
-type MessageFrom = "user" | "ai";
-
-const FROM_ORDER: MessageFrom[] = ["user", "ai", "user", "ai"];
+type MessageFrom = "ai" | "user";
 
 export default function ChatMockup() {
   const { t } = useLanguage();
-  const [visibleCount, setVisibleCount] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
 
-  const conversation = t.chat.messages.map((text, index) => ({
-    from: FROM_ORDER[index],
-    text,
-  }));
+  const conversation: { from: MessageFrom; text: string }[] = [
+    { from: "ai", text: t.heroDemo.question },
+    { from: "user", text: t.heroDemo.userReply },
+    { from: "ai", text: t.heroDemo.response },
+  ];
+
+  const countries = [
+    { flag: "🇵🇱", name: t.countries.list[0].name },
+    { flag: "🇩🇪", name: t.countries.list[1].name },
+    { flag: "🇪🇸", name: t.countries.list[2].name },
+  ];
 
   useEffect(() => {
     if (visibleCount >= conversation.length) return;
@@ -39,6 +44,8 @@ export default function ChatMockup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleCount]);
 
+  const showExtras = visibleCount >= conversation.length;
+
   return (
     <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-6">
       <div className="mb-4 flex items-center gap-3 border-b border-white/10 pb-4">
@@ -57,7 +64,7 @@ export default function ChatMockup() {
         </div>
       </div>
 
-      <div className="flex min-h-[280px] flex-col gap-3">
+      <div className="flex min-h-[240px] flex-col gap-3">
         {conversation.slice(0, visibleCount).map((message, index) => (
           <div
             key={index}
@@ -86,6 +93,31 @@ export default function ChatMockup() {
             </div>
           </div>
         )}
+
+        {showExtras && (
+          <div className="flex flex-wrap gap-2 pt-1 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2 motion-reduce:transition-none">
+            {countries.map((country) => (
+              <span
+                key={country.name}
+                className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent-bright"
+              >
+                <span>{country.flag}</span>
+                {country.name}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
+        <div className="flex-1 truncate rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-slate-500">
+          {t.heroDemo.inputPlaceholder}
+        </div>
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent text-white">
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-6 6m6-6l6 6" />
+          </svg>
+        </span>
       </div>
     </div>
   );

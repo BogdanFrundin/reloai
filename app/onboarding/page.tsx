@@ -319,32 +319,9 @@ export default function OnboardingPage() {
               </span>
               <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
             </Link>
-            <div className="flex items-center gap-3">
-              <p className="text-sm text-slate-500">
-                {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
-              </p>
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={handleSkip}
-                  onMouseEnter={() => setShowSkipTip(true)}
-                  onMouseLeave={() => setShowSkipTip(false)}
-                  onFocus={() => setShowSkipTip(true)}
-                  onBlur={() => setShowSkipTip(false)}
-                  className="text-xs font-medium text-slate-500 underline decoration-dotted underline-offset-4 transition-colors duration-150 hover:text-slate-300"
-                >
-                  {t.onboarding.skip}
-                </button>
-                {showSkipTip && (
-                  <div
-                    role="tooltip"
-                    className="absolute right-0 top-full z-10 mt-2 w-56 rounded-xl border border-white/10 bg-[#0d0d0f]/95 px-3 py-2 text-xs leading-relaxed text-slate-300 shadow-xl shadow-black/40 backdrop-blur-xl"
-                  >
-                    {t.onboarding.skipTooltip}
-                  </div>
-                )}
-              </div>
-            </div>
+            <p className="text-sm text-slate-500">
+              {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
+            </p>
           </div>
 
           <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
@@ -424,14 +401,37 @@ export default function OnboardingPage() {
             </button>
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}
-              <button
-                type="button"
-                onClick={handleContinue}
-                disabled={!canContinue || saving}
-                className={`rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
-              >
-                {saving ? t.onboarding.saving : isLast ? t.onboarding.finish : t.onboarding.continueBtn}
-              </button>
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={handleSkip}
+                    onMouseEnter={() => setShowSkipTip(true)}
+                    onMouseLeave={() => setShowSkipTip(false)}
+                    onFocus={() => setShowSkipTip(true)}
+                    onBlur={() => setShowSkipTip(false)}
+                    className={`rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/40 hover:bg-white/10 hover:text-white ${pressScale}`}
+                  >
+                    {t.onboarding.skip}
+                  </button>
+                  {showSkipTip && (
+                    <div
+                      role="tooltip"
+                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-white/10 bg-[#0d0d0f]/95 px-3 py-2 text-xs leading-relaxed text-slate-300 shadow-xl shadow-black/40 backdrop-blur-xl"
+                    >
+                      {t.onboarding.skipTooltip}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  disabled={!canContinue || saving}
+                  className={`rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+                >
+                  {saving ? t.onboarding.saving : isLast ? t.onboarding.finish : t.onboarding.continueBtn}
+                </button>
+              </div>
             </div>
           </div>
         </div>

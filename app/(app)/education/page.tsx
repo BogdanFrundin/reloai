@@ -192,13 +192,22 @@ const BANNER_COUNTRY_KEY: Record<CountryKey, keyof Dictionary["education"]["bann
 
 type EduDict = Dictionary["education"];
 
+const cardHoverClass =
+  "group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none";
+
+const iconBadgeClass =
+  "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none";
+
+const learnMoreBtnClass =
+  "inline-flex w-fit items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none";
+
 function TypeBadge({ type, t }: { type: ItemType; t: EduDict }) {
   return type === "public" ? (
-    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold text-accent-bright">
+    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold text-accent-bright transition-[box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent/20 [@media(hover:hover)_and_(pointer:fine)]:group-hover:shadow-[0_0_12px_-2px_var(--accent)] motion-reduce:transition-none">
       {t.publicBadge}
     </span>
   ) : (
-    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-400">
+    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-400 transition-[box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-amber-500/20 [@media(hover:hover)_and_(pointer:fine)]:group-hover:shadow-[0_0_12px_-2px_rgba(245,158,11,0.6)] motion-reduce:transition-none">
       {t.privateBadge}
     </span>
   );
@@ -228,8 +237,14 @@ function Row({ label, value, highlight }: { label: string; value: string; highli
 
 function CourseCard({ course, t, lang }: { course: Course; t: EduDict; lang: Lang }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-      <div className="flex items-start justify-between gap-2">
+    <div className={cardHoverClass}>
+      <span className={iconBadgeClass}>
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <circle cx="12" cy="12" r="9" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z" />
+        </svg>
+      </span>
+      <div className="mt-3 flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{course.name}</p>
         <TypeBadge type={course.type} t={t} />
       </div>
@@ -245,7 +260,7 @@ function CourseCard({ course, t, lang }: { course: Course; t: EduDict; lang: Lan
         </p>
       )}
       <div className="mt-auto pt-4">
-        <button type="button" className="text-xs font-medium text-slate-400 transition-colors duration-150 hover:text-accent-bright">
+        <button type="button" className={learnMoreBtnClass}>
           {t.learnMore}
         </button>
       </div>
@@ -255,8 +270,14 @@ function CourseCard({ course, t, lang }: { course: Course; t: EduDict; lang: Lan
 
 function SchoolCard({ school, t, lang }: { school: School; t: EduDict; lang: Lang }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-      <div className="flex items-start justify-between gap-2">
+    <div className={cardHoverClass}>
+      <span className={iconBadgeClass}>
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <rect x="4" y="3" width="16" height="18" rx="1" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4M8 7h1m-1 4h1m6-4h1m-1 4h1" />
+        </svg>
+      </span>
+      <div className="mt-3 flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{school.name}</p>
         <TypeBadge type={school.type} t={t} />
       </div>
@@ -272,7 +293,7 @@ function SchoolCard({ school, t, lang }: { school: School; t: EduDict; lang: Lan
         </p>
       )}
       <div className="mt-auto pt-4">
-        <button type="button" className="text-xs font-medium text-slate-400 transition-colors duration-150 hover:text-accent-bright">
+        <button type="button" className={learnMoreBtnClass}>
           {t.learnMore}
         </button>
       </div>
@@ -282,8 +303,13 @@ function SchoolCard({ school, t, lang }: { school: School; t: EduDict; lang: Lan
 
 function KindergartenCard({ k, t, lang }: { k: Kindergarten; t: EduDict; lang: Lang }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-      <div className="flex items-start justify-between gap-2">
+    <div className={cardHoverClass}>
+      <span className={iconBadgeClass}>
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.5s-7.5-4.6-9.5-9.1C1.2 8.1 3 5 6.2 5c1.9 0 3.3 1 4.3 2.4C11.5 6 12.9 5 14.8 5 18 5 19.8 8.1 18.5 11.4 16.5 15.9 12 20.5 12 20.5z" />
+        </svg>
+      </span>
+      <div className="mt-3 flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{k.name}</p>
         <TypeBadge type={k.type} t={t} />
       </div>
@@ -299,7 +325,7 @@ function KindergartenCard({ k, t, lang }: { k: Kindergarten; t: EduDict; lang: L
         </p>
       )}
       <div className="mt-auto pt-4">
-        <button type="button" className="text-xs font-medium text-slate-400 transition-colors duration-150 hover:text-accent-bright">
+        <button type="button" className={learnMoreBtnClass}>
           {t.learnMore}
         </button>
       </div>
@@ -309,8 +335,15 @@ function KindergartenCard({ k, t, lang }: { k: Kindergarten; t: EduDict; lang: L
 
 function UniversityCard({ uni, t, lang }: { uni: University; t: EduDict; lang: Lang }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-      <div className="flex items-start justify-between gap-2">
+    <div className={cardHoverClass}>
+      <span className={iconBadgeClass}>
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L2 8l10 5 10-5-10-5z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M22 8v6" />
+        </svg>
+      </span>
+      <div className="mt-3 flex items-start justify-between gap-2">
         <p className="text-sm font-semibold leading-snug text-white">{uni.name}</p>
         <TypeBadge type={uni.type} t={t} />
       </div>
@@ -336,7 +369,7 @@ function UniversityCard({ uni, t, lang }: { uni: University; t: EduDict; lang: L
         </p>
       )}
       <div className="mt-auto pt-4">
-        <button type="button" className="text-xs font-medium text-slate-400 transition-colors duration-150 hover:text-accent-bright">
+        <button type="button" className={learnMoreBtnClass}>
           {t.learnMore}
         </button>
       </div>

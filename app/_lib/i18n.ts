@@ -34,6 +34,12 @@ export type Dictionary = {
     online: string;
     messages: [string, string, string, string];
   };
+  heroDemo: {
+    question: string;
+    userReply: string;
+    response: string;
+    inputPlaceholder: string;
+  };
   stats: {
     items: { value: string; label: string }[];
   };
@@ -69,7 +75,16 @@ export type Dictionary = {
   reviews: {
     heading: string;
     subheading: string;
-    items: { name: string; role: string; quote: string; initials: string }[];
+    items: {
+      name: string;
+      route: string;
+      fromFlag: string;
+      toFlag: string;
+      rating: number;
+      quote: string;
+      initials: string;
+      documentBadge?: string;
+    }[];
   };
   contact: {
     heading: string;
@@ -97,6 +112,7 @@ export type Dictionary = {
     productLinks: string[];
     companyLinks: string[];
     rights: string;
+    disclaimer: string;
   };
   auth: {
     or: string;
@@ -179,8 +195,16 @@ export type Dictionary = {
     status: { verified: string; pending: string; missing: string; locked: string };
     upload: string;
     viewBtn: string;
+    deleteBtn: string;
     unlockBtn: string;
     docNames: { passportScan: string; passportPhoto: string; peselForm: string; peselLetter: string; workPermitApp: string; sponsorshipLetter: string; healthInsurance: string; travelInsurance: string; bankConfirmation: string; proofOfFunds: string; relocationLetter: string; taxResidency: string };
+    autoCompleteToast: string;
+    sectionCompleteHeading: string;
+    sectionCompleteBody: string;
+    sectionCompleteDismiss: string;
+    deleteConfirmTitle: string;
+    deleteConfirmBody: string;
+    cancelBtn: string;
   };
   housing: {
     title: string;
@@ -221,6 +245,7 @@ export type Dictionary = {
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
     ];
+    bookBtn: string;
   };
   work: {
     title: string;
@@ -377,6 +402,8 @@ export type Dictionary = {
       visa: string;
       default: string;
     };
+    actionLabel: string;
+    premiumLabel: string;
   };
   demo: {
     bannerText: string;
@@ -463,6 +490,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Yes, please.",
         "Done. 7 documents needed, 2 you already have. I'll remind you about deadlines along the way.",
       ],
+    },
+    heroDemo: {
+      question: "Where would you like to move?",
+      userReply: "Poland, I want to work",
+      response: "Great! Let me build you a step-by-step relocation roadmap for Poland.",
+      inputPlaceholder: "Ask about living in Poland...",
     },
     stats: {
       items: [
@@ -622,25 +655,96 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Real stories from people who relocated with ReloAI.",
       items: [
         {
-          name: "Olena K.",
-          role: "Moved to Berlin, Germany",
-          quote:
-            "ReloAI turned a mountain of paperwork into a checklist I actually understood. My Blue Card application took half the time I expected.",
-          initials: "OK",
+          name: "Anna K.",
+          route: "Ukraine → Poland",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Got my PESEL in 2 days. Without ReloAI I would've spent a week just looking for information.",
+          initials: "AK",
         },
         {
-          name: "Marco T.",
-          role: "Moved to Warsaw, Poland",
-          quote:
-            "The chat answered every weird question I had about PESEL and banking. Felt like having a relocation consultant in my pocket.",
-          initials: "MT",
+          name: "Mikhail S.",
+          route: "Russia → Germany",
+          fromFlag: "🇷🇺",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "AI helped me figure out Anmeldung. Explained everything clearly and gave me office addresses.",
+          initials: "MS",
         },
         {
-          name: "Sofia R.",
-          role: "Moved to Valencia, Spain",
-          quote:
-            "I used the Digital Nomad Visa guidance and the document checklist kept me from missing a single deadline. Worth every euro.",
-          initials: "SR",
+          name: "Olga M.",
+          route: "Belarus → Spain",
+          fromFlag: "🇧🇾",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "Started a business in Spain. The checklist saved me a month of work and €2,000 in lawyer fees.",
+          initials: "OM",
+        },
+        {
+          name: "Dmitry P.",
+          route: "Kazakhstan → Poland",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 4,
+          quote: "The progress tracker really helps. I always know exactly what step I'm on.",
+          initials: "DP",
+        },
+        {
+          name: "Leyla R.",
+          route: "Uzbekistan → Germany",
+          fromFlag: "🇺🇿",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Found a job in Germany through the jobs section. The AI even wrote my cover letter.",
+          initials: "LR",
+        },
+        {
+          name: "Timur A.",
+          route: "Tajikistan → Spain",
+          fromFlag: "🇹🇯",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "Got my NIE in 3 weeks. I thought it would take half a year.",
+          initials: "TA",
+        },
+        {
+          name: "Karina N.",
+          route: "Ukraine → Germany",
+          fromFlag: "🇺🇦",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Moved with my family. Found a school for the kids and a Russian-speaking doctor.",
+          initials: "KN",
+        },
+        {
+          name: "Artyom V.",
+          route: "Russia → Spain",
+          fromFlag: "🇷🇺",
+          toFlag: "🇪🇸",
+          rating: 4,
+          quote: "Digital Nomad Visa — sorted it in 6 weeks following ReloAI's guide.",
+          initials: "AV",
+          documentBadge: "🇪🇸 Digital Nomad Visa",
+        },
+        {
+          name: "Zarina I.",
+          route: "Kazakhstan → Poland",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Opened an mBank account on the first try. The AI told me exactly which documents to bring.",
+          initials: "ZI",
+        },
+        {
+          name: "Bogdan F.",
+          route: "Ukraine → Poland",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Best relocation service out there. Saved me time and nerves.",
+          initials: "BF",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
       ],
     },
@@ -675,6 +779,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["How it works", "Features", "Pricing"],
       companyLinks: ["Reviews", "Contact"],
       rights: "All rights reserved.",
+      disclaimer: "ReloAI provides informational services. We are not a law firm and are not responsible for decisions made by immigration authorities. All information is for general guidance only. For legal assistance, please consult a licensed professional.",
     },
     auth: {
       or: "or",
@@ -761,6 +866,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Verified", pending: "Pending review", missing: "Missing", locked: "Premium" },
       upload: "Drag & drop or click to upload",
       viewBtn: "View",
+      deleteBtn: "Remove",
       unlockBtn: "Unlock with Premium",
       docNames: {
         passportScan: "Passport scan",
@@ -776,6 +882,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Employer relocation letter",
         taxResidency: "Tax residency certificate",
       },
+      autoCompleteToast: "✓ Step completed automatically",
+      sectionCompleteHeading: "🎉 Section complete!",
+      sectionCompleteBody: "Move on to the next step.",
+      sectionCompleteDismiss: "Continue",
+      deleteConfirmTitle: "Delete document?",
+      deleteConfirmBody: "This action cannot be undone. The document will be permanently deleted.",
+      cancelBtn: "Cancel",
     },
     housing: {
       title: "Housing in Poland 🇵🇱",
@@ -843,6 +956,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Language support", nfz: "Mostly Polish only", pvt: "English, often Russian/Ukrainian" },
         { label: "Coverage", nfz: "Broad, but limited choice of doctors", pvt: "Choose your own clinic & doctor" },
       ],
+      bookBtn: "Book appointment",
     },
     work: {
       title: "Work in Poland 🇵🇱",
@@ -1057,13 +1171,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
       closeAria: "Close",
       connectionError: "I couldn't reach the server. Please check your connection and try again.",
       fallback: {
-        pesel: "To get a PESEL number in Poland: 1) Book an appointment at the Urząd Miasta (city office) in your district. 2) Bring your passport, your visa or residence permit, and proof of address (a rental contract works). 3) Fill out form EL-ZAM on site. Processing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
-        bank: "For banking: mBank is the most expat-friendly option — fully English app and support. Revolut works well even before you have a PESEL number. PKO BP has the largest branch network if you prefer in-person banking. Santander is a good pick if you need multi-currency accounts.",
+        pesel:
+          "To get a PESEL number in Poland:\n- Book an appointment at the Urząd Miasta (city office) in your district.\n- Bring your passport, your visa or residence permit, and proof of address (a rental contract works).\n- Fill out form EL-ZAM on site.\nProcessing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
+        bank:
+          "For banking:\n- mBank — most expat-friendly, fully English app and support.\n- Revolut — works well even before you have a PESEL number.\n- PKO BP — largest branch network if you prefer in-person banking.\n- Santander — good pick if you need multi-currency accounts.",
         housing: "Housing tips: search OLX, Otodom, or Gratka for listings. Never send a deposit before viewing the apartment in person or on a live video call. Get your rental contract in Polish — it has to be in Polish to be legally enforceable. Budget for a security deposit (1–2 months' rent) plus czynsz (building maintenance fees) on top of rent.",
         documents: "Common documents you'll need: passport, visa or residence permit application, proof of address, PESEL confirmation, health insurance certificate, and (if working) your employment contract or work permit. I can walk you through any of these in more detail.",
         visa: "Visa needs depend on your citizenship and destination. For Poland, most non-EU citizens need a national visa or residence permit (Karta Pobytu) tied to work, study, or family. For Germany, look into a Job Seeker Visa, Aufenthaltstitel, or EU Blue Card. For Spain, check the Digital Nomad Visa or standard work/residence routes via NIE registration.",
         default: "I can help with documents, housing, banks, healthcare, or work. What would you like to know more about?",
       },
+      actionLabel: "Do this in ReloAI →",
+      premiumLabel: "Available in Premium →",
     },
     demo: {
       bannerText: "You are in preview mode. Register to save your progress and access all features.",
@@ -1148,6 +1266,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Да, пожалуйста.",
         "Готово. Нужно 7 документов, 2 у вас уже есть. Я буду напоминать о сроках.",
       ],
+    },
+    heroDemo: {
+      question: "Куда вы хотите переехать?",
+      userReply: "Польша, хочу работать",
+      response: "Отлично! Сейчас составлю для вас пошаговый план переезда в Польшу.",
+      inputPlaceholder: "Спросите о жизни в Польше...",
     },
     stats: {
       items: [
@@ -1307,25 +1431,96 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Реальные истории людей, переехавших с ReloAI.",
       items: [
         {
-          name: "Olena K.",
-          role: "Переехала в Берлин, Германия",
-          quote:
-            "ReloAI превратил гору документов в понятный чек-лист. Заявку на Blue Card я оформила в два раза быстрее, чем ожидала.",
-          initials: "OK",
+          name: "Анна К.",
+          route: "Украина → Польша",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Получила PESEL за 2 дня. Без ReloAI потратила бы неделю на поиски информации.",
+          initials: "АК",
         },
         {
-          name: "Marco T.",
-          role: "Переехал в Варшаву, Польша",
-          quote:
-            "Чат ответил на все мои странные вопросы про PESEL и банк. Как будто у меня в кармане свой консультант по переезду.",
-          initials: "MT",
+          name: "Михаил С.",
+          route: "Россия → Германия",
+          fromFlag: "🇷🇺",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "AI помог разобраться с Anmeldung. Объяснил всё на русском, дал адреса бюро.",
+          initials: "МС",
         },
         {
-          name: "Sofia R.",
-          role: "Переехала в Валенсию, Испания",
-          quote:
-            "Я воспользовалась гидом по Digital Nomad Visa, а чек-лист документов не дал пропустить ни одного срока. Каждое евро стоило того.",
-          initials: "SR",
+          name: "Ольга М.",
+          route: "Беларусь → Испания",
+          fromFlag: "🇧🇾",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "Открыла бизнес в Испании. Чеклист сэкономил месяц работы и 2000 евро на юристе.",
+          initials: "ОМ",
+        },
+        {
+          name: "Дмитрий П.",
+          route: "Казахстан → Польша",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 4,
+          quote: "Прогресс-трекер очень помогает. Всегда знаю на каком шаге нахожусь.",
+          initials: "ДП",
+        },
+        {
+          name: "Лейла Р.",
+          route: "Узбекистан → Германия",
+          fromFlag: "🇺🇿",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Нашла работу в Германии через раздел вакансий. AI написал сопроводительное письмо.",
+          initials: "ЛР",
+        },
+        {
+          name: "Тимур А.",
+          route: "Таджикистан → Испания",
+          fromFlag: "🇹🇯",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "NIE получил за 3 недели. Раньше думал это займёт полгода.",
+          initials: "ТА",
+        },
+        {
+          name: "Карина Н.",
+          route: "Украина → Германия",
+          fromFlag: "🇺🇦",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Переехала с семьёй. Нашли школу для детей и врача говорящего по-русски.",
+          initials: "КН",
+        },
+        {
+          name: "Артём В.",
+          route: "Россия → Испания",
+          fromFlag: "🇷🇺",
+          toFlag: "🇪🇸",
+          rating: 4,
+          quote: "Digital Nomad Visa — оформил за 6 недель по инструкции ReloAI.",
+          initials: "АВ",
+          documentBadge: "🇪🇸 Digital Nomad Visa",
+        },
+        {
+          name: "Зарина И.",
+          route: "Казахстан → Польша",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Открыла счёт в mBank с первого раза. AI подсказал какие документы взять.",
+          initials: "ЗИ",
+        },
+        {
+          name: "Богдан Ф.",
+          route: "Украина → Польша",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Лучший сервис для переезда. Сэкономил время и нервы.",
+          initials: "БФ",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
       ],
     },
@@ -1360,6 +1555,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Как это работает", "Возможности", "Цены"],
       companyLinks: ["Отзывы", "Контакты"],
       rights: "Все права защищены.",
+      disclaimer: "ReloAI предоставляет информационные услуги. Мы не являемся юридической фирмой и не несём ответственности за решения миграционных органов. Вся информация носит ознакомительный характер. Для юридической помощи обратитесь к лицензированному специалисту.",
     },
     auth: {
       or: "или",
@@ -1443,9 +1639,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Документы",
       subtitle: "Всё необходимое для переезда — в одном месте.",
       tabs: { all: "Все", passport: "Паспорт", pesel: "PESEL", workPermit: "Разрешение на работу", insurance: "Страховка", bank: "Банк" },
-      status: { verified: "Проверено", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
+      status: { verified: "Готово", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
       upload: "Перетащите файл или нажмите, чтобы загрузить",
       viewBtn: "Просмотр",
+      deleteBtn: "Удалить",
       unlockBtn: "Открыть с Premium",
       docNames: {
         passportScan: "Скан паспорта",
@@ -1461,6 +1658,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Письмо о переезде от работодателя",
         taxResidency: "Справка о налоговом резидентстве",
       },
+      autoCompleteToast: "✓ Шаг выполнен автоматически",
+      sectionCompleteHeading: "🎉 Раздел завершён!",
+      sectionCompleteBody: "Переходите к следующему шагу.",
+      sectionCompleteDismiss: "Продолжить",
+      deleteConfirmTitle: "Удалить документ?",
+      deleteConfirmBody: "Это действие нельзя отменить. Документ будет удалён безвозвратно.",
+      cancelBtn: "Отмена",
     },
     housing: {
       title: "Жильё в Польше 🇵🇱",
@@ -1528,6 +1732,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Языковая поддержка", nfz: "В основном только польский", pvt: "Английский, часто русский/украинский" },
         { label: "Охват", nfz: "Широкий, но ограниченный выбор врачей", pvt: "Выбирайте свою клинику и врача" },
       ],
+      bookBtn: "Записаться",
     },
     work: {
       title: "Работа в Польше 🇵🇱",
@@ -1742,13 +1947,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
       closeAria: "Закрыть",
       connectionError: "Не удалось связаться с сервером. Проверьте соединение и попробуйте снова.",
       fallback: {
-        pesel: "Чтобы получить номер PESEL в Польше: 1) Запишитесь на приём в Urząd Miasta (городское управление) вашего района. 2) Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды). 3) Заполните на месте форму EL-ZAM. Обработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
-        bank: "По банкам: mBank — самый удобный вариант для экспатов, полностью на английском языке. Revolut отлично работает даже до получения PESEL. У PKO BP самая большая сеть отделений, если вы предпочитаете обслуживание лично. Santander хорош, если нужны мультивалютные счета.",
+        pesel:
+          "Чтобы получить номер PESEL в Польше:\n- Запишитесь на приём в Urząd Miasta (городское управление) вашего района.\n- Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды).\n- Заполните на месте форму EL-ZAM.\nОбработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
+        bank:
+          "По банкам:\n- mBank — самый удобный вариант для экспатов, полностью на английском языке.\n- Revolut — отлично работает даже до получения PESEL.\n- PKO BP — самая большая сеть отделений, если предпочитаете обслуживание лично.\n- Santander — хорош, если нужны мультивалютные счета.",
         housing: "Советы по жилью: ищите объявления на OLX, Otodom или Gratka. Никогда не переводите депозит, не осмотрев квартиру лично или по видеосвязи. Договор аренды должен быть на польском языке, чтобы иметь юридическую силу. Заложите в бюджет залог (аренда за 1–2 месяца) плюс czynsz (плата за обслуживание дома) сверх аренды.",
         documents: "Обычно нужны следующие документы: паспорт, заявление на визу или вид на жительство, подтверждение адреса, справка о PESEL, полис медицинской страховки и (если работаете) трудовой договор или разрешение на работу. Могу подробнее рассказать про любой из них.",
         visa: "Визовые требования зависят от вашего гражданства и страны назначения. Для Польши большинству граждан не из ЕС нужна национальная виза или вид на жительство (Karta Pobytu), связанные с работой, учёбой или семьёй. Для Германии рассмотрите Job Seeker Visa, Aufenthaltstitel или EU Blue Card. Для Испании — Digital Nomad Visa или обычные пути через рабочий/жительский статус и регистрацию NIE.",
         default: "Я могу помочь с документами, жильём, банками, медициной или работой. Что вас интересует подробнее?",
       },
+      actionLabel: "Сделать это в ReloAI →",
+      premiumLabel: "Доступно в Premium →",
     },
     demo: {
       bannerText: "Вы находитесь в режиме предпросмотра. Зарегистрируйтесь, чтобы сохранить прогресс и получить доступ ко всем функциям.",
@@ -1833,6 +2042,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Ha, iltimos.",
         "Tayyor. 7 ta hujjat kerak, 2 tasi sizda allaqachon bor. Muddatlar haqida sizga eslatib boraman.",
       ],
+    },
+    heroDemo: {
+      question: "Qayerga ko'chib o'tmoqchisiz?",
+      userReply: "Polsha, ishlamoqchiman",
+      response: "Ajoyib! Hozir sizga Polshaga ko'chish uchun bosqichma-bosqich reja tuzib beraman.",
+      inputPlaceholder: "Polshada yashash haqida so'rang...",
     },
     stats: {
       items: [
@@ -1992,25 +2207,96 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "ReloAI bilan ko'chgan odamlarning haqiqiy hikoyalari.",
       items: [
         {
-          name: "Olena K.",
-          role: "Berlin, Germaniyaga ko'chdi",
-          quote:
-            "ReloAI qog'ozlar tog'ini men tushunadigan ro'yxatga aylantirdi. Blue Card arizam kutganimdan ikki marta tez tayyor bo'ldi.",
-          initials: "OK",
+          name: "Anna K.",
+          route: "Ukraina → Polsha",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "PESEL'imni 2 kunda oldim. ReloAI bo'lmaganida ma'lumot qidirishga bir hafta sarflagan bo'lardim.",
+          initials: "AK",
         },
         {
-          name: "Marco T.",
-          role: "Varshava, Polshaga ko'chdi",
-          quote:
-            "Chat PESEL va bank haqidagi g'alati savollarimning hammasiga javob berdi. Cho'ntagimda ko'chish bo'yicha maslahatchi bordek edi.",
-          initials: "MT",
+          name: "Mikhail S.",
+          route: "Rossiya → Germaniya",
+          fromFlag: "🇷🇺",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "AI Anmeldungni tushunishimga yordam berdi. Hammasini tushuntirdi va idoralar manzilini berdi.",
+          initials: "MS",
         },
         {
-          name: "Sofia R.",
-          role: "Valensiya, Ispaniyaga ko'chdi",
-          quote:
-            "Digital Nomad Visa bo'yicha maslahatdan foydalandim, hujjatlar ro'yxati esa bironta muddatni o'tkazib yubormasligimga yordam berdi. Har bir yevroga arzigan.",
-          initials: "SR",
+          name: "Olga M.",
+          route: "Belarus → Ispaniya",
+          fromFlag: "🇧🇾",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "Ispaniyada biznes ochdim. Ro'yxat menga bir oy vaqt va 2000 yevro advokat xarajatini tejadi.",
+          initials: "OM",
+        },
+        {
+          name: "Dmitry P.",
+          route: "Qozog'iston → Polsha",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 4,
+          quote: "Progress-trekeri juda yordam beradi. Doim qaysi bosqichda ekanligimni bilaman.",
+          initials: "DP",
+        },
+        {
+          name: "Leyla R.",
+          route: "O'zbekiston → Germaniya",
+          fromFlag: "🇺🇿",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Ish o'rinlari bo'limi orqali Germaniyadan ish topdim. AI hatto motivatsion xat ham yozib berdi.",
+          initials: "LR",
+        },
+        {
+          name: "Timur A.",
+          route: "Tojikiston → Ispaniya",
+          fromFlag: "🇹🇯",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "NIE'ni 3 haftada oldim. Avval yarim yil ketadi deb o'ylagandim.",
+          initials: "TA",
+        },
+        {
+          name: "Karina N.",
+          route: "Ukraina → Germaniya",
+          fromFlag: "🇺🇦",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Oila bilan ko'chib o'tdim. Bolalar uchun maktab va rus tilida gaplashadigan shifokor topdik.",
+          initials: "KN",
+        },
+        {
+          name: "Artyom V.",
+          route: "Rossiya → Ispaniya",
+          fromFlag: "🇷🇺",
+          toFlag: "🇪🇸",
+          rating: 4,
+          quote: "Digital Nomad Visa — ReloAI qo'llanmasi bo'yicha 6 haftada rasmiylashtirdim.",
+          initials: "AV",
+          documentBadge: "🇪🇸 Digital Nomad Visa",
+        },
+        {
+          name: "Zarina I.",
+          route: "Qozog'iston → Polsha",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "mBank'da birinchi urinishda hisob ochdim. AI qaysi hujjatlarni olib borish kerakligini aytdi.",
+          initials: "ZI",
+        },
+        {
+          name: "Bogdan F.",
+          route: "Ukraina → Polsha",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Ko'chish uchun eng yaxshi xizmat. Vaqt va asablarimni tejadim.",
+          initials: "BF",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
       ],
     },
@@ -2045,6 +2331,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Qanday ishlaydi", "Imkoniyatlar", "Narxlar"],
       companyLinks: ["Sharhlar", "Aloqa"],
       rights: "Barcha huquqlar himoyalangan.",
+      disclaimer: "ReloAI axborot xizmatlarini taqdim etadi. Biz yuridik firma emasmiz va migratsiya organlarining qarorlari uchun javobgar emasmiz. Barcha ma'lumotlar faqat tanishtirish maqsadida berilgan. Yuridik yordam uchun litsenziyalangan mutaxassisga murojaat qiling.",
     },
     auth: {
       or: "yoki",
@@ -2131,6 +2418,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Tasdiqlangan", pending: "Ko'rib chiqilmoqda", missing: "Yo'q", locked: "Premium" },
       upload: "Yuklash uchun sudrab tashlang yoki bosing",
       viewBtn: "Ko'rish",
+      deleteBtn: "O'chirish",
       unlockBtn: "Premium bilan ochish",
       docNames: {
         passportScan: "Pasport skani",
@@ -2146,6 +2434,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Ish beruvchining ko'chirish xati",
         taxResidency: "Soliq rezidentligi sertifikati",
       },
+      autoCompleteToast: "✓ Qadam avtomatik bajarildi",
+      sectionCompleteHeading: "🎉 Bo'lim yakunlandi!",
+      sectionCompleteBody: "Keyingi qadamga o'ting.",
+      sectionCompleteDismiss: "Davom etish",
+      deleteConfirmTitle: "Hujjatni o'chirasizmi?",
+      deleteConfirmBody: "Bu amalni bekor qilib bo'lmaydi. Hujjat butunlay o'chiriladi.",
+      cancelBtn: "Bekor qilish",
     },
     housing: {
       title: "Polshada uy-joy 🇵🇱",
@@ -2213,6 +2508,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Til qo'llab-quvvatlashi", nfz: "Asosan faqat polyak tilida", pvt: "Ingliz, ko'pincha rus/ukrain tilida ham" },
         { label: "Qamrov", nfz: "Keng, ammo shifokor tanlovi cheklangan", pvt: "O'zingiz klinika va shifokorni tanlaysiz" },
       ],
+      bookBtn: "Qabulga yozilish",
     },
     work: {
       title: "Polshada ish 🇵🇱",
@@ -2434,6 +2730,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Viza talablari fuqaroligingiz va boradigan davlatingizga bog'liq. Polsha uchun ko'pchilik EI fuqarosi bo'lmaganlarga ish, o'qish yoki oila asosida milliy viza yoki yashash ruxsatnomasi (Karta Pobytu) kerak bo'ladi. Germaniya uchun Job Seeker Visa, Aufenthaltstitel yoki EU Blue Card'ni ko'rib chiqing. Ispaniya uchun Digital Nomad Visa yoki NIE ro'yxatidan o'tish orqali oddiy ish/yashash yo'llarini tekshiring.",
         default: "Men hujjatlar, uy-joy, banklar, tibbiyot yoki ish bo'yicha yordam bera olaman. Qaysi biri haqida batafsilroq bilmoqchisiz?",
       },
+      actionLabel: "Buni ReloAI'da bajarish →",
+      premiumLabel: "Premium'da mavjud →",
     },
     demo: {
       bannerText: "Siz ko'rib chiqish rejimidasiz. Jarayoningizni saqlash va barcha funksiyalardan foydalanish uchun ro'yxatdan o'ting.",
@@ -2518,6 +2816,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Evet, lütfen.",
         "Tamamdır. 7 belge gerekiyor, 2'si zaten sizde. Süreçte size son tarihleri hatırlatacağım.",
       ],
+    },
+    heroDemo: {
+      question: "Nereye taşınmak istersiniz?",
+      userReply: "Polonya, çalışmak istiyorum",
+      response: "Harika! Sizin için Polonya'ya taşınma konusunda adım adım bir yol haritası hazırlıyorum.",
+      inputPlaceholder: "Polonya'da yaşam hakkında sorun...",
     },
     stats: {
       items: [
@@ -2676,25 +2980,96 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "ReloAI ile taşınan insanların gerçek hikayeleri.",
       items: [
         {
-          name: "Olena K.",
-          role: "Berlin, Almanya'ya taşındı",
-          quote:
-            "ReloAI bir evrak dağını anlayabildiğim bir kontrol listesine dönüştürdü. Mavi Kart başvurum beklediğimin yarı süresinde tamamlandı.",
-          initials: "OK",
+          name: "Anna K.",
+          route: "Ukrayna → Polonya",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "PESEL'imi 2 günde aldım. ReloAI olmasaydı bilgi aramak için bir hafta harcardım.",
+          initials: "AK",
         },
         {
-          name: "Marco T.",
-          role: "Varşova, Polonya'ya taşındı",
-          quote:
-            "Sohbet, PESEL ve bankacılıkla ilgili tuhaf sorularımın hepsini yanıtladı. Cebimde bir taşınma danışmanı varmış gibi hissettim.",
-          initials: "MT",
+          name: "Mikhail S.",
+          route: "Rusya → Almanya",
+          fromFlag: "🇷🇺",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Yapay zeka Anmeldung konusunda yardımcı oldu. Her şeyi açıkladı ve büro adreslerini verdi.",
+          initials: "MS",
         },
         {
-          name: "Sofia R.",
-          role: "Valensiya, İspanya'ya taşındı",
-          quote:
-            "Dijital Göçebe Vizesi rehberliğini kullandım ve belge kontrol listesi tek bir son tarihi kaçırmamamı sağladı. Her avroya değdi.",
-          initials: "SR",
+          name: "Olga M.",
+          route: "Belarus → İspanya",
+          fromFlag: "🇧🇾",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "İspanya'da bir işletme açtım. Kontrol listesi bir aylık iş ve 2000 avro avukat ücreti tasarrufu sağladı.",
+          initials: "OM",
+        },
+        {
+          name: "Dmitry P.",
+          route: "Kazakistan → Polonya",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 4,
+          quote: "İlerleme takipçisi gerçekten çok yardımcı oluyor. Hangi adımda olduğumu her zaman biliyorum.",
+          initials: "DP",
+        },
+        {
+          name: "Leyla R.",
+          route: "Özbekistan → Almanya",
+          fromFlag: "🇺🇿",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "İş ilanları bölümü sayesinde Almanya'da iş buldum. Yapay zeka ön yazımı bile yazdı.",
+          initials: "LR",
+        },
+        {
+          name: "Timur A.",
+          route: "Tacikistan → İspanya",
+          fromFlag: "🇹🇯",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "NIE'mi 3 haftada aldım. Yarım yıl süreceğini düşünüyordum.",
+          initials: "TA",
+        },
+        {
+          name: "Karina N.",
+          route: "Ukrayna → Almanya",
+          fromFlag: "🇺🇦",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Ailemle taşındım. Çocuklar için okul ve Rusça konuşan bir doktor bulduk.",
+          initials: "KN",
+        },
+        {
+          name: "Artyom V.",
+          route: "Rusya → İspanya",
+          fromFlag: "🇷🇺",
+          toFlag: "🇪🇸",
+          rating: 4,
+          quote: "Digital Nomad Visa — ReloAI rehberini takip ederek 6 haftada hallettim.",
+          initials: "AV",
+          documentBadge: "🇪🇸 Digital Nomad Visa",
+        },
+        {
+          name: "Zarina I.",
+          route: "Kazakistan → Polonya",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "mBank'ta ilk denemede hesap açtım. Yapay zeka hangi belgeleri getirmem gerektiğini söyledi.",
+          initials: "ZI",
+        },
+        {
+          name: "Bogdan F.",
+          route: "Ukrayna → Polonya",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Taşınma için en iyi hizmet. Zamandan ve sinirden tasarruf ettim.",
+          initials: "BF",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
       ],
     },
@@ -2729,6 +3104,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Nasıl çalışır", "Özellikler", "Fiyatlandırma"],
       companyLinks: ["Yorumlar", "İletişim"],
       rights: "Tüm hakları saklıdır.",
+      disclaimer: "ReloAI bilgilendirme hizmetleri sunar. Bir hukuk firması değiliz ve göçmenlik makamlarının kararlarından sorumlu değiliz. Tüm bilgiler yalnızca genel bilgilendirme amaçlıdır. Hukuki yardım için lisanslı bir uzmana danışın.",
     },
     auth: {
       or: "veya",
@@ -2815,6 +3191,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Onaylandı", pending: "İnceleniyor", missing: "Eksik", locked: "Premium" },
       upload: "Yüklemek için sürükleyin veya tıklayın",
       viewBtn: "Görüntüle",
+      deleteBtn: "Kaldır",
       unlockBtn: "Premium ile Aç",
       docNames: {
         passportScan: "Pasaport taraması",
@@ -2830,6 +3207,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "İşveren taşınma mektubu",
         taxResidency: "Vergi mukimliği belgesi",
       },
+      autoCompleteToast: "✓ Adım otomatik olarak tamamlandı",
+      sectionCompleteHeading: "🎉 Bölüm tamamlandı!",
+      sectionCompleteBody: "Sonraki adıma geçin.",
+      sectionCompleteDismiss: "Devam et",
+      deleteConfirmTitle: "Belge silinsin mi?",
+      deleteConfirmBody: "Bu işlem geri alınamaz. Belge kalıcı olarak silinecektir.",
+      cancelBtn: "İptal",
     },
     housing: {
       title: "Polonya'da Konut 🇵🇱",
@@ -2897,6 +3281,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Dil desteği", nfz: "Genellikle sadece Lehçe", pvt: "İngilizce, sık sık Rusça/Ukraynaca" },
         { label: "Kapsam", nfz: "Geniş ama sınırlı doktor seçimi", pvt: "Kendi kliniğinizi ve doktorunuzu seçin" },
       ],
+      bookBtn: "Randevu al",
     },
     work: {
       title: "Polonya'da İş 🇵🇱",
@@ -3118,6 +3503,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Vize ihtiyaçları vatandaşlığınıza ve gideceğiniz ülkeye göre değişir. Polonya için çoğu AB dışı vatandaşın iş, eğitim veya aile temelli ulusal vize veya oturma iznine (Karta Pobytu) ihtiyacı vardır. Almanya için Job Seeker Visa, Aufenthaltstitel veya EU Blue Card'a bakın. İspanya için Digital Nomad Visa'yı veya NIE kaydı üzerinden standart çalışma/oturma yollarını inceleyin.",
         default: "Belgeler, konut, bankalar, sağlık veya iş konusunda yardımcı olabilirim. Hangisi hakkında daha fazla bilgi almak istersiniz?",
       },
+      actionLabel: "Bunu ReloAI'da yap →",
+      premiumLabel: "Premium'da mevcut →",
     },
     demo: {
       bannerText: "Önizleme modundasınız. İlerlemenizi kaydetmek ve tüm özelliklere erişmek için kayıt olun.",
@@ -3202,6 +3589,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Ҳа, лутфан.",
         "Тайёр. 7 ҳуҷҷат лозим аст, 2-тои онро шумо аллакай доред. Ман дар бораи мӯҳлатҳо ба шумо ёдрасонӣ мекунам.",
       ],
+    },
+    heroDemo: {
+      question: "Ба куҷо мехоҳед кӯчед?",
+      userReply: "Полша, мехоҳам кор кунам",
+      response: "Аъло! Ҳозир барои шумо нақшаи қадам ба қадами кӯчидан ба Полша тартиб медиҳам.",
+      inputPlaceholder: "Дар бораи зиндагӣ дар Полша бипурсед...",
     },
     stats: {
       items: [
@@ -3360,25 +3753,96 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Ҳикояҳои воқеӣ аз одамоне, ки бо ReloAI кӯчидаанд.",
       items: [
         {
-          name: "Olena K.",
-          role: "Ба Берлин, Олмон кӯчид",
-          quote:
-            "ReloAI кӯҳи коғазҳоро ба рӯйхати фаҳмо табдил дод. Аризаи Blue Card ман дар нисфи вақти интизорам тайёр шуд.",
-          initials: "OK",
+          name: "Анна К.",
+          route: "Украина → Полша",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "PESEL-ро дар 2 рӯз гирифтам. Бе ReloAI як ҳафта барои ҷустуҷӯи маълумот сарф мекардам.",
+          initials: "АК",
         },
         {
-          name: "Marco T.",
-          role: "Ба Варшава, Лаҳистон кӯчид",
-          quote:
-            "Чат ба ҳама саволҳои аҷиби ман дар бораи PESEL ва бонк ҷавоб дод. Ҳис мекардам, ки маслиҳатгари кӯчиш дар киса дорам.",
-          initials: "MT",
+          name: "Михаил С.",
+          route: "Русия → Олмон",
+          fromFlag: "🇷🇺",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "AI ба фаҳмидани Anmeldung кӯмак кард. Ҳама чизро фаҳмонд ва суроғаи идораҳоро дод.",
+          initials: "МС",
         },
         {
-          name: "Sofia R.",
-          role: "Ба Валенсия, Испания кӯчид",
-          quote:
-            "Ман аз роҳнамои Digital Nomad Visa истифода бурдам ва рӯйхати ҳуҷҷатҳо нагузошт ки ягон мӯҳлатро гум кунам. Арзиши ҳар як евроро дошт.",
-          initials: "SR",
+          name: "Ольга М.",
+          route: "Белоруссия → Испания",
+          fromFlag: "🇧🇾",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "Дар Испания бизнес кушодам. Рӯйхат як моҳ вақт ва 2000 евро ҳаққи ҳуқуқшиносро сарфа кард.",
+          initials: "ОМ",
+        },
+        {
+          name: "Дмитрий П.",
+          route: "Қазоқистон → Полша",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 4,
+          quote: "Пайгирии пешравӣ хеле кӯмак мекунад. Ҳамеша медонам, ки дар кадом қадам ҳастам.",
+          initials: "ДП",
+        },
+        {
+          name: "Лейла Р.",
+          route: "Ӯзбекистон → Олмон",
+          fromFlag: "🇺🇿",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Тавассути бахши ҷойҳои корӣ дар Олмон кор ёфтам. AI ҳатто мактуби ҳамроҳиро навишт.",
+          initials: "ЛР",
+        },
+        {
+          name: "Тимур А.",
+          route: "Тоҷикистон → Испания",
+          fromFlag: "🇹🇯",
+          toFlag: "🇪🇸",
+          rating: 5,
+          quote: "NIE-ро дар 3 ҳафта гирифтам. Пештар фикр мекардам, ки ним сол вақт мегирад.",
+          initials: "ТА",
+        },
+        {
+          name: "Карина Н.",
+          route: "Украина → Олмон",
+          fromFlag: "🇺🇦",
+          toFlag: "🇩🇪",
+          rating: 5,
+          quote: "Бо оила кӯчидам. Барои кӯдакон мактаб ва духтури русзабонро ёфтем.",
+          initials: "КН",
+        },
+        {
+          name: "Артём В.",
+          route: "Русия → Испания",
+          fromFlag: "🇷🇺",
+          toFlag: "🇪🇸",
+          rating: 4,
+          quote: "Digital Nomad Visa — тибқи дастури ReloAI дар 6 ҳафта расмӣ кардам.",
+          initials: "АВ",
+          documentBadge: "🇪🇸 Digital Nomad Visa",
+        },
+        {
+          name: "Зарина И.",
+          route: "Қазоқистон → Полша",
+          fromFlag: "🇰🇿",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Дар mBank аз бори аввал ҳисоб кушодам. AI гуфт, ки кадом ҳуҷҷатҳоро гирам.",
+          initials: "ЗИ",
+        },
+        {
+          name: "Богдан Ф.",
+          route: "Украина → Полша",
+          fromFlag: "🇺🇦",
+          toFlag: "🇵🇱",
+          rating: 5,
+          quote: "Беҳтарин хидмат барои кӯчидан. Вақт ва асабамро сарфа кард.",
+          initials: "БФ",
+          documentBadge: "🇵🇱 Karta Pobytu",
         },
       ],
     },
@@ -3413,6 +3877,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       productLinks: ["Чӣ тавр кор мекунад", "Хусусиятҳо", "Нархгузорӣ"],
       companyLinks: ["Шарҳҳо", "Тамос"],
       rights: "Ҳамаи ҳуқуқҳо ҳифз шудаанд.",
+      disclaimer: "ReloAI хидматҳои иттилоотӣ пешниҳод мекунад. Мо ширкати ҳуқуқӣ нестем ва барои қарорҳои мақомоти муҳоҷират масъулият надорем. Тамоми маълумот танҳо хусусияти шиносоӣ дорад. Барои кӯмаки ҳуқуқӣ ба мутахассиси литсензиядор муроҷиат кунед.",
     },
     auth: {
       or: "ё",
@@ -3499,6 +3964,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       status: { verified: "Тасдиқшуда", pending: "Дар баррасӣ", missing: "Мавҷуд нест", locked: "Премиум" },
       upload: "Барои боркунӣ кашида гузоред ё зер кунед",
       viewBtn: "Дидан",
+      deleteBtn: "Нест кардан",
       unlockBtn: "Бо Премиум кушоед",
       docNames: {
         passportScan: "Скани шиноснома",
@@ -3514,6 +3980,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
         relocationLetter: "Мактуби кӯчонидани корфармо",
         taxResidency: "Шаҳодатномаи резиденти андоз",
       },
+      autoCompleteToast: "✓ Қадам ба таври худкор иҷро шуд",
+      sectionCompleteHeading: "🎉 Бахш ба анҷом расид!",
+      sectionCompleteBody: "Ба қадами навбатӣ гузаред.",
+      sectionCompleteDismiss: "Идома",
+      deleteConfirmTitle: "Ҳуҷҷат нест карда шавад?",
+      deleteConfirmBody: "Ин амалро бекор кардан мумкин нест. Ҳуҷҷат абадӣ нест карда мешавад.",
+      cancelBtn: "Бекор кардан",
     },
     housing: {
       title: "Манзил дар Полша 🇵🇱",
@@ -3581,6 +4054,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         { label: "Дастгирии забонӣ", nfz: "Асосан танҳо бо забони полякӣ", pvt: "Англисӣ, аксар вақт русӣ/украинӣ" },
         { label: "Фарогирӣ", nfz: "Васеъ, вале интихоби духтур маҳдуд", pvt: "Клиника ва духтуратонро худатон интихоб кунед" },
       ],
+      bookBtn: "Навбат гирифтан",
     },
     work: {
       title: "Кор дар Полша 🇵🇱",
@@ -3802,6 +4276,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         visa: "Талаботи раводид аз шаҳрвандӣ ва кишвари мақсади шумо вобаста аст. Барои Полша аксари шаҳрвандони ғайри ИА ба раводиди миллӣ ё иҷозати истиқомат (Karta Pobytu), ки бо кор, таҳсил ё оила алоқаманд аст, ниёз доранд. Барои Олмон ба Job Seeker Visa, Aufenthaltstitel ё EU Blue Card нигаред. Барои Испания Digital Nomad Visa ё роҳҳои муқаррарии кор/истиқомат тавассути қайди NIE-ро санҷед.",
         default: "Ман метавонам дар бораи ҳуҷҷатҳо, манзил, бонкҳо, тиб ё кор кӯмак расонам. Дар бораи кадоме бештар донистан мехоҳед?",
       },
+      actionLabel: "Инро дар ReloAI иҷро кунед →",
+      premiumLabel: "Дар Premium дастрас аст →",
     },
     demo: {
       bannerText: "Шумо дар реҷаи пешнамоиш ҳастед. Барои нигоҳ доштани пешрафт ва дастрасӣ ба ҳамаи хусусиятҳо бақайд гиред.",
