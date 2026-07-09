@@ -15,6 +15,7 @@ interface CardDef {
   bg: string;
   floatDelay: string;
   floatDuration: string;
+  comingSoon?: boolean;
 }
 
 const CARDS: CardDef[] = [
@@ -45,6 +46,7 @@ const CARDS: CardDef[] = [
     ].join(", "),
     floatDelay: "2s",
     floatDuration: "7.5s",
+    comingSoon: true,
   },
   {
     flagCode: "es",
@@ -59,6 +61,7 @@ const CARDS: CardDef[] = [
     ].join(", "),
     floatDelay: "4s",
     floatDuration: "9s",
+    comingSoon: true,
   },
 ];
 
@@ -214,6 +217,22 @@ export default function Countries() {
                       }}
                     />
 
+                    {/* Coming soon — grey overlay tint on the background art */}
+                    {card.comingSoon && (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0"
+                        style={{ background: "rgba(10,10,14,0.4)", backdropFilter: "grayscale(0.6)" }}
+                      />
+                    )}
+
+                    {/* Coming soon — badge */}
+                    {card.comingSoon && (
+                      <span className="absolute right-5 top-5 z-10 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 backdrop-blur-md">
+                        Скоро будет доступно
+                      </span>
+                    )}
+
                     {/* Card content */}
                     <div className="absolute inset-0 flex flex-col p-7 sm:p-8">
                       {/* Flag — large, static */}
@@ -275,13 +294,6 @@ export default function Countries() {
             );
           })}
         </div>
-
-        {/* Coming soon */}
-        <Reveal delay={380} className="mt-12 text-center">
-          <p className="text-sm tracking-wide text-slate-600">
-            Скоро: &nbsp;🇵🇹 Португалия &nbsp;·&nbsp; 🇨🇿 Чехия &nbsp;·&nbsp; 🇦🇹 Австрия
-          </p>
-        </Reveal>
       </div>
     </section>
   );
