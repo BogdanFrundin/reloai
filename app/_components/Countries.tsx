@@ -217,12 +217,17 @@ export default function Countries() {
                       }}
                     />
 
-                    {/* Coming soon — grey overlay tint on the background art */}
+                    {/* Coming soon — desaturating overlay with diagonal stripe pattern */}
                     {card.comingSoon && (
                       <div
                         aria-hidden
-                        className="pointer-events-none absolute inset-0"
-                        style={{ background: "rgba(10,10,14,0.4)", backdropFilter: "grayscale(0.6)" }}
+                        className="pointer-events-none absolute inset-0 z-[5]"
+                        style={{
+                          background: "rgba(8,8,10,0.62)",
+                          backgroundImage:
+                            "repeating-linear-gradient(135deg, rgba(0,0,0,0.32) 0px, rgba(0,0,0,0.32) 14px, transparent 14px, transparent 28px)",
+                          backdropFilter: "grayscale(0.85) brightness(0.75)",
+                        }}
                       />
                     )}
 
@@ -234,13 +239,14 @@ export default function Countries() {
                     )}
 
                     {/* Card content */}
-                    <div className="absolute inset-0 flex flex-col p-7 sm:p-8">
+                    <div className="absolute inset-0 z-10 flex flex-col p-7 sm:p-8">
                       {/* Flag — large, static */}
                       <div
                         style={{
                           display: "inline-block",
                           filter: `drop-shadow(0 6px 28px rgba(${r},${g},${b},0.7))`,
                           width: "fit-content",
+                          opacity: card.comingSoon ? 0.6 : 1,
                         }}
                       >
                         <Image
@@ -259,6 +265,7 @@ export default function Countries() {
                         style={{
                           textShadow: isHovered ? `0 0 28px rgba(${r},${g},${b},0.5)` : "none",
                           transition: "text-shadow 0.4s ease-out",
+                          opacity: card.comingSoon ? 0.6 : 1,
                         }}
                       >
                         {card.name}
@@ -273,27 +280,36 @@ export default function Countries() {
                       <div className="flex-1" />
 
                       {/* CTA — always visible */}
-                      <Link
-                        href={ctaHref}
-                        className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-[var(--cta-border)] bg-[var(--cta-bg)] text-sm font-semibold text-white shadow-[var(--cta-shadow)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:border-accent-bright hover:bg-accent-bright hover:shadow-[0_0_28px_-6px_var(--accent-bright)]"
-                        style={
-                          {
-                            padding: "10px 22px",
-                            backdropFilter: "blur(12px)",
-                            "--cta-bg": `rgba(${r},${g},${b},0.2)`,
-                            "--cta-border": `rgba(${r},${g},${b},0.45)`,
-                            "--cta-shadow": `0 0 24px rgba(${r},${g},${b},0.22)`,
-                          } as React.CSSProperties
-                        }
-                      >
-                        Начать
+                      {card.comingSoon ? (
                         <span
-                          aria-hidden
-                          className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
+                          aria-disabled="true"
+                          className="inline-flex w-fit cursor-not-allowed items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-[22px] py-[10px] text-sm font-semibold text-slate-500 line-through decoration-slate-500"
                         >
-                          →
+                          Скоро
                         </span>
-                      </Link>
+                      ) : (
+                        <Link
+                          href={ctaHref}
+                          className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-[var(--cta-border)] bg-[var(--cta-bg)] text-sm font-semibold text-white shadow-[var(--cta-shadow)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:border-accent-bright hover:bg-accent-bright hover:shadow-[0_0_28px_-6px_var(--accent-bright)]"
+                          style={
+                            {
+                              padding: "10px 22px",
+                              backdropFilter: "blur(12px)",
+                              "--cta-bg": `rgba(${r},${g},${b},0.2)`,
+                              "--cta-border": `rgba(${r},${g},${b},0.45)`,
+                              "--cta-shadow": `0 0 24px rgba(${r},${g},${b},0.22)`,
+                            } as React.CSSProperties
+                          }
+                        >
+                          Начать
+                          <span
+                            aria-hidden
+                            className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
+                          >
+                            →
+                          </span>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
