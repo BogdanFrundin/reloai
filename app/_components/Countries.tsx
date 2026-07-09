@@ -1,12 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type MouseEvent } from "react";
 import Reveal from "./Reveal";
 import { useCtaHref } from "../_lib/useCtaHref";
+import { getFlagUrl } from "../_lib/flags";
 
 interface CardDef {
-  flag: string;
+  flagCode: string;
   name: string;
   subtitle: string;
   accent: [number, number, number];
@@ -17,7 +19,7 @@ interface CardDef {
 
 const CARDS: CardDef[] = [
   {
-    flag: "🇵🇱",
+    flagCode: "pl",
     name: "Польша",
     subtitle: "Стабильная Европа для старта",
     accent: [200, 140, 50],
@@ -31,7 +33,7 @@ const CARDS: CardDef[] = [
     floatDuration: "6s",
   },
   {
-    flag: "🇩🇪",
+    flagCode: "de",
     name: "Германия",
     subtitle: "Blue Card и карьера в IT",
     accent: [33, 85, 212],
@@ -45,7 +47,7 @@ const CARDS: CardDef[] = [
     floatDuration: "7.5s",
   },
   {
-    flag: "🇪🇸",
+    flagCode: "es",
     name: "Испания",
     subtitle: "Море, солнце и Digital Nomad",
     accent: [220, 88, 28],
@@ -215,15 +217,22 @@ export default function Countries() {
                     {/* Card content */}
                     <div className="absolute inset-0 flex flex-col p-7 sm:p-8">
                       {/* Flag — large, static */}
-                      <span
-                        className="select-none text-[56px] leading-none"
+                      <div
                         style={{
                           display: "inline-block",
                           filter: `drop-shadow(0 6px 28px rgba(${r},${g},${b},0.7))`,
+                          width: "fit-content",
                         }}
                       >
-                        {card.flag}
-                      </span>
+                        <Image
+                          src={getFlagUrl(card.flagCode, "lg")}
+                          alt={card.name}
+                          width={64}
+                          height={48}
+                          className="rounded-lg"
+                          unoptimized
+                        />
+                      </div>
 
                       {/* Country name */}
                       <h3

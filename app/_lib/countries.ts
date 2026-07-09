@@ -63,7 +63,7 @@ export function getCountryName(code: string, lang: string): string {
 }
 
 export function getCountryList(lang: string): { code: string; name: string; flag: string }[] {
-  return COUNTRY_CODES.map((code) => ({ code, name: getCountryName(code, lang), flag: getFlagEmoji(code) })).sort(
+  return COUNTRY_CODES.map((code) => ({ code, name: getCountryName(code, lang), flag: code.toLowerCase() })).sort(
     (a, b) => a.name.localeCompare(b.name, lang),
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -11,6 +12,7 @@ import { useAuth } from "../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
 import { pressScale } from "../_lib/motion";
+import { getFlagUrl } from "../_lib/flags";
 import { supabase } from "../../lib/supabase";
 
 type Option = {
@@ -233,13 +235,22 @@ export default function OnboardingPage() {
   const languageOptions: Option[] = LANGUAGES.map((l) => ({
     id: l.code,
     label: l.name,
-    icon: <span className="text-3xl">{l.flag}</span>,
+    icon: (
+      <Image
+        src={getFlagUrl(l.flag, "lg")}
+        alt={l.name}
+        width={48}
+        height={36}
+        className="rounded-lg"
+        unoptimized
+      />
+    ),
   }));
 
   const destinationOptions: (Option & { disabled?: boolean })[] = [
-    { id: "Poland", label: t.countries.list[0].name, icon: <span className="text-3xl">🇵🇱</span> },
-    { id: "Germany", label: t.countries.list[1].name, icon: <span className="text-3xl">🇩🇪</span> },
-    { id: "Spain", label: t.countries.list[2].name, icon: <span className="text-3xl">🇪🇸</span> },
+    { id: "Poland", label: t.countries.list[0].name, icon: <Image src={getFlagUrl("pl", "lg")} alt="Poland" width={48} height={36} className="rounded-lg" unoptimized /> },
+    { id: "Germany", label: t.countries.list[1].name, icon: <Image src={getFlagUrl("de", "lg")} alt="Germany" width={48} height={36} className="rounded-lg" unoptimized /> },
+    { id: "Spain", label: t.countries.list[2].name, icon: <Image src={getFlagUrl("es", "lg")} alt="Spain" width={48} height={36} className="rounded-lg" unoptimized /> },
     { id: "Other", label: t.onboarding.goalOptions.other, icon: <span className="text-3xl">🌍</span>, disabled: true },
   ];
 

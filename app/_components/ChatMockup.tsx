@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
+import { getFlagUrl } from "../_lib/flags";
 
 type MessageFrom = "ai" | "user";
 
@@ -17,9 +19,9 @@ export default function ChatMockup() {
   ];
 
   const countries = [
-    { flag: "🇵🇱", name: t.countries.list[0].name },
-    { flag: "🇩🇪", name: t.countries.list[1].name },
-    { flag: "🇪🇸", name: t.countries.list[2].name },
+    { code: "pl", name: t.countries.list[0].name },
+    { code: "de", name: t.countries.list[1].name },
+    { code: "es", name: t.countries.list[2].name },
   ];
 
   useEffect(() => {
@@ -101,7 +103,14 @@ export default function ChatMockup() {
                 key={country.name}
                 className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent-bright"
               >
-                <span>{country.flag}</span>
+                <Image
+                  src={getFlagUrl(country.code, "sm")}
+                  alt={country.name}
+                  width={24}
+                  height={18}
+                  className="rounded-sm"
+                  unoptimized
+                />
                 {country.name}
               </span>
             ))}

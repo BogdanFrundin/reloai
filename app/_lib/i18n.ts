@@ -1,11 +1,11 @@
 export type Lang = "ru" | "en" | "uz" | "tr" | "tg";
 
 export const LANGUAGES: { code: Lang; flag: string; name: string }[] = [
-  { code: "ru", flag: "🇷🇺", name: "Русский" },
-  { code: "en", flag: "🇬🇧", name: "English" },
-  { code: "uz", flag: "🇺🇿", name: "Uzbek" },
-  { code: "tr", flag: "🇹🇷", name: "Türkçe" },
-  { code: "tg", flag: "🇹🇯", name: "Тоҷикӣ" },
+  { code: "ru", flag: "ru", name: "Русский" },
+  { code: "en", flag: "gb", name: "English" },
+  { code: "uz", flag: "uz", name: "Uzbek" },
+  { code: "tr", flag: "tr", name: "Türkçe" },
+  { code: "tg", flag: "tj", name: "Тоҷикӣ" },
 ];
 
 export const DEFAULT_LANG: Lang = "ru";

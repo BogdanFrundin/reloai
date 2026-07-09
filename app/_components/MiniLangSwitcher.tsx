@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { LANGUAGES } from "../_lib/i18n";
 import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
+import { getFlagUrl } from "../_lib/flags";
 
 export default function MiniLangSwitcher() {
   const { lang, setLang } = useLanguage();
@@ -30,7 +32,14 @@ export default function MiniLangSwitcher() {
         aria-expanded={open}
         className={`flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/40 hover:bg-white/10 ${pressScale}`}
       >
-        <span className="text-lg leading-none">{current.flag}</span>
+        <Image
+          src={getFlagUrl(current.flag, "sm")}
+          alt={current.name}
+          width={24}
+          height={18}
+          className="rounded-sm"
+          unoptimized
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-3 w-3 text-slate-500 transition-transform duration-150 ${open ? "rotate-180" : ""}`}
@@ -62,7 +71,14 @@ export default function MiniLangSwitcher() {
                   l.code === lang ? "font-semibold text-accent-bright" : "text-slate-300"
                 }`}
               >
-                <span className="text-base leading-none">{l.flag}</span>
+                <Image
+                  src={getFlagUrl(l.flag, "sm")}
+                  alt={l.name}
+                  width={24}
+                  height={18}
+                  className="rounded-sm"
+                  unoptimized
+                />
                 {l.name}
               </button>
             </li>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
@@ -7,6 +8,7 @@ import { LANGUAGES } from "../_lib/i18n";
 import { useScrolled } from "../_lib/useScrolled";
 import { pressScale } from "../_lib/motion";
 import { useCtaHref } from "../_lib/useCtaHref";
+import { getFlagUrl } from "../_lib/flags";
 
 function LanguageSelector() {
   const { lang, setLang } = useLanguage();
@@ -33,7 +35,14 @@ function LanguageSelector() {
         aria-expanded={open}
         className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
       >
-        <span className="text-lg leading-none">{current.flag}</span>
+        <Image
+          src={getFlagUrl(current.flag, "sm")}
+          alt={current.name}
+          width={24}
+          height={18}
+          className="rounded-sm"
+          unoptimized
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-4 w-4 text-slate-400 transition-transform duration-200 ease-[var(--ease-out-strong)] ${open ? "rotate-180" : ""}`}
@@ -66,7 +75,14 @@ function LanguageSelector() {
                   l.code === lang ? "font-semibold text-accent-bright" : "text-slate-200"
                 }`}
               >
-                <span className="text-base leading-none">{l.flag}</span>
+                <Image
+                  src={getFlagUrl(l.flag, "sm")}
+                  alt={l.name}
+                  width={24}
+                  height={18}
+                  className="rounded-sm"
+                  unoptimized
+                />
                 {l.name}
               </button>
             </li>

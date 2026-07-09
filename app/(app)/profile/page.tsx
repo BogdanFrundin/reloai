@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PageHeader from "../../_components/PageHeader";
@@ -10,6 +11,7 @@ import { useAuth } from "../../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../../_lib/i18n";
 import { getInitials } from "../../_lib/initials";
 import { pressScale } from "../../_lib/motion";
+import { getFlagUrl } from "../../_lib/flags";
 import { supabase } from "../../../lib/supabase";
 
 export default function ProfilePage() {
@@ -91,7 +93,14 @@ export default function ProfilePage() {
                       : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
                   }`}
                 >
-                  <span className="text-base leading-none">{l.flag}</span>
+                  <Image
+                    src={getFlagUrl(l.flag, "sm")}
+                    alt={l.name}
+                    width={24}
+                    height={18}
+                    className="rounded-sm"
+                    unoptimized
+                  />
                   {l.name}
                 </button>
               ))}

@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getCountryList } from "../_lib/countries";
+import { getFlagUrl } from "../_lib/flags";
 
 const inputCls =
   "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
@@ -46,9 +48,16 @@ export default function SearchableCountrySelect({
     <div className="relative" ref={containerRef}>
       <div className="relative">
         {showFlagPrefix && (
-          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-base leading-none">
-            {selected.flag}
-          </span>
+          <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center">
+            <Image
+              src={getFlagUrl(selected.flag, "sm")}
+              alt={selected.name}
+              width={24}
+              height={18}
+              className="rounded-sm"
+              unoptimized
+            />
+          </div>
         )}
         <input
           type="text"
@@ -88,7 +97,14 @@ export default function SearchableCountrySelect({
                   country.code === value ? "font-semibold text-accent-bright" : "text-slate-300"
                 }`}
               >
-                <span className="text-base leading-none">{country.flag}</span>
+                <Image
+                  src={getFlagUrl(country.flag, "sm")}
+                  alt={country.name}
+                  width={24}
+                  height={18}
+                  className="rounded-sm"
+                  unoptimized
+                />
                 {country.name}
               </button>
             </li>
