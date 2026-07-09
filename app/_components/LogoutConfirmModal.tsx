@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
 
@@ -14,14 +15,16 @@ export default function LogoutConfirmModal({
 }) {
   const { t } = useLanguage();
 
+  // `open` only ever becomes true from a client-side click after hydration,
+  // so document.body is always available here — no mount-detection needed.
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
       onClick={onClose}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-[opacity] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-[opacity] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0"
     >
       <div
         onClick={(event) => event.stopPropagation()}
@@ -55,6 +58,7 @@ export default function LogoutConfirmModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
