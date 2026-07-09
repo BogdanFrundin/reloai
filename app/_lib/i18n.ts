@@ -223,6 +223,7 @@ export type Dictionary = {
     tips: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
     topDistrictDescs: { mokotow: string; ursynow: string; wola: string; zoliborz: string };
     bestValueBadge: string;
+    expatsChoiceBadge: string;
     showAllDistricts: string;
     showFewerDistricts: string;
   };
@@ -897,8 +898,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     housing: {
       title: "Housing in Poland 🇵🇱",
       subtitle: "Find a place to live, the smart way.",
-      rentMarket: "Rent Market",
-      rentMarketSub: "Average monthly rent by Warsaw district.",
+      rentMarket: "🏆 Top 4 districts by price-to-quality ratio",
+      rentMarketSub: "Our experts and thousands of expats picked these districts as the best for living, based on price, comfort, and infrastructure.",
       distanceToCenter: "{km} km to center",
       metroAccess: "Metro access",
       noMetro: "No metro",
@@ -933,7 +934,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         zoliborz: "Cozy, safe, a favorite among expats. Excellent atmosphere.",
       },
       bestValueBadge: "Best value",
-      showAllDistricts: "Show all districts →",
+      expatsChoiceBadge: "Expats' choice",
+      showAllDistricts: "Show all 18 Warsaw districts →",
       showFewerDistricts: "Show fewer districts",
     },
     banks: {
@@ -1682,8 +1684,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     housing: {
       title: "Жильё в Польше 🇵🇱",
       subtitle: "Найдите жильё с умом.",
-      rentMarket: "Рынок аренды",
-      rentMarketSub: "Средняя месячная аренда по районам Варшавы.",
+      rentMarket: "🏆 Топ-4 района по соотношению цена/качество",
+      rentMarketSub: "Наши эксперты и тысячи экспатов выбрали эти районы как лучшие для жизни по соотношению цены, комфорта и инфраструктуры.",
       distanceToCenter: "{km} км до центра",
       metroAccess: "Есть метро",
       noMetro: "Без метро",
@@ -1718,7 +1720,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         zoliborz: "Уютный, безопасный, любимый среди экспатов. Отличная атмосфера.",
       },
       bestValueBadge: "Рекомендуем",
-      showAllDistricts: "Показать все районы →",
+      expatsChoiceBadge: "Выбор экспатов",
+      showAllDistricts: "Показать все 18 районов Варшавы →",
       showFewerDistricts: "Свернуть список районов",
     },
     banks: {
@@ -2467,8 +2470,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     housing: {
       title: "Polshada uy-joy 🇵🇱",
       subtitle: "Yashash uchun joyni aqlli tarzda toping.",
-      rentMarket: "Ijara bozori",
-      rentMarketSub: "Varshava tumanlari bo'yicha o'rtacha oylik ijara narxi.",
+      rentMarket: "🏆 Narx-sifat nisbati bo'yicha eng yaxshi 4 tuman",
+      rentMarketSub: "Bizning mutaxassislarimiz va minglab chet elliklar bu tumanlarni narx, qulaylik va infratuzilma bo'yicha yashash uchun eng yaxshisi deb tanladilar.",
       distanceToCenter: "Markazgacha {km} km",
       metroAccess: "Metro mavjud",
       noMetro: "Metro yo'q",
@@ -2503,7 +2506,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         zoliborz: "Qulay, xavfsiz, chet elliklar orasida sevimli. Ajoyib muhit.",
       },
       bestValueBadge: "Eng foydali",
-      showAllDistricts: "Barcha tumanlarni ko'rsatish →",
+      expatsChoiceBadge: "Chet elliklar tanlovi",
+      showAllDistricts: "Varshavaning barcha 18 ta tumanini ko'rsatish →",
       showFewerDistricts: "Ro'yxatni yig'ish",
     },
     banks: {
@@ -3249,8 +3253,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     housing: {
       title: "Polonya'da Konut 🇵🇱",
       subtitle: "Doğru şekilde bir yaşam alanı bulun.",
-      rentMarket: "Kira Piyasası",
-      rentMarketSub: "Varşova ilçelerine göre ortalama aylık kira.",
+      rentMarket: "🏆 Fiyat-kalite oranına göre en iyi 4 ilçe",
+      rentMarketSub: "Uzmanlarımız ve binlerce göçmen, fiyat, konfor ve altyapı açısından yaşamak için en iyi ilçeler olarak bunları seçti.",
       distanceToCenter: "Merkeze {km} km",
       metroAccess: "Metro erişimi",
       noMetro: "Metro yok",
@@ -3285,7 +3289,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         zoliborz: "Rahat, güvenli, göçmenler arasında favori. Mükemmel bir atmosfer.",
       },
       bestValueBadge: "En iyi değer",
-      showAllDistricts: "Tüm ilçeleri göster →",
+      expatsChoiceBadge: "Göçmenlerin tercihi",
+      showAllDistricts: "Varşova'nın 18 ilçesinin tümünü göster →",
       showFewerDistricts: "Listeyi daralt",
     },
     banks: {
@@ -4031,8 +4036,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
     housing: {
       title: "Манзил дар Полша 🇵🇱",
       subtitle: "Ҷои зист бо роҳи оқилона ёфта гиред.",
-      rentMarket: "Бозори иҷора",
-      rentMarketSub: "Иҷораи миёнаи моҳона аз рӯи ноҳияҳои Варшава.",
+      rentMarket: "🏆 4 ноҳияи беҳтарин аз рӯи нисбати нарх ва сифат",
+      rentMarketSub: "Мутахассисони мо ва ҳазорон муҳоҷир ин ноҳияҳоро аз рӯи нарх, роҳат ва инфрасохтор беҳтарин барои зиндагӣ интихоб карданд.",
       distanceToCenter: "{km} км то марказ",
       metroAccess: "Дастрасии метро",
       noMetro: "Метро нест",
@@ -4067,7 +4072,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         zoliborz: "Форам, бехатар, дар байни муҳоҷирон маҳбуб. Фазои олиҷаноб.",
       },
       bestValueBadge: "Тавсия медиҳем",
-      showAllDistricts: "Ҳамаи ноҳияҳоро нишон диҳед →",
+      expatsChoiceBadge: "Интихоби муҳоҷирон",
+      showAllDistricts: "Ҳамаи 18 ноҳияи Варшаваро нишон диҳед →",
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
     },
     banks: {
