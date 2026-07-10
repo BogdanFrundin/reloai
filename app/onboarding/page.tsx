@@ -12,7 +12,7 @@ import { useAuth } from "../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
 import { pressScale } from "../_lib/motion";
-import { getFlagUrl, getFlagEmoji } from "../_lib/flags";
+import { getFlagUrl } from "../_lib/flags";
 import { supabase } from "../../lib/supabase";
 
 type Option = {
@@ -20,6 +20,14 @@ type Option = {
   label: string;
   icon: ReactNode;
   bareIcon?: boolean;
+};
+
+const LANGUAGE_FLAG_EMOJI: Record<string, string> = {
+  ru: "🇷🇺",
+  en: "🇬🇧",
+  uz: "🇺🇿",
+  tr: "🇹🇷",
+  tg: "🇹🇯",
 };
 
 type Answers = {
@@ -236,7 +244,7 @@ export default function OnboardingPage() {
   const languageOptions: Option[] = LANGUAGES.map((l) => ({
     id: l.code,
     label: l.name,
-    icon: <span className="text-4xl leading-none">{getFlagEmoji(l.flag)}</span>,
+    icon: <span style={{ fontSize: "2rem", lineHeight: 1 }}>{LANGUAGE_FLAG_EMOJI[l.code]}</span>,
     bareIcon: true,
   }));
 
