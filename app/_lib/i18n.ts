@@ -34,7 +34,9 @@ export type Dictionary = {
     subtext: string;
     getStarted: string;
     seeHowItWorks: string;
-    trustedFor: string;
+    trustCountries: string;
+    trustLanguages: string;
+    trustFree: string;
   };
   chat: {
     assistantName: string;
@@ -513,7 +515,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI plans your visa, paperwork, housing, and banking — step by step, in plain language. Ask a question, get a personalized roadmap in seconds.",
       getStarted: "Get Started",
       seeHowItWorks: "See how it works",
-      trustedFor: "Trusted for relocations to",
+      trustCountries: "3 countries",
+      trustLanguages: "6 languages",
+      trustFree: "Free to start",
     },
     chat: {
       assistantName: "ReloAI Assistant",
@@ -1325,7 +1329,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI планирует вашу визу, документы, жильё и банковские дела — шаг за шагом, простым языком. Задайте вопрос и получите персональный план за секунды.",
       getStarted: "Начать",
       seeHowItWorks: "Как это работает",
-      trustedFor: "Нам доверяют переезды в",
+      trustCountries: "3 страны",
+      trustLanguages: "6 языков",
+      trustFree: "Бесплатно для старта",
     },
     chat: {
       assistantName: "Ассистент ReloAI",
@@ -2137,7 +2143,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI sizning vizangiz, hujjatlaringiz, turar joyingiz va bank ishlaringizni — qadam-baqadam, oddiy tilda rejalashtiradi. Savol bering va soniyalar ichida shaxsiy reja oling.",
       getStarted: "Boshlash",
       seeHowItWorks: "Qanday ishlashini ko'rish",
-      trustedFor: "Quyidagi davlatlarga ko'chishda ishonch bildirishadi",
+      trustCountries: "3 mamlakat",
+      trustLanguages: "6 til",
+      trustFree: "Bepul boshlash",
     },
     chat: {
       assistantName: "ReloAI Yordamchisi",
@@ -2947,7 +2955,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI vizenizi, evraklarınızı, konaklamanızı ve bankacılık işlerinizi adım adım, anlaşılır bir dille planlar. Bir soru sorun, saniyeler içinde kişisel bir yol haritası alın.",
       getStarted: "Başla",
       seeHowItWorks: "Nasıl çalıştığını gör",
-      trustedFor: "Şu ülkelere taşınmalarda güvenilir",
+      trustCountries: "3 ülke",
+      trustLanguages: "6 dil",
+      trustFree: "Ücretsiz başlangıç",
     },
     chat: {
       assistantName: "ReloAI Asistanı",
@@ -3756,7 +3766,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI раводид, коғазҳо, манзил ва корҳои бонкии шуморо қадам ба қадам, бо забони сода ба нақша мегирад. Саволеро бипурсед ва дар якчанд сония нақшаи шахсии худро гиред.",
       getStarted: "Сар кардан",
       seeHowItWorks: "Чӣ тавр кор карданашро бинед",
-      trustedFor: "Ба кӯчиш ба ин кишварҳо боварӣ доранд",
+      trustCountries: "3 кишвар",
+      trustLanguages: "6 забон",
+      trustFree: "Оғози ройгон",
     },
     chat: {
       assistantName: "Ёрирасони ReloAI",
@@ -4565,7 +4577,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ReloAI планує вашу візу, документи, житло та банківські справи — крок за кроком, простою мовою. Поставте запитання та отримайте персональний план за секунди.",
       getStarted: "Почати",
       seeHowItWorks: "Як це працює",
-      trustedFor: "Нам довіряють переїзди в",
+      trustCountries: "3 країни",
+      trustLanguages: "6 мов",
+      trustFree: "Безкоштовний старт",
     },
     chat: {
       assistantName: "Асистент ReloAI",
