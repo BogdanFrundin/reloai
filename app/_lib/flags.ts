@@ -24,3 +24,10 @@ export function getLanguageFlagUrl(langCode: string, size: "sm" | "md" | "lg" = 
   const countryCode = LANG_TO_COUNTRY[langCode.toLowerCase()] || langCode.toLowerCase();
   return getFlagUrl(countryCode, size);
 }
+
+// Convert a two-letter ISO country code to its flag emoji (e.g. "ru" -> 🇷🇺)
+export function getFlagEmoji(countryCode: string): string {
+  return countryCode
+    .toUpperCase()
+    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
+}

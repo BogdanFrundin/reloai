@@ -12,13 +12,14 @@ import { useAuth } from "../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
 import { pressScale } from "../_lib/motion";
-import { getFlagUrl } from "../_lib/flags";
+import { getFlagUrl, getFlagEmoji } from "../_lib/flags";
 import { supabase } from "../../lib/supabase";
 
 type Option = {
   id: string;
   label: string;
   icon: ReactNode;
+  bareIcon?: boolean;
 };
 
 type Answers = {
@@ -235,16 +236,8 @@ export default function OnboardingPage() {
   const languageOptions: Option[] = LANGUAGES.map((l) => ({
     id: l.code,
     label: l.name,
-    icon: (
-      <Image
-        src={getFlagUrl(l.flag, "lg")}
-        alt={l.name}
-        width={48}
-        height={36}
-        className="rounded-lg"
-        unoptimized
-      />
-    ),
+    icon: <span className="text-3xl leading-none">{getFlagEmoji(l.flag)}</span>,
+    bareIcon: true,
   }));
 
   const destinationOptions: (Option & { disabled?: boolean })[] = [
@@ -285,13 +278,17 @@ export default function OnboardingPage() {
               }`
         }`}
       >
-        <span
-          className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
-            isSelected ? "bg-accent/20 text-accent-bright" : "bg-white/5 text-slate-300"
-          }`}
-        >
-          {option.icon}
-        </span>
+        {option.bareIcon ? (
+          <span className="flex flex-shrink-0 items-center justify-center">{option.icon}</span>
+        ) : (
+          <span
+            className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
+              isSelected ? "bg-accent/20 text-accent-bright" : "bg-white/5 text-slate-300"
+            }`}
+          >
+            {option.icon}
+          </span>
+        )}
         <span className="flex-1 text-sm font-semibold text-white">{option.label}</span>
         {option.disabled ? (
           <span className="rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
