@@ -236,7 +236,7 @@ export default function OnboardingPage() {
   const languageOptions: Option[] = LANGUAGES.map((l) => ({
     id: l.code,
     label: l.name,
-    icon: <span className="text-3xl leading-none">{getFlagEmoji(l.flag)}</span>,
+    icon: <span className="text-4xl leading-none">{getFlagEmoji(l.flag)}</span>,
     bareIcon: true,
   }));
 
