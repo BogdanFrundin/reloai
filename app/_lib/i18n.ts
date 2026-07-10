@@ -66,6 +66,15 @@ export type Dictionary = {
     list: { flag: string; name: string; highlight: string; points: string[] }[];
     planMyMoveTo: string;
   };
+  directions: {
+    label: string;
+    heading: string;
+    subheading: string;
+    comingSoonBadge: string;
+    ctaLabel: string;
+    comingSoonCta: string;
+    cards: [{ name: string; subtitle: string }, { name: string; subtitle: string }, { name: string; subtitle: string }];
+  };
   pricing: {
     heading: string;
     subheading: string;
@@ -623,6 +632,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       planMyMoveTo: "Plan my move to {country} →",
+    },
+    directions: {
+      label: "DESTINATIONS",
+      heading: "Where are you moving?",
+      subheading: "A personal plan for your country — in seconds.",
+      comingSoonBadge: "Coming soon",
+      ctaLabel: "Get started",
+      comingSoonCta: "Coming soon",
+      cards: [
+        { name: "Poland", subtitle: "Stable Europe to start" },
+        { name: "Germany", subtitle: "Blue Card and an IT career" },
+        { name: "Spain", subtitle: "Sun, sea, and Digital Nomad life" },
+      ],
     },
     pricing: {
       heading: "Simple, transparent pricing",
@@ -1420,6 +1442,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
       planMyMoveTo: "Спланировать переезд в {country} →",
     },
+    directions: {
+      label: "НАПРАВЛЕНИЯ",
+      heading: "Куда вы переезжаете?",
+      subheading: "Персональный план для вашей страны — за секунды.",
+      comingSoonBadge: "Скоро будет доступно",
+      ctaLabel: "Начать",
+      comingSoonCta: "Скоро",
+      cards: [
+        { name: "Польша", subtitle: "Стабильная Европа для старта" },
+        { name: "Германия", subtitle: "Blue Card и карьера в IT" },
+        { name: "Испания", subtitle: "Море, солнце и Digital Nomad" },
+      ],
+    },
     pricing: {
       heading: "Простые и понятные тарифы",
       subheading: "Начните бесплатно. Перейдите на платный, когда переезд станет реальностью.",
@@ -2216,6 +2251,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
       planMyMoveTo: "{country}ga ko'chishni rejalashtirish →",
     },
+    directions: {
+      label: "YO'NALISHLAR",
+      heading: "Qayerga ko'chib o'tyapsiz?",
+      subheading: "Mamlakatingiz uchun shaxsiy reja — soniyalarda.",
+      comingSoonBadge: "Tez orada mavjud bo'ladi",
+      ctaLabel: "Boshlash",
+      comingSoonCta: "Tez orada",
+      cards: [
+        { name: "Polsha", subtitle: "Boshlash uchun barqaror Yevropa" },
+        { name: "Germaniya", subtitle: "Blue Card va IT sohasida karyera" },
+        { name: "Ispaniya", subtitle: "Dengiz, quyosh va Digital Nomad" },
+      ],
+    },
     pricing: {
       heading: "Oddiy va shaffof narxlar",
       subheading: "Bepul boshlang. Ko'chish jiddiy bo'lganda yangilang.",
@@ -3008,6 +3056,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       planMyMoveTo: "{country}'ya taşınmamı planla →",
+    },
+    directions: {
+      label: "YÖNLER",
+      heading: "Nereye taşınıyorsunuz?",
+      subheading: "Ülkeniz için kişisel bir plan — saniyeler içinde.",
+      comingSoonBadge: "Yakında kullanılabilir",
+      ctaLabel: "Başla",
+      comingSoonCta: "Yakında",
+      cards: [
+        { name: "Polonya", subtitle: "Başlamak için istikrarlı Avrupa" },
+        { name: "Almanya", subtitle: "Blue Card ve BT kariyeri" },
+        { name: "İspanya", subtitle: "Deniz, güneş ve Digital Nomad" },
+      ],
     },
     pricing: {
       heading: "Basit, şeffaf fiyatlandırma",
@@ -3802,6 +3863,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
       planMyMoveTo: "Нақшаи кӯчиш ба {country} →",
     },
+    directions: {
+      label: "ҶАБҲАҲО",
+      heading: "Ба куҷо кӯч мебандед?",
+      subheading: "Нақшаи шахсӣ барои кишвари шумо — дар сонияҳо.",
+      comingSoonBadge: "Ба зудӣ дастрас мешавад",
+      ctaLabel: "Сар кардан",
+      comingSoonCta: "Ба зудӣ",
+      cards: [
+        { name: "Лаҳистон", subtitle: "Аврупои устувор барои оғоз" },
+        { name: "Олмон", subtitle: "Blue Card ва карераи IT" },
+        { name: "Испания", subtitle: "Баҳр, офтоб ва Digital Nomad" },
+      ],
+    },
     pricing: {
       heading: "Нархгузории содда ва шаффоф",
       subheading: "Ройгон сар кунед. Вақте ки кӯчиши шумо воқеӣ мешавад, баланд кунед.",
@@ -4595,6 +4669,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       ],
       planMyMoveTo: "Спланувати переїзд до {country} →",
+    },
+    directions: {
+      label: "НАПРЯМКИ",
+      heading: "Куди ви переїжджаєте?",
+      subheading: "Персональний план для вашої країни — за секунди.",
+      comingSoonBadge: "Незабаром буде доступно",
+      ctaLabel: "Почати",
+      comingSoonCta: "Незабаром",
+      cards: [
+        { name: "Польща", subtitle: "Стабільна Європа для старту" },
+        { name: "Німеччина", subtitle: "Blue Card та кар'єра в IT" },
+        { name: "Іспанія", subtitle: "Море, сонце та Digital Nomad" },
+      ],
     },
     pricing: {
       heading: "Прості та зрозумілі тарифи",

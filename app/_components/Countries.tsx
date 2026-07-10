@@ -5,12 +5,11 @@ import Link from "next/link";
 import { useEffect, useState, type MouseEvent } from "react";
 import Reveal from "./Reveal";
 import { useCtaHref } from "../_lib/useCtaHref";
+import { useLanguage } from "./LanguageProvider";
 import { getFlagUrl } from "../_lib/flags";
 
 interface CardDef {
   flagCode: string;
-  name: string;
-  subtitle: string;
   accent: [number, number, number];
   bg: string;
   floatDelay: string;
@@ -21,8 +20,6 @@ interface CardDef {
 const CARDS: CardDef[] = [
   {
     flagCode: "pl",
-    name: "Польша",
-    subtitle: "Стабильная Европа для старта",
     accent: [200, 140, 50],
     bg: [
       "radial-gradient(ellipse at 38% 12%, rgba(200,140,50,0.24) 0%, transparent 58%)",
@@ -35,8 +32,6 @@ const CARDS: CardDef[] = [
   },
   {
     flagCode: "de",
-    name: "Германия",
-    subtitle: "Blue Card и карьера в IT",
     accent: [33, 85, 212],
     bg: [
       "radial-gradient(ellipse at 50% 18%, rgba(30,80,200,0.3) 0%, transparent 55%)",
@@ -50,8 +45,6 @@ const CARDS: CardDef[] = [
   },
   {
     flagCode: "es",
-    name: "Испания",
-    subtitle: "Море, солнце и Digital Nomad",
     accent: [220, 88, 28],
     bg: [
       "radial-gradient(ellipse at 62% 8%, rgba(220,80,28,0.3) 0%, transparent 55%)",
@@ -66,6 +59,7 @@ const CARDS: CardDef[] = [
 ];
 
 export default function Countries() {
+  const { t } = useLanguage();
   const [tilts, setTilts] = useState(() => CARDS.map(() => ({ x: 0, y: 0 })));
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isPointerFine, setIsPointerFine] = useState(false);
@@ -127,16 +121,16 @@ export default function Countries() {
         {/* Heading */}
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-accent-bright/60">
-            Направления
+            {t.directions.label}
           </p>
           <h2
             className="mt-5 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl"
             style={{ textShadow: "0 0 55px rgba(33,85,212,0.65), 0 0 110px rgba(33,85,212,0.28)" }}
           >
-            Куда вы переезжаете?
+            {t.directions.heading}
           </h2>
           <p className="mt-5 text-base text-slate-500">
-            Персональный план для вашей страны — за секунды.
+            {t.directions.subheading}
           </p>
         </Reveal>
 
@@ -146,9 +140,10 @@ export default function Countries() {
             const [r, g, b] = card.accent;
             const tilt = tilts[index];
             const isHovered = hoveredIndex === index;
+            const cardText = t.directions.cards[index];
 
             return (
-              <Reveal key={card.name} delay={index * 130}>
+              <Reveal key={cardText.name} delay={index * 130}>
                 {/* Float wrapper — disabled on coarse-pointer via CSS */}
                 <div
                   className="animate-card-float"
@@ -234,7 +229,7 @@ export default function Countries() {
                     {/* Coming soon — badge */}
                     {card.comingSoon && (
                       <span className="absolute right-5 top-5 z-10 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 backdrop-blur-md">
-                        Скоро будет доступно
+                        {t.directions.comingSoonBadge}
                       </span>
                     )}
 
@@ -251,7 +246,7 @@ export default function Countries() {
                       >
                         <Image
                           src={getFlagUrl(card.flagCode, "lg")}
-                          alt={card.name}
+                          alt={cardText.name}
                           width={64}
                           height={48}
                           className="rounded-lg"
@@ -268,12 +263,12 @@ export default function Countries() {
                           opacity: card.comingSoon ? 0.6 : 1,
                         }}
                       >
-                        {card.name}
+                        {cardText.name}
                       </h3>
 
                       {/* One-line description */}
                       <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
-                        {card.subtitle}
+                        {cardText.subtitle}
                       </p>
 
                       {/* Spacer */}
@@ -285,7 +280,7 @@ export default function Countries() {
                           aria-disabled="true"
                           className="inline-flex w-fit cursor-not-allowed items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-[22px] py-[10px] text-sm font-semibold text-slate-500 line-through decoration-slate-500"
                         >
-                          Скоро
+                          {t.directions.comingSoonCta}
                         </span>
                       ) : (
                         <Link
@@ -301,7 +296,7 @@ export default function Countries() {
                             } as React.CSSProperties
                           }
                         >
-                          Начать
+                          {t.directions.ctaLabel}
                           <span
                             aria-hidden
                             className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
