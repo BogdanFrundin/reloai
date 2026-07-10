@@ -22,14 +22,6 @@ type Option = {
   bareIcon?: boolean;
 };
 
-const LANGUAGE_FLAG_EMOJI: Record<string, string> = {
-  ru: "🇷🇺",
-  en: "🇬🇧",
-  uz: "🇺🇿",
-  tr: "🇹🇷",
-  tg: "🇹🇯",
-};
-
 type Answers = {
   language?: string;
   citizenship?: string;
@@ -241,12 +233,23 @@ export default function OnboardingPage() {
   const question = t.onboarding.steps[stepKey].question;
   const subheading = t.onboarding.steps[stepKey].subheading;
 
-  const languageOptions: Option[] = LANGUAGES.map((l) => ({
-    id: l.code,
-    label: l.name,
-    icon: <span style={{ fontSize: "2rem", lineHeight: 1 }}>{LANGUAGE_FLAG_EMOJI[l.code]}</span>,
-    bareIcon: true,
-  }));
+  const languageOptions: Option[] = LANGUAGES.map((l) => (
+    {
+      id: l.code,
+      label: l.name,
+      icon: (
+        <Image
+          src={getFlagUrl(l.flag, "md")}
+          alt={l.name}
+          width={32}
+          height={24}
+          className="rounded-sm"
+          unoptimized
+        />
+      ),
+      bareIcon: true,
+    }
+  ));
 
   const destinationOptions: (Option & { disabled?: boolean })[] = [
     { id: "Poland", label: t.countries.list[0].name, icon: <Image src={getFlagUrl("pl", "lg")} alt="Poland" width={48} height={36} className="rounded-lg" unoptimized /> },

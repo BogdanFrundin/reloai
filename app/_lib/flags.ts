@@ -17,6 +17,7 @@ export const LANG_TO_COUNTRY: Record<string, string> = {
   uz: "uz", // Uzbek
   tr: "tr", // Turkish
   tg: "tj", // Tajik
+  uk: "ua", // Ukrainian
 };
 
 // Get flag URL for a language code
