@@ -243,6 +243,8 @@ function isValidResult(value: unknown): value is RouteEngineResult {
   return Array.isArray(routes) && routes.length > 0;
 }
 
+const OPENAI_TIMEOUT_MS = 15000;
+
 export async function POST(request: Request) {
   const body = (await request.json()) as RouteRequestBody;
   const lang = resolveLang(body.language);
@@ -252,42 +254,55 @@ export async function POST(request: Request) {
     return NextResponse.json(buildFallback(lang));
   }
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: buildUserPrompt(body, lang) },
-      ],
-      temperature: 0.4,
-      response_format: { type: "json_object" },
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    return NextResponse.json({ error: `OpenAI error: ${errorText}` }, { status: 502 });
-  }
-
-  const data = await response.json();
-  const content: string | undefined = data.choices?.[0]?.message?.content;
-
-  if (!content) {
-    return NextResponse.json(buildFallback(lang));
-  }
-
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
+
+    let response: Response;
+    try {
+      response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: buildUserPrompt(body, lang) },
+          ],
+          temperature: 0.4,
+          response_format: { type: "json_object" },
+        }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`OpenAI error (${response.status}): ${errorText}`);
+      return NextResponse.json(buildFallback(lang));
+    }
+
+    const data = await response.json();
+    const content: string | undefined = data.choices?.[0]?.message?.content;
+
+    if (!content) {
+      return NextResponse.json(buildFallback(lang));
+    }
+
     const parsed = JSON.parse(content) as RouteEngineResult;
     if (!isValidResult(parsed)) {
       return NextResponse.json(buildFallback(lang));
     }
     return NextResponse.json(parsed);
-  } catch {
+  } catch (err) {
+    // Network failure, timeout/abort, or malformed JSON from OpenAI — degrade gracefully
+    // instead of surfacing an error to the user mid-onboarding.
+    console.error("Route engine failed, falling back to static routes:", err);
     return NextResponse.json(buildFallback(lang));
   }
 }
