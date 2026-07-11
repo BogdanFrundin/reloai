@@ -303,8 +303,35 @@ export type Dictionary = {
   dashboard: {
     relocation: string;
     subtitle: string;
+    subtitleTemplate: string;
+    subtitleTemplateNoCity: string;
     overallProgress: string;
     openBtn: string;
+    expandBtn: string;
+    collapseBtn: string;
+    countdown: {
+      heading: string;
+      remaining: string;
+      expired: string;
+    };
+    phases: {
+      beforeDeparture: string;
+      legalization: string;
+      residenceCard: string;
+      workTaxes: string;
+    };
+    phaseStatus: {
+      done: string;
+      inProgress: string;
+      waiting: string;
+    };
+    sidebar: {
+      tagline: string;
+      myPlanSection: string;
+      roadmap: string;
+      checklist: string;
+      servicesSection: string;
+    };
     route: {
       heading: string;
       recommended: string;
@@ -337,6 +364,14 @@ export type Dictionary = {
       biometric: { title: string; desc: string };
       residence: { title: string; desc: string };
       address: { title: string; desc: string };
+      taxId: {
+        title: string;
+        byCountry: { poland: string; germany: string; spain: string };
+      };
+      employmentRegistration: {
+        title: string;
+        byCountry: { poland: string; germany: string; spain: string };
+      };
     };
   };
   appPricing: {
@@ -1064,8 +1099,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "{country} Relocation",
       subtitle: "Your personalized roadmap, updated in real time.",
+      subtitleTemplate: "{from} → {city} · Goal: {goal} · Progress {percent}%",
+      subtitleTemplateNoCity: "{from} · Goal: {goal} · Progress {percent}%",
       overallProgress: "Overall progress",
       openBtn: "Open",
+      expandBtn: "Expand",
+      collapseBtn: "Collapse",
+      countdown: {
+        heading: "You have 30 days of legal stay under the visa-free regime",
+        remaining: "{days} days left — apply for your PESEL and residence card in time",
+        expired: "Your 30-day legal stay window has ended — apply for your residence documents as soon as possible",
+      },
+      phases: {
+        beforeDeparture: "Before departure",
+        legalization: "First 30 days — legalization",
+        residenceCard: "Residence card",
+        workTaxes: "Work & taxes",
+      },
+      phaseStatus: {
+        done: "Done",
+        inProgress: "In progress",
+        waiting: "Waiting",
+      },
+      sidebar: {
+        tagline: "Your relocation plan",
+        myPlanSection: "MY PLAN",
+        roadmap: "Roadmap",
+        checklist: "Checklist",
+        servicesSection: "SERVICES",
+      },
       route: {
         heading: "Your relocation options",
         recommended: "Recommended",
@@ -1116,6 +1178,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Schedule biometric appointment", desc: "Unlocks once your documents are verified." },
         residence: { title: "Apply for residence permit", desc: "Unlocks after your biometric appointment." },
         address: { title: "Register local address", desc: "Final step before you're fully settled." },
+        taxId: {
+          title: "Get your tax ID",
+          byCountry: {
+            poland: "Apply for a NIP (tax identification number) at your local tax office.",
+            germany: "Get your Steuer-ID by mail after completing your Anmeldung.",
+            spain: "Apply for your NIE (foreigner ID number) — required for almost everything in Spain.",
+          },
+        },
+        employmentRegistration: {
+          title: "Formalize your employment or business",
+          byCountry: {
+            poland: "Sign an umowa o pracę/zlecenie or register your business with ZUS.",
+            germany: "Sign your employment contract and register with the Finanzamt and social insurance.",
+            spain: "Register (alta) with Seguridad Social or Hacienda as an employee or self-employed.",
+          },
+        },
       },
     },
     appPricing: {
@@ -1878,8 +1956,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "Переезд в {country}",
       subtitle: "Ваш персональный план, обновляется в реальном времени.",
+      subtitleTemplate: "{from} → {city} · Цель: {goal} · Прогресс {percent}%",
+      subtitleTemplateNoCity: "{from} · Цель: {goal} · Прогресс {percent}%",
       overallProgress: "Общий прогресс",
       openBtn: "Открыть",
+      expandBtn: "Развернуть",
+      collapseBtn: "Свернуть",
+      countdown: {
+        heading: "У вас 30 дней легального пребывания по визовому режиму",
+        remaining: "Осталось {days} дней — нужно успеть подать на PESEL и карту побыту",
+        expired: "30 дней легального пребывания истекли — как можно скорее подайте документы на легализацию",
+      },
+      phases: {
+        beforeDeparture: "До отъезда",
+        legalization: "Первые 30 дней — легализация",
+        residenceCard: "Карта побыту",
+        workTaxes: "Работа и налоги",
+      },
+      phaseStatus: {
+        done: "Готово",
+        inProgress: "В процессе",
+        waiting: "Ожидает",
+      },
+      sidebar: {
+        tagline: "Ваш план переезда",
+        myPlanSection: "МОЙ ПЛАН",
+        roadmap: "Дорожная карта",
+        checklist: "Чеклист",
+        servicesSection: "СЕРВИСЫ",
+      },
       route: {
         heading: "Ваши варианты переезда",
         recommended: "Рекомендовано",
@@ -1930,6 +2035,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Запишитесь на биометрию", desc: "Откроется после проверки ваших документов." },
         residence: { title: "Подайте на вид на жительство", desc: "Откроется после приёма по биометрии." },
         address: { title: "Зарегистрируйте местный адрес", desc: "Последний шаг перед тем, как вы полностью обоснуетесь." },
+        taxId: {
+          title: "Получите налоговый номер",
+          byCountry: {
+            poland: "Оформите NIP (налоговый номер) в местной налоговой инспекции.",
+            germany: "Получите Steuer-ID по почте после регистрации по адресу (Anmeldung).",
+            spain: "Оформите NIE (номер иностранца) — он нужен почти для всего в Испании.",
+          },
+        },
+        employmentRegistration: {
+          title: "Оформите трудоустройство или бизнес официально",
+          byCountry: {
+            poland: "Подпишите umowa o pracę/zlecenie или зарегистрируйте бизнес в ZUS.",
+            germany: "Подпишите трудовой договор и зарегистрируйтесь в Finanzamt и системе социального страхования.",
+            spain: "Оформите alta в Seguridad Social или Hacienda как сотрудник или самозанятый.",
+          },
+        },
       },
     },
     appPricing: {
@@ -2692,8 +2813,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "{country}ga ko'chish",
       subtitle: "Sizning shaxsiy yo'l xaritangiz, real vaqtda yangilanadi.",
+      subtitleTemplate: "{from} → {city} · Maqsad: {goal} · Progress {percent}%",
+      subtitleTemplateNoCity: "{from} · Maqsad: {goal} · Progress {percent}%",
       overallProgress: "Umumiy jarayon",
       openBtn: "Ochish",
+      expandBtn: "Yoyish",
+      collapseBtn: "Yig'ish",
+      countdown: {
+        heading: "Sizda vizasiz rejim bo'yicha 30 kunlik qonuniy turish muddati bor",
+        remaining: "{days} kun qoldi — PESEL va karta pobytu uchun ariza berishga ulgurish kerak",
+        expired: "30 kunlik qonuniy turish muddati tugadi — hujjatlarni legallashtirish uchun imkon qadar tezroq ariza bering",
+      },
+      phases: {
+        beforeDeparture: "Ketishdan oldin",
+        legalization: "Birinchi 30 kun — legallashtirish",
+        residenceCard: "Turar joy kartasi",
+        workTaxes: "Ish va soliqlar",
+      },
+      phaseStatus: {
+        done: "Bajarildi",
+        inProgress: "Jarayonda",
+        waiting: "Kutilmoqda",
+      },
+      sidebar: {
+        tagline: "Sizning ko'chish rejangiz",
+        myPlanSection: "MENING REJAM",
+        roadmap: "Yo'l xaritasi",
+        checklist: "Ro'yxat",
+        servicesSection: "XIZMATLAR",
+      },
       route: {
         heading: "Sizning ko'chish variantlaringiz",
         recommended: "Tavsiya etilgan",
@@ -2744,6 +2892,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Biometrik uchrashuvni belgilang", desc: "Hujjatlaringiz tasdiqlangach ochiladi." },
         residence: { title: "Yashash ruxsatnomasiga ariza bering", desc: "Biometrik uchrashuvingizdan so'ng ochiladi." },
         address: { title: "Mahalliy manzilingizni ro'yxatdan o'tkazing", desc: "To'liq joylashishingizdan oldingi so'nggi qadam." },
+        taxId: {
+          title: "Soliq raqamingizni oling",
+          byCountry: {
+            poland: "Mahalliy soliq idorasida NIP (soliq identifikatsiya raqami) oling.",
+            germany: "Anmeldungdan so'ng Steuer-ID pochta orqali keladi.",
+            spain: "NIE (chet ellik raqami) oling — Ispaniyada deyarli hamma narsa uchun kerak.",
+          },
+        },
+        employmentRegistration: {
+          title: "Ishga joylashish yoki biznesni rasmiylashtiring",
+          byCountry: {
+            poland: "Umowa o pracę/zlecenie imzolang yoki biznesingizni ZUSda ro'yxatdan o'tkazing.",
+            germany: "Mehnat shartnomasini imzolang va Finanzamt hamda ijtimoiy sug'urtada ro'yxatdan o'ting.",
+            spain: "Xodim yoki o'z-o'zini band qilgan shaxs sifatida Seguridad Social yoki Haciendada alta rasmiylashtiring.",
+          },
+        },
       },
     },
     appPricing: {
@@ -3503,8 +3667,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "{country} Taşınması",
       subtitle: "Kişiselleştirilmiş yol haritanız, gerçek zamanlı güncellenir.",
+      subtitleTemplate: "{from} → {city} · Hedef: {goal} · İlerleme %{percent}",
+      subtitleTemplateNoCity: "{from} · Hedef: {goal} · İlerleme %{percent}",
       overallProgress: "Genel ilerleme",
       openBtn: "Aç",
+      expandBtn: "Genişlet",
+      collapseBtn: "Daralt",
+      countdown: {
+        heading: "Vizesiz rejim kapsamında 30 günlük yasal kalış hakkınız var",
+        remaining: "{days} gün kaldı — PESEL ve ikamet kartı başvurunuzu zamanında yapmanız gerekiyor",
+        expired: "30 günlük yasal kalış süreniz doldu — belgelerinizi en kısa sürede yasallaştırmak için başvurun",
+      },
+      phases: {
+        beforeDeparture: "Yola çıkmadan önce",
+        legalization: "İlk 30 gün — yasallaştırma",
+        residenceCard: "İkamet kartı",
+        workTaxes: "İş ve vergiler",
+      },
+      phaseStatus: {
+        done: "Tamamlandı",
+        inProgress: "Devam ediyor",
+        waiting: "Bekliyor",
+      },
+      sidebar: {
+        tagline: "Taşınma planınız",
+        myPlanSection: "PLANIM",
+        roadmap: "Yol haritası",
+        checklist: "Kontrol listesi",
+        servicesSection: "HİZMETLER",
+      },
       route: {
         heading: "Taşınma seçenekleriniz",
         recommended: "Önerilen",
@@ -3555,6 +3746,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Biyometrik randevu planlayın", desc: "Belgeleriniz onaylandığında açılır." },
         residence: { title: "Oturma izni için başvurun", desc: "Biyometrik randevunuzdan sonra açılır." },
         address: { title: "Yerel adresinizi kaydedin", desc: "Tamamen yerleşmeden önceki son adım." },
+        taxId: {
+          title: "Vergi numaranızı alın",
+          byCountry: {
+            poland: "Yerel vergi dairesinden NIP (vergi kimlik numarası) alın.",
+            germany: "Anmeldung işleminden sonra Steuer-ID'niz posta yoluyla gelir.",
+            spain: "NIE (yabancı kimlik numarası) alın — İspanya'da neredeyse her şey için gereklidir.",
+          },
+        },
+        employmentRegistration: {
+          title: "İşinizi veya işletmenizi resmileştirin",
+          byCountry: {
+            poland: "Umowa o pracę/zlecenie imzalayın veya işletmenizi ZUS'a kaydettirin.",
+            germany: "İş sözleşmenizi imzalayın ve Finanzamt ile sosyal sigortaya kaydolun.",
+            spain: "Çalışan veya serbest meslek sahibi olarak Seguridad Social veya Hacienda'ya alta kaydı yaptırın.",
+          },
+        },
       },
     },
     appPricing: {
@@ -4314,8 +4521,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "Кӯчидан ба {country}",
       subtitle: "Нақшаи роҳи шахсии шумо, ки дар вақти воқеӣ навсозӣ мешавад.",
+      subtitleTemplate: "{from} → {city} · Ҳадаф: {goal} · Пешрафт {percent}%",
+      subtitleTemplateNoCity: "{from} · Ҳадаф: {goal} · Пешрафт {percent}%",
       overallProgress: "Пешрафти умумӣ",
       openBtn: "Кушодан",
+      expandBtn: "Кушодан",
+      collapseBtn: "Пӯшидан",
+      countdown: {
+        heading: "Шумо 30 рӯз иқомати қонунӣ дар низоми бидуни виза доред",
+        remaining: "{days} рӯз боқӣ мондааст — бояд барои PESEL ва карти иқомат дар мӯҳлат муроҷиат кунед",
+        expired: "Мӯҳлати 30-рӯзаи иқомати қонунии шумо ба охир расид — ҳарчи зудтар барои ҳуҷҷатҳои иқомат муроҷиат кунед",
+      },
+      phases: {
+        beforeDeparture: "Пеш аз рафтан",
+        legalization: "30 рӯзи аввал — расмикунонӣ",
+        residenceCard: "Карти иқомат",
+        workTaxes: "Кор ва андозҳо",
+      },
+      phaseStatus: {
+        done: "Иҷрошуда",
+        inProgress: "Дар ҷараён",
+        waiting: "Дар интизорӣ",
+      },
+      sidebar: {
+        tagline: "Нақшаи кӯчиши шумо",
+        myPlanSection: "НАҚШАИ МАН",
+        roadmap: "Харитаи роҳ",
+        checklist: "Рӯйхат",
+        servicesSection: "ХИЗМАТРАСОНӢ",
+      },
       route: {
         heading: "Вариантҳои кӯчидани шумо",
         recommended: "Тавсияшуда",
@@ -4366,6 +4600,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Вохӯрии биометриро таъин кунед", desc: "Пас аз тасдиқи ҳуҷҷатҳоятон кушода мешавад." },
         residence: { title: "Барои иҷозати истиқомат ариза диҳед", desc: "Пас аз вохӯрии биометриатон кушода мешавад." },
         address: { title: "Суроғаи маҳаллии худро ба қайд гиред", desc: "Қадами охирин пеш аз пурра ҷойгир шуданатон." },
+        taxId: {
+          title: "Рақами андозии худро гиред",
+          byCountry: {
+            poland: "Дар идораи андози маҳаллӣ барои NIP (рақами шиносоии андоз) муроҷиат кунед.",
+            germany: "Пас аз Anmeldung, Steuer-ID тавассути почта мерасад.",
+            spain: "Барои NIE (рақами шахсии хориҷӣ) муроҷиат кунед — он тақрибан барои ҳама чиз дар Испания зарур аст.",
+          },
+        },
+        employmentRegistration: {
+          title: "Шуғл ё бизнеси худро расман ба қайд гиред",
+          byCountry: {
+            poland: "Umowa o pracę/zlecenie имзо кунед ё бизнеси худро дар ZUS ба қайд гиред.",
+            germany: "Шартномаи меҳнатиро имзо кунед ва дар Finanzamt ва суғуртаи иҷтимоӣ ба қайд гиред.",
+            spain: "Ҳамчун корманд ё худкорфармо дар Seguridad Social ё Hacienda alta ба қайд гиред.",
+          },
+        },
       },
     },
     appPricing: {
@@ -5126,8 +5376,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
     dashboard: {
       relocation: "Переїзд до {country}",
       subtitle: "Ваш персональний план, оновлюється в реальному часі.",
+      subtitleTemplate: "{from} → {city} · Мета: {goal} · Прогрес {percent}%",
+      subtitleTemplateNoCity: "{from} · Мета: {goal} · Прогрес {percent}%",
       overallProgress: "Загальний прогрес",
       openBtn: "Відкрити",
+      expandBtn: "Розгорнути",
+      collapseBtn: "Згорнути",
+      countdown: {
+        heading: "У вас 30 днів легального перебування за візовим режимом",
+        remaining: "Залишилося {days} днів — потрібно встигнути подати на PESEL і карту побиту",
+        expired: "30-денний термін легального перебування закінчився — якнайшвидше подайте документи на легалізацію",
+      },
+      phases: {
+        beforeDeparture: "До від'їзду",
+        legalization: "Перші 30 днів — легалізація",
+        residenceCard: "Карта побиту",
+        workTaxes: "Робота і податки",
+      },
+      phaseStatus: {
+        done: "Готово",
+        inProgress: "У процесі",
+        waiting: "Очікує",
+      },
+      sidebar: {
+        tagline: "Ваш план переїзду",
+        myPlanSection: "МІЙ ПЛАН",
+        roadmap: "Дорожня карта",
+        checklist: "Чекліст",
+        servicesSection: "СЕРВІСИ",
+      },
       route: {
         heading: "Ваші варіанти переїзду",
         recommended: "Рекомендовано",
@@ -5178,6 +5455,22 @@ export const dictionaries: Record<Lang, Dictionary> = {
         biometric: { title: "Запишіться на біометрію", desc: "Відкриється після перевірки ваших документів." },
         residence: { title: "Подайте на посвідку на проживання", desc: "Відкриється після прийому з біометрії." },
         address: { title: "Зареєструйте місцеву адресу", desc: "Останній крок перед тим, як ви повністю облаштуєтеся." },
+        taxId: {
+          title: "Отримайте податковий номер",
+          byCountry: {
+            poland: "Оформіть NIP (податковий номер) у місцевій податковій інспекції.",
+            germany: "Отримайте Steuer-ID поштою після реєстрації за адресою (Anmeldung).",
+            spain: "Оформіть NIE (номер іноземця) — він потрібен майже для всього в Іспанії.",
+          },
+        },
+        employmentRegistration: {
+          title: "Оформіть працевлаштування або бізнес офіційно",
+          byCountry: {
+            poland: "Підпишіть umowa o pracę/zlecenie або зареєструйте бізнес у ZUS.",
+            germany: "Підпишіть трудовий договір і зареєструйтеся у Finanzamt та системі соціального страхування.",
+            spain: "Оформіть alta в Seguridad Social або Hacienda як співробітник або самозайнятий.",
+          },
+        },
       },
     },
     appPricing: {
