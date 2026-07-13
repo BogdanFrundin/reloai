@@ -31,7 +31,7 @@ function DistrictCard({ district, t }: { district: WarsawDistrict; t: Dictionary
 
   return (
     <div
-      className={`relative rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/60 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
+      className={`relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/60 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
         district.recommended
           ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]"
           : "border-white/10 bg-white/[0.03]"
@@ -42,28 +42,26 @@ function DistrictCard({ district, t }: { district: WarsawDistrict; t: Dictionary
           {t.bestValueBadge}
         </span>
       )}
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex min-h-10 items-start justify-between gap-2">
         <p className="text-sm font-semibold text-white">{district.name}</p>
         {district.metro && <MetroBadge label={t.metroAccess} />}
       </div>
-      <p className="mt-2 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
+      <p className="mt-2 min-h-7 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
         {district.priceMin.toLocaleString()}–{district.priceMax.toLocaleString()} PLN
       </p>
-      {description && <p className="mt-2 text-sm text-slate-300">{description}</p>}
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-slate-400">
-          {t.distanceToCenter.replace("{km}", String(district.distanceKm))}
-        </span>
-        <span
-          className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium ${
-            district.metro
-              ? "border-accent/30 bg-accent/10 text-accent-bright"
-              : "border-white/10 bg-white/5 text-slate-500"
-          }`}
-        >
-          {district.metro ? t.metroAccess : t.noMetro}
-        </span>
-      </div>
+      <p className="mt-2 line-clamp-3 min-h-[60px] text-sm text-slate-300">{description}</p>
+      <span className="mt-3 inline-flex w-fit min-h-7 items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-slate-400">
+        {t.distanceToCenter.replace("{km}", String(district.distanceKm))}
+      </span>
+      <span
+        className={`mt-auto inline-flex w-fit items-center gap-1 self-start rounded-full border px-2.5 py-1 text-[11px] font-medium ${
+          district.metro
+            ? "border-accent/30 bg-accent/10 text-accent-bright"
+            : "border-white/10 bg-white/5 text-slate-500"
+        }`}
+      >
+        {district.metro ? t.metroAccess : t.noMetro}
+      </span>
     </div>
   );
 }
@@ -87,7 +85,7 @@ export default function HousingPage() {
           </span>
         </div>
         <p className="mt-1.5 max-w-2xl text-sm text-slate-400">{t.housing.rentMarketSub}</p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {featuredDistricts.map((district, index) => (
             <Reveal key={district.id} delay={index * 25}>
               <DistrictCard district={district} t={t.housing} />
@@ -105,7 +103,7 @@ export default function HousingPage() {
           </button>
 
           {showAll && (
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="mt-6 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {restDistricts.map((district, index) => (
                 <Reveal key={district.id} delay={index * 25}>
                   <DistrictCard district={district} t={t.housing} />
