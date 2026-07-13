@@ -7,8 +7,7 @@ import { useLanguage } from "./LanguageProvider";
 import { useAuth } from "./AuthProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
 import LogoutConfirmModal from "./LogoutConfirmModal";
-import MiniLangSwitcher from "./MiniLangSwitcher";
-import { SETTINGS_ICON, LOGOUT_ICON } from "./AccountIcons";
+import { PROFILE_ICON, SETTINGS_ICON, LOGOUT_ICON } from "./AccountIcons";
 import { NAV_ICONS, type MainKey, type OtherKey } from "./NavIcons";
 
 const ICON_PROPS = {
@@ -55,7 +54,7 @@ export default function DashboardSidebar({
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useLanguage();
-  const { signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { country, checklistSteps, completed } = useDashboardProgress();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
@@ -63,6 +62,7 @@ export default function DashboardSidebar({
   const s = t.sidebar;
   const countryEntry = t.countries.list[COUNTRY_INDEX[country] ?? 0];
   const remainingCount = checklistSteps.filter((step) => !completed.has(step.documentType)).length;
+  const profileName = profile?.name?.trim() || user?.email?.trim() || s.profile;
 
   async function confirmLogOut() {
     setLogoutConfirmOpen(false);
@@ -177,12 +177,17 @@ export default function DashboardSidebar({
             onClick={onClose}
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
           >
+            {PROFILE_ICON}
+            <span className="truncate">{profileName}</span>
+          </Link>
+          <Link
+            href="/profile"
+            onClick={onClose}
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+          >
             {SETTINGS_ICON}
             <span>{s.settings}</span>
           </Link>
-          <div className="px-3">
-            <MiniLangSwitcher />
-          </div>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
