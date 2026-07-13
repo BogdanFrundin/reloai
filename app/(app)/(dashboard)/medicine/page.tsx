@@ -79,13 +79,17 @@ export default function MedicinePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
                   </svg>
                 </span>
-                <p className="mt-3 text-sm font-semibold text-white">{clinic.name}</p>
-                <p className="mt-1 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
-                <p className="mt-1 text-xs text-slate-500">{clinic.phone}</p>
-                <span className="mt-3 inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
-                  {t.medicine.languages[clinic.languagesKey]}
-                </span>
-                <div className="mt-3">
+                <p className="mt-3 min-h-10 text-sm font-semibold text-white">{clinic.name}</p>
+                <p className="mt-1 min-h-8 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
+                <p className="mt-1 min-h-4 text-xs text-slate-500">{clinic.phone}</p>
+                <div className="mt-3 min-h-7">
+                  {clinic.languagesKey && (
+                    <span className="inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
+                      {t.medicine.languages[clinic.languagesKey]}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-3 min-h-5">
                   <StarRating rating={clinic.rating} />
                 </div>
                 <a
