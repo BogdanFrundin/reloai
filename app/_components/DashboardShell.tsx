@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import AiChatPanel from "./AiChatPanel";
+import Topbar from "./Topbar";
 import PageTransition from "./PageTransition";
 import DemoBanner from "./DemoBanner";
 import DemoFloatingCard from "./DemoFloatingCard";
@@ -60,19 +61,7 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen">
         <DashboardSidebar open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="flex items-center gap-4 border-b border-white/10 bg-black/40 px-4 py-4 backdrop-blur-xl sm:px-6 lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileNavOpen(true)}
-              aria-label="Menu"
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
-          </div>
+          <Topbar onMenuClick={() => setMobileNavOpen(true)} />
           {isDemoMode && <DemoBanner />}
           <main className="grid flex-1 gap-6 overflow-y-auto p-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:p-6">
             <PageTransition>{children}</PageTransition>
