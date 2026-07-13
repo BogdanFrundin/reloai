@@ -7,7 +7,6 @@ import { useLanguage } from "./LanguageProvider";
 import { LANGUAGES } from "../_lib/i18n";
 import { useScrolled } from "../_lib/useScrolled";
 import { pressScale } from "../_lib/motion";
-import { useCtaHref } from "../_lib/useCtaHref";
 import { getFlagUrl } from "../_lib/flags";
 
 function LanguageSelector() {
@@ -97,7 +96,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { t } = useLanguage();
   const scrolled = useScrolled();
-  const ctaHref = useCtaHref();
 
   const NAV_LINKS = [
     { href: "#how-it-works", label: t.nav.howItWorks },
@@ -144,7 +142,7 @@ export default function Navbar() {
             {t.nav.login}
           </Link>
           <Link
-            href={ctaHref}
+            href="/register"
             className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
             {t.nav.getStarted}
@@ -199,7 +197,7 @@ export default function Navbar() {
               {t.nav.login}
             </Link>
             <Link
-              href={ctaHref}
+              href="/register"
               onClick={() => setOpen(false)}
               className={`mt-2 rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] hover:bg-accent-bright ${pressScale}`}
             >
