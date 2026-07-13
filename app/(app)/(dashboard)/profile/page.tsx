@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
@@ -14,6 +15,29 @@ import { getInitials } from "../../../_lib/initials";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
+
+const FREE_PLAN_FEATURES = ["Польша — базовый доступ", "AI чат — 10 сообщений/день", "Документы — просмотр"];
+
+const PRO_PLAN_FEATURES = [
+  "Все страны",
+  "Безлимитный AI чат",
+  "Генерация PDF документов",
+  "Приоритетная поддержка",
+];
+
+function CheckIcon({ accent = false }: { accent?: boolean }) {
+  return (
+    <svg
+      className={`h-4 w-4 flex-shrink-0 ${accent ? "text-accent-bright" : "text-slate-500"}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  );
+}
 
 export default function ProfilePage() {
   const { lang, setLang, t } = useLanguage();
@@ -76,8 +100,50 @@ export default function ProfilePage() {
           </div>
         </Reveal>
 
-        {/* Language picker */}
+        {/* Subscription / upgrade */}
         <Reveal delay={50}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-white">Ваш план</p>
+              <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
+                Бесплатный
+              </span>
+            </div>
+            <ul className="mt-4 space-y-2">
+              {FREE_PLAN_FEATURES.map((feature) => (
+                <li key={feature} className="flex items-center gap-2 text-sm text-slate-300">
+                  <CheckIcon />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/pricing"
+              className={`mt-5 flex w-full items-center justify-center rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] hover:scale-[1.01] ${pressScale}`}
+            >
+              Улучшить до Pro
+            </Link>
+
+            <div className="mt-5 border-t border-white/10 pt-5">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-accent-bright">Pro</p>
+                <p className="text-sm font-semibold text-white">9.99€ / месяц</p>
+              </div>
+              <ul className="mt-3 space-y-2">
+                {PRO_PLAN_FEATURES.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-slate-300">
+                    <CheckIcon accent />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Language picker */}
+        <Reveal delay={75}>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
             <p className="text-sm font-semibold text-white">
               {p.languageSection}{" "}
@@ -112,7 +178,7 @@ export default function ProfilePage() {
         </Reveal>
 
         {/* Notifications */}
-        <Reveal delay={100}>
+        <Reveal delay={125}>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
             <p className="text-sm font-semibold text-white">{p.notifications}</p>
             <div className="mt-4 space-y-4">
@@ -136,7 +202,7 @@ export default function ProfilePage() {
         </Reveal>
 
         {/* Log out */}
-        <Reveal delay={150}>
+        <Reveal delay={175}>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
