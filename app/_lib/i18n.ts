@@ -331,6 +331,7 @@ export type Dictionary = {
       myPlanSection: string;
       roadmap: string;
       checklist: string;
+      aiAssistant: string;
       servicesSection: string;
     };
     route: {
@@ -1128,6 +1129,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "MY PLAN",
         roadmap: "Roadmap",
         checklist: "Checklist",
+        aiAssistant: "AI Assistant",
         servicesSection: "SERVICES",
       },
       route: {
@@ -1986,6 +1988,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "МОЙ ПЛАН",
         roadmap: "Дорожная карта",
         checklist: "Чеклист",
+        aiAssistant: "AI Ассистент",
         servicesSection: "СЕРВИСЫ",
       },
       route: {
@@ -2844,6 +2847,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "MENING REJAM",
         roadmap: "Yo'l xaritasi",
         checklist: "Ro'yxat",
+        aiAssistant: "AI Yordamchi",
         servicesSection: "XIZMATLAR",
       },
       route: {
@@ -3699,6 +3703,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "PLANIM",
         roadmap: "Yol haritası",
         checklist: "Kontrol listesi",
+        aiAssistant: "AI Asistan",
         servicesSection: "HİZMETLER",
       },
       route: {
@@ -4554,6 +4559,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "НАҚШАИ МАН",
         roadmap: "Харитаи роҳ",
         checklist: "Рӯйхат",
+        aiAssistant: "Ёрдамчии AI",
         servicesSection: "ХИЗМАТРАСОНӢ",
       },
       route: {
@@ -5410,6 +5416,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         myPlanSection: "МІЙ ПЛАН",
         roadmap: "Дорожня карта",
         checklist: "Чекліст",
+        aiAssistant: "AI Асистент",
         servicesSection: "СЕРВІСИ",
       },
       route: {

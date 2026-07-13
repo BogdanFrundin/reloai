@@ -24,9 +24,10 @@ const ROADMAP_ICON = (
   </svg>
 );
 
-const CHECKLIST_ICON = (
+const AI_ASSISTANT_ICON = (
   <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.5V4m6 2.5V4M6 9.5h12a1.5 1.5 0 011.5 1.5v7a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 18v-7A1.5 1.5 0 016 9.5zM9 14v.01M15 14v.01M9.5 17.5h5" />
+    <circle cx="12" cy="4" r="1" fill="currentColor" stroke="none" />
   </svg>
 );
 
@@ -55,13 +56,12 @@ export default function DashboardSidebar({
   const router = useRouter();
   const { t } = useLanguage();
   const { user, profile, signOut } = useAuth();
-  const { country, checklistSteps, completed } = useDashboardProgress();
+  const { country } = useDashboardProgress();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   const d = t.dashboard.sidebar;
   const s = t.sidebar;
   const countryEntry = t.countries.list[COUNTRY_INDEX[country] ?? 0];
-  const remainingCount = checklistSteps.filter((step) => !completed.has(step.documentType)).length;
   const profileName = profile?.name?.trim() || user?.email?.trim() || s.profile;
 
   async function confirmLogOut() {
@@ -119,17 +119,16 @@ export default function DashboardSidebar({
                 <span>{d.roadmap}</span>
               </Link>
               <Link
-                href="/dashboard#checklist"
+                href="/dashboard/ai"
                 onClick={onClose}
-                className="flex items-center gap-3 rounded-xl border-l-2 border-transparent px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                  pathname === "/dashboard/ai"
+                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
+                }`}
               >
-                {CHECKLIST_ICON}
-                <span className="flex-1">{d.checklist}</span>
-                {remainingCount > 0 && (
-                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent/20 px-1.5 text-[11px] font-semibold text-accent-bright">
-                    {remainingCount}
-                  </span>
-                )}
+                {AI_ASSISTANT_ICON}
+                <span>{d.aiAssistant}</span>
               </Link>
               <Link
                 href="/documents"
