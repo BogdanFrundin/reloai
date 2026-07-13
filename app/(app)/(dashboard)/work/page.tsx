@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import { pressScale } from "../../_lib/motion";
-import { useLanguage } from "../../_components/LanguageProvider";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import { pressScale } from "../../../_lib/motion";
+import { useLanguage } from "../../../_components/LanguageProvider";
 
 const SALARY_DATA: { keywords: string[]; pln: number; eur: number }[] = [
   { keywords: ["software", "developer", "engineer", "programmer"], pln: 9500, eur: 2200 },

@@ -1,9 +1,9 @@
 "use client";
 
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import StarRating from "../../_components/StarRating";
-import { useLanguage } from "../../_components/LanguageProvider";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import StarRating from "../../../_components/StarRating";
+import { useLanguage } from "../../../_components/LanguageProvider";
 
 const CLINICS = [
   {

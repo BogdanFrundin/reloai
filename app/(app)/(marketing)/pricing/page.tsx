@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import { pressScale } from "../../_lib/motion";
-import { useAuth } from "../../_components/AuthProvider";
-import { useLanguage } from "../../_components/LanguageProvider";
-import type { Dictionary } from "../../_lib/i18n";
-import { supabase } from "../../../lib/supabase";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import { pressScale } from "../../../_lib/motion";
+import { useAuth } from "../../../_components/AuthProvider";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import type { Dictionary } from "../../../_lib/i18n";
+import { supabase } from "../../../../lib/supabase";
 
 type PlanKey = "free" | "premium" | "pro";
 

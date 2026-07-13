@@ -2,15 +2,15 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import Reveal from "../../_components/Reveal";
-import RegisterPromptModal from "../../_components/RegisterPromptModal";
-import SectionCompleteModal from "../../_components/SectionCompleteModal";
-import DeleteConfirmModal from "../../_components/DeleteConfirmModal";
-import { pressScale } from "../../_lib/motion";
-import { useLanguage } from "../../_components/LanguageProvider";
-import { useAuth } from "../../_components/AuthProvider";
-import { supabase } from "../../../lib/supabase";
-import type { Dictionary } from "../../_lib/i18n";
+import Reveal from "../../../_components/Reveal";
+import RegisterPromptModal from "../../../_components/RegisterPromptModal";
+import SectionCompleteModal from "../../../_components/SectionCompleteModal";
+import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
+import { pressScale } from "../../../_lib/motion";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
+import { supabase } from "../../../../lib/supabase";
+import type { Dictionary } from "../../../_lib/i18n";
 
 type Category = "all" | "passport" | "pesel" | "workPermit" | "insurance" | "bank";
 type Status = "verified" | "pending" | "missing" | "locked";

@@ -1,4 +1,4 @@
-import type { Lang } from "../../_lib/i18n";
+import type { Lang } from "../../../_lib/i18n";
 
 // Exact-match phrase translations for the free-form English content embedded in
 // the courses/schools/kindergartens/universities datasets (format, price, level,

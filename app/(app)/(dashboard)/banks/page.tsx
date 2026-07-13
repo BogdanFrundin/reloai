@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import StarRating from "../../_components/StarRating";
-import { useLanguage } from "../../_components/LanguageProvider";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import StarRating from "../../../_components/StarRating";
+import { useLanguage } from "../../../_components/LanguageProvider";
 
 const BANKS = [
   { key: "pkobp", name: "PKO BP", href: "https://www.pkobp.pl/", rating: 4.0, badge: false },

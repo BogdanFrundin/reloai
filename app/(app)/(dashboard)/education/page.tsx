@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import { useAuth } from "../../_components/AuthProvider";
-import { useLanguage } from "../../_components/LanguageProvider";
-import type { Dictionary, Lang } from "../../_lib/i18n";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import { useAuth } from "../../../_components/AuthProvider";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import type { Dictionary, Lang } from "../../../_lib/i18n";
 import { trField, trPlace } from "./translations";
 
 type ItemType = "public" | "private";

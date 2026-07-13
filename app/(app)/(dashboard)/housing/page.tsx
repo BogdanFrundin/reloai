@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import { useLanguage } from "../../_components/LanguageProvider";
-import { pressScale } from "../../_lib/motion";
-import { WARSAW_DISTRICTS, type WarsawDistrict } from "../../_lib/housingDistricts";
-import type { Dictionary } from "../../_lib/i18n";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { pressScale } from "../../../_lib/motion";
+import { WARSAW_DISTRICTS, type WarsawDistrict } from "../../../_lib/housingDistricts";
+import type { Dictionary } from "../../../_lib/i18n";
 
 const WEBSITES = [
   { key: "olx", name: "OLX", href: "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/" },

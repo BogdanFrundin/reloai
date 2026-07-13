@@ -3,17 +3,17 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import ToggleSwitch from "../../_components/ToggleSwitch";
-import LogoutConfirmModal from "../../_components/LogoutConfirmModal";
-import { useLanguage } from "../../_components/LanguageProvider";
-import { useAuth } from "../../_components/AuthProvider";
-import { LANGUAGES, type Lang } from "../../_lib/i18n";
-import { getInitials } from "../../_lib/initials";
-import { pressScale } from "../../_lib/motion";
-import { getFlagUrl } from "../../_lib/flags";
-import { supabase } from "../../../lib/supabase";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import ToggleSwitch from "../../../_components/ToggleSwitch";
+import LogoutConfirmModal from "../../../_components/LogoutConfirmModal";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
+import { LANGUAGES, type Lang } from "../../../_lib/i18n";
+import { getInitials } from "../../../_lib/initials";
+import { pressScale } from "../../../_lib/motion";
+import { getFlagUrl } from "../../../_lib/flags";
+import { supabase } from "../../../../lib/supabase";
 
 export default function ProfilePage() {
   const { lang, setLang, t } = useLanguage();

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import RegisterPromptModal from "../../_components/RegisterPromptModal";
-import { pressScale } from "../../_lib/motion";
-import { useLanguage } from "../../_components/LanguageProvider";
-import { useAuth } from "../../_components/AuthProvider";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import RegisterPromptModal from "../../../_components/RegisterPromptModal";
+import { pressScale } from "../../../_lib/motion";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 
 type Category = "all" | "housing" | "work" | "sport" | "family" | "general";
 
