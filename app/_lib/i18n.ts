@@ -689,8 +689,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Simple, transparent pricing",
-      subheading: "Start free. Upgrade when your move gets real.",
+      heading: "Pricing",
+      subheading: "Start free.",
       mostPopular: "Most popular",
       plans: [
         {
@@ -1546,8 +1546,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Простые и понятные тарифы",
-      subheading: "Начните бесплатно. Перейдите на платный, когда переезд станет реальностью.",
+      heading: "Тарифы",
+      subheading: "Начните бесплатно.",
       mostPopular: "Самый популярный",
       plans: [
         {
@@ -2403,8 +2403,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Oddiy va shaffof narxlar",
-      subheading: "Bepul boshlang. Ko'chish jiddiy bo'lganda yangilang.",
+      heading: "Narxlar",
+      subheading: "Bepul boshlang.",
       mostPopular: "Eng mashhur",
       plans: [
         {
@@ -3257,8 +3257,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Basit, şeffaf fiyatlandırma",
-      subheading: "Ücretsiz başlayın. Taşınmanız gerçekleştiğinde yükseltin.",
+      heading: "Fiyatlandırma",
+      subheading: "Ücretsiz başlayın.",
       mostPopular: "En popüler",
       plans: [
         {
@@ -4111,8 +4111,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Нархгузории содда ва шаффоф",
-      subheading: "Ройгон сар кунед. Вақте ки кӯчиши шумо воқеӣ мешавад, баланд кунед.",
+      heading: "Нархҳо",
+      subheading: "Ройгон сар кунед.",
       mostPopular: "Маъмултарин",
       plans: [
         {
@@ -4966,8 +4966,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     pricing: {
-      heading: "Прості та зрозумілі тарифи",
-      subheading: "Почніть безкоштовно. Перейдіть на платний, коли переїзд стане реальністю.",
+      heading: "Тарифи",
+      subheading: "Почніть безкоштовно.",
       mostPopular: "Найпопулярніший",
       plans: [
         {
