@@ -86,6 +86,36 @@ create trigger progress_set_updated_at
 before update on public.progress
 for each row execute function public.set_updated_at();
 
+-- documents -------------------------------------------------------------
+-- Per-document upload status shown on the /documents page. Keyed by the
+-- stable doc_id used in app/(app)/(dashboard)/documents/page.tsx
+-- (e.g. "passport-scan", "pesel-form").
+
+create table if not exists public.documents (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references public.profiles(id) on delete cascade,
+  doc_id text not null,
+  status text not null,
+  file_name text,
+  updated_at timestamptz default now(),
+  unique (user_id, doc_id)
+);
+
+alter table public.documents enable row level security;
+
+create policy "documents select own" on public.documents
+  for select using (auth.uid() = user_id);
+
+create policy "documents insert own" on public.documents
+  for insert with check (auth.uid() = user_id);
+
+create policy "documents update own" on public.documents
+  for update using (auth.uid() = user_id);
+
+create trigger documents_set_updated_at
+before update on public.documents
+for each row execute function public.set_updated_at();
+
 -- chat_history ----------------------------------------------------------
 
 create table public.chat_history (

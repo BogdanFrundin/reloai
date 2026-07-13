@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Reveal from "../../../_components/Reveal";
 import RegisterPromptModal from "../../../_components/RegisterPromptModal";
@@ -113,6 +113,34 @@ export default function DocumentsPage() {
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  useEffect(() => {
+    if (!user) {
+      setDocuments(INITIAL_DOCUMENTS);
+      return;
+    }
+    let active = true;
+
+    supabase
+      .from("documents")
+      .select("doc_id, status, file_name")
+      .eq("user_id", user.id)
+      .then(({ data }) => {
+        if (!active || !data || data.length === 0) return;
+        const savedById = new Map(data.map((row) => [row.doc_id, row]));
+        setDocuments((prev) =>
+          prev.map((doc) => {
+            const saved = savedById.get(doc.id);
+            if (!saved) return doc;
+            return { ...doc, status: saved.status as Status, fileName: saved.file_name ?? undefined };
+          }),
+        );
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
     verified: { label: t.documents.status.verified, className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400" },
     pending: { label: t.documents.status.pending, className: "border-amber-500/30 bg-amber-500/15 text-amber-400" },
@@ -124,6 +152,19 @@ export default function DocumentsPage() {
     setToastVisible(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  }
+
+  async function syncDocumentStatus(doc: DocumentItem) {
+    if (!user) return;
+    await supabase.from("documents").upsert(
+      {
+        user_id: user.id,
+        doc_id: doc.id,
+        status: doc.status,
+        file_name: doc.fileName ?? null,
+      },
+      { onConflict: "user_id,doc_id" },
+    );
   }
 
   async function syncProgress(docs: DocumentItem[]) {
@@ -146,19 +187,26 @@ export default function DocumentsPage() {
     const doc = documents.find((d) => d.id === id);
     if (!doc) return;
 
-    const next = documents.map((d) => (d.id === id ? { ...d, status: "verified" as Status, fileName: file.name } : d));
+    const updated: DocumentItem = { ...doc, status: "verified", fileName: file.name };
+    const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
 
     if (!isCategoryComplete(documents, doc.category) && isCategoryComplete(next, doc.category)) {
       setSectionCompleteOpen(true);
     }
     showAutoCompleteToast();
+    syncDocumentStatus(updated);
     syncProgress(next);
   }
 
   function handleDelete(id: string) {
-    const next = documents.map((d) => (d.id === id ? { ...d, status: "missing" as Status, fileName: undefined } : d));
+    const doc = documents.find((d) => d.id === id);
+    if (!doc) return;
+
+    const updated: DocumentItem = { ...doc, status: "missing", fileName: undefined };
+    const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
+    syncDocumentStatus(updated);
     syncProgress(next);
   }
 
