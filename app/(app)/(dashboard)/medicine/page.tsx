@@ -69,7 +69,7 @@ export default function MedicinePage() {
       <Reveal delay={80} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.clinicsTitle}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.medicine.clinicsSub}</p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLINICS.map((clinic, index) => (
             <Reveal key={clinic.name} delay={index * 40}>
               <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
@@ -90,7 +90,7 @@ export default function MedicinePage() {
                 </div>
                 <a
                   href={`tel:${clinic.phone.replace(/\s+/g, "")}`}
-                  className="mt-4 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+                  className="mt-auto inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
                 >
                   {t.medicine.bookBtn}
                 </a>
