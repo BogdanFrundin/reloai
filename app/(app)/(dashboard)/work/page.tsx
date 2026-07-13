@@ -8,15 +8,15 @@ import { pressScale } from "../../../_lib/motion";
 import { useLanguage } from "../../../_components/LanguageProvider";
 
 const SALARY_DATA: { keywords: string[]; pln: number; eur: number }[] = [
-  { keywords: ["software", "developer", "engineer", "programmer"], pln: 9500, eur: 2200 },
-  { keywords: ["designer", "ux", "ui"], pln: 7200, eur: 1650 },
-  { keywords: ["marketing"], pln: 6800, eur: 1550 },
-  { keywords: ["accountant", "finance"], pln: 6500, eur: 1480 },
-  { keywords: ["nurse"], pln: 5800, eur: 1320 },
-  { keywords: ["teacher"], pln: 5200, eur: 1180 },
-  { keywords: ["waiter", "waitress", "barista"], pln: 4200, eur: 950 },
-  { keywords: ["driver"], pln: 5000, eur: 1140 },
-  { keywords: ["construction", "builder"], pln: 5500, eur: 1250 },
+  { keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
+  { keywords: ["designer", "ux", "ui", "дизайнер"], pln: 7200, eur: 1650 },
+  { keywords: ["marketing", "маркетолог", "маркетинг"], pln: 6800, eur: 1550 },
+  { keywords: ["accountant", "finance", "бухгалтер", "финанс"], pln: 6500, eur: 1480 },
+  { keywords: ["nurse", "медсестра", "медбрат"], pln: 5800, eur: 1320 },
+  { keywords: ["teacher", "учитель", "преподаватель"], pln: 5200, eur: 1180 },
+  { keywords: ["waiter", "waitress", "barista", "официант", "бариста"], pln: 4200, eur: 950 },
+  { keywords: ["driver", "водитель"], pln: 5000, eur: 1140 },
+  { keywords: ["construction", "builder", "строитель"], pln: 5500, eur: 1250 },
 ];
 
 const JOB_SITES = [
@@ -82,20 +82,18 @@ export default function WorkPage() {
             className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
           />
           {result && (
-            <div className="mt-4 flex flex-wrap items-center gap-6 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
-              <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">{t.work.averageSalary}</p>
-                <p className="mt-1 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-3xl font-bold text-transparent">
-                  {result.pln.toLocaleString()} PLN
-                </p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-wider text-slate-500">{t.work.inEuros}</p>
-                <p className="mt-1 text-2xl font-semibold text-accent-bright">~€{result.eur.toLocaleString()}</p>
-              </div>
+            <div className="mt-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
+              <p className="text-sm font-medium text-slate-300">{t.work.averageSalary}</p>
+              <p className="mt-2 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-3xl font-bold text-transparent">
+                {result.pln.toLocaleString("ru-RU")} PLN / месяц
+              </p>
+              <p className="mt-1 text-lg font-semibold text-accent-bright">
+                ≈ €{result.eur.toLocaleString("ru-RU")} / месяц
+              </p>
               {"fallback" in result && (
-                <p className="text-xs text-slate-500">{t.work.noExactData}</p>
+                <p className="mt-2 text-xs text-slate-500">{t.work.noExactData}</p>
               )}
+              <p className="mt-3 text-xs text-slate-500">{t.work.salaryNote}</p>
             </div>
           )}
         </div>
