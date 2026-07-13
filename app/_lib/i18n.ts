@@ -737,8 +737,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Loved by people who moved",
-      subheading: "Real stories from people who relocated with ReloAI.",
+      heading: "Reviews",
+      subheading: "Real people. Real moves.",
       items: [
         {
           name: "Anna K.",
@@ -1594,8 +1594,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Нас любят те, кто уже переехал",
-      subheading: "Реальные истории людей, переехавших с ReloAI.",
+      heading: "Отзывы",
+      subheading: "Реальные люди. Реальные переезды.",
       items: [
         {
           name: "Анна К.",
@@ -2451,8 +2451,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Ko'chganlar tomonidan yaxshi ko'riladi",
-      subheading: "ReloAI bilan ko'chgan odamlarning haqiqiy hikoyalari.",
+      heading: "Sharhlar",
+      subheading: "Haqiqiy odamlar. Haqiqiy ko'chishlar.",
       items: [
         {
           name: "Anna K.",
@@ -3305,8 +3305,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Taşınanlar tarafından seviliyor",
-      subheading: "ReloAI ile taşınan insanların gerçek hikayeleri.",
+      heading: "Yorumlar",
+      subheading: "Gerçek insanlar. Gerçek taşınmalar.",
       items: [
         {
           name: "Anna K.",
@@ -4159,8 +4159,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Дӯстдоштаи онҳое, ки кӯчидаанд",
-      subheading: "Ҳикояҳои воқеӣ аз одамоне, ки бо ReloAI кӯчидаанд.",
+      heading: "Шарҳҳо",
+      subheading: "Одамони воқеӣ. Кӯчидани воқеӣ.",
       items: [
         {
           name: "Анна К.",
@@ -5014,8 +5014,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ],
     },
     reviews: {
-      heading: "Нас люблять ті, хто вже переїхав",
-      subheading: "Реальні історії людей, які переїхали з ReloAI.",
+      heading: "Відгуки",
+      subheading: "Реальні люди. Реальні переїзди.",
       items: [
         {
           name: "Анна К.",
