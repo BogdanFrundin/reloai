@@ -16,13 +16,14 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 
-const FREE_PLAN_FEATURES = ["Польша — базовый доступ", "AI чат — 10 сообщений/день", "Документы — просмотр"];
+const FREE_PLAN_FEATURES = ["Польша — 1 страна доступна", "Чек-лист: превью из 5 шагов", "5 AI-сообщений в день"];
 
-const PRO_PLAN_FEATURES = [
-  "Все страны",
-  "Безлимитный AI чат",
-  "Генерация PDF документов",
-  "Приоритетная поддержка",
+const PREMIUM_PLAN_FEATURES = [
+  "Все 3 страны (Польша, Германия, Испания)",
+  "Полный чек-лист — все шаги",
+  "50 AI-сообщений в день",
+  "Загрузка и хранение документов",
+  "Полная база адресов",
 ];
 
 function CheckIcon({ accent = false }: { accent?: boolean }) {
@@ -122,22 +123,29 @@ export default function ProfilePage() {
               href="/pricing"
               className={`mt-5 flex w-full items-center justify-center rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] hover:scale-[1.01] ${pressScale}`}
             >
-              Улучшить до Pro
+              Улучшить до Premium
             </Link>
 
             <div className="mt-5 border-t border-white/10 pt-5">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-accent-bright">Pro</p>
-                <p className="text-sm font-semibold text-white">9.99€ / месяц</p>
+                <p className="text-sm font-semibold text-accent-bright">Premium</p>
+                <p className="text-sm font-semibold text-white">€29 / месяц</p>
               </div>
               <ul className="mt-3 space-y-2">
-                {PRO_PLAN_FEATURES.map((feature) => (
+                {PREMIUM_PLAN_FEATURES.map((feature) => (
                   <li key={feature} className="flex items-center gap-2 text-sm text-slate-300">
                     <CheckIcon accent />
                     {feature}
                   </li>
                 ))}
               </ul>
+
+              <Link
+                href="/pricing"
+                className={`mt-5 flex w-full items-center justify-center rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] hover:scale-[1.01] ${pressScale}`}
+              >
+                Получить Premium
+              </Link>
             </div>
           </div>
         </Reveal>
