@@ -18,18 +18,10 @@ import { supabase } from "../../../../lib/supabase";
 
 const FREE_PLAN_FEATURES = ["Польша — 1 страна доступна", "Чек-лист: превью из 5 шагов", "5 AI-сообщений в день"];
 
-const PREMIUM_PLAN_FEATURES = [
-  "Все 3 страны (Польша, Германия, Испания)",
-  "Полный чек-лист — все шаги",
-  "50 AI-сообщений в день",
-  "Загрузка и хранение документов",
-  "Полная база адресов",
-];
-
-function CheckIcon({ accent = false }: { accent?: boolean }) {
+function CheckIcon() {
   return (
     <svg
-      className={`h-4 w-4 flex-shrink-0 ${accent ? "text-accent-bright" : "text-slate-500"}`}
+      className="h-4 w-4 flex-shrink-0 text-slate-500"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -95,13 +87,22 @@ export default function ProfilePage() {
               <p className="text-lg font-semibold text-white">{profile?.name || p.unnamed}</p>
               <p className="text-sm text-slate-400">{user?.email}</p>
             </div>
-            <span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright">
-              {planLabel} {p.planSuffix}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright">
+                {planLabel} {p.planSuffix}
+              </span>
+              <Link
+                href="/pricing"
+                className={`flex items-center gap-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+              >
+                Перейти на Pro
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
           </div>
         </Reveal>
 
-        {/* Subscription / upgrade */}
+        {/* Subscription */}
         <Reveal delay={50}>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between gap-3">
@@ -118,35 +119,6 @@ export default function ProfilePage() {
                 </li>
               ))}
             </ul>
-
-            <Link
-              href="/pricing"
-              className={`mt-5 flex w-full items-center justify-center rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] hover:scale-[1.01] ${pressScale}`}
-            >
-              Улучшить до Premium
-            </Link>
-
-            <div className="mt-5 border-t border-white/10 pt-5">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-accent-bright">Premium</p>
-                <p className="text-sm font-semibold text-white">€29 / месяц</p>
-              </div>
-              <ul className="mt-3 space-y-2">
-                {PREMIUM_PLAN_FEATURES.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-sm text-slate-300">
-                    <CheckIcon accent />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/pricing"
-                className={`mt-5 flex w-full items-center justify-center rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] hover:scale-[1.01] ${pressScale}`}
-              >
-                Получить Premium
-              </Link>
-            </div>
           </div>
         </Reveal>
 
