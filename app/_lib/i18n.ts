@@ -1386,7 +1386,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
   ru: {
     nav: {
       howItWorks: "Как это работает",
-      features: "Возможности",
+      features: "Функции",
       countries: "Страны",
       pricing: "Цены",
       reviews: "Отзывы",
