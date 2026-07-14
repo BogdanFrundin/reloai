@@ -133,3 +133,32 @@ create policy "chat_history select own" on public.chat_history
 
 create policy "chat_history insert own" on public.chat_history
   for insert with check (auth.uid() = user_id);
+
+-- chat_sessions -----------------------------------------------------------
+-- Threaded conversations for the /dashboard/ai page's history sidebar.
+-- Each row is one conversation; messages holds the full { from, text, time }[]
+-- array as JSON so it can be loaded/overwritten in one round trip.
+
+create table if not exists public.chat_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references public.profiles(id) on delete cascade,
+  title text not null,
+  messages jsonb not null default '[]'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.chat_sessions enable row level security;
+
+create policy "chat_sessions select own" on public.chat_sessions
+  for select using (auth.uid() = user_id);
+
+create policy "chat_sessions insert own" on public.chat_sessions
+  for insert with check (auth.uid() = user_id);
+
+create policy "chat_sessions update own" on public.chat_sessions
+  for update using (auth.uid() = user_id);
+
+create trigger chat_sessions_set_updated_at
+before update on public.chat_sessions
+for each row execute function public.set_updated_at();
