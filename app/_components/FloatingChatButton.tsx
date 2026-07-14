@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import AiChatPanel from "./AiChatPanel";
 import { pressScale } from "../_lib/motion";
 
@@ -19,6 +20,7 @@ function getSeenServerSnapshot() {
 }
 
 export default function FloatingChatButton() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const seen = useSyncExternalStore(subscribe, getSeenSnapshot, getSeenServerSnapshot);
@@ -31,6 +33,9 @@ export default function FloatingChatButton() {
       setDismissed(true);
     }
   }
+
+  // The AI page already provides a full-screen chat interface — skip the floating duplicate there.
+  if (pathname === "/dashboard/ai") return null;
 
   return (
     <>

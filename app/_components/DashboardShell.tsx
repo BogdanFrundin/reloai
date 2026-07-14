@@ -62,8 +62,14 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <Topbar onMenuClick={() => setMobileNavOpen(true)} />
           {isDemoMode && <DemoBanner />}
-          <main className="flex-1 overflow-y-auto p-4 lg:p-6">
-            <PageTransition>{children}</PageTransition>
+          <main
+            className={`flex flex-1 flex-col p-4 lg:p-6 ${
+              pathname === "/dashboard/ai" ? "overflow-hidden" : "overflow-y-auto"
+            }`}
+          >
+            <PageTransition className={pathname === "/dashboard/ai" ? "flex min-h-0 flex-1 flex-col" : undefined}>
+              {children}
+            </PageTransition>
           </main>
         </div>
         {isDemoMode && <DemoFloatingCard />}
