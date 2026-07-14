@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { useDashboardProgress } from "./DashboardProgressProvider";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import { PROFILE_ICON, SETTINGS_ICON, LOGOUT_ICON } from "./AccountIcons";
 import { NAV_ICONS, type MainKey, type OtherKey } from "./NavIcons";
+import { getFlagUrl } from "../_lib/flags";
 
 const ICON_PROPS = {
   className: "h-5 w-5",
@@ -44,6 +46,7 @@ const SERVICE_HREFS: Record<MainKey | OtherKey, string> = {
 };
 
 const COUNTRY_INDEX: Record<string, number> = { Poland: 0, Germany: 1, Spain: 2 };
+const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 
 export default function DashboardSidebar({
   open = false,
@@ -96,7 +99,14 @@ export default function DashboardSidebar({
 
           {countryEntry && (
             <div className="mt-4 flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2">
-              <span className="text-lg leading-none">{countryEntry.flag}</span>
+              <Image
+                src={getFlagUrl(COUNTRY_FLAG_CODE[country] ?? "pl", "sm")}
+                alt={countryEntry.name}
+                width={24}
+                height={18}
+                className="rounded-sm"
+                unoptimized
+              />
               <span className="text-sm font-medium text-white">{countryEntry.name}</span>
             </div>
           )}
