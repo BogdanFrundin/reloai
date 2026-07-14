@@ -3,7 +3,6 @@
 import { useRouter, usePathname } from "next/navigation";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
 import DashboardSidebar from "./DashboardSidebar";
-import AiChatPanel from "./AiChatPanel";
 import Topbar from "./Topbar";
 import PageTransition from "./PageTransition";
 import DemoBanner from "./DemoBanner";
@@ -14,10 +13,6 @@ import { DashboardProgressProvider } from "./DashboardProgressProvider";
 // Routes that show real personal data and make no sense in demo/preview mode.
 const AUTH_REQUIRED_PATHS = ["/profile"];
 
-// Only these routes show the right-hand AI assistant panel; other dashboard
-// pages get the full-width center column.
-const AI_PANEL_PATHS = ["/dashboard", "/dashboard/ai"];
-
 function DashboardShellInner({ children }: { children: ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { user, profile, loading, profileLoading } = useAuth();
@@ -25,7 +20,6 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const requiresAuth = AUTH_REQUIRED_PATHS.includes(pathname);
   const isDemoMode = !loading && !user && !requiresAuth;
-  const showAiPanel = AI_PANEL_PATHS.includes(pathname);
 
   useEffect(() => {
     if (loading) return;
@@ -68,17 +62,8 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <Topbar onMenuClick={() => setMobileNavOpen(true)} />
           {isDemoMode && <DemoBanner />}
-          <main
-            className={`grid flex-1 gap-6 overflow-y-auto p-4 lg:p-6 ${
-              showAiPanel ? "lg:grid-cols-[minmax(0,1fr)_300px]" : "lg:grid-cols-1"
-            }`}
-          >
+          <main className="flex-1 overflow-y-auto p-4 lg:p-6">
             <PageTransition>{children}</PageTransition>
-            {showAiPanel && (
-              <div className="h-[600px] lg:h-auto">
-                <AiChatPanel />
-              </div>
-            )}
           </main>
         </div>
         {isDemoMode && <DemoFloatingCard />}

@@ -17,7 +17,7 @@ export default function DashboardAiPage() {
     <div className="px-2 py-2">
       <PageHeader
         title="AI Ассистент"
-        subtitle="Ваш персональный помощник по переезду. Задайте вопрос в чате справа."
+        subtitle="Ваш персональный помощник по переезду. Откройте чат кнопкой в правом нижнем углу."
       />
 
       <Reveal delay={60} className="mt-8">
