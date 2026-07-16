@@ -10,36 +10,14 @@ import { pressScale } from "../../../_lib/motion";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { supabase } from "../../../../lib/supabase";
-import type { Dictionary } from "../../../_lib/i18n";
+import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 
-type Category = "all" | "passport" | "pesel" | "workPermit" | "insurance" | "bank";
-type Status = "verified" | "pending" | "missing" | "locked";
-type DocNameKey = keyof Dictionary["documents"]["docNames"];
-
-type DocumentItem = {
-  id: string;
-  nameKey: DocNameKey;
-  category: Exclude<Category, "all">;
-  status: Status;
-  fileName?: string;
-};
+type Category = "all" | DocumentItem["category"];
+type Status = DocStatus;
 
 const TABS: Category[] = ["all", "passport", "pesel", "workPermit", "insurance", "bank"];
 
-const INITIAL_DOCUMENTS: DocumentItem[] = [
-  { id: "passport-scan", nameKey: "passportScan", category: "passport", status: "verified" },
-  { id: "passport-photo", nameKey: "passportPhoto", category: "passport", status: "verified" },
-  { id: "pesel-form", nameKey: "peselForm", category: "pesel", status: "pending" },
-  { id: "pesel-letter", nameKey: "peselLetter", category: "pesel", status: "missing" },
-  { id: "work-permit-app", nameKey: "workPermitApp", category: "workPermit", status: "pending" },
-  { id: "sponsorship-letter", nameKey: "sponsorshipLetter", category: "workPermit", status: "missing" },
-  { id: "health-insurance", nameKey: "healthInsurance", category: "insurance", status: "verified" },
-  { id: "travel-insurance", nameKey: "travelInsurance", category: "insurance", status: "missing" },
-  { id: "bank-confirmation", nameKey: "bankConfirmation", category: "bank", status: "pending" },
-  { id: "proof-of-funds", nameKey: "proofOfFunds", category: "bank", status: "missing" },
-  { id: "relocation-letter", nameKey: "relocationLetter", category: "workPermit", status: "locked" },
-  { id: "tax-residency", nameKey: "taxResidency", category: "bank", status: "locked" },
-];
+const INITIAL_DOCUMENTS: DocumentItem[] = DOCUMENT_CATALOG;
 
 function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
   const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
@@ -142,10 +120,10 @@ export default function DocumentsPage() {
   }, [user]);
 
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
-    verified: { label: t.documents.status.verified, className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400" },
-    pending: { label: t.documents.status.pending, className: "border-amber-500/30 bg-amber-500/15 text-amber-400" },
-    missing: { label: t.documents.status.missing, className: "border-white/15 bg-white/5 text-slate-400" },
-    locked: { label: t.documents.status.locked, className: "border-accent/30 bg-accent/10 text-accent-bright" },
+    verified: { label: t.documents.status.verified, className: STATUS_BADGE_CLASS.verified },
+    pending: { label: t.documents.status.pending, className: STATUS_BADGE_CLASS.pending },
+    missing: { label: t.documents.status.missing, className: STATUS_BADGE_CLASS.missing },
+    locked: { label: t.documents.status.locked, className: STATUS_BADGE_CLASS.locked },
   };
 
   function showAutoCompleteToast() {
