@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { getFlagUrl } from "../../../_lib/flags";
 import type { Dictionary, Lang } from "../../../_lib/i18n";
 import { trField, trPlace } from "./translations";
 
@@ -379,7 +381,7 @@ function UniversityCard({ uni, t, lang }: { uni: University; t: EduDict; lang: L
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-const COUNTRY_FLAG: Record<CountryKey, string> = { Poland: "🇵🇱", Germany: "🇩🇪", Spain: "🇪🇸" };
+const COUNTRY_FLAG_CODE: Record<CountryKey, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 
 export default function EducationPage() {
   const { profile } = useAuth();
@@ -421,11 +423,21 @@ export default function EducationPage() {
     | Partial<Record<TabId, string>>
     | undefined;
   const infoBanner = countryBanners?.[activeTab];
-  const flag = COUNTRY_FLAG[country] ?? "🌍";
+  const flagCode = COUNTRY_FLAG_CODE[country];
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={`${t.education.title} ${flag}`} subtitle={t.education.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.education.title}
+            {flagCode && (
+              <Image src={getFlagUrl(flagCode, "md")} alt={country} width={32} height={24} className="rounded-sm" unoptimized />
+            )}
+          </span>
+        }
+        subtitle={t.education.subtitle}
+      />
 
       {/* Tab bar */}
       <div className="mt-8 flex gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

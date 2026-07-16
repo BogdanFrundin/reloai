@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { pressScale } from "../../../_lib/motion";
+import { getFlagUrl } from "../../../_lib/flags";
 import { useLanguage } from "../../../_components/LanguageProvider";
 
 const SALARY_DATA: { keywords: string[]; pln: number; eur: number }[] = [
@@ -44,7 +46,15 @@ export default function WorkPage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.work.title} subtitle={t.work.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.work.title}
+            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+          </span>
+        }
+        subtitle={t.work.subtitle}
+      />
 
       <Reveal delay={40} className="mt-10">
         <h2 className="text-xl font-bold tracking-tight text-white">{t.work.contractVsB2B}</h2>

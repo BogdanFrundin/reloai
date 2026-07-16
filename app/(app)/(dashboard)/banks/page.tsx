@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { getFlagUrl } from "../../../_lib/flags";
 
 const BANKS = [
   { key: "pkobp", name: "PKO BP", href: "https://www.pkobp.pl/", rating: 4.0, badge: false },
@@ -18,7 +20,15 @@ export default function BanksPage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.banks.title} subtitle={t.banks.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.banks.title}
+            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+          </span>
+        }
+        subtitle={t.banks.subtitle}
+      />
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {BANKS.map((bank, index) => (

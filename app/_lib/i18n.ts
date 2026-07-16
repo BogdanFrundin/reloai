@@ -1077,7 +1077,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "Cancel",
     },
     housing: {
-      title: "Housing in Poland 🇵🇱",
+      title: "Housing in Poland",
       subtitle: "Find a place to live, the smart way.",
       rentMarket: "🏆 Top 4 districts by price-to-quality ratio",
       rentMarketSub: "Our experts and thousands of expats picked these districts as the best for living, based on price, comfort, and infrastructure.",
@@ -1120,7 +1120,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Show fewer districts",
     },
     banks: {
-      title: "Banks in Poland 🇵🇱",
+      title: "Banks in Poland",
       subtitle: "Compare accounts built for newcomers.",
       openAccount: "Open Account",
       bestForExpats: "Best for expats",
@@ -1132,7 +1132,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Medicine in Poland 🇵🇱",
+      title: "Medicine in Poland",
       subtitle: "Get insured and find care, fast.",
       nfzVsPrivate: "NFZ vs. Private Insurance",
       nfzPublic: "NFZ (public)",
@@ -1155,7 +1155,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Book appointment",
     },
     work: {
-      title: "Work in Poland 🇵🇱",
+      title: "Work in Poland",
       subtitle: "Contracts, salaries, and where to look.",
       contractVsB2B: "Contract vs. B2B",
       salarySearch: "Salary Search",
@@ -1187,7 +1187,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Communities 🇵🇱",
+      title: "Communities",
       subtitle: "Telegram channels and chats for people moving to Poland.",
       join: "Join",
       members: "members",
@@ -1983,7 +1983,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "Отмена",
     },
     housing: {
-      title: "Жильё в Польше 🇵🇱",
+      title: "Жильё в Польше",
       subtitle: "Найдите жильё с умом.",
       rentMarket: "🏆 Топ-4 района по соотношению цена/качество",
       rentMarketSub: "Наши эксперты и тысячи экспатов выбрали эти районы как лучшие для жизни по соотношению цены, комфорта и инфраструктуры.",
@@ -2026,7 +2026,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Свернуть список районов",
     },
     banks: {
-      title: "Банки в Польше 🇵🇱",
+      title: "Банки в Польше",
       subtitle: "Сравните счета, созданные для новоприбывших.",
       openAccount: "Открыть счёт",
       bestForExpats: "Лучший для экспатов",
@@ -2038,7 +2038,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Медицина в Польше 🇵🇱",
+      title: "Медицина в Польше",
       subtitle: "Оформите страховку и найдите врача быстро.",
       nfzVsPrivate: "NFZ против частной страховки",
       nfzPublic: "NFZ (гос.)",
@@ -2061,7 +2061,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Записаться",
     },
     work: {
-      title: "Работа в Польше 🇵🇱",
+      title: "Работа в Польше",
       subtitle: "Контракты, зарплаты и где искать.",
       contractVsB2B: "Трудовой договор против B2B",
       salarySearch: "Поиск зарплаты",
@@ -2093,7 +2093,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Сообщества 🇵🇱",
+      title: "Сообщества",
       subtitle: "Telegram-каналы и чаты для тех, кто переезжает в Польшу.",
       join: "Вступить",
       members: "участников",
@@ -2889,7 +2889,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "Bekor qilish",
     },
     housing: {
-      title: "Polshada uy-joy 🇵🇱",
+      title: "Polshada uy-joy",
       subtitle: "Yashash uchun joyni aqlli tarzda toping.",
       rentMarket: "🏆 Narx-sifat nisbati bo'yicha eng yaxshi 4 tuman",
       rentMarketSub: "Bizning mutaxassislarimiz va minglab chet elliklar bu tumanlarni narx, qulaylik va infratuzilma bo'yicha yashash uchun eng yaxshisi deb tanladilar.",
@@ -2932,7 +2932,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Ro'yxatni yig'ish",
     },
     banks: {
-      title: "Polshadagi banklar 🇵🇱",
+      title: "Polshadagi banklar",
       subtitle: "Yangi kelganlar uchun mo'ljallangan hisoblarni solishtiring.",
       openAccount: "Hisob ochish",
       bestForExpats: "Chet elliklar uchun eng yaxshisi",
@@ -2944,7 +2944,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Polshada tibbiyot 🇵🇱",
+      title: "Polshada tibbiyot",
       subtitle: "Tezda sug'urta oling va shifokor toping.",
       nfzVsPrivate: "NFZ va xususiy sug'urta",
       nfzPublic: "NFZ (davlat)",
@@ -2967,7 +2967,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Qabulga yozilish",
     },
     work: {
-      title: "Polshada ish 🇵🇱",
+      title: "Polshada ish",
       subtitle: "Shartnomalar, maoshlar va qayerdan qidirish kerakligi.",
       contractVsB2B: "Mehnat shartnomasi va B2B",
       salarySearch: "Maosh qidirish",
@@ -2999,7 +2999,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Jamiyatlar 🇵🇱",
+      title: "Jamiyatlar",
       subtitle: "Polshaga ko'chib o'tayotganlar uchun Telegram kanallari va chatlari.",
       join: "Qo'shilish",
       members: "a'zo",
@@ -3792,7 +3792,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "İptal",
     },
     housing: {
-      title: "Polonya'da Konut 🇵🇱",
+      title: "Polonya'da Konut",
       subtitle: "Doğru şekilde bir yaşam alanı bulun.",
       rentMarket: "🏆 Fiyat-kalite oranına göre en iyi 4 ilçe",
       rentMarketSub: "Uzmanlarımız ve binlerce göçmen, fiyat, konfor ve altyapı açısından yaşamak için en iyi ilçeler olarak bunları seçti.",
@@ -3835,7 +3835,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Listeyi daralt",
     },
     banks: {
-      title: "Polonya'da Bankalar 🇵🇱",
+      title: "Polonya'da Bankalar",
       subtitle: "Yeni gelenler için tasarlanmış hesapları karşılaştırın.",
       openAccount: "Hesap Aç",
       bestForExpats: "Göçmenler için en iyisi",
@@ -3847,7 +3847,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Polonya'da Sağlık 🇵🇱",
+      title: "Polonya'da Sağlık",
       subtitle: "Hızlıca sigorta yaptırın ve bakım bulun.",
       nfzVsPrivate: "NFZ ve Özel Sigorta",
       nfzPublic: "NFZ (kamu)",
@@ -3870,7 +3870,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Randevu al",
     },
     work: {
-      title: "Polonya'da İş 🇵🇱",
+      title: "Polonya'da İş",
       subtitle: "Sözleşmeler, maaşlar ve nerede arayacağınız.",
       contractVsB2B: "Sözleşme ve B2B",
       salarySearch: "Maaş Arama",
@@ -3902,7 +3902,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Topluluklar 🇵🇱",
+      title: "Topluluklar",
       subtitle: "Polonya'ya taşınanlar için Telegram kanalları ve sohbetleri.",
       join: "Katıl",
       members: "üye",
@@ -4695,7 +4695,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "Бекор кардан",
     },
     housing: {
-      title: "Манзил дар Полша 🇵🇱",
+      title: "Манзил дар Полша",
       subtitle: "Ҷои зист бо роҳи оқилона ёфта гиред.",
       rentMarket: "🏆 4 ноҳияи беҳтарин аз рӯи нисбати нарх ва сифат",
       rentMarketSub: "Мутахассисони мо ва ҳазорон муҳоҷир ин ноҳияҳоро аз рӯи нарх, роҳат ва инфрасохтор беҳтарин барои зиндагӣ интихоб карданд.",
@@ -4738,7 +4738,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
     },
     banks: {
-      title: "Бонкҳо дар Полша 🇵🇱",
+      title: "Бонкҳо дар Полша",
       subtitle: "Ҳисобҳои барои навкӯчидагон сохташударо муқоиса кунед.",
       openAccount: "Кушодани ҳисоб",
       bestForExpats: "Беҳтарин барои муҳоҷирон",
@@ -4750,7 +4750,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Тибб дар Полша 🇵🇱",
+      title: "Тибб дар Полша",
       subtitle: "Тезтар суғурта гиред ва духтур ёбед.",
       nfzVsPrivate: "NFZ ва суғуртаи хусусӣ",
       nfzPublic: "NFZ (давлатӣ)",
@@ -4773,7 +4773,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Навбат гирифтан",
     },
     work: {
-      title: "Кор дар Полша 🇵🇱",
+      title: "Кор дар Полша",
       subtitle: "Шартномаҳо, маошҳо ва дар куҷо ҷустуҷӯ кардан.",
       contractVsB2B: "Шартномаи меҳнатӣ ва B2B",
       salarySearch: "Ҷустуҷӯи маош",
@@ -4805,7 +4805,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Ҷамъиятҳо 🇵🇱",
+      title: "Ҷамъиятҳо",
       subtitle: "Каналҳо ва чатҳои Telegram барои онҳое, ки ба Лаҳистон кӯч мебанданд.",
       join: "Ҳамроҳ шудан",
       members: "аъзо",
@@ -5599,7 +5599,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       cancelBtn: "Скасувати",
     },
     housing: {
-      title: "Житло в Польщі 🇵🇱",
+      title: "Житло в Польщі",
       subtitle: "Знайдіть житло з розумом.",
       rentMarket: "🏆 Топ-4 райони за співвідношенням ціна/якість",
       rentMarketSub: "Наші експерти й тисячі експатів обрали ці райони як найкращі для життя за співвідношенням ціни, комфорту та інфраструктури.",
@@ -5642,7 +5642,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       showFewerDistricts: "Згорнути список районів",
     },
     banks: {
-      title: "Банки в Польщі 🇵🇱",
+      title: "Банки в Польщі",
       subtitle: "Порівняйте рахунки, створені для новоприбулих.",
       openAccount: "Відкрити рахунок",
       bestForExpats: "Найкращий для експатів",
@@ -5654,7 +5654,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     medicine: {
-      title: "Медицина в Польщі 🇵🇱",
+      title: "Медицина в Польщі",
       subtitle: "Оформіть страховку і знайдіть лікаря швидко.",
       nfzVsPrivate: "NFZ проти приватної страховки",
       nfzPublic: "NFZ (держ.)",
@@ -5677,7 +5677,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Записатися",
     },
     work: {
-      title: "Робота в Польщі 🇵🇱",
+      title: "Робота в Польщі",
       subtitle: "Контракти, зарплати і де шукати.",
       contractVsB2B: "Трудовий договір проти B2B",
       salarySearch: "Пошук зарплати",
@@ -5709,7 +5709,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     community: {
-      title: "Спільноти 🇵🇱",
+      title: "Спільноти",
       subtitle: "Telegram-канали та чати для тих, хто переїжджає до Польщі.",
       join: "Приєднатися",
       members: "учасників",

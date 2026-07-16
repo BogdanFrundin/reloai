@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { pressScale } from "../../../_lib/motion";
+import { getFlagUrl } from "../../../_lib/flags";
 import { WARSAW_DISTRICTS, type WarsawDistrict } from "../../../_lib/housingDistricts";
 import type { Dictionary } from "../../../_lib/i18n";
 
@@ -75,7 +77,15 @@ export default function HousingPage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.housing.title} subtitle={t.housing.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.housing.title}
+            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+          </span>
+        }
+        subtitle={t.housing.subtitle}
+      />
 
       <Reveal delay={40} className="mt-10">
         <div className="flex flex-wrap items-center gap-3">
