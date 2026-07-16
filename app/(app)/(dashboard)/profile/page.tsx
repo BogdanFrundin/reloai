@@ -144,6 +144,8 @@ export default function ProfilePage() {
   }
 
   const initials = getInitials(profile?.name, user?.email);
+  const avatarUrl = (user?.user_metadata as { avatar_url?: string; picture?: string } | undefined)?.avatar_url
+    ?? (user?.user_metadata as { avatar_url?: string; picture?: string } | undefined)?.picture;
   const planValue = profile?.plan ?? "free";
   const isFree = planValue === "free";
   const isPro = planValue === "pro";
@@ -191,8 +193,13 @@ export default function ProfilePage() {
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
             <p className="text-sm font-semibold text-white">{p.personalSection}</p>
             <div className="mt-4 flex items-center gap-4">
-              <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-xl font-semibold text-white">
-                {initials}
+              <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-xl font-semibold text-white">
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- external OAuth avatar, no static domain to configure next/image for
+                  <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  initials
+                )}
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-lg font-semibold text-white">{profile?.name || p.unnamed}</p>
