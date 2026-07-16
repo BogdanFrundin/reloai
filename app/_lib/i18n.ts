@@ -177,6 +177,7 @@ export type Dictionary = {
     logOut: string;
     planSuffix: string;
     upgradeTooltip: string;
+    upgradeBadge: string;
     unnamed: string;
     memberSinceLabel: string;
     personalSection: string;
@@ -962,6 +963,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Log out",
       planSuffix: "Plan",
       upgradeTooltip: "Improve your plan",
+      upgradeBadge: "⚡ Upgrade to Premium",
       unnamed: "Unnamed",
       memberSinceLabel: "Member since",
       personalSection: "Personal Info",
@@ -1865,6 +1867,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Выйти",
       planSuffix: "план",
       upgradeTooltip: "Улучшить план",
+      upgradeBadge: "⚡ Улучшить до Premium",
       unnamed: "Без имени",
       memberSinceLabel: "На платформе с",
       personalSection: "Личные данные",
@@ -2768,6 +2771,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Chiqish",
       planSuffix: "reja",
       upgradeTooltip: "Rejani yaxshilash",
+      upgradeBadge: "⚡ Premium'ga yangilang",
       unnamed: "Ism yo'q",
       memberSinceLabel: "Ro'yxatdan o'tgan sana",
       personalSection: "Shaxsiy ma'lumotlar",
@@ -3668,6 +3672,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Çıkış yap",
       planSuffix: "Plan",
       upgradeTooltip: "Planınızı yükseltin",
+      upgradeBadge: "⚡ Premium'a yükseltin",
       unnamed: "İsimsiz",
       memberSinceLabel: "Katılım tarihi",
       personalSection: "Kişisel Bilgiler",
@@ -4568,6 +4573,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Баромадан",
       planSuffix: "нақша",
       upgradeTooltip: "Нақшаро беҳтар кунед",
+      upgradeBadge: "⚡ Ба Premium гузаред",
       unnamed: "Номи нест",
       memberSinceLabel: "Аз санаи бақайдгирӣ",
       personalSection: "Маълумоти шахсӣ",
@@ -5469,6 +5475,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logOut: "Вийти",
       planSuffix: "план",
       upgradeTooltip: "Покращити план",
+      upgradeBadge: "⚡ Покращити до Premium",
       unnamed: "Без імені",
       memberSinceLabel: "На платформі з",
       personalSection: "Особисті дані",

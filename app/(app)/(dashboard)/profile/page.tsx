@@ -144,7 +144,6 @@ export default function ProfilePage() {
   }
 
   const initials = getInitials(profile?.name, user?.email);
-  const planLabel = profile?.plan ? profile.plan.charAt(0).toUpperCase() + profile.plan.slice(1) : "Free";
   const memberSince = profile?.created_at
     ? new Intl.DateTimeFormat(lang, { year: "numeric", month: "long", day: "numeric" }).format(
         new Date(profile.created_at),
@@ -193,10 +192,9 @@ export default function ProfilePage() {
               <Link
                 href="/pricing"
                 title={p.upgradeTooltip}
-                className={`flex flex-shrink-0 cursor-pointer items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/50 hover:bg-accent/20 ${pressScale}`}
+                className={`flex flex-shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white shadow-[0_0_20px_-6px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
               >
-                {planLabel} {p.planSuffix}
-                <span aria-hidden>→</span>
+                {p.upgradeBadge}
               </Link>
             </div>
             {memberSince && (
