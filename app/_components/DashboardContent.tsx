@@ -6,7 +6,6 @@ import Reveal from "./Reveal";
 import WelcomeToast from "./WelcomeToast";
 import RegisterPromptModal from "./RegisterPromptModal";
 import PhaseCard from "./PhaseCard";
-import VisaCountdownBanner from "./VisaCountdownBanner";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
@@ -82,21 +81,6 @@ export default function DashboardContent() {
           {t.dashboard.relocation.replace("{country}", countryEntry?.name ?? country)}
         </h1>
         <p className="mt-2 text-slate-400">{subtitle}</p>
-
-        <div className="mt-6">
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium text-slate-300">{t.dashboard.overallProgress}</span>
-            <span className="font-semibold text-accent-bright">{loading ? "..." : `${progressPercent}%`}</span>
-          </div>
-          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
-              style={{ width: `${loading ? 0 : progressPercent}%` }}
-            />
-          </div>
-        </div>
-
-        {profile?.created_at && <VisaCountdownBanner createdAt={profile.created_at} />}
       </Reveal>
 
       {showWelcome && profile?.selected_route && (
@@ -118,7 +102,7 @@ export default function DashboardContent() {
           {t.dashboard.route.checklistHeading}
         </h2>
       )}
-      <div className="mt-4 space-y-4">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {!loading &&
           phases.map((phase, index) => (
             <PhaseCard

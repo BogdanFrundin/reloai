@@ -368,6 +368,12 @@ export type Dictionary = {
       residenceCard: string;
       workTaxes: string;
     };
+    phaseDescriptions: {
+      beforeDeparture: string;
+      legalization: string;
+      residenceCard: string;
+      workTaxes: string;
+    };
     phaseStatus: {
       done: string;
       inProgress: string;
@@ -1212,6 +1218,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         legalization: "First 30 days — legalization",
         residenceCard: "Residence card",
         workTaxes: "Work & taxes",
+      },
+      phaseDescriptions: {
+        beforeDeparture: "Account, questionnaire, and visa eligibility check.",
+        legalization: "Submit documents, biometrics, and register your address.",
+        residenceCard: "Apply for and receive your residence permit card.",
+        workTaxes: "Get your tax ID and register your employment.",
       },
       phaseStatus: {
         done: "Done",
@@ -2119,6 +2131,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         residenceCard: "Карта побыту",
         workTaxes: "Работа и налоги",
       },
+      phaseDescriptions: {
+        beforeDeparture: "Аккаунт, анкета и проверка визовой категории.",
+        legalization: "Подача документов, биометрия и регистрация адреса.",
+        residenceCard: "Оформление и получение карты пребывания.",
+        workTaxes: "Налоговый номер и регистрация трудоустройства.",
+      },
       phaseStatus: {
         done: "Готово",
         inProgress: "В процессе",
@@ -3025,6 +3043,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         residenceCard: "Turar joy kartasi",
         workTaxes: "Ish va soliqlar",
       },
+      phaseDescriptions: {
+        beforeDeparture: "Hisob, anketa va viza toifasini tekshirish.",
+        legalization: "Hujjatlarni topshirish, biometriya va manzilni ro'yxatdan o'tkazish.",
+        residenceCard: "Turar joy kartasini rasmiylashtirish va olish.",
+        workTaxes: "Soliq raqami va mehnatga ro'yxatdan o'tish.",
+      },
       phaseStatus: {
         done: "Bajarildi",
         inProgress: "Jarayonda",
@@ -3927,6 +3951,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         legalization: "İlk 30 gün — yasallaştırma",
         residenceCard: "İkamet kartı",
         workTaxes: "İş ve vergiler",
+      },
+      phaseDescriptions: {
+        beforeDeparture: "Hesap, anket ve vize uygunluğunun kontrolü.",
+        legalization: "Belgelerin teslimi, biyometri ve adres kaydı.",
+        residenceCard: "İkamet kartı başvurusu ve teslim alınması.",
+        workTaxes: "Vergi numarası ve iş kaydı.",
       },
       phaseStatus: {
         done: "Tamamlandı",
@@ -4831,6 +4861,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         residenceCard: "Карти иқомат",
         workTaxes: "Кор ва андозҳо",
       },
+      phaseDescriptions: {
+        beforeDeparture: "Ҳисоб, анкета ва санҷиши категорияи виза.",
+        legalization: "Супоридани ҳуҷҷатҳо, биометрия ва бақайдгирии суроға.",
+        residenceCard: "Пуркунӣ ва гирифтани корти иқомат.",
+        workTaxes: "Рақами андоз ва бақайдгирии кор.",
+      },
       phaseStatus: {
         done: "Иҷрошуда",
         inProgress: "Дар ҷараён",
@@ -5734,6 +5770,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         legalization: "Перші 30 днів — легалізація",
         residenceCard: "Карта побиту",
         workTaxes: "Робота і податки",
+      },
+      phaseDescriptions: {
+        beforeDeparture: "Акаунт, анкета та перевірка візової категорії.",
+        legalization: "Подання документів, біометрія та реєстрація адреси.",
+        residenceCard: "Оформлення та отримання карти побиту.",
+        workTaxes: "Податковий номер та реєстрація працевлаштування.",
       },
       phaseStatus: {
         done: "Готово",
