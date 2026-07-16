@@ -190,9 +190,14 @@ export default function ProfilePage() {
                 <p className="truncate text-lg font-semibold text-white">{profile?.name || p.unnamed}</p>
                 <p className="truncate text-sm text-slate-400">{user?.email}</p>
               </div>
-              <span className="flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright">
+              <Link
+                href="/pricing"
+                title={p.upgradeTooltip}
+                className={`flex flex-shrink-0 cursor-pointer items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/50 hover:bg-accent/20 ${pressScale}`}
+              >
                 {planLabel} {p.planSuffix}
-              </span>
+                <span aria-hidden>→</span>
+              </Link>
             </div>
             {memberSince && (
               <div className="mt-4 border-t border-white/10 pt-3">

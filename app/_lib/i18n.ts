@@ -176,6 +176,7 @@ export type Dictionary = {
     subtitle: string;
     logOut: string;
     planSuffix: string;
+    upgradeTooltip: string;
     unnamed: string;
     memberSinceLabel: string;
     personalSection: string;
@@ -960,6 +961,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Your full relocation overview.",
       logOut: "Log out",
       planSuffix: "Plan",
+      upgradeTooltip: "Improve your plan",
       unnamed: "Unnamed",
       memberSinceLabel: "Member since",
       personalSection: "Personal Info",
@@ -1862,6 +1864,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Полный обзор вашей релокации.",
       logOut: "Выйти",
       planSuffix: "план",
+      upgradeTooltip: "Улучшить план",
       unnamed: "Без имени",
       memberSinceLabel: "На платформе с",
       personalSection: "Личные данные",
@@ -2764,6 +2767,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Ko'chishingiz haqida to'liq ma'lumot.",
       logOut: "Chiqish",
       planSuffix: "reja",
+      upgradeTooltip: "Rejani yaxshilash",
       unnamed: "Ism yo'q",
       memberSinceLabel: "Ro'yxatdan o'tgan sana",
       personalSection: "Shaxsiy ma'lumotlar",
@@ -3663,6 +3667,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Taşınmanızla ilgili tam görünüm.",
       logOut: "Çıkış yap",
       planSuffix: "Plan",
+      upgradeTooltip: "Planınızı yükseltin",
       unnamed: "İsimsiz",
       memberSinceLabel: "Katılım tarihi",
       personalSection: "Kişisel Bilgiler",
@@ -4562,6 +4567,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Дурнамои пурраи кӯчиши шумо.",
       logOut: "Баромадан",
       planSuffix: "нақша",
+      upgradeTooltip: "Нақшаро беҳтар кунед",
       unnamed: "Номи нест",
       memberSinceLabel: "Аз санаи бақайдгирӣ",
       personalSection: "Маълумоти шахсӣ",
@@ -5462,6 +5468,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Повний огляд вашого переїзду.",
       logOut: "Вийти",
       planSuffix: "план",
+      upgradeTooltip: "Покращити план",
       unnamed: "Без імені",
       memberSinceLabel: "На платформі з",
       personalSection: "Особисті дані",
