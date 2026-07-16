@@ -175,9 +175,11 @@ export type Dictionary = {
     title: string;
     subtitle: string;
     logOut: string;
-    planSuffix: string;
+    planLabel: string;
     upgradeTooltip: string;
     upgradeBadge: string;
+    upgradeToProBadge: string;
+    maxPlanBadge: string;
     unnamed: string;
     memberSinceLabel: string;
     personalSection: string;
@@ -961,9 +963,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Profile",
       subtitle: "Your full relocation overview.",
       logOut: "Log out",
-      planSuffix: "Plan",
+      planLabel: "Plan",
       upgradeTooltip: "Improve your plan",
       upgradeBadge: "⚡ Upgrade to Premium",
+      upgradeToProBadge: "⚡ Upgrade to Pro",
+      maxPlanBadge: "✓ Maximum plan",
       unnamed: "Unnamed",
       memberSinceLabel: "Member since",
       personalSection: "Personal Info",
@@ -1865,9 +1869,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Профиль",
       subtitle: "Полный обзор вашей релокации.",
       logOut: "Выйти",
-      planSuffix: "план",
+      planLabel: "План",
       upgradeTooltip: "Улучшить план",
       upgradeBadge: "⚡ Улучшить до Premium",
+      upgradeToProBadge: "⚡ Улучшить до Pro",
+      maxPlanBadge: "✓ Максимальный план",
       unnamed: "Без имени",
       memberSinceLabel: "На платформе с",
       personalSection: "Личные данные",
@@ -2769,9 +2775,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Profil",
       subtitle: "Ko'chishingiz haqida to'liq ma'lumot.",
       logOut: "Chiqish",
-      planSuffix: "reja",
+      planLabel: "Reja",
       upgradeTooltip: "Rejani yaxshilash",
       upgradeBadge: "⚡ Premium'ga yangilang",
+      upgradeToProBadge: "⚡ Pro'ga yangilang",
+      maxPlanBadge: "✓ Maksimal reja",
       unnamed: "Ism yo'q",
       memberSinceLabel: "Ro'yxatdan o'tgan sana",
       personalSection: "Shaxsiy ma'lumotlar",
@@ -3670,9 +3678,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Profil",
       subtitle: "Taşınmanızla ilgili tam görünüm.",
       logOut: "Çıkış yap",
-      planSuffix: "Plan",
+      planLabel: "Plan",
       upgradeTooltip: "Planınızı yükseltin",
       upgradeBadge: "⚡ Premium'a yükseltin",
+      upgradeToProBadge: "⚡ Pro'ya yükseltin",
+      maxPlanBadge: "✓ Maksimum plan",
       unnamed: "İsimsiz",
       memberSinceLabel: "Katılım tarihi",
       personalSection: "Kişisel Bilgiler",
@@ -4571,9 +4581,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Профил",
       subtitle: "Дурнамои пурраи кӯчиши шумо.",
       logOut: "Баромадан",
-      planSuffix: "нақша",
+      planLabel: "Нақша",
       upgradeTooltip: "Нақшаро беҳтар кунед",
       upgradeBadge: "⚡ Ба Premium гузаред",
+      upgradeToProBadge: "⚡ Ба Pro гузаред",
+      maxPlanBadge: "✓ Нақшаи максималӣ",
       unnamed: "Номи нест",
       memberSinceLabel: "Аз санаи бақайдгирӣ",
       personalSection: "Маълумоти шахсӣ",
@@ -5473,9 +5485,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Профіль",
       subtitle: "Повний огляд вашого переїзду.",
       logOut: "Вийти",
-      planSuffix: "план",
+      planLabel: "План",
       upgradeTooltip: "Покращити план",
       upgradeBadge: "⚡ Покращити до Premium",
+      upgradeToProBadge: "⚡ Покращити до Pro",
+      maxPlanBadge: "✓ Максимальний план",
       unnamed: "Без імені",
       memberSinceLabel: "На платформі з",
       personalSection: "Особисті дані",

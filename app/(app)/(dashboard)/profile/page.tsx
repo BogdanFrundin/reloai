@@ -144,6 +144,15 @@ export default function ProfilePage() {
   }
 
   const initials = getInitials(profile?.name, user?.email);
+  const planValue = profile?.plan ?? "free";
+  const isFree = planValue === "free";
+  const isPro = planValue === "pro";
+  const PLAN_BADGE: Record<string, { label: string; className: string }> = {
+    free: { label: t.appPricing.freeName, className: "border-white/15 bg-white/5 text-slate-300" },
+    premium: { label: t.appPricing.premiumName, className: "border-accent/30 bg-accent/10 text-accent-bright" },
+    pro: { label: t.appPricing.proName, className: "border-purple-400/30 bg-purple-500/10 text-purple-300" },
+  };
+  const planBadge = PLAN_BADGE[planValue] ?? PLAN_BADGE.free;
   const memberSince = profile?.created_at
     ? new Intl.DateTimeFormat(lang, { year: "numeric", month: "long", day: "numeric" }).format(
         new Date(profile.created_at),
@@ -189,19 +198,33 @@ export default function ProfilePage() {
                 <p className="truncate text-lg font-semibold text-white">{profile?.name || p.unnamed}</p>
                 <p className="truncate text-sm text-slate-400">{user?.email}</p>
               </div>
-              <Link
-                href="/pricing"
-                title={p.upgradeTooltip}
-                className={`flex flex-shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white shadow-[0_0_20px_-6px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-              >
-                {p.upgradeBadge}
-              </Link>
+              <span className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold ${planBadge.className}`}>
+                {planBadge.label}
+              </span>
             </div>
-            {memberSince && (
-              <div className="mt-4 border-t border-white/10 pt-3">
-                <InfoRow label={p.memberSinceLabel}>{memberSince}</InfoRow>
+            <div className="mt-4 space-y-1 border-t border-white/10 pt-3">
+              {memberSince && <InfoRow label={p.memberSinceLabel}>{memberSince}</InfoRow>}
+              <div className="flex items-center justify-between gap-4 py-2.5">
+                <span className="text-sm text-slate-400">{p.planLabel}</span>
+                {isPro ? (
+                  <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-400">
+                    {p.maxPlanBadge}
+                  </span>
+                ) : (
+                  <Link
+                    href="/pricing"
+                    title={p.upgradeTooltip}
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 ${pressScale} ${
+                      isFree
+                        ? "bg-accent shadow-[0_0_20px_-6px_var(--accent)] hover:bg-accent-bright"
+                        : "bg-purple-600 shadow-[0_0_20px_-6px_rgba(168,85,247,0.7)] hover:bg-purple-500"
+                    }`}
+                  >
+                    {isFree ? p.upgradeBadge : p.upgradeToProBadge}
+                  </Link>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </Reveal>
 
