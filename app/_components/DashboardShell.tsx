@@ -11,7 +11,7 @@ import { useAuth } from "./AuthProvider";
 import { DashboardProgressProvider } from "./DashboardProgressProvider";
 
 // Routes that show real personal data and make no sense in demo/preview mode.
-const AUTH_REQUIRED_PATHS = ["/profile"];
+const AUTH_REQUIRED_PATHS = ["/profile", "/settings"];
 
 function DashboardShellInner({ children }: { children: ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);

@@ -210,6 +210,35 @@ export type Dictionary = {
     settings: string;
     logout: string;
   };
+  settings: {
+    title: string;
+    subtitle: string;
+    languageSection: string;
+    languageDesc: string;
+    saving: string;
+    themeSection: string;
+    themeDesc: string;
+    themeDark: string;
+    themeLight: string;
+    notifications: string;
+    notifEmail: string;
+    notifEmailDesc: string;
+    notifDocuments: string;
+    notifDocumentsDesc: string;
+    notifProduct: string;
+    notifProductDesc: string;
+    accountSection: string;
+    nameLabel: string;
+    emailLabel: string;
+    saveBtn: string;
+    saved: string;
+    dangerSection: string;
+    dangerDesc: string;
+    deleteAccountBtn: string;
+    deleteConfirmTitle: string;
+    deleteConfirmBody: string;
+    deleteConfirmBtn: string;
+  };
   documents: {
     title: string;
     subtitle: string;
@@ -950,6 +979,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profile: "Profile",
       settings: "Settings",
       logout: "Log out",
+    },
+    settings: {
+      title: "Settings",
+      subtitle: "Manage how ReloAI looks and behaves.",
+      languageSection: "Language",
+      languageDesc: "ReloAI will speak with you in this language.",
+      saving: "(saving…)",
+      themeSection: "Appearance",
+      themeDesc: "Choose how ReloAI looks on your device.",
+      themeDark: "Dark",
+      themeLight: "Light",
+      notifications: "Notifications",
+      notifEmail: "Email updates",
+      notifEmailDesc: "Occasional product news and tips.",
+      notifDocuments: "Document reminders",
+      notifDocumentsDesc: "Alerts before a deadline is due.",
+      notifProduct: "Product news",
+      notifProductDesc: "New features and roadmap updates.",
+      accountSection: "Account",
+      nameLabel: "Name",
+      emailLabel: "Email",
+      saveBtn: "Save changes",
+      saved: "Saved",
+      dangerSection: "Danger zone",
+      dangerDesc: "Deleting your account removes your data. This can't be undone.",
+      deleteAccountBtn: "Delete account",
+      deleteConfirmTitle: "Delete your account?",
+      deleteConfirmBody: "This will permanently delete your profile and data. This can't be undone.",
+      deleteConfirmBtn: "Delete account",
     },
     documents: {
       title: "Documents",
@@ -1810,6 +1868,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       settings: "Настройки",
       logout: "Выход",
     },
+    settings: {
+      title: "Настройки",
+      subtitle: "Управляйте оформлением и поведением ReloAI.",
+      languageSection: "Язык",
+      languageDesc: "ReloAI будет общаться с вами на этом языке.",
+      saving: "(сохранение…)",
+      themeSection: "Оформление",
+      themeDesc: "Выберите, как ReloAI выглядит на вашем устройстве.",
+      themeDark: "Тёмная",
+      themeLight: "Светлая",
+      notifications: "Уведомления",
+      notifEmail: "Email-рассылка",
+      notifEmailDesc: "Время от времени — новости и советы.",
+      notifDocuments: "Напоминания о документах",
+      notifDocumentsDesc: "Предупреждения перед истечением срока.",
+      notifProduct: "Новости продукта",
+      notifProductDesc: "Новые функции и обновления.",
+      accountSection: "Аккаунт",
+      nameLabel: "Имя",
+      emailLabel: "Email",
+      saveBtn: "Сохранить изменения",
+      saved: "Сохранено",
+      dangerSection: "Опасная зона",
+      dangerDesc: "Удаление аккаунта удалит все ваши данные. Это необратимо.",
+      deleteAccountBtn: "Удалить аккаунт",
+      deleteConfirmTitle: "Удалить аккаунт?",
+      deleteConfirmBody: "Ваш профиль и данные будут удалены безвозвратно. Это действие нельзя отменить.",
+      deleteConfirmBtn: "Удалить аккаунт",
+    },
     documents: {
       title: "Документы",
       subtitle: "Всё необходимое для переезда — в одном месте.",
@@ -2669,6 +2756,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       settings: "Sozlamalar",
       logout: "Chiqish",
     },
+    settings: {
+      title: "Sozlamalar",
+      subtitle: "ReloAI qanday ko'rinishi va ishlashini boshqaring.",
+      languageSection: "Til",
+      languageDesc: "ReloAI siz bilan shu tilda gaplashadi.",
+      saving: "(saqlanmoqda…)",
+      themeSection: "Ko'rinish",
+      themeDesc: "ReloAI qurilmangizda qanday ko'rinishini tanlang.",
+      themeDark: "Tungi",
+      themeLight: "Kunduzgi",
+      notifications: "Bildirishnomalar",
+      notifEmail: "Email yangiliklari",
+      notifEmailDesc: "Vaqti-vaqti bilan mahsulot yangiliklari.",
+      notifDocuments: "Hujjat eslatmalari",
+      notifDocumentsDesc: "Muddatlar yaqinlashganda ogohlantirishlar.",
+      notifProduct: "Mahsulot yangiliklari",
+      notifProductDesc: "Yangi funksiyalar va yangilanishlar.",
+      accountSection: "Hisob",
+      nameLabel: "Ism",
+      emailLabel: "Email",
+      saveBtn: "O'zgarishlarni saqlash",
+      saved: "Saqlandi",
+      dangerSection: "Xavfli hudud",
+      dangerDesc: "Hisobingizni o'chirish barcha ma'lumotlaringizni o'chiradi. Buni bekor qilib bo'lmaydi.",
+      deleteAccountBtn: "Hisobni o'chirish",
+      deleteConfirmTitle: "Hisobingizni o'chirasizmi?",
+      deleteConfirmBody: "Profilingiz va ma'lumotlaringiz butunlay o'chiriladi. Buni bekor qilib bo'lmaydi.",
+      deleteConfirmBtn: "Hisobni o'chirish",
+    },
     documents: {
       title: "Hujjatlar",
       subtitle: "Ko'chib o'tishingiz uchun kerak bo'lgan hamma narsa bir joyda.",
@@ -3524,6 +3640,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profile: "Profil",
       settings: "Ayarlar",
       logout: "Çıkış yap",
+    },
+    settings: {
+      title: "Ayarlar",
+      subtitle: "ReloAI'nin görünümünü ve davranışını yönetin.",
+      languageSection: "Dil",
+      languageDesc: "ReloAI sizinle bu dilde konuşacak.",
+      saving: "(kaydediliyor…)",
+      themeSection: "Görünüm",
+      themeDesc: "ReloAI'nin cihazınızda nasıl görüneceğini seçin.",
+      themeDark: "Koyu",
+      themeLight: "Açık",
+      notifications: "Bildirimler",
+      notifEmail: "E-posta güncellemeleri",
+      notifEmailDesc: "Ara sıra ürün haberleri ve ipuçları.",
+      notifDocuments: "Belge hatırlatıcıları",
+      notifDocumentsDesc: "Bir son tarih yaklaşınca uyarılar.",
+      notifProduct: "Ürün haberleri",
+      notifProductDesc: "Yeni özellikler ve güncellemeler.",
+      accountSection: "Hesap",
+      nameLabel: "Ad",
+      emailLabel: "E-posta",
+      saveBtn: "Değişiklikleri kaydet",
+      saved: "Kaydedildi",
+      dangerSection: "Tehlikeli bölge",
+      dangerDesc: "Hesabınızı silmek tüm verilerinizi kaldırır. Bu geri alınamaz.",
+      deleteAccountBtn: "Hesabı sil",
+      deleteConfirmTitle: "Hesabınızı silmek istiyor musunuz?",
+      deleteConfirmBody: "Profiliniz ve verileriniz kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+      deleteConfirmBtn: "Hesabı sil",
     },
     documents: {
       title: "Belgeler",
@@ -4381,6 +4526,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       settings: "Танзимот",
       logout: "Баромадан",
     },
+    settings: {
+      title: "Танзимот",
+      subtitle: "Намуд ва рафтори ReloAI-ро идора кунед.",
+      languageSection: "Забон",
+      languageDesc: "ReloAI бо шумо ба ин забон гап мезанад.",
+      saving: "(захира мешавад…)",
+      themeSection: "Намуди зоҳирӣ",
+      themeDesc: "Интихоб кунед, ки ReloAI дар дастгоҳи шумо чӣ гуна намоён шавад.",
+      themeDark: "Торик",
+      themeLight: "Равшан",
+      notifications: "Огоҳиномаҳо",
+      notifEmail: "Навсозиҳои Email",
+      notifEmailDesc: "Гоҳо хабарҳои маҳсулот ва маслиҳатҳо.",
+      notifDocuments: "Ёдоварии ҳуҷҷатҳо",
+      notifDocumentsDesc: "Огоҳиҳо пеш аз мӯҳлат.",
+      notifProduct: "Хабарҳои маҳсулот",
+      notifProductDesc: "Хусусиятҳои нав ва навсозиҳо.",
+      accountSection: "Ҳисоб",
+      nameLabel: "Ном",
+      emailLabel: "Email",
+      saveBtn: "Тағиротро захира кунед",
+      saved: "Захира шуд",
+      dangerSection: "Минтақаи хатарнок",
+      dangerDesc: "Нест кардани ҳисоб тамоми маълумоти шуморо мебарад. Ин амалро баргардонидан мумкин нест.",
+      deleteAccountBtn: "Ҳисобро нест кунед",
+      deleteConfirmTitle: "Ҳисобатонро нест мекунед?",
+      deleteConfirmBody: "Профил ва маълумоти шумо пурра нест карда мешавад. Ин амалро баргардонидан мумкин нест.",
+      deleteConfirmBtn: "Ҳисобро нест кунед",
+    },
     documents: {
       title: "Ҳуҷҷатҳо",
       subtitle: "Барои кӯчиданатон лозим будаи ҳама чиз дар як ҷо.",
@@ -5237,6 +5411,35 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profile: "Профіль",
       settings: "Налаштування",
       logout: "Вихід",
+    },
+    settings: {
+      title: "Налаштування",
+      subtitle: "Керуйте виглядом і поведінкою ReloAI.",
+      languageSection: "Мова",
+      languageDesc: "ReloAI спілкуватиметься з вами цією мовою.",
+      saving: "(збереження…)",
+      themeSection: "Вигляд",
+      themeDesc: "Оберіть, як ReloAI виглядає на вашому пристрої.",
+      themeDark: "Темна",
+      themeLight: "Світла",
+      notifications: "Сповіщення",
+      notifEmail: "Email-розсилка",
+      notifEmailDesc: "Час від часу — новини та поради.",
+      notifDocuments: "Нагадування про документи",
+      notifDocumentsDesc: "Попередження перед закінченням терміну.",
+      notifProduct: "Новини продукту",
+      notifProductDesc: "Нові функції та оновлення.",
+      accountSection: "Акаунт",
+      nameLabel: "Ім'я",
+      emailLabel: "Email",
+      saveBtn: "Зберегти зміни",
+      saved: "Збережено",
+      dangerSection: "Небезпечна зона",
+      dangerDesc: "Видалення акаунта видалить усі ваші дані. Це неможливо скасувати.",
+      deleteAccountBtn: "Видалити акаунт",
+      deleteConfirmTitle: "Видалити акаунт?",
+      deleteConfirmBody: "Ваш профіль і дані буде видалено назавжди. Це неможливо скасувати.",
+      deleteConfirmBtn: "Видалити акаунт",
     },
     documents: {
       title: "Документи",

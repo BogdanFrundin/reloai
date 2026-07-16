@@ -62,7 +62,7 @@ export default function ProfileAvatar() {
               <span>{t.topbar.profileMenuProfile}</span>
             </Link>
             <Link
-              href="/profile"
+              href="/settings"
               role="menuitem"
               onClick={() => setMenuOpen(false)}
               className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-200 transition-colors duration-150 hover:bg-white/5 hover:text-white"

@@ -190,7 +190,7 @@ export default function DashboardSidebar({
             <span className="truncate">{profileName}</span>
           </Link>
           <Link
-            href="/profile"
+            href="/settings"
             onClick={onClose}
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
           >
