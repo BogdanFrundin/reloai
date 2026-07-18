@@ -2,11 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { getFlagUrl } from "../../../_lib/flags";
+
+const CHEVRON_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+);
 
 const BANKS = [
   { key: "pkobp", name: "PKO BP", href: "https://www.pkobp.pl/", rating: 4.0, badge: false },
@@ -17,6 +24,7 @@ const BANKS = [
 
 export default function BanksPage() {
   const { t } = useLanguage();
+  const [guideOpen, setGuideOpen] = useState(true);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -74,6 +82,51 @@ export default function BanksPage() {
           </Reveal>
         ))}
       </div>
+
+      <Reveal delay={200} className="mt-12">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
+          <button
+            type="button"
+            onClick={() => setGuideOpen((prev) => !prev)}
+            aria-expanded={guideOpen}
+            className="flex w-full items-center justify-between gap-3 px-6 py-5 text-left"
+          >
+            <h2 className="text-lg font-bold text-white">{t.banks.guide.heading}</h2>
+            <span
+              className={`flex-shrink-0 text-slate-400 transition-transform duration-150 ${guideOpen ? "rotate-180" : ""}`}
+            >
+              {CHEVRON_ICON}
+            </span>
+          </button>
+
+          {guideOpen && (
+            <div className="space-y-6 border-t border-white/10 px-6 py-6">
+              <div className="space-y-4">
+                {t.banks.guide.steps.map((step, index) => (
+                  <div key={step} className="flex items-start gap-4">
+                    <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent-bright">
+                      {index + 1}
+                    </span>
+                    <p className="text-sm leading-relaxed text-slate-300">{step}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-xl border border-accent/20 bg-accent/[0.04] p-5">
+                <p className="text-sm font-semibold text-white">{t.banks.guide.tipsHeading}</p>
+                <ul className="mt-3 space-y-2">
+                  {t.banks.guide.tips.map((tip) => (
+                    <li key={tip} className="flex items-start gap-2 text-sm text-slate-300">
+                      <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent-bright" />
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </Reveal>
     </div>
   );
 }

@@ -312,6 +312,12 @@ export type Dictionary = {
     openAccount: string;
     bestForExpats: string;
     features: { pkobp: [string, string, string]; mbank: [string, string, string]; santander: [string, string, string]; revolut: [string, string, string] };
+    guide: {
+      heading: string;
+      steps: [string, string, string, string, string];
+      tipsHeading: string;
+      tips: [string, string, string, string];
+    };
   };
   medicine: {
     title: string;
@@ -1249,6 +1255,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         mbank: ["Fully English app and support", "Instant online account opening", "No fees without a PESEL number"],
         santander: ["Multi-currency accounts", "Global bank network", "Free debit card use abroad"],
         revolut: ["No PESEL required to start", "Multi-currency wallet", "Best for digital nomads"],
+      },
+      guide: {
+        heading: "How to open a bank account in Poland — step by step",
+        steps: [
+          "🪪 Get your PESEL — most banks won't open an account without it",
+          "📄 Prepare your documents — passport, proof of address (rental agreement), PESEL",
+          "🏦 Choose a bank — online banks (mBank, ING) are easier for foreigners",
+          "📱 Open online or in person — mBank and Revolut can be opened fully online",
+          "✅ Activate your card — it arrives by mail within 5–7 days",
+        ],
+        tipsHeading: "💡 Tips",
+        tips: [
+          "mBank and ING are the most foreigner-friendly",
+          "Revolut can be opened without a PESEL in 10 minutes",
+          "PKO BP and Pekao require an in-person visit",
+          "Bring your rental agreement as proof of address",
+        ],
       },
     },
     medicine: {
@@ -2266,6 +2289,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         santander: ["Мультивалютные счета", "Международная банковская сеть", "Бесплатное использование карты за границей"],
         revolut: ["PESEL не требуется для начала", "Мультивалютный кошелёк", "Лучший вариант для цифровых кочевников"],
       },
+      guide: {
+        heading: "Как открыть счёт в Польше — пошаговая инструкция",
+        steps: [
+          "🪪 Получите PESEL — без него большинство банков не откроют счёт",
+          "📄 Подготовьте документы — паспорт, подтверждение адреса (договор аренды), PESEL",
+          "🏦 Выберите банк — онлайн-банки (mBank, ING) проще для иностранцев",
+          "📱 Откройте онлайн или лично — mBank и Revolut можно открыть полностью онлайн",
+          "✅ Активируйте карту — придёт по почте в течение 5-7 дней",
+        ],
+        tipsHeading: "💡 Советы",
+        tips: [
+          "mBank и ING — самые лояльные к иностранцам",
+          "Revolut открывается без PESEL за 10 минут",
+          "PKO BP и Pekao требуют личного визита",
+          "Возьмите с собой договор аренды как подтверждение адреса",
+        ],
+      },
     },
     medicine: {
       title: "Медицина в Польше",
@@ -3282,6 +3322,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         santander: ["Ko'p valyutali hisoblar", "Global bank tarmog'i", "Chet elda bepul debit karta orqali foydalanish"],
         revolut: ["Boshlash uchun PESEL talab qilinmaydi", "Ko'p valyutali hamyon", "Raqamli ko'chmanchilar uchun eng qulayi"],
       },
+      guide: {
+        heading: "Polshada bank hisobini qanday ochish — bosqichma-bosqich",
+        steps: [
+          "🪪 PESEL oling — usiz aksariyat banklar hisob ochmaydi",
+          "📄 Hujjatlarni tayyorlang — pasport, manzil tasdig'i (ijara shartnomasi), PESEL",
+          "🏦 Bankni tanlang — onlayn banklar (mBank, ING) chet elliklar uchun osonroq",
+          "📱 Onlayn yoki shaxsan oching — mBank va Revolut'ni to'liq onlayn ochish mumkin",
+          "✅ Kartani faollashtiring — 5–7 kun ichida pochta orqali keladi",
+        ],
+        tipsHeading: "💡 Maslahatlar",
+        tips: [
+          "mBank va ING — chet elliklarga eng qulay banklar",
+          "Revolut PESEL'siz 10 daqiqada ochiladi",
+          "PKO BP va Pekao shaxsan borishni talab qiladi",
+          "Manzil tasdig'i sifatida ijara shartnomasini olib boring",
+        ],
+      },
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -4294,6 +4351,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         mbank: ["Tamamen İngilizce uygulama ve destek", "Anında çevrimiçi hesap açma", "PESEL numarası olmadan ücretsiz"],
         santander: ["Çoklu para birimi hesapları", "Küresel banka ağı", "Yurt dışında ücretsiz banka kartı kullanımı"],
         revolut: ["Başlamak için PESEL gerekmez", "Çoklu para birimi cüzdanı", "Dijital göçebeler için en iyisi"],
+      },
+      guide: {
+        heading: "Polonya'da banka hesabı nasıl açılır — adım adım",
+        steps: [
+          "🪪 PESEL alın — çoğu banka bu olmadan hesap açmaz",
+          "📄 Belgelerinizi hazırlayın — pasaport, adres kanıtı (kira sözleşmesi), PESEL",
+          "🏦 Banka seçin — çevrimiçi bankalar (mBank, ING) yabancılar için daha kolaydır",
+          "📱 Çevrimiçi veya şahsen açın — mBank ve Revolut tamamen çevrimiçi açılabilir",
+          "✅ Kartınızı etkinleştirin — 5-7 gün içinde posta ile gelir",
+        ],
+        tipsHeading: "💡 İpuçları",
+        tips: [
+          "mBank ve ING yabancılara en dostane olanlardır",
+          "Revolut, PESEL olmadan 10 dakikada açılır",
+          "PKO BP ve Pekao şahsen başvuru gerektirir",
+          "Adres kanıtı olarak kira sözleşmenizi yanınıza alın",
+        ],
       },
     },
     medicine: {
@@ -5308,6 +5382,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         santander: ["Ҳисобҳои бисёрвалютавӣ", "Шабакаи бонкии ҷаҳонӣ", "Истифодаи ройгони корти дебетӣ дар хориҷа"],
         revolut: ["Барои оғоз PESEL лозим нест", "Ҳамёни бисёрвалютавӣ", "Беҳтарин барои бодиянишинони рақамӣ"],
       },
+      guide: {
+        heading: "Чӣ тавр дар Полша ҳисоби бонкӣ кушоем — қадам ба қадам",
+        steps: [
+          "🪪 PESEL гиред — бидуни он аксари бонкҳо ҳисоб намекушоянд",
+          "📄 Ҳуҷҷатҳоро омода кунед — шиноснома, тасдиқи суроға (шартномаи иҷора), PESEL",
+          "🏦 Бонкро интихоб кунед — бонкҳои онлайн (mBank, ING) барои хориҷиён осонтаранд",
+          "📱 Онлайн ё шахсан кушоед — mBank ва Revolut пурра онлайн кушода мешаванд",
+          "✅ Кортро фаъол кунед — дар давоми 5-7 рӯз бо почта меояд",
+        ],
+        tipsHeading: "💡 Маслиҳатҳо",
+        tips: [
+          "mBank ва ING — ба хориҷиён бештар мувофиқ",
+          "Revolut бе PESEL дар 10 дақиқа кушода мешавад",
+          "PKO BP ва Pekao ташрифи шахсиро талаб мекунанд",
+          "Шартномаи иҷораро ҳамчун тасдиқи суроға бо худ гиред",
+        ],
+      },
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -6321,6 +6412,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         mbank: ["Повністю англомовний додаток і підтримка", "Миттєве відкриття рахунку онлайн", "Без комісій навіть без номера PESEL"],
         santander: ["Мультивалютні рахунки", "Міжнародна банківська мережа", "Безкоштовне використання картки за кордоном"],
         revolut: ["PESEL не потрібен для початку", "Мультивалютний гаманець", "Найкращий варіант для цифрових кочівників"],
+      },
+      guide: {
+        heading: "Як відкрити рахунок у Польщі — покроково",
+        steps: [
+          "🪪 Отримайте PESEL — без нього більшість банків не відкриють рахунок",
+          "📄 Підготуйте документи — паспорт, підтвердження адреси (договір оренди), PESEL",
+          "🏦 Оберіть банк — онлайн-банки (mBank, ING) простіші для іноземців",
+          "📱 Відкрийте онлайн або особисто — mBank і Revolut можна відкрити повністю онлайн",
+          "✅ Активуйте картку — прийде поштою протягом 5-7 днів",
+        ],
+        tipsHeading: "💡 Поради",
+        tips: [
+          "mBank і ING — найлояльніші до іноземців",
+          "Revolut відкривається без PESEL за 10 хвилин",
+          "PKO BP і Pekao вимагають особистого візиту",
+          "Візьміть із собою договір оренди як підтвердження адреси",
+        ],
       },
     },
     medicine: {
