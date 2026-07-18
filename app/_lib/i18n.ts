@@ -381,6 +381,7 @@ export type Dictionary = {
     };
     sidebar: {
       tagline: string;
+      home: string;
       myPlanSection: string;
       roadmap: string;
       checklist: string;
@@ -1232,6 +1233,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Your relocation plan",
+        home: "Home",
         myPlanSection: "MY PLAN",
         roadmap: "Roadmap",
         checklist: "Checklist",
@@ -2144,6 +2146,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переезда",
+        home: "Домой",
         myPlanSection: "МОЙ ПЛАН",
         roadmap: "Дорожная карта",
         checklist: "Чеклист",
@@ -3056,6 +3059,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Sizning ko'chish rejangiz",
+        home: "Bosh sahifa",
         myPlanSection: "MENING REJAM",
         roadmap: "Yo'l xaritasi",
         checklist: "Ro'yxat",
@@ -3965,6 +3969,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Taşınma planınız",
+        home: "Ana sayfa",
         myPlanSection: "PLANIM",
         roadmap: "Yol haritası",
         checklist: "Kontrol listesi",
@@ -4874,6 +4879,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Нақшаи кӯчиши шумо",
+        home: "Асосӣ",
         myPlanSection: "НАҚШАИ МАН",
         roadmap: "Харитаи роҳ",
         checklist: "Рӯйхат",
@@ -5784,6 +5790,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переїзду",
+        home: "Головна",
         myPlanSection: "МІЙ ПЛАН",
         roadmap: "Дорожня карта",
         checklist: "Чекліст",

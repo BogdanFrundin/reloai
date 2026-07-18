@@ -20,6 +20,12 @@ const ICON_PROPS = {
   strokeWidth: 1.75,
 } as const;
 
+const HOME_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0L22.28 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+  </svg>
+);
+
 const ROADMAP_ICON = (
   <svg {...ICON_PROPS}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -113,6 +119,17 @@ export default function DashboardSidebar({
         </div>
 
         <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-2">
+          <div className="border-b border-white/10 pb-3">
+            <Link
+              href="/"
+              onClick={onClose}
+              className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-400 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            >
+              {HOME_ICON}
+              <span>{d.home}</span>
+            </Link>
+          </div>
+
           <div>
             <p className="px-3 text-[11px] font-semibold tracking-wider text-slate-500">{d.myPlanSection}</p>
             <div className="mt-1 space-y-1">
