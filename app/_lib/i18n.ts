@@ -215,6 +215,16 @@ export type Dictionary = {
     profileMenuSettings: string;
     profileMenuLogout: string;
   };
+  notifications: {
+    bellAria: string;
+    title: string;
+    markAllRead: string;
+    items: {
+      visaReminder: { text: string; timeAgo: string };
+      newBanks: { text: string; timeAgo: string };
+      checklistUpdated: { text: string; timeAgo: string };
+    };
+  };
   sidebar: {
     documents: string;
     housing: string;
@@ -1102,6 +1112,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuProfile: "Profile",
       profileMenuSettings: "Settings",
       profileMenuLogout: "Log out",
+    },
+    notifications: {
+      bellAria: "Open notifications",
+      title: "Notifications",
+      markAllRead: "Mark all as read",
+      items: {
+        visaReminder: { text: "Don't forget to apply for your PESEL — 16 days left", timeAgo: "2 hours ago" },
+        newBanks: { text: "New banks added to the Poland database", timeAgo: "5 hours ago" },
+        checklistUpdated: { text: "Your checklist has been updated", timeAgo: "yesterday" },
+      },
     },
     sidebar: {
       documents: "Documents",
@@ -2109,6 +2129,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuSettings: "Настройки",
       profileMenuLogout: "Выйти",
     },
+    notifications: {
+      bellAria: "Открыть уведомления",
+      title: "Уведомления",
+      markAllRead: "Отметить все как прочитанные",
+      items: {
+        visaReminder: { text: "Не забудьте подать на PESEL — осталось 16 дней", timeAgo: "2 часа назад" },
+        newBanks: { text: "Новые банки добавлены в базу Польши", timeAgo: "5 часов назад" },
+        checklistUpdated: { text: "Ваш чек-лист обновлён", timeAgo: "вчера" },
+      },
+    },
     sidebar: {
       documents: "Документы",
       housing: "Жильё",
@@ -3115,6 +3145,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuSettings: "Sozlamalar",
       profileMenuLogout: "Chiqish",
     },
+    notifications: {
+      bellAria: "Bildirishnomalarni ochish",
+      title: "Bildirishnomalar",
+      markAllRead: "Barchasini o'qilgan deb belgilash",
+      items: {
+        visaReminder: { text: "PESEL uchun ariza berishni unutmang — 16 kun qoldi", timeAgo: "2 soat oldin" },
+        newBanks: { text: "Polsha bazasiga yangi banklar qo'shildi", timeAgo: "5 soat oldin" },
+        checklistUpdated: { text: "Ro'yxatingiz yangilandi", timeAgo: "kecha" },
+      },
+    },
     sidebar: {
       documents: "Hujjatlar",
       housing: "Uy-joy",
@@ -4117,6 +4157,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuProfile: "Profil",
       profileMenuSettings: "Ayarlar",
       profileMenuLogout: "Çıkış yap",
+    },
+    notifications: {
+      bellAria: "Bildirimleri aç",
+      title: "Bildirimler",
+      markAllRead: "Tümünü okundu olarak işaretle",
+      items: {
+        visaReminder: { text: "PESEL başvurusunu unutmayın — 16 gün kaldı", timeAgo: "2 saat önce" },
+        newBanks: { text: "Polonya veritabanına yeni bankalar eklendi", timeAgo: "5 saat önce" },
+        checklistUpdated: { text: "Kontrol listeniz güncellendi", timeAgo: "dün" },
+      },
     },
     sidebar: {
       documents: "Belgeler",
@@ -5121,6 +5171,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuSettings: "Танзимот",
       profileMenuLogout: "Баромадан",
     },
+    notifications: {
+      bellAria: "Кушодани огоҳиномаҳо",
+      title: "Огоҳиномаҳо",
+      markAllRead: "Ҳамаро хондашуда қайд кунед",
+      items: {
+        visaReminder: { text: "Дархости PESEL-ро фаромӯш накунед — 16 рӯз боқӣ мондааст", timeAgo: "2 соат пеш" },
+        newBanks: { text: "Бонкҳои нав ба пойгоҳи Полша илова шуданд", timeAgo: "5 соат пеш" },
+        checklistUpdated: { text: "Рӯйхати шумо навсозӣ шуд", timeAgo: "дирӯз" },
+      },
+    },
     sidebar: {
       documents: "Ҳуҷҷатҳо",
       housing: "Манзил",
@@ -6124,6 +6184,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       profileMenuProfile: "Профіль",
       profileMenuSettings: "Налаштування",
       profileMenuLogout: "Вийти",
+    },
+    notifications: {
+      bellAria: "Відкрити сповіщення",
+      title: "Сповіщення",
+      markAllRead: "Позначити всі як прочитані",
+      items: {
+        visaReminder: { text: "Не забудьте подати на PESEL — залишилося 16 днів", timeAgo: "2 години тому" },
+        newBanks: { text: "До бази Польщі додано нові банки", timeAgo: "5 годин тому" },
+        checklistUpdated: { text: "Ваш чекліст оновлено", timeAgo: "вчора" },
+      },
     },
     sidebar: {
       documents: "Документи",

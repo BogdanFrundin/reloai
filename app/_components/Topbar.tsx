@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import MiniLangSwitcher from "./MiniLangSwitcher";
+import NotificationBell from "./NotificationBell";
 import ProfileAvatar from "./ProfileAvatar";
 import { pressScale } from "../_lib/motion";
 
@@ -55,6 +56,8 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
           {planLabel}
           {isFree && <span className="text-slate-400">· {t.topbar.upgrade}</span>}
         </Link>
+
+        <NotificationBell />
 
         <ProfileAvatar />
       </div>
