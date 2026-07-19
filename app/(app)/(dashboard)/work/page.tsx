@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { pressScale } from "../../../_lib/motion";
@@ -34,10 +34,46 @@ function lookupSalary(query: string) {
   return match ?? { pln: 7000, eur: 1600, fallback: true };
 }
 
+function getSuggestions(query: string): string[] {
+  const q = query.trim().toLowerCase();
+  if (!q || q.length < 1) return [];
+
+  const suggestions = new Set<string>();
+  SALARY_DATA.forEach((entry) => {
+    entry.keywords.forEach((keyword) => {
+      if (keyword.toLowerCase().startsWith(q)) {
+        suggestions.add(keyword);
+      }
+    });
+  });
+
+  return Array.from(suggestions).sort();
+}
+
 export default function WorkPage() {
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const result = useMemo(() => lookupSalary(query), [query]);
+  const suggestions = useMemo(() => getSuggestions(query), [query]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setQuery(suggestion);
+    setShowSuggestions(false);
+    inputRef.current?.blur();
+  };
 
   const CONTRACT_TYPES = [
     { name: "Umowa o pracę", subtitle: t.work.employmentSubtitle, features: t.work.employmentFeatures },
@@ -84,13 +120,33 @@ export default function WorkPage() {
         <h2 className="text-xl font-bold tracking-tight text-white">{t.work.salarySearch}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.work.salarySearchSub}</p>
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-          <input
-            type="text"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={t.work.placeholder}
-            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
-          />
+          <div className="relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              placeholder={t.work.placeholder}
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-white/10 bg-slate-950 backdrop-blur-sm shadow-lg z-10">
+                <ul className="max-h-48 overflow-y-auto">
+                  {suggestions.map((suggestion, index) => (
+                    <li key={`${suggestion}-${index}`}>
+                      <button
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
+                      >
+                        {suggestion}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
           {result && (
             <div className="mt-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
               <p className="text-sm font-medium text-slate-300">{t.work.averageSalary}</p>
