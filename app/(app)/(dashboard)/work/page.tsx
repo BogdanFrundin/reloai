@@ -76,7 +76,7 @@ export default function WorkPage() {
   };
 
   const CONTRACT_TYPES = [
-    { name: "Umowa o pracę", subtitle: t.work.employmentSubtitle, features: t.work.employmentFeatures },
+    { name: t.work.employmentSubtitle, subtitle: t.work.employmentSubtitle === "Трудовой договор" ? "Со всеми гарантиями работника" : "Full employment benefits", features: t.work.employmentFeatures },
     { name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
   ];
 
