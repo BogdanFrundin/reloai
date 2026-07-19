@@ -930,7 +930,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         mokotow: "Best balance of price and quality. Quiet, green, great infrastructure, metro access.",
         ursynow: "The most affordable comfortable district. Metro, parks, family-friendly atmosphere.",
         wola: "Modern district with lots of new developments, fast-growing, close to the center.",
-        zoliborz: "Cozy, safe, a favorite among expats. Excellent atmosphere.",
+        zoliborz: "Cozy, safe, a favorite among релокантов. Excellent atmosphere.",
       },
       bestValueBadge: "Best value",
       showAllDistricts: "Show all districts →",
@@ -940,7 +940,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Banks in Poland 🇵🇱",
       subtitle: "Compare accounts built for newcomers.",
       openAccount: "Open Account",
-      bestForExpats: "Best for expats",
+      bestForExpats: "Best for релоканты",
       features: {
         pkobp: ["Largest branch network in Poland", "Polish & English mobile app", "Free student account options"],
         mbank: ["Fully English app and support", "Instant online account opening", "No fees without a PESEL number"],
@@ -1187,7 +1187,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pesel:
           "To get a PESEL number in Poland:\n- Book an appointment at the Urząd Miasta (city office) in your district.\n- Bring your passport, your visa or residence permit, and proof of address (a rental contract works).\n- Fill out form EL-ZAM on site.\nProcessing is usually same-day to a few days. You'll need your PESEL for almost everything afterward — opening a bank account, signing up for healthcare, and signing contracts.",
         bank:
-          "For banking:\n- mBank — most expat-friendly, fully English app and support.\n- Revolut — works well even before you have a PESEL number.\n- PKO BP — largest branch network if you prefer in-person banking.\n- Santander — good pick if you need multi-currency accounts.",
+          "For banking:\n- mBank — most релокант-friendly, fully English app and support.\n- Revolut — works well even before you have a PESEL number.\n- PKO BP — largest branch network if you prefer in-person banking.\n- Santander — good pick if you need multi-currency accounts.",
         housing: "Housing tips: search OLX, Otodom, or Gratka for listings. Never send a deposit before viewing the apartment in person or on a live video call. Get your rental contract in Polish — it has to be in Polish to be legally enforceable. Budget for a security deposit (1–2 months' rent) plus czynsz (building maintenance fees) on top of rent.",
         documents: "Common documents you'll need: passport, visa or residence permit application, proof of address, PESEL confirmation, health insurance certificate, and (if working) your employment contract or work permit. I can walk you through any of these in more detail.",
         visa: "Visa needs depend on your citizenship and destination. For Poland, most non-EU citizens need a national visa or residence permit (Karta Pobytu) tied to work, study, or family. For Germany, look into a Job Seeker Visa, Aufenthaltstitel, or EU Blue Card. For Spain, check the Digital Nomad Visa or standard work/residence routes via NIE registration.",
@@ -1715,7 +1715,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         mokotow: "Лучший баланс цены и качества. Тихий, зелёный, хорошая инфраструктура, метро.",
         ursynow: "Самый доступный комфортный район. Метро, парки, семейная атмосфера.",
         wola: "Современный район, много новостроек, быстро развивается, близко к центру.",
-        zoliborz: "Уютный, безопасный, любимый среди экспатов. Отличная атмосфера.",
+        zoliborz: "Уютный, безопасный, любимый среди релокантов. Отличная атмосфера.",
       },
       bestValueBadge: "Рекомендуем",
       showAllDistricts: "Показать все районы →",
@@ -1725,7 +1725,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Банки в Польше 🇵🇱",
       subtitle: "Сравните счета, созданные для новоприбывших.",
       openAccount: "Открыть счёт",
-      bestForExpats: "Лучший для экспатов",
+      bestForExpats: "Лучший для релокантов",
       features: {
         pkobp: ["Самая большая сеть отделений в Польше", "Приложение на польском и английском", "Бесплатные варианты студенческого счёта"],
         mbank: ["Полностью англоязычное приложение и поддержка", "Мгновенное открытие счёта онлайн", "Без комиссий даже без номера PESEL"],
@@ -1972,7 +1972,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pesel:
           "Чтобы получить номер PESEL в Польше:\n- Запишитесь на приём в Urząd Miasta (городское управление) вашего района.\n- Возьмите с собой паспорт, визу или вид на жительство и подтверждение адреса (подойдёт договор аренды).\n- Заполните на месте форму EL-ZAM.\nОбработка обычно занимает от одного дня до нескольких. PESEL понадобится вам почти для всего в дальнейшем — открытия банковского счёта, оформления медицинской страховки и подписания договоров.",
         bank:
-          "По банкам:\n- mBank — самый удобный вариант для экспатов, полностью на английском языке.\n- Revolut — отлично работает даже до получения PESEL.\n- PKO BP — самая большая сеть отделений, если предпочитаете обслуживание лично.\n- Santander — хорош, если нужны мультивалютные счета.",
+          "По банкам:\n- mBank — самый удобный вариант для релокантов, полностью на английском языке.\n- Revolut — отлично работает даже до получения PESEL.\n- PKO BP — самая большая сеть отделений, если предпочитаете обслуживание лично.\n- Santander — хорош, если нужны мультивалютные счета.",
         housing: "Советы по жилью: ищите объявления на OLX, Otodom или Gratka. Никогда не переводите депозит, не осмотрев квартиру лично или по видеосвязи. Договор аренды должен быть на польском языке, чтобы иметь юридическую силу. Заложите в бюджет залог (аренда за 1–2 месяца) плюс czynsz (плата за обслуживание дома) сверх аренды.",
         documents: "Обычно нужны следующие документы: паспорт, заявление на визу или вид на жительство, подтверждение адреса, справка о PESEL, полис медицинской страховки и (если работаете) трудовой договор или разрешение на работу. Могу подробнее рассказать про любой из них.",
         visa: "Визовые требования зависят от вашего гражданства и страны назначения. Для Польши большинству граждан не из ЕС нужна национальная виза или вид на жительство (Karta Pobytu), связанные с работой, учёбой или семьёй. Для Германии рассмотрите Job Seeker Visa, Aufenthaltstitel или EU Blue Card. Для Испании — Digital Nomad Visa или обычные пути через рабочий/жительский статус и регистрацию NIE.",
