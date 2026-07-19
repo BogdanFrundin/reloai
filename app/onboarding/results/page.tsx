@@ -6,8 +6,12 @@ import PageTransition from "../../_components/PageTransition";
 import Reveal from "../../_components/Reveal";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
+import { pressScale } from "../../_lib/motion";
 import { supabase } from "../../../lib/supabase";
+import type { Dictionary } from "../../_lib/i18n";
 import type { Route, RouteEngineResult } from "../../api/route/route";
+
+const CLIENT_FETCH_TIMEOUT_MS = 20000;
 
 function SpeedBadge({ speed, label }: { speed: string; label: string }) {
   const colors =
@@ -42,7 +46,7 @@ function RouteCard({
   isRecommended: boolean;
   onSelect: (route: Route) => void;
   selectingId: string | null;
-  labels: any;
+  labels: Dictionary["onboarding"];
 }) {
   const speedLabel =
     route.speed === "fast"
@@ -117,13 +121,20 @@ export default function OnboardingResultsPage() {
   const [result, setResult] = useState<RouteEngineResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectingId, setSelectingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     if (!user || !profile) return;
+    let active = true;
 
     async function loadRoutes() {
       setLoading(true);
+      setError(false);
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), CLIENT_FETCH_TIMEOUT_MS);
+
       try {
         const response = await fetch("/api/route", {
           method: "POST",
@@ -135,23 +146,31 @@ export default function OnboardingResultsPage() {
             goal: profile?.goal,
             language: profile?.language,
           }),
+          signal: controller.signal,
         });
 
         if (!response.ok) {
-          throw new Error("Failed to generate routes");
+          throw new Error(`Route API returned ${response.status}`);
         }
 
         const data = (await response.json()) as RouteEngineResult;
+        if (!active) return;
         setResult(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Error generating routes");
+        if (!active) return;
+        console.error("Failed to load relocation routes:", err);
+        setError(true);
       } finally {
-        setLoading(false);
+        clearTimeout(timeout);
+        if (active) setLoading(false);
       }
     }
 
     loadRoutes();
-  }, [user, profile]);
+    return () => {
+      active = false;
+    };
+  }, [user, profile, retryKey]);
 
   async function handleSelectRoute(route: Route) {
     if (!user) return;
@@ -163,7 +182,8 @@ export default function OnboardingResultsPage() {
       await refreshProfile();
       router.push("/dashboard?welcome=1");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error saving route");
+      console.error("Failed to save selected route:", err);
+      setError(true);
       setSelectingId(null);
     }
   }
@@ -208,10 +228,18 @@ export default function OnboardingResultsPage() {
             </Reveal>
           )}
 
-          {error && (
+          {error && !loading && (
             <Reveal>
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-center text-red-400">
-                {error}
+              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
+                <p className="text-lg font-semibold text-red-400">{t.onboarding.results.errorHeading}</p>
+                <p className="mt-2 text-sm text-slate-400">{t.onboarding.results.errorBody}</p>
+                <button
+                  type="button"
+                  onClick={() => setRetryKey((prev) => prev + 1)}
+                  className={`mt-5 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                >
+                  {t.onboarding.results.retryButton}
+                </button>
               </div>
             </Reveal>
           )}
@@ -225,7 +253,7 @@ export default function OnboardingResultsPage() {
                     isRecommended={route.recommended}
                     onSelect={handleSelectRoute}
                     selectingId={selectingId}
-                    labels={t}
+                    labels={t.onboarding}
                   />
                 </Reveal>
               ))}

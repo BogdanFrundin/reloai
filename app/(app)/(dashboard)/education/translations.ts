@@ -1,4 +1,4 @@
-import type { Lang } from "../../_lib/i18n";
+import type { Lang } from "../../../_lib/i18n";
 
 // Exact-match phrase translations for the free-form English content embedded in
 // the courses/schools/kindergartens/universities datasets (format, price, level,
@@ -9,7 +9,7 @@ const RU_PHRASES: Record<string, string> = {
   // Course format
   "In-person, group": "Очно, в группе",
   "In-person": "Очно",
-  "In-person & online": "Очно и онлайн",
+  "In-person & online": "Очно / Онлайн",
   "Online & in-person": "Онлайн и очно",
   "In-person, small groups": "Очно, маленькие группы",
   "In-person, intensive": "Очно, интенсив",

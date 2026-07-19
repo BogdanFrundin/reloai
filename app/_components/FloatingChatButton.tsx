@@ -34,8 +34,8 @@ export default function FloatingChatButton() {
     }
   }
 
-  // The dashboard already docks an AiChatPanel inline — skip the floating duplicate there.
-  if (pathname === "/dashboard") return null;
+  // The AI page already provides a full-screen chat interface — skip the floating duplicate there.
+  if (pathname === "/dashboard/ai") return null;
 
   return (
     <>

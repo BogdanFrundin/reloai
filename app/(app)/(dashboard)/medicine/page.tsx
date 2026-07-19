@@ -1,9 +1,11 @@
 "use client";
 
-import PageHeader from "../../_components/PageHeader";
-import Reveal from "../../_components/Reveal";
-import StarRating from "../../_components/StarRating";
-import { useLanguage } from "../../_components/LanguageProvider";
+import Image from "next/image";
+import PageHeader from "../../../_components/PageHeader";
+import Reveal from "../../../_components/Reveal";
+import StarRating from "../../../_components/StarRating";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { getFlagUrl } from "../../../_lib/flags";
 
 const CLINICS = [
   {
@@ -41,7 +43,15 @@ export default function MedicinePage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.medicine.title} subtitle={t.medicine.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.medicine.title}
+            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+          </span>
+        }
+        subtitle={t.medicine.subtitle}
+      />
 
       <Reveal delay={40} className="mt-10">
         <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.nfzVsPrivate}</h2>
@@ -69,7 +79,7 @@ export default function MedicinePage() {
       <Reveal delay={80} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.clinicsTitle}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.medicine.clinicsSub}</p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLINICS.map((clinic, index) => (
             <Reveal key={clinic.name} delay={index * 40}>
               <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
@@ -79,18 +89,22 @@ export default function MedicinePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
                   </svg>
                 </span>
-                <p className="mt-3 text-sm font-semibold text-white">{clinic.name}</p>
-                <p className="mt-1 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
-                <p className="mt-1 text-xs text-slate-500">{clinic.phone}</p>
-                <span className="mt-3 inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
-                  {t.medicine.languages[clinic.languagesKey]}
-                </span>
-                <div className="mt-3">
+                <p className="mt-3 min-h-10 text-sm font-semibold text-white">{clinic.name}</p>
+                <p className="mt-1 min-h-8 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
+                <p className="mt-1 min-h-4 text-xs text-slate-500">{clinic.phone}</p>
+                <div className="mt-3 min-h-7">
+                  {clinic.languagesKey && (
+                    <span className="inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
+                      {t.medicine.languages[clinic.languagesKey]}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-3 min-h-5">
                   <StarRating rating={clinic.rating} />
                 </div>
                 <a
                   href={`tel:${clinic.phone.replace(/\s+/g, "")}`}
-                  className="mt-4 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+                  className="mt-auto inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
                 >
                   {t.medicine.bookBtn}
                 </a>

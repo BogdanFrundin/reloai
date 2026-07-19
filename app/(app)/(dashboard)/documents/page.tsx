@@ -1,45 +1,23 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Reveal from "../../_components/Reveal";
-import RegisterPromptModal from "../../_components/RegisterPromptModal";
-import SectionCompleteModal from "../../_components/SectionCompleteModal";
-import DeleteConfirmModal from "../../_components/DeleteConfirmModal";
-import { pressScale } from "../../_lib/motion";
-import { useLanguage } from "../../_components/LanguageProvider";
-import { useAuth } from "../../_components/AuthProvider";
-import { supabase } from "../../../lib/supabase";
-import type { Dictionary } from "../../_lib/i18n";
+import Reveal from "../../../_components/Reveal";
+import RegisterPromptModal from "../../../_components/RegisterPromptModal";
+import SectionCompleteModal from "../../../_components/SectionCompleteModal";
+import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
+import { pressScale } from "../../../_lib/motion";
+import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
+import { supabase } from "../../../../lib/supabase";
+import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 
-type Category = "all" | "passport" | "pesel" | "workPermit" | "insurance" | "bank";
-type Status = "verified" | "pending" | "missing" | "locked";
-type DocNameKey = keyof Dictionary["documents"]["docNames"];
-
-type DocumentItem = {
-  id: string;
-  nameKey: DocNameKey;
-  category: Exclude<Category, "all">;
-  status: Status;
-  fileName?: string;
-};
+type Category = "all" | DocumentItem["category"];
+type Status = DocStatus;
 
 const TABS: Category[] = ["all", "passport", "pesel", "workPermit", "insurance", "bank"];
 
-const INITIAL_DOCUMENTS: DocumentItem[] = [
-  { id: "passport-scan", nameKey: "passportScan", category: "passport", status: "verified" },
-  { id: "passport-photo", nameKey: "passportPhoto", category: "passport", status: "verified" },
-  { id: "pesel-form", nameKey: "peselForm", category: "pesel", status: "pending" },
-  { id: "pesel-letter", nameKey: "peselLetter", category: "pesel", status: "missing" },
-  { id: "work-permit-app", nameKey: "workPermitApp", category: "workPermit", status: "pending" },
-  { id: "sponsorship-letter", nameKey: "sponsorshipLetter", category: "workPermit", status: "missing" },
-  { id: "health-insurance", nameKey: "healthInsurance", category: "insurance", status: "verified" },
-  { id: "travel-insurance", nameKey: "travelInsurance", category: "insurance", status: "missing" },
-  { id: "bank-confirmation", nameKey: "bankConfirmation", category: "bank", status: "pending" },
-  { id: "proof-of-funds", nameKey: "proofOfFunds", category: "bank", status: "missing" },
-  { id: "relocation-letter", nameKey: "relocationLetter", category: "workPermit", status: "locked" },
-  { id: "tax-residency", nameKey: "taxResidency", category: "bank", status: "locked" },
-];
+const INITIAL_DOCUMENTS: DocumentItem[] = DOCUMENT_CATALOG;
 
 function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
   const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
@@ -113,17 +91,58 @@ export default function DocumentsPage() {
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  useEffect(() => {
+    if (!user) {
+      setDocuments(INITIAL_DOCUMENTS);
+      return;
+    }
+    let active = true;
+
+    supabase
+      .from("documents")
+      .select("doc_id, status, file_name")
+      .eq("user_id", user.id)
+      .then(({ data }) => {
+        if (!active || !data || data.length === 0) return;
+        const savedById = new Map(data.map((row) => [row.doc_id, row]));
+        setDocuments((prev) =>
+          prev.map((doc) => {
+            const saved = savedById.get(doc.id);
+            if (!saved) return doc;
+            return { ...doc, status: saved.status as Status, fileName: saved.file_name ?? undefined };
+          }),
+        );
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
-    verified: { label: t.documents.status.verified, className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400" },
-    pending: { label: t.documents.status.pending, className: "border-amber-500/30 bg-amber-500/15 text-amber-400" },
-    missing: { label: t.documents.status.missing, className: "border-white/15 bg-white/5 text-slate-400" },
-    locked: { label: t.documents.status.locked, className: "border-accent/30 bg-accent/10 text-accent-bright" },
+    verified: { label: t.documents.status.verified, className: STATUS_BADGE_CLASS.verified },
+    pending: { label: t.documents.status.pending, className: STATUS_BADGE_CLASS.pending },
+    missing: { label: t.documents.status.missing, className: STATUS_BADGE_CLASS.missing },
+    locked: { label: t.documents.status.locked, className: STATUS_BADGE_CLASS.locked },
   };
 
   function showAutoCompleteToast() {
     setToastVisible(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => setToastVisible(false), 3000);
+  }
+
+  async function syncDocumentStatus(doc: DocumentItem) {
+    if (!user) return;
+    await supabase.from("documents").upsert(
+      {
+        user_id: user.id,
+        doc_id: doc.id,
+        status: doc.status,
+        file_name: doc.fileName ?? null,
+      },
+      { onConflict: "user_id,doc_id" },
+    );
   }
 
   async function syncProgress(docs: DocumentItem[]) {
@@ -146,19 +165,26 @@ export default function DocumentsPage() {
     const doc = documents.find((d) => d.id === id);
     if (!doc) return;
 
-    const next = documents.map((d) => (d.id === id ? { ...d, status: "verified" as Status, fileName: file.name } : d));
+    const updated: DocumentItem = { ...doc, status: "verified", fileName: file.name };
+    const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
 
     if (!isCategoryComplete(documents, doc.category) && isCategoryComplete(next, doc.category)) {
       setSectionCompleteOpen(true);
     }
     showAutoCompleteToast();
+    syncDocumentStatus(updated);
     syncProgress(next);
   }
 
   function handleDelete(id: string) {
-    const next = documents.map((d) => (d.id === id ? { ...d, status: "missing" as Status, fileName: undefined } : d));
+    const doc = documents.find((d) => d.id === id);
+    if (!doc) return;
+
+    const updated: DocumentItem = { ...doc, status: "missing", fileName: undefined };
+    const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
+    syncDocumentStatus(updated);
     syncProgress(next);
   }
 

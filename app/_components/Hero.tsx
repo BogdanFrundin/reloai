@@ -67,28 +67,28 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={260}>
-            <div className="mt-10 flex items-center gap-6 text-sm text-slate-500">
-              <p>{t.hero.trustedFor}</p>
-              <div className="flex items-center gap-2 text-base">
-                <span
-                  title="Poland"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5"
-                >
-                  🇵🇱
-                </span>
-                <span
-                  title="Germany"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5"
-                >
-                  🇩🇪
-                </span>
-                <span
-                  title="Spain"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5"
-                >
-                  🇪🇸
-                </span>
-              </div>
+            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+              <span className="flex items-center gap-1.5">
+                <svg className="h-4 w-4 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <circle cx="12" cy="12" r="9" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z" />
+                </svg>
+                {t.hero.trustCountries}
+              </span>
+              <span aria-hidden className="text-slate-700">·</span>
+              <span className="flex items-center gap-1.5">
+                <svg className="h-4 w-4 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                {t.hero.trustLanguages}
+              </span>
+              <span aria-hidden className="text-slate-700">·</span>
+              <span className="flex items-center gap-1.5">
+                <svg className="h-4 w-4 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                {t.hero.trustFree}
+              </span>
             </div>
           </Reveal>
         </div>

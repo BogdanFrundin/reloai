@@ -5,6 +5,7 @@ import Reveal from "./Reveal";
 import { pressScale } from "../_lib/motion";
 import { useLanguage } from "./LanguageProvider";
 import { useCtaHref } from "../_lib/useCtaHref";
+import type { Dictionary } from "../_lib/i18n";
 
 interface FeatItem {
   text: string;
@@ -22,62 +23,42 @@ interface PlanDef {
   features: FeatItem[];
 }
 
-const PLANS: PlanDef[] = [
-  {
-    name: "Free",
-    price: "€0",
-    period: "forever",
-    description: "Try before you commit.",
-    badge: null,
-    highlighted: false,
-    cta: "Start free",
-    features: [
-      { text: "Poland — 1 country available", included: true },
-      { text: "Checklist: 5 steps preview", included: true },
-      { text: "5 AI messages per day", included: true },
-      { text: "Document upload & storage", included: false },
-      { text: "Full address database", included: false },
-      { text: "Community access", included: false },
-      { text: "Email support", included: false },
-    ],
-  },
-  {
-    name: "Premium",
-    price: "€29",
-    period: "/month",
-    description: "Full guidance for your move.",
-    badge: "Most popular",
-    highlighted: true,
-    cta: "Get Premium",
-    features: [
-      { text: "All 3 countries (Poland, Germany, Spain)", included: true },
-      { text: "Full checklist — all steps", included: true },
-      { text: "50 AI messages per day", included: true },
-      { text: "Document upload & storage", included: true },
-      { text: "Full address database (banks, clinics, offices)", included: true },
-      { text: "Community access", included: true },
-      { text: "Email support", included: true },
-    ],
-  },
-  {
-    name: "Pro",
-    price: "€49",
-    period: "/month",
-    description: "For families and complex moves.",
-    badge: null,
-    highlighted: false,
-    cta: "Get Pro",
-    features: [
-      { text: "Everything in Premium", included: true },
-      { text: "Unlimited AI messages", included: true },
-      { text: "AI fills documents automatically", included: true },
-      { text: "Priority support 24/7", included: true },
-      { text: "Consultation call (1× / month)", included: true },
-      { text: "Early access to new countries", included: true },
-      { text: "PDF export for documents", included: true },
-    ],
-  },
-];
+const FREE_INCLUDED = [true, true, true, false, false, false, false];
+
+function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
+  return [
+    {
+      name: ap.freeName,
+      price: "€0",
+      period: ap.forever,
+      description: ap.freeDesc,
+      badge: null,
+      highlighted: false,
+      cta: ap.freeCta,
+      features: ap.freeFeatures.map((text, i) => ({ text, included: FREE_INCLUDED[i] })),
+    },
+    {
+      name: ap.premiumName,
+      price: "€29",
+      period: ap.perMonth,
+      description: ap.premiumDesc,
+      badge: ap.mostPopular,
+      highlighted: true,
+      cta: ap.premiumCta,
+      features: ap.premiumFeatures.map((text) => ({ text, included: true })),
+    },
+    {
+      name: ap.proName,
+      price: "€49",
+      period: ap.perMonth,
+      description: ap.proDesc,
+      badge: null,
+      highlighted: false,
+      cta: ap.proCta,
+      features: ap.proFeatures.map((text) => ({ text, included: true })),
+    },
+  ];
+}
 
 function CheckIcon() {
   return (
@@ -116,6 +97,7 @@ function LockIcon() {
 export default function Pricing() {
   const { t } = useLanguage();
   const ctaHref = useCtaHref();
+  const plans = buildPlans(t.appPricing);
 
   return (
     <section id="pricing" className="py-20 lg:py-28">
@@ -128,7 +110,7 @@ export default function Pricing() {
         </Reveal>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-3">
-          {PLANS.map((plan, index) => (
+          {plans.map((plan, index) => (
             <Reveal key={plan.name} delay={index * 90} className="h-full">
               <div
                 className={`relative flex h-full flex-col rounded-3xl p-8 backdrop-blur-sm transition-[transform,box-shadow,border-color] duration-200 ease-[var(--ease-out-strong)] motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 ${

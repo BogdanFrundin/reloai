@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LanguageProvider from "./_components/LanguageProvider";
+import ThemeProvider from "./_components/ThemeProvider";
 import { AuthProvider } from "./_components/AuthProvider";
 import FloatingChatButton from "./_components/FloatingChatButton";
 
@@ -32,11 +33,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <script
+          // Set the theme before hydration so there's no flash of the wrong theme.
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("reloai_theme");document.documentElement.dataset.theme=t==="light"?"light":"dark";}catch(e){}`,
+          }}
+        />
         <AuthProvider>
-          <LanguageProvider>
-            {children}
-            <FloatingChatButton />
-          </LanguageProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              {children}
+              <FloatingChatButton />
+            </LanguageProvider>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

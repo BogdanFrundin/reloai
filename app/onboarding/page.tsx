@@ -19,6 +19,7 @@ type Option = {
   id: string;
   label: string;
   icon: ReactNode;
+  bareIcon?: boolean;
 };
 
 type Answers = {
@@ -232,25 +233,28 @@ export default function OnboardingPage() {
   const question = t.onboarding.steps[stepKey].question;
   const subheading = t.onboarding.steps[stepKey].subheading;
 
-  const languageOptions: Option[] = LANGUAGES.map((l) => ({
-    id: l.code,
-    label: l.name,
-    icon: (
-      <Image
-        src={getFlagUrl(l.flag, "lg")}
-        alt={l.name}
-        width={48}
-        height={36}
-        className="rounded-lg"
-        unoptimized
-      />
-    ),
-  }));
+  const languageOptions: Option[] = LANGUAGES.map((l) => (
+    {
+      id: l.code,
+      label: l.name,
+      icon: (
+        <Image
+          src={getFlagUrl(l.flag, "md")}
+          alt={l.name}
+          width={32}
+          height={24}
+          className="rounded-sm"
+          unoptimized
+        />
+      ),
+      bareIcon: true,
+    }
+  ));
 
   const destinationOptions: (Option & { disabled?: boolean })[] = [
     { id: "Poland", label: t.countries.list[0].name, icon: <Image src={getFlagUrl("pl", "lg")} alt="Poland" width={48} height={36} className="rounded-lg" unoptimized /> },
-    { id: "Germany", label: t.countries.list[1].name, icon: <Image src={getFlagUrl("de", "lg")} alt="Germany" width={48} height={36} className="rounded-lg" unoptimized /> },
-    { id: "Spain", label: t.countries.list[2].name, icon: <Image src={getFlagUrl("es", "lg")} alt="Spain" width={48} height={36} className="rounded-lg" unoptimized /> },
+    { id: "Germany", label: t.countries.list[1].name, icon: <Image src={getFlagUrl("de", "lg")} alt="Germany" width={48} height={36} className="rounded-lg" unoptimized />, disabled: true },
+    { id: "Spain", label: t.countries.list[2].name, icon: <Image src={getFlagUrl("es", "lg")} alt="Spain" width={48} height={36} className="rounded-lg" unoptimized />, disabled: true },
     { id: "Other", label: t.onboarding.goalOptions.other, icon: <span className="text-3xl">🌍</span>, disabled: true },
   ];
 
@@ -285,13 +289,17 @@ export default function OnboardingPage() {
               }`
         }`}
       >
-        <span
-          className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
-            isSelected ? "bg-accent/20 text-accent-bright" : "bg-white/5 text-slate-300"
-          }`}
-        >
-          {option.icon}
-        </span>
+        {option.bareIcon ? (
+          <span className="flex flex-shrink-0 items-center justify-center">{option.icon}</span>
+        ) : (
+          <span
+            className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
+              isSelected ? "bg-accent/20 text-accent-bright" : "bg-white/5 text-slate-300"
+            }`}
+          >
+            {option.icon}
+          </span>
+        )}
         <span className="flex-1 text-sm font-semibold text-white">{option.label}</span>
         {option.disabled ? (
           <span className="rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
