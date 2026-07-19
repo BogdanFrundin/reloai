@@ -17,7 +17,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const planLabel = isFree ? t.appPricing.freeName : planValue.charAt(0).toUpperCase() + planValue.slice(1);
 
   return (
-    <header className="relative z-50 flex items-center justify-between gap-4 border-b border-white/10 bg-black/40 px-4 py-4 backdrop-blur-xl sm:px-6">
+    <header className="sticky top-0 z-50 flex items-center justify-between gap-4 border-b border-white/10 bg-background px-4 py-4 backdrop-blur-xl sm:px-6">
       <button
         type="button"
         onClick={onMenuClick}
