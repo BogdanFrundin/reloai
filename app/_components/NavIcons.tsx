@@ -9,7 +9,7 @@ const ICON_PROPS = {
 } as const;
 
 export type MainKey = "documents" | "housing" | "banks";
-export type OtherKey = "medicine" | "work" | "community" | "education";
+export type OtherKey = "medicine" | "insurance" | "work" | "community" | "education";
 
 export const NAV_ICONS: Record<MainKey | OtherKey, ReactNode> = {
   documents: (
@@ -30,6 +30,11 @@ export const NAV_ICONS: Record<MainKey | OtherKey, ReactNode> = {
   medicine: (
     <svg {...ICON_PROPS}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1.5 4 2.5.5-1 2-2.5 4-2.5 3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
+    </svg>
+  ),
+  insurance: (
+    <svg {...ICON_PROPS}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" />
     </svg>
   ),
   work: (
@@ -62,13 +67,14 @@ export const CHEVRON_ICON = (
 );
 
 export const MAIN_ORDER: MainKey[] = ["documents", "housing", "banks"];
-export const OTHER_ORDER: OtherKey[] = ["medicine", "work", "community", "education"];
+export const OTHER_ORDER: OtherKey[] = ["medicine", "insurance", "work", "community", "education"];
 
 export const NAV_HREFS: Record<MainKey | OtherKey, string> = {
   documents: "/documents",
   housing: "/housing",
   banks: "/banks",
   medicine: "/medicine",
+  insurance: "/insurance",
   work: "/work",
   community: "/community",
   education: "/education",

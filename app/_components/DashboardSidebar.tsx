@@ -39,13 +39,14 @@ const AI_ASSISTANT_ICON = (
   </svg>
 );
 
-const SERVICES_ORDER: (MainKey | OtherKey)[] = ["banks", "medicine", "housing", "work", "education"];
+const SERVICES_ORDER: (MainKey | OtherKey)[] = ["banks", "medicine", "insurance", "housing", "work", "education"];
 
 const SERVICE_HREFS: Record<MainKey | OtherKey, string> = {
   documents: "/documents",
   housing: "/housing",
   banks: "/banks",
   medicine: "/medicine",
+  insurance: "/insurance",
   work: "/work",
   community: "/community",
   education: "/education",

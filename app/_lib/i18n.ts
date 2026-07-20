@@ -230,6 +230,7 @@ export type Dictionary = {
     housing: string;
     banks: string;
     medicine: string;
+    insurance: string;
     work: string;
     community: string;
     education: string;
@@ -322,20 +323,32 @@ export type Dictionary = {
   medicine: {
     title: string;
     subtitle: string;
-    nfzVsPrivate: string;
-    nfzPublic: string;
-    privateLabel: string;
     clinicsTitle: string;
     clinicsSub: string;
     warsaw: string;
     languages: { ruUa: string; en: string; ru: string; ua: string };
+    bookBtn: string;
+  };
+  insurance: {
+    title: string;
+    subtitle: string;
+    compareTitle: string;
+    nfzLabel: string;
+    nfzTooltip: string;
+    privateLabel: string;
     rows: [
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
       { label: string; nfz: string; pvt: string },
     ];
-    bookBtn: string;
+    learnMoreBtn: string;
+    types: {
+      medical: { name: string; provider: string; price: string; desc: string };
+      car: { name: string; provider: string; price: string; desc: string };
+      home: { name: string; provider: string; price: string; desc: string };
+      travel: { name: string; provider: string; price: string; desc: string };
+    };
   };
   work: {
     title: string;
@@ -1134,6 +1147,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Housing",
       banks: "Banks",
       medicine: "Medicine",
+      insurance: "Insurance",
       work: "Work",
       community: "Community",
       education: "Education",
@@ -1277,9 +1291,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Medicine in Poland",
       subtitle: "Get insured and find care, fast.",
-      nfzVsPrivate: "NFZ vs. Private Insurance",
-      nfzPublic: "NFZ (public)",
-      privateLabel: "Private",
       clinicsTitle: "Clinics",
       clinicsSub: "English, Russian, and Ukrainian-speaking options.",
       warsaw: "Warsaw",
@@ -1289,13 +1300,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Russian speaking",
         ua: "Ukrainian speaking",
       },
+      bookBtn: "Book appointment",
+    },
+    insurance: {
+      title: "Insurance in Poland 🇵🇱",
+      subtitle: "Health, car, and other types of insurance",
+      compareTitle: "Public vs. Private Insurance",
+      nfzLabel: "NFZ Public Insurance",
+      nfzTooltip: "NFZ — Poland's national health system",
+      privateLabel: "Private",
       rows: [
         { label: "Cost", nfz: "Free with employment contributions", pvt: "150–400 PLN/month" },
         { label: "Wait times", nfz: "Weeks to months for specialists", pvt: "Same day to a few days" },
         { label: "Language support", nfz: "Mostly Polish only", pvt: "English, often Russian/Ukrainian" },
         { label: "Coverage", nfz: "Broad, but limited choice of doctors", pvt: "Choose your own clinic & doctor" },
       ],
-      bookBtn: "Book appointment",
+      learnMoreBtn: "Learn more",
+      types: {
+        medical: { name: "Health insurance", provider: "Medicover", price: "150–400 PLN/month", desc: "Private health insurance for fast access to specialists with no queues." },
+        car: { name: "Car insurance (OC/AC)", provider: "PZU", price: "800–2,500 PLN/year", desc: "Mandatory third-party liability (OC) plus optional comprehensive cover (AC) for full protection." },
+        home: { name: "Home insurance", provider: "Warta", price: "200–600 PLN/year", desc: "Protects your apartment or house against fire, water damage, and theft." },
+        travel: { name: "Travel insurance", provider: "Allianz", price: "20–80 PLN/trip", desc: "Covers medical expenses and emergencies while travelling around Europe." },
+      },
     },
     work: {
       title: "Work in Poland",
@@ -2167,6 +2193,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Жильё",
       banks: "Банки",
       medicine: "Медицина",
+      insurance: "Страхование",
       work: "Работа",
       community: "Сообщество",
       education: "Образование",
@@ -2310,9 +2337,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Медицина в Польше",
       subtitle: "Оформите страховку и найдите врача быстро.",
-      nfzVsPrivate: "NFZ против частной страховки",
-      nfzPublic: "NFZ (гос.)",
-      privateLabel: "Частная",
       clinicsTitle: "Клиники",
       clinicsSub: "Варианты с англо-, русско- и украиноязычным персоналом.",
       warsaw: "Варшава",
@@ -2322,13 +2346,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Говорят по-русски",
         ua: "Говорят по-украински",
       },
+      bookBtn: "Записаться",
+    },
+    insurance: {
+      title: "Страхование в Польше 🇵🇱",
+      subtitle: "Медицинская, автомобильная и другие виды страховок",
+      compareTitle: "Государственная vs Частная страховка",
+      nfzLabel: "Государственная страховка NFZ",
+      nfzTooltip: "NFZ — национальная система здравоохранения Польши",
+      privateLabel: "Частная",
       rows: [
         { label: "Стоимость", nfz: "Бесплатно при трудовых отчислениях", pvt: "150–400 злотых/месяц" },
         { label: "Время ожидания", nfz: "От недель до месяцев к специалистам", pvt: "От пары дней до того же дня" },
         { label: "Языковая поддержка", nfz: "В основном только польский", pvt: "Английский, часто русский/украинский" },
         { label: "Охват", nfz: "Широкий, но ограниченный выбор врачей", pvt: "Выбирайте свою клинику и врача" },
       ],
-      bookBtn: "Записаться",
+      learnMoreBtn: "Узнать подробнее",
+      types: {
+        medical: { name: "Медицинская страховка", provider: "Medicover", price: "150–400 zł/мес", desc: "Приватная медицинская страховка для быстрого доступа к врачам-специалистам без очередей." },
+        car: { name: "Автомобильная (OC/AC)", provider: "PZU", price: "800–2500 zł/год", desc: "Обязательное ОС (OC) плюс расширенное КАСКО (AC) для полной защиты автомобиля." },
+        home: { name: "Страховка жилья", provider: "Warta", price: "200–600 zł/год", desc: "Защита квартиры или дома от пожара, залива и кражи имущества." },
+        travel: { name: "Туристическая страховка", provider: "Allianz", price: "20–80 zł/поездка", desc: "Покрытие медицинских расходов и форс-мажоров во время путешествий по Европе." },
+      },
     },
     work: {
       title: "Работа в Польше",
@@ -3200,6 +3239,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Uy-joy",
       banks: "Banklar",
       medicine: "Tibbiyot",
+      insurance: "Sug'urta",
       work: "Ish",
       community: "Jamiyat",
       education: "Ta'lim",
@@ -3343,9 +3383,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Polshada tibbiyot",
       subtitle: "Tezda sug'urta oling va shifokor toping.",
-      nfzVsPrivate: "NFZ va xususiy sug'urta",
-      nfzPublic: "NFZ (davlat)",
-      privateLabel: "Xususiy",
       clinicsTitle: "Klinikalar",
       clinicsSub: "Ingliz, rus va ukrain tilida xizmat ko'rsatuvchi variantlar.",
       warsaw: "Varshava",
@@ -3355,13 +3392,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Rus tilida xizmat",
         ua: "Ukrain tilida xizmat",
       },
+      bookBtn: "Qabulga yozilish",
+    },
+    insurance: {
+      title: "Polshada sug'urta 🇵🇱",
+      subtitle: "Tibbiy, avto va boshqa sug'urta turlari",
+      compareTitle: "Davlat va xususiy sug'urta",
+      nfzLabel: "NFZ davlat sug'urtasi",
+      nfzTooltip: "NFZ — Polshaning milliy sog'liqni saqlash tizimi",
+      privateLabel: "Xususiy",
       rows: [
         { label: "Narxi", nfz: "Ish haqidan ajratmalar to'langanda bepul", pvt: "Oyiga 150–400 PLN" },
         { label: "Kutish muddati", nfz: "Mutaxassislar uchun bir necha haftadan oygacha", pvt: "Bir kundan bir necha kungacha" },
         { label: "Til qo'llab-quvvatlashi", nfz: "Asosan faqat polyak tilida", pvt: "Ingliz, ko'pincha rus/ukrain tilida ham" },
         { label: "Qamrov", nfz: "Keng, ammo shifokor tanlovi cheklangan", pvt: "O'zingiz klinika va shifokorni tanlaysiz" },
       ],
-      bookBtn: "Qabulga yozilish",
+      learnMoreBtn: "Batafsil",
+      types: {
+        medical: { name: "Tibbiy sug'urta", provider: "Medicover", price: "Oyiga 150–400 PLN", desc: "Mutaxassis shifokorlarga navbatsiz tezkor kirish uchun xususiy tibbiy sug'urta." },
+        car: { name: "Avto sug'urta (OC/AC)", provider: "PZU", price: "Yiliga 800–2500 PLN", desc: "Avtomobilni to'liq himoya qilish uchun majburiy OC va kengaytirilgan AC sug'urtasi." },
+        home: { name: "Uy-joy sug'urtasi", provider: "Warta", price: "Yiliga 200–600 PLN", desc: "Kvartira yoki uyni yong'in, suv toshqini va o'g'irlikdan himoya qiladi." },
+        travel: { name: "Sayohat sug'urtasi", provider: "Allianz", price: "Safar uchun 20–80 PLN", desc: "Yevropa bo'ylab sayohat paytida tibbiy xarajatlar va favqulodda holatlarni qoplaydi." },
+      },
     },
     work: {
       title: "Polshada ish",
@@ -4230,6 +4282,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Konut",
       banks: "Bankalar",
       medicine: "Sağlık",
+      insurance: "Sigorta",
       work: "İş",
       community: "Topluluk",
       education: "Eğitim",
@@ -4373,9 +4426,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Polonya'da Sağlık",
       subtitle: "Hızlıca sigorta yaptırın ve bakım bulun.",
-      nfzVsPrivate: "NFZ ve Özel Sigorta",
-      nfzPublic: "NFZ (kamu)",
-      privateLabel: "Özel",
       clinicsTitle: "Klinikler",
       clinicsSub: "İngilizce, Rusça ve Ukraynaca konuşan seçenekler.",
       warsaw: "Varşova",
@@ -4385,13 +4435,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Rusça konuşuluyor",
         ua: "Ukraynaca konuşuluyor",
       },
+      bookBtn: "Randevu al",
+    },
+    insurance: {
+      title: "Polonya'da Sigorta 🇵🇱",
+      subtitle: "Sağlık, araç ve diğer sigorta türleri",
+      compareTitle: "Kamu ve Özel Sigorta",
+      nfzLabel: "NFZ Kamu Sigortası",
+      nfzTooltip: "NFZ — Polonya'nın ulusal sağlık sistemi",
+      privateLabel: "Özel",
       rows: [
         { label: "Maliyet", nfz: "İstihdam katkı payları ile ücretsiz", pvt: "Ayda 150–400 PLN" },
         { label: "Bekleme süresi", nfz: "Uzmanlar için haftalar-aylar", pvt: "Aynı günden birkaç güne" },
         { label: "Dil desteği", nfz: "Genellikle sadece Lehçe", pvt: "İngilizce, sık sık Rusça/Ukraynaca" },
         { label: "Kapsam", nfz: "Geniş ama sınırlı doktor seçimi", pvt: "Kendi kliniğinizi ve doktorunuzu seçin" },
       ],
-      bookBtn: "Randevu al",
+      learnMoreBtn: "Daha fazla bilgi",
+      types: {
+        medical: { name: "Sağlık sigortası", provider: "Medicover", price: "Ayda 150–400 PLN", desc: "Uzman doktorlara sırasız hızlı erişim için özel sağlık sigortası." },
+        car: { name: "Araç sigortası (OC/AC)", provider: "PZU", price: "Yılda 800–2.500 PLN", desc: "Aracınızın tam korunması için zorunlu trafik sigortası (OC) ve kasko (AC)." },
+        home: { name: "Konut sigortası", provider: "Warta", price: "Yılda 200–600 PLN", desc: "Evinizi yangın, su hasarı ve hırsızlığa karşı korur." },
+        travel: { name: "Seyahat sigortası", provider: "Allianz", price: "Seyahat başına 20–80 PLN", desc: "Avrupa'da seyahat ederken tıbbi masrafları ve acil durumları kapsar." },
+      },
     },
     work: {
       title: "Polonya'da İş",
@@ -5260,6 +5325,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Манзил",
       banks: "Бонкҳо",
       medicine: "Тибб",
+      insurance: "Суғурта",
       work: "Кор",
       community: "Ҷамъият",
       education: "Таҳсил",
@@ -5403,9 +5469,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Тибб дар Полша",
       subtitle: "Тезтар суғурта гиред ва духтур ёбед.",
-      nfzVsPrivate: "NFZ ва суғуртаи хусусӣ",
-      nfzPublic: "NFZ (давлатӣ)",
-      privateLabel: "Хусусӣ",
       clinicsTitle: "Клиникаҳо",
       clinicsSub: "Гузинаҳо бо забонҳои англисӣ, русӣ ва украинӣ.",
       warsaw: "Варшава",
@@ -5415,13 +5478,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Бо забони русӣ",
         ua: "Бо забони украинӣ",
       },
+      bookBtn: "Навбат гирифтан",
+    },
+    insurance: {
+      title: "Суғурта дар Полша 🇵🇱",
+      subtitle: "Суғуртаи тиббӣ, автомобилӣ ва дигар намудҳо",
+      compareTitle: "Суғуртаи давлатӣ vs хусусӣ",
+      nfzLabel: "Суғуртаи давлатии NFZ",
+      nfzTooltip: "NFZ — низоми миллии тандурустии Полша",
+      privateLabel: "Хусусӣ",
       rows: [
         { label: "Арзиш", nfz: "Ҳангоми пардохти андозҳои меҳнатӣ ройгон", pvt: "150–400 PLN дар моҳ" },
         { label: "Мӯҳлати интизорӣ", nfz: "Барои мутахассисон аз чанд ҳафта то чанд моҳ", pvt: "Аз ҳамон рӯз то якчанд рӯз" },
         { label: "Дастгирии забонӣ", nfz: "Асосан танҳо бо забони полякӣ", pvt: "Англисӣ, аксар вақт русӣ/украинӣ" },
         { label: "Фарогирӣ", nfz: "Васеъ, вале интихоби духтур маҳдуд", pvt: "Клиника ва духтуратонро худатон интихоб кунед" },
       ],
-      bookBtn: "Навбат гирифтан",
+      learnMoreBtn: "Маълумоти бештар",
+      types: {
+        medical: { name: "Суғуртаи тиббӣ", provider: "Medicover", price: "150–400 PLN дар моҳ", desc: "Суғуртаи хусусии тиббӣ барои дастрасии зуд ба духтурони мутахассис бе навбат." },
+        car: { name: "Суғуртаи автомобилӣ (OC/AC)", provider: "PZU", price: "800–2500 PLN дар сол", desc: "Суғуртаи ҳатмии OC ва суғуртаи иловагии AC барои ҳифзи пурраи мошин." },
+        home: { name: "Суғуртаи манзил", provider: "Warta", price: "200–600 PLN дар сол", desc: "Ҳифзи хона ё квартира аз сӯхтор, обхезӣ ва дуздӣ." },
+        travel: { name: "Суғуртаи сайёҳӣ", provider: "Allianz", price: "20–80 PLN барои сафар", desc: "Пӯшонидани хароҷоти тиббӣ ва ҳолатҳои фавқулодда ҳангоми сафар дар Аврупо." },
+      },
     },
     work: {
       title: "Кор дар Полша",
@@ -6291,6 +6369,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       housing: "Житло",
       banks: "Банки",
       medicine: "Медицина",
+      insurance: "Страхування",
       work: "Робота",
       community: "Спільнота",
       education: "Освіта",
@@ -6434,9 +6513,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     medicine: {
       title: "Медицина в Польщі",
       subtitle: "Оформіть страховку і знайдіть лікаря швидко.",
-      nfzVsPrivate: "NFZ проти приватної страховки",
-      nfzPublic: "NFZ (держ.)",
-      privateLabel: "Приватна",
       clinicsTitle: "Клініки",
       clinicsSub: "Варіанти з англо-, російсько- та україномовним персоналом.",
       warsaw: "Варшава",
@@ -6446,13 +6522,28 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ru: "Говорять російською",
         ua: "Говорять українською",
       },
+      bookBtn: "Записатися",
+    },
+    insurance: {
+      title: "Страхування в Польщі 🇵🇱",
+      subtitle: "Медичне, автомобільне та інші види страхування",
+      compareTitle: "Державна vs Приватна страховка",
+      nfzLabel: "Державна страховка NFZ",
+      nfzTooltip: "NFZ — національна система охорони здоров'я Польщі",
+      privateLabel: "Приватна",
       rows: [
         { label: "Вартість", nfz: "Безкоштовно при трудових відрахуваннях", pvt: "150–400 злотих/місяць" },
         { label: "Час очікування", nfz: "Від тижнів до місяців до фахівців", pvt: "Від пари днів до того ж дня" },
         { label: "Мовна підтримка", nfz: "Здебільшого лише польська", pvt: "Англійська, часто російська/українська" },
         { label: "Охоплення", nfz: "Широке, але обмежений вибір лікарів", pvt: "Обирайте свою клініку та лікаря" },
       ],
-      bookBtn: "Записатися",
+      learnMoreBtn: "Дізнатися більше",
+      types: {
+        medical: { name: "Медичне страхування", provider: "Medicover", price: "150–400 злотих/міс", desc: "Приватне медичне страхування для швидкого доступу до лікарів-фахівців без черг." },
+        car: { name: "Автомобільне (OC/AC)", provider: "PZU", price: "800–2500 злотих/рік", desc: "Обов'язкове ОС (OC) плюс розширене КАСКО (AC) для повного захисту авто." },
+        home: { name: "Страхування житла", provider: "Warta", price: "200–600 злотих/рік", desc: "Захист квартири чи будинку від пожежі, затоплення та крадіжки майна." },
+        travel: { name: "Туристичне страхування", provider: "Allianz", price: "20–80 злотих/поїздка", desc: "Покриття медичних витрат і форс-мажорів під час подорожей Європою." },
+      },
     },
     work: {
       title: "Робота в Польщі",

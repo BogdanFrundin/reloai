@@ -53,30 +53,7 @@ export default function MedicinePage() {
         subtitle={t.medicine.subtitle}
       />
 
-      <Reveal delay={40} className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.nfzVsPrivate}</h2>
-        <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
-          <div className="grid grid-cols-3 border-b border-white/10 bg-white/[0.03] text-xs font-semibold uppercase tracking-wider text-slate-400">
-            <div className="p-4"></div>
-            <div className="p-4 text-accent-bright">{t.medicine.nfzPublic}</div>
-            <div className="p-4 text-accent-bright">{t.medicine.privateLabel}</div>
-          </div>
-          {t.medicine.rows.map((row, index) => (
-            <div
-              key={row.label}
-              className={`grid grid-cols-3 text-sm ${
-                index !== t.medicine.rows.length - 1 ? "border-b border-white/5" : ""
-              }`}
-            >
-              <div className="p-4 font-medium text-white">{row.label}</div>
-              <div className="p-4 text-slate-400">{row.nfz}</div>
-              <div className="p-4 text-slate-400">{row.pvt}</div>
-            </div>
-          ))}
-        </div>
-      </Reveal>
-
-      <Reveal delay={80} className="mt-12">
+      <Reveal delay={80} className="mt-10">
         <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.clinicsTitle}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.medicine.clinicsSub}</p>
         <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
