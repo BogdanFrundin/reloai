@@ -37,6 +37,7 @@ type ProfileFields = {
   country?: string;
   goal?: string;
   onboarding_skipped?: boolean;
+  skipped_steps?: string[];
 };
 
 const STEP_ORDER = ["language", "citizenship", "currentCountry", "destination", "goal"] as const;
@@ -93,9 +94,11 @@ const OTHER_ICON = (
 export default function OnboardingPage() {
   const router = useRouter();
   const { t, lang, setLang } = useLanguage();
-  const { user, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+  const [skippedSteps, setSkippedSteps] = useState<StepKey[]>([]);
+  const [hydrated, setHydrated] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSkipTip, setShowSkipTip] = useState(false);
@@ -105,6 +108,33 @@ export default function OnboardingPage() {
       router.replace("/register");
     }
   }, [authLoading, user, router]);
+
+  // Resume in-progress onboarding: restore previously answered/skipped steps
+  // instead of starting over from step 1.
+  useEffect(() => {
+    if (hydrated || !profile) return;
+
+    const restoredAnswers: Answers = {
+      language: profile.language ?? undefined,
+      citizenship: profile.citizenship ?? undefined,
+      currentCountry: profile.current_country ?? undefined,
+      destination: profile.country ?? undefined,
+      goal: profile.goal ?? undefined,
+    };
+    const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
+      STEP_ORDER.includes(key as StepKey),
+    );
+
+    if (Object.values(restoredAnswers).some(Boolean) || restoredSkipped.length > 0) {
+      setAnswers(restoredAnswers);
+      setSkippedSteps(restoredSkipped);
+
+      const resumeIndex = STEP_ORDER.findIndex((key) => restoredSkipped.includes(key));
+      if (resumeIndex !== -1) setStep(resumeIndex);
+    }
+
+    setHydrated(true);
+  }, [profile, hydrated]);
 
   const stepKey: StepKey = STEP_ORDER[step];
   const isLast = step === STEP_ORDER.length - 1;
@@ -157,56 +187,88 @@ export default function OnboardingPage() {
     saveFields({ goal: id });
   }
 
-  async function handleSkip() {
+  function answeredFields(a: Answers): ProfileFields {
+    const fields: ProfileFields = {};
+    if (a.language) fields.language = a.language;
+    if (a.citizenship) fields.citizenship = a.citizenship;
+    if (a.currentCountry) fields.current_country = a.currentCountry;
+    if (a.destination) fields.country = a.destination;
+    if (a.goal) fields.goal = a.goal;
+    return fields;
+  }
+
+  // Finalizes onboarding once every step has been answered or skipped, and
+  // sends the user to the AI route results — never before that point.
+  async function finishOnboarding(finalSkipped: StepKey[]) {
     if (!user) return;
+    setError(null);
     setSaving(true);
-    await saveFields({ onboarding_skipped: true });
-    await supabase.from("progress").upsert(
-      { user_id: user.id, country: answers.destination ?? null, document_type: "account", steps_completed: 1, total_steps: 1 },
-      { onConflict: "user_id,document_type" },
-    );
-    router.push("/dashboard");
+
+    const finalAnswers = {
+      language: answers.language ?? "ru",
+      country: answers.destination ?? "Poland",
+      citizenship: answers.citizenship ?? "Other",
+      current_country: answers.currentCountry ?? "Other",
+      goal: answers.goal ?? "work",
+    };
+
+    const { error: profileError } = await supabase.from("profiles").upsert({
+      id: user.id,
+      name: (user.user_metadata?.name as string | undefined) ?? null,
+      email: user.email,
+      skipped_steps: finalSkipped,
+      onboarding_skipped: finalSkipped.length > 0,
+      ...finalAnswers,
+    });
+
+    if (profileError) {
+      setError(profileError.message);
+      setSaving(false);
+      return;
+    }
+
+    const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
+      user_id: user.id,
+      country: finalAnswers.country,
+      document_type: documentType,
+      steps_completed: 1,
+      total_steps: 1,
+    }));
+
+    await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
+
+    router.push("/onboarding/results");
+  }
+
+  async function handleSkip() {
+    if (!user || saving) return;
+    setError(null);
+    setSaving(true);
+
+    const updatedSkipped = skippedSteps.includes(stepKey) ? skippedSteps : [...skippedSteps, stepKey];
+    setSkippedSteps(updatedSkipped);
+
+    // Persist whatever's been answered so far, plus which step is being
+    // skipped, before moving on — so nothing is lost if the user leaves.
+    await saveFields({
+      ...answeredFields(answers),
+      skipped_steps: updatedSkipped,
+      onboarding_skipped: true,
+    });
+
+    if (isLast) {
+      await finishOnboarding(updatedSkipped);
+    } else {
+      setStep((s) => s + 1);
+      setSaving(false);
+    }
   }
 
   async function handleContinue() {
     if (!canContinue || !user) return;
 
     if (isLast) {
-      setError(null);
-      setSaving(true);
-
-      const finalAnswers = {
-        language: answers.language ?? "ru",
-        country: answers.destination ?? "Poland",
-        citizenship: answers.citizenship ?? "Other",
-        current_country: answers.currentCountry ?? "Other",
-        goal: answers.goal ?? "work",
-      };
-
-      const { error: profileError } = await supabase.from("profiles").upsert({
-        id: user.id,
-        name: (user.user_metadata?.name as string | undefined) ?? null,
-        email: user.email,
-        ...finalAnswers,
-      });
-
-      if (profileError) {
-        setError(profileError.message);
-        setSaving(false);
-        return;
-      }
-
-      const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
-        user_id: user.id,
-        country: finalAnswers.country,
-        document_type: documentType,
-        steps_completed: 1,
-        total_steps: 1,
-      }));
-
-      await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
-
-      router.push("/onboarding/results");
+      await finishOnboarding(skippedSteps);
       return;
     }
 
@@ -425,11 +487,12 @@ export default function OnboardingPage() {
                   <button
                     type="button"
                     onClick={handleSkip}
+                    disabled={saving}
                     onMouseEnter={() => setShowSkipTip(true)}
                     onMouseLeave={() => setShowSkipTip(false)}
                     onFocus={() => setShowSkipTip(true)}
                     onBlur={() => setShowSkipTip(false)}
-                    className={`rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/40 hover:bg-white/10 hover:text-white ${pressScale}`}
+                    className={`rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
                   >
                     {t.onboarding.skip}
                   </button>

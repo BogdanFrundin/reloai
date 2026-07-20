@@ -17,6 +17,7 @@ export type Profile = {
   job_offer: string | null;
   already_admitted: string | null;
   onboarding_skipped: boolean | null;
+  skipped_steps: string[] | null;
   route: RouteEngineResult | null;
   selected_route: Route | null;
   plan: string | null;

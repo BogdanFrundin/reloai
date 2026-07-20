@@ -17,6 +17,7 @@ create table public.profiles (
   job_offer text,
   already_admitted text,
   onboarding_skipped boolean default false,
+  skipped_steps text[] default '{}',
   route jsonb,
   selected_route jsonb,
   plan text default 'free',
@@ -31,11 +32,14 @@ alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists job_offer text;
 alter table public.profiles add column if not exists already_admitted text;
 alter table public.profiles add column if not exists onboarding_skipped boolean default false;
+alter table public.profiles add column if not exists skipped_steps text[] default '{}';
 alter table public.profiles add column if not exists route jsonb;
 alter table public.profiles add column if not exists selected_route jsonb;
 
 -- citizenship and current_country store ISO 3166-1 alpha-2 country codes (e.g. "UA", "PL")
 -- selected from the searchable country dropdown — see app/onboarding/page.tsx.
+-- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
+-- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.
 -- selected_route stores the user's chosen Route from the results screen: { name, description, speed, cost, difficulty, ... }
 
