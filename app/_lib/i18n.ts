@@ -603,9 +603,9 @@ export type Dictionary = {
       approvalRate: string;
       timeline: string;
       cost: string;
-      errorHeading: string;
-      errorBody: string;
-      retryButton: string;
+      steps: string;
+      bestFor: string;
+      selectError: string;
     };
   };
 };
@@ -1651,9 +1651,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Approval rate",
         timeline: "Timeline",
         cost: "Cost",
-        errorHeading: "Couldn't generate your routes",
-        errorBody: "Something went wrong on our end. Please try again — your progress is saved.",
-        retryButton: "Try again",
+        steps: "Steps",
+        bestFor: "Best for",
+        selectError: "Couldn't save your selected route. Please try again.",
       },
     },
   },
@@ -2697,9 +2697,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Вероятность одобрения",
         timeline: "Сроки",
         cost: "Стоимость",
-        errorHeading: "Не удалось составить маршруты",
-        errorBody: "Что-то пошло не так с нашей стороны. Попробуйте ещё раз — ваш прогресс сохранён.",
-        retryButton: "Попробовать снова",
+        steps: "Шаги",
+        bestFor: "Подходит для",
+        selectError: "Не удалось сохранить выбранный маршрут. Попробуйте снова.",
       },
     },
   },
@@ -3741,9 +3741,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Tasdiqlanish ehtimoli",
         timeline: "Muddatlar",
         cost: "Narx",
-        errorHeading: "Marshrutlarni yaratib bo'lmadi",
-        errorBody: "Bizning tomondan xatolik yuz berdi. Qayta urinib ko'ring — progressingiz saqlangan.",
-        retryButton: "Qayta urinish",
+        steps: "Bosqichlar",
+        bestFor: "Kimlarga mos",
+        selectError: "Tanlangan yo'lni saqlab bo'lmadi. Qayta urinib ko'ring.",
       },
     },
   },
@@ -4784,9 +4784,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Onay oranı",
         timeline: "Zaman dilimi",
         cost: "Maliyet",
-        errorHeading: "Rotalar oluşturulamadı",
-        errorBody: "Bizim tarafımızda bir sorun oluştu. Lütfen tekrar deneyin — ilerlemeniz kaydedildi.",
-        retryButton: "Tekrar dene",
+        steps: "Adımlar",
+        bestFor: "Kimler için uygun",
+        selectError: "Seçilen rota kaydedilemedi. Lütfen tekrar deneyin.",
       },
     },
   },
@@ -5827,9 +5827,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Баҳри таҳқиқ",
         timeline: "Мӯҳлат",
         cost: "Нарх",
-        errorHeading: "Роҳҳо эҷод нашуданд",
-        errorBody: "Аз тарафи мо хатогӣ рух дод. Лутфан аз нав кӯшиш кунед — пешрафти шумо нигоҳ дошта шудааст.",
-        retryButton: "Аз нав кӯшиш кунед",
+        steps: "Қадамҳо",
+        bestFor: "Барои кӣ мувофиқ аст",
+        selectError: "Роҳи интихобшуда захира нашуд. Лутфан аз нав кӯшиш кунед.",
       },
     },
   },
@@ -6873,9 +6873,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
         approvalRate: "Ймовірність схвалення",
         timeline: "Терміни",
         cost: "Вартість",
-        errorHeading: "Не вдалося створити маршрути",
-        errorBody: "Щось пішло не так з нашого боку. Спробуйте ще раз — ваш прогрес збережено.",
-        retryButton: "Спробувати ще раз",
+        steps: "Кроки",
+        bestFor: "Підходить для",
+        selectError: "Не вдалося зберегти обраний маршрут. Спробуйте ще раз.",
       },
     },
   },

@@ -16,6 +16,8 @@ export type Route = {
   timeline: string;
   recommended: boolean;
   reason: string;
+  steps?: string[];
+  bestFor?: string;
 };
 
 export type RouteEngineResult = {

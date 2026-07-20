@@ -6,12 +6,57 @@ import PageTransition from "../../_components/PageTransition";
 import Reveal from "../../_components/Reveal";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
-import { pressScale } from "../../_lib/motion";
 import { supabase } from "../../../lib/supabase";
 import type { Dictionary } from "../../_lib/i18n";
 import type { Route, RouteEngineResult } from "../../api/route/route";
 
-const CLIENT_FETCH_TIMEOUT_MS = 20000;
+const OPENAI_TIMEOUT_MS = 5000;
+const FAKE_LOADING_MS = 3000;
+
+const STATIC_FALLBACK_ROUTES: Route[] = [
+  {
+    name: "Быстрый маршрут",
+    description: "Самый быстрый путь для тех, кто уже нашёл работу в Польше.",
+    speed: "fast",
+    cost: "€300–800",
+    difficulty: "easy",
+    approval_rate: 80,
+    documents_needed: ["Виза", "PESEL", "Банк", "Работа"],
+    timeline: "3-6 месяцев",
+    recommended: false,
+    reason: "Оптимальный вариант, если у вас уже есть предложение о работе.",
+    steps: ["Виза", "PESEL", "Банк", "Работа"],
+    bestFor: "работа по найму",
+  },
+  {
+    name: "Стандартный маршрут",
+    description: "Полный путь легализации для тех, кто планирует остаться в Польше надолго.",
+    speed: "medium",
+    cost: "€800–2000",
+    difficulty: "medium",
+    approval_rate: 65,
+    documents_needed: ["Виза", "Карта побыту", "PESEL", "Банк", "Жильё", "Работа"],
+    timeline: "6-12 месяцев",
+    recommended: true,
+    reason: "Самый сбалансированный маршрут для долгосрочного переезда.",
+    steps: ["Виза", "Карта побыту", "PESEL", "Банк", "Жильё", "Работа"],
+    bestFor: "долгосрочное проживание",
+  },
+  {
+    name: "Бизнес маршрут",
+    description: "Путь для предпринимателей, которые хотят открыть бизнес в Польше.",
+    speed: "medium",
+    cost: "€1500–4000",
+    difficulty: "hard",
+    approval_rate: 55,
+    documents_needed: ["Виза", "PESEL", "Банк", "Регистрация компании", "ВНЖ"],
+    timeline: "6-9 месяцев",
+    recommended: false,
+    reason: "Подходит для тех, кто хочет вести бизнес и получить ВНЖ через компанию.",
+    steps: ["Виза", "PESEL", "Банк", "Регистрация компании", "ВНЖ"],
+    bestFor: "открытие бизнеса",
+  },
+];
 
 function SpeedBadge({ speed, label }: { speed: string; label: string }) {
   const colors =
@@ -103,6 +148,26 @@ function RouteCard({
         </div>
       </div>
 
+      {route.steps && route.steps.length > 0 && (
+        <div className="mt-4">
+          <p className="text-xs text-slate-500">{labels.results.steps}</p>
+          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-slate-200">
+            {route.steps.map((step, index) => (
+              <span key={step} className="flex items-center gap-1.5">
+                {index > 0 && <span className="text-slate-600">→</span>}
+                {step}
+              </span>
+            ))}
+          </p>
+        </div>
+      )}
+
+      {route.bestFor && (
+        <p className="mt-3 text-xs text-slate-500">
+          {labels.results.bestFor}: <span className="text-slate-300">{route.bestFor}</span>
+        </p>
+      )}
+
       <button
         onClick={() => onSelect(route)}
         disabled={selectingId !== null}
@@ -121,20 +186,29 @@ export default function OnboardingResultsPage() {
   const [result, setResult] = useState<RouteEngineResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectingId, setSelectingId] = useState<string | null>(null);
-  const [error, setError] = useState(false);
-  const [retryKey, setRetryKey] = useState(0);
+  const [selectError, setSelectError] = useState(false);
 
   useEffect(() => {
     if (!user || !profile) return;
     let active = true;
+    let settled = false;
+
+    setLoading(true);
+
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
+
+    // Never keep the user waiting more than a few seconds — if the AI route
+    // engine hasn't answered by then, show the static Poland routes instead.
+    const fallbackTimer = setTimeout(() => {
+      if (!active || settled) return;
+      settled = true;
+      controller.abort();
+      setResult({ routes: STATIC_FALLBACK_ROUTES });
+      setLoading(false);
+    }, FAKE_LOADING_MS);
 
     async function loadRoutes() {
-      setLoading(true);
-      setError(false);
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), CLIENT_FETCH_TIMEOUT_MS);
-
       try {
         const response = await fetch("/api/route", {
           method: "POST",
@@ -154,28 +228,36 @@ export default function OnboardingResultsPage() {
         }
 
         const data = (await response.json()) as RouteEngineResult;
-        if (!active) return;
+        if (!active || settled) return;
+        settled = true;
+        clearTimeout(fallbackTimer);
         setResult(data);
+        setLoading(false);
       } catch (err) {
-        if (!active) return;
-        console.error("Failed to load relocation routes:", err);
-        setError(true);
+        console.error("Failed to load relocation routes, using static fallback:", err);
+        if (!active || settled) return;
+        settled = true;
+        clearTimeout(fallbackTimer);
+        setResult({ routes: STATIC_FALLBACK_ROUTES });
+        setLoading(false);
       } finally {
-        clearTimeout(timeout);
-        if (active) setLoading(false);
+        clearTimeout(abortTimer);
       }
     }
 
     loadRoutes();
     return () => {
       active = false;
+      clearTimeout(abortTimer);
+      clearTimeout(fallbackTimer);
     };
-  }, [user, profile, retryKey]);
+  }, [user, profile]);
 
   async function handleSelectRoute(route: Route) {
     if (!user) return;
 
     setSelectingId(route.name);
+    setSelectError(false);
 
     try {
       await supabase.from("profiles").update({ selected_route: route }).eq("id", user.id);
@@ -183,7 +265,7 @@ export default function OnboardingResultsPage() {
       router.push("/dashboard?welcome=1");
     } catch (err) {
       console.error("Failed to save selected route:", err);
-      setError(true);
+      setSelectError(true);
       setSelectingId(null);
     }
   }
@@ -228,19 +310,9 @@ export default function OnboardingResultsPage() {
             </Reveal>
           )}
 
-          {error && !loading && (
+          {selectError && !loading && (
             <Reveal>
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
-                <p className="text-lg font-semibold text-red-400">{t.onboarding.results.errorHeading}</p>
-                <p className="mt-2 text-sm text-slate-400">{t.onboarding.results.errorBody}</p>
-                <button
-                  type="button"
-                  onClick={() => setRetryKey((prev) => prev + 1)}
-                  className={`mt-5 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-                >
-                  {t.onboarding.results.retryButton}
-                </button>
-              </div>
+              <p className="mb-6 text-center text-sm text-red-400">{t.onboarding.results.selectError}</p>
             </Reveal>
           )}
 
