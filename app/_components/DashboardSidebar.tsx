@@ -202,7 +202,11 @@ export default function DashboardSidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+              pathname === "/profile"
+                ? "bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                : "text-slate-300 hover:bg-white/5 hover:text-white"
+            }`}
           >
             {PROFILE_ICON}
             <span className="truncate">{profileName}</span>
@@ -210,7 +214,11 @@ export default function DashboardSidebar({
           <Link
             href="/settings"
             onClick={onClose}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+              pathname === "/settings"
+                ? "bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                : "text-slate-300 hover:bg-white/5 hover:text-white"
+            }`}
           >
             {SETTINGS_ICON}
             <span>{s.settings}</span>

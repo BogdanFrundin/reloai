@@ -21,6 +21,9 @@ export type Profile = {
   selected_route: Route | null;
   plan: string | null;
   language: string | null;
+  email_newsletter: boolean | null;
+  email_reminders: boolean | null;
+  email_updates: boolean | null;
   created_at: string;
 };
 

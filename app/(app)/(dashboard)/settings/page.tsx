@@ -23,10 +23,11 @@ export default function SettingsPage() {
   const s = t.settings;
 
   const [notifications, setNotifications] = useState<Record<string, boolean>>({
-    email: true,
-    documents: true,
-    product: false,
+    email: profile?.email_newsletter ?? true,
+    documents: profile?.email_reminders ?? true,
+    product: profile?.email_updates ?? false,
   });
+  const [savingNotifications, setSavingNotifications] = useState<Record<string, boolean>>({});
   const [savingLang, setSavingLang] = useState(false);
 
   const [name, setName] = useState(profile?.name ?? "");
@@ -66,6 +67,21 @@ export default function SettingsPage() {
     setAccountSaved(true);
   }
 
+  async function handleNotificationChange(key: string, checked: boolean) {
+    setNotifications((prev) => ({ ...prev, [key]: checked }));
+    if (!user) return;
+    setSavingNotifications((prev) => ({ ...prev, [key]: true }));
+
+    const updateData: Record<string, boolean> = {};
+    if (key === "email") updateData.email_newsletter = checked;
+    if (key === "documents") updateData.email_reminders = checked;
+    if (key === "product") updateData.email_updates = checked;
+
+    await supabase.from("profiles").update(updateData).eq("id", user.id);
+    await refreshProfile();
+    setSavingNotifications((prev) => ({ ...prev, [key]: false }));
+  }
+
   async function confirmLogOut() {
     setLogoutConfirmOpen(false);
     await signOut();
@@ -85,83 +101,8 @@ export default function SettingsPage() {
       <PageHeader title={s.title} subtitle={s.subtitle} />
 
       <div className="mt-10 max-w-2xl space-y-6">
-        {/* Language */}
-        <Reveal>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">
-              {s.languageSection}{" "}
-              {savingLang && <span className="text-xs font-normal text-slate-500">{s.saving}</span>}
-            </p>
-            <p className="mt-1 text-xs text-slate-500">{s.languageDesc}</p>
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {LANGUAGES.map((l) => (
-                <button
-                  key={l.code}
-                  type="button"
-                  onClick={() => handleLangChange(l.code)}
-                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
-                    lang === l.code
-                      ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
-                  }`}
-                >
-                  <Image
-                    src={getFlagUrl(l.flag, "sm")}
-                    alt={l.name}
-                    width={24}
-                    height={18}
-                    className="rounded-sm"
-                    unoptimized
-                  />
-                  {l.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Theme */}
-        <Reveal delay={50}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{s.themeSection}</p>
-            <p className="mt-1 text-xs text-slate-500">{s.themeDesc}</p>
-            <div className="mt-4 flex items-center justify-between gap-4">
-              <span className="text-sm text-slate-300">{theme === "dark" ? s.themeDark : s.themeLight}</span>
-              <ToggleSwitch
-                checked={theme === "dark"}
-                onChange={(checked) => setTheme(checked ? "dark" : "light")}
-                label={s.themeSection}
-              />
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Notifications */}
-        <Reveal delay={100}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{s.notifications}</p>
-            <div className="mt-4 space-y-4">
-              {NOTIFICATION_SETTINGS.map((setting) => (
-                <div key={setting.key} className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-white">{setting.label}</p>
-                    <p className="text-xs text-slate-500">{setting.description}</p>
-                  </div>
-                  <ToggleSwitch
-                    checked={notifications[setting.key]}
-                    onChange={(checked) =>
-                      setNotifications((prev) => ({ ...prev, [setting.key]: checked }))
-                    }
-                    label={setting.label}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
         {/* Account */}
-        <Reveal delay={150}>
+        <Reveal>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
             <p className="text-sm font-semibold text-white">
               {s.accountSection}{" "}
@@ -204,8 +145,81 @@ export default function SettingsPage() {
           </div>
         </Reveal>
 
+        {/* Language */}
+        <Reveal delay={50}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-white">
+              {s.languageSection}{" "}
+              {savingLang && <span className="text-xs font-normal text-slate-500">{s.saving}</span>}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">{s.languageDesc}</p>
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {LANGUAGES.map((l) => (
+                <button
+                  key={l.code}
+                  type="button"
+                  onClick={() => handleLangChange(l.code)}
+                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                    lang === l.code
+                      ? "border-accent/50 bg-accent/10 text-accent-bright"
+                      : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
+                  }`}
+                >
+                  <Image
+                    src={getFlagUrl(l.flag, "sm")}
+                    alt={l.name}
+                    width={24}
+                    height={18}
+                    className="rounded-sm"
+                    unoptimized
+                  />
+                  {l.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Notifications */}
+        <Reveal delay={100}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-white">{s.notifications}</p>
+            <div className="mt-4 space-y-4">
+              {NOTIFICATION_SETTINGS.map((setting) => (
+                <div key={setting.key} className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-white">{setting.label}</p>
+                    <p className="text-xs text-slate-500">{setting.description}</p>
+                  </div>
+                  <ToggleSwitch
+                    checked={notifications[setting.key]}
+                    onChange={(checked) => handleNotificationChange(setting.key, checked)}
+                    label={setting.label}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Theme */}
+        <Reveal delay={150}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-white">{s.themeSection}</p>
+            <p className="mt-1 text-xs text-slate-500">{s.themeDesc}</p>
+            <div className="mt-4 flex items-center justify-between gap-4">
+              <span className="text-sm text-slate-300">{theme === "dark" ? s.themeDark : s.themeLight}</span>
+              <ToggleSwitch
+                checked={theme === "dark"}
+                onChange={(checked) => setTheme(checked ? "dark" : "light")}
+                label={s.themeSection}
+              />
+            </div>
+          </div>
+        </Reveal>
+
         {/* Danger zone */}
-        <Reveal delay={200}>
+        <Reveal delay={175}>
           <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6 backdrop-blur-sm">
             <p className="text-sm font-semibold text-white">{s.dangerSection}</p>
             <p className="mt-1 text-xs text-slate-500">{s.dangerDesc}</p>
@@ -220,7 +234,7 @@ export default function SettingsPage() {
         </Reveal>
 
         {/* Log out */}
-        <Reveal delay={225}>
+        <Reveal delay={200}>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}

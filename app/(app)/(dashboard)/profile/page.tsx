@@ -355,6 +355,14 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
+
+            <button
+              type="button"
+              onClick={openEdit}
+              className={`mt-4 w-full rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+            >
+              {p.editBtn}
+            </button>
           </div>
         </Reveal>
 
@@ -414,18 +422,8 @@ export default function ProfilePage() {
           </div>
         </Reveal>
 
-        {/* Section 5 — Edit Profile */}
+        {/* Section 5 — Log out */}
         <Reveal delay={200}>
-          <button
-            type="button"
-            onClick={openEdit}
-            className={`flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-          >
-            {p.editBtn}
-          </button>
-        </Reveal>
-
-        <Reveal delay={225}>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
