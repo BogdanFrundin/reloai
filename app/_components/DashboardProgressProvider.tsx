@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
+import { createNotification } from "../_lib/notifications";
 import { supabase } from "../../lib/supabase";
 import {
   STEPS_COMPLETED_ON_ONBOARDING,
@@ -113,6 +114,12 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         if (nextChecked) next.delete(documentType);
         else next.add(documentType);
         return next;
+      });
+    } else if (nextChecked) {
+      createNotification({
+        title: "Шаг выполнен! Продолжайте в том же духе 💪",
+        message: "Ваш прогресс сохранён — посмотрите, что дальше.",
+        type: "checklist",
       });
     }
 

@@ -18,6 +18,7 @@ create table public.profiles (
   already_admitted text,
   onboarding_skipped boolean default false,
   skipped_steps text[] default '{}',
+  last_active_at timestamptz default now(),
   route jsonb,
   selected_route jsonb,
   plan text default 'free',
@@ -33,6 +34,7 @@ alter table public.profiles add column if not exists job_offer text;
 alter table public.profiles add column if not exists already_admitted text;
 alter table public.profiles add column if not exists onboarding_skipped boolean default false;
 alter table public.profiles add column if not exists skipped_steps text[] default '{}';
+alter table public.profiles add column if not exists last_active_at timestamptz default now();
 alter table public.profiles add column if not exists route jsonb;
 alter table public.profiles add column if not exists selected_route jsonb;
 
@@ -42,6 +44,9 @@ alter table public.profiles add column if not exists selected_route jsonb;
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.
 -- selected_route stores the user's chosen Route from the results screen: { name, description, speed, cost, difficulty, ... }
+-- last_active_at is touched by AuthProvider on every session load and is what
+-- the /api/notifications/check-inactive cron job compares against to send
+-- "haven't logged in for 7 days" reminders — see app/_components/AuthProvider.tsx.
 
 alter table public.profiles enable row level security;
 
@@ -166,3 +171,34 @@ create policy "chat_sessions update own" on public.chat_sessions
 create trigger chat_sessions_set_updated_at
 before update on public.chat_sessions
 for each row execute function public.set_updated_at();
+
+-- notifications -----------------------------------------------------------
+-- Bell dropdown items. Created by app/api/notifications/create (welcome,
+-- checklist, document triggers) and by the app/api/notifications/check-inactive
+-- cron job (inactivity trigger, using the service role key since it runs
+-- outside any single user's session). "type" drives both the icon and the
+-- click-to-navigate destination in app/_components/NotificationBell.tsx.
+
+create table if not exists public.notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  title text not null,
+  message text not null default '',
+  type text not null,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.notifications enable row level security;
+
+create policy "notifications select own" on public.notifications
+  for select using (auth.uid() = user_id);
+
+create policy "notifications insert own" on public.notifications
+  for insert with check (auth.uid() = user_id);
+
+create policy "notifications update own" on public.notifications
+  for update using (auth.uid() = user_id);
+
+create index if not exists notifications_user_id_created_at_idx
+  on public.notifications (user_id, created_at desc);

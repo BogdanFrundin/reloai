@@ -13,6 +13,7 @@ import { LANGUAGES, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
 import { pressScale } from "../_lib/motion";
 import { getFlagUrl } from "../_lib/flags";
+import { createNotification } from "../_lib/notifications";
 import { supabase } from "../../lib/supabase";
 
 type Option = {
@@ -236,6 +237,12 @@ export default function OnboardingPage() {
     }));
 
     await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
+
+    createNotification({
+      title: "Добро пожаловать! Ваш план переезда готов 🎉",
+      message: "Изучите свою персональную дорожную карту переезда.",
+      type: "welcome",
+    });
 
     router.push("/onboarding/results");
   }

@@ -18,6 +18,7 @@ export type Profile = {
   already_admitted: string | null;
   onboarding_skipped: boolean | null;
   skipped_steps: string[] | null;
+  last_active_at: string | null;
   route: RouteEngineResult | null;
   selected_route: Route | null;
   plan: string | null;
@@ -55,6 +56,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       setProfile(data ?? null);
       setProfileLoading(false);
+
+      // Fire-and-forget: lets the inactivity reminder cron job
+      // (app/api/notifications/check-inactive) know the user is still around.
+      if (data) {
+        supabase
+          .from("profiles")
+          .update({ last_active_at: new Date().toISOString() })
+          .eq("id", userId)
+          .then(() => {});
+      }
     }
 
     supabase.auth.getSession().then(async ({ data }) => {

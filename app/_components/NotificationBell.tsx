@@ -1,8 +1,14 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { NAV_ICONS } from "./NavIcons";
+import { routeForNotification, formatTimeAgo, type NotificationRow } from "../_lib/notifications";
+import { supabase } from "../../lib/supabase";
+
+const POLL_INTERVAL_MS = 60000;
 
 const BELL_ICON = (
   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -20,26 +26,73 @@ const CHECKLIST_ICON = (
   </svg>
 );
 
-type NotificationId = "visaReminder" | "newBanks" | "checklistUpdated";
+const WELCOME_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z" />
+  </svg>
+);
 
-const NOTIFICATION_ORDER: NotificationId[] = ["visaReminder", "newBanks", "checklistUpdated"];
+const INACTIVITY_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
 
-const NOTIFICATION_ICONS: Record<NotificationId, ReactNode> = {
-  visaReminder: NAV_ICONS.documents,
-  newBanks: NAV_ICONS.banks,
-  checklistUpdated: CHECKLIST_ICON,
+const NOTIFICATION_ICONS: Record<string, ReactNode> = {
+  welcome: WELCOME_ICON,
+  checklist: CHECKLIST_ICON,
+  document: NAV_ICONS.documents,
+  inactivity: INACTIVITY_ICON,
 };
 
 export default function NotificationBell() {
-  const { t } = useLanguage();
+  const router = useRouter();
+  const { user } = useAuth();
+  const { t, lang } = useLanguage();
   const n = t.notifications;
   const [menuOpen, setMenuOpen] = useState(false);
-  const [readIds, setReadIds] = useState<Set<NotificationId>>(new Set());
+  const [notifications, setNotifications] = useState<NotificationRow[]>([]);
 
-  const unreadCount = NOTIFICATION_ORDER.length - readIds.size;
+  const loadNotifications = useCallback(async () => {
+    if (!user) {
+      setNotifications([]);
+      return;
+    }
+    const { data } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    setNotifications(data ?? []);
+  }, [user]);
 
-  function markAllRead() {
-    setReadIds(new Set(NOTIFICATION_ORDER));
+  useEffect(() => {
+    loadNotifications();
+    if (!user) return;
+    const interval = setInterval(loadNotifications, POLL_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [user, loadNotifications]);
+
+  const unreadCount = notifications.filter((item) => !item.read).length;
+
+  async function markAllRead() {
+    const unreadIds = notifications.filter((item) => !item.read).map((item) => item.id);
+    if (unreadIds.length === 0) return;
+
+    setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
+    await supabase.from("notifications").update({ read: true }).in("id", unreadIds);
+  }
+
+  async function handleSelect(item: NotificationRow) {
+    setMenuOpen(false);
+
+    if (!item.read) {
+      setNotifications((prev) => prev.map((row) => (row.id === item.id ? { ...row, read: true } : row)));
+      await supabase.from("notifications").update({ read: true }).eq("id", item.id);
+    }
+
+    router.push(routeForNotification(item.type));
   }
 
   return (
@@ -69,29 +122,33 @@ export default function NotificationBell() {
           >
             <p className="px-3 py-2 text-sm font-semibold text-white">{n.title}</p>
 
-            <div className="space-y-1">
-              {NOTIFICATION_ORDER.map((id) => {
-                const item = n.items[id];
-                const isRead = readIds.has(id);
-                return (
-                  <div
-                    key={id}
-                    className={`flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors duration-150 ${
-                      isRead ? "opacity-60" : "bg-accent/[0.05]"
+            {notifications.length === 0 ? (
+              <p className="px-3 py-6 text-center text-sm text-slate-500">{n.empty}</p>
+            ) : (
+              <div className="max-h-96 space-y-1 overflow-y-auto">
+                {notifications.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="menuitem"
+                    onClick={() => handleSelect(item)}
+                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-white/5 ${
+                      item.read ? "opacity-60" : "bg-accent/[0.05]"
                     }`}
                   >
                     <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300">
-                      {NOTIFICATION_ICONS[id]}
+                      {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm leading-snug text-slate-200">{item.text}</p>
-                      <p className="mt-1 text-xs text-slate-500">{item.timeAgo}</p>
+                      <p className="text-sm leading-snug text-slate-200">{item.title}</p>
+                      {item.message && <p className="mt-0.5 text-xs leading-snug text-slate-400">{item.message}</p>}
+                      <p className="mt-1 text-xs text-slate-500">{formatTimeAgo(item.created_at, lang)}</p>
                     </div>
-                    {!isRead && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
-                  </div>
-                );
-              })}
-            </div>
+                    {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
+                  </button>
+                ))}
+              </div>
+            )}
 
             <button
               type="button"
