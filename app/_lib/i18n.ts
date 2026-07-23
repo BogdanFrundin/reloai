@@ -219,11 +219,7 @@ export type Dictionary = {
     bellAria: string;
     title: string;
     markAllRead: string;
-    items: {
-      visaReminder: { text: string; timeAgo: string };
-      newBanks: { text: string; timeAgo: string };
-      checklistUpdated: { text: string; timeAgo: string };
-    };
+    empty: string;
   };
   sidebar: {
     documents: string;
@@ -410,7 +406,6 @@ export type Dictionary = {
     };
     sidebar: {
       tagline: string;
-      home: string;
       myPlanSection: string;
       roadmap: string;
       checklist: string;
@@ -1136,11 +1131,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Open notifications",
       title: "Notifications",
       markAllRead: "Mark all as read",
-      items: {
-        visaReminder: { text: "Don't forget to apply for your PESEL — 16 days left", timeAgo: "2 hours ago" },
-        newBanks: { text: "New banks added to the Poland database", timeAgo: "5 hours ago" },
-        checklistUpdated: { text: "Your checklist has been updated", timeAgo: "yesterday" },
-      },
+      empty: "No notifications yet",
     },
     sidebar: {
       documents: "Documents",
@@ -1395,7 +1386,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Your relocation plan",
-        home: "Home",
         myPlanSection: "MY PLAN",
         roadmap: "Roadmap",
         checklist: "Checklist",
@@ -2182,11 +2172,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Открыть уведомления",
       title: "Уведомления",
       markAllRead: "Отметить все как прочитанные",
-      items: {
-        visaReminder: { text: "Не забудьте подать на PESEL — осталось 16 дней", timeAgo: "2 часа назад" },
-        newBanks: { text: "Новые банки добавлены в базу Польши", timeAgo: "5 часов назад" },
-        checklistUpdated: { text: "Ваш чек-лист обновлён", timeAgo: "вчера" },
-      },
+      empty: "Пока нет уведомлений",
     },
     sidebar: {
       documents: "Документы",
@@ -2441,7 +2427,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переезда",
-        home: "Домой",
         myPlanSection: "МОЙ ПЛАН",
         roadmap: "Дорожная карта",
         checklist: "Чеклист",
@@ -3228,11 +3213,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Bildirishnomalarni ochish",
       title: "Bildirishnomalar",
       markAllRead: "Barchasini o'qilgan deb belgilash",
-      items: {
-        visaReminder: { text: "PESEL uchun ariza berishni unutmang — 16 kun qoldi", timeAgo: "2 soat oldin" },
-        newBanks: { text: "Polsha bazasiga yangi banklar qo'shildi", timeAgo: "5 soat oldin" },
-        checklistUpdated: { text: "Ro'yxatingiz yangilandi", timeAgo: "kecha" },
-      },
+      empty: "Hozircha bildirishnomalar yo'q",
     },
     sidebar: {
       documents: "Hujjatlar",
@@ -3487,7 +3468,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Sizning ko'chish rejangiz",
-        home: "Bosh sahifa",
         myPlanSection: "MENING REJAM",
         roadmap: "Yo'l xaritasi",
         checklist: "Ro'yxat",
@@ -4271,11 +4251,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Bildirimleri aç",
       title: "Bildirimler",
       markAllRead: "Tümünü okundu olarak işaretle",
-      items: {
-        visaReminder: { text: "PESEL başvurusunu unutmayın — 16 gün kaldı", timeAgo: "2 saat önce" },
-        newBanks: { text: "Polonya veritabanına yeni bankalar eklendi", timeAgo: "5 saat önce" },
-        checklistUpdated: { text: "Kontrol listeniz güncellendi", timeAgo: "dün" },
-      },
+      empty: "Henüz bildirim yok",
     },
     sidebar: {
       documents: "Belgeler",
@@ -4530,7 +4506,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Taşınma planınız",
-        home: "Ana sayfa",
         myPlanSection: "PLANIM",
         roadmap: "Yol haritası",
         checklist: "Kontrol listesi",
@@ -5314,11 +5289,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Кушодани огоҳиномаҳо",
       title: "Огоҳиномаҳо",
       markAllRead: "Ҳамаро хондашуда қайд кунед",
-      items: {
-        visaReminder: { text: "Дархости PESEL-ро фаромӯш накунед — 16 рӯз боқӣ мондааст", timeAgo: "2 соат пеш" },
-        newBanks: { text: "Бонкҳои нав ба пойгоҳи Полша илова шуданд", timeAgo: "5 соат пеш" },
-        checklistUpdated: { text: "Рӯйхати шумо навсозӣ шуд", timeAgo: "дирӯз" },
-      },
+      empty: "Ҳанӯз огоҳиномае нест",
     },
     sidebar: {
       documents: "Ҳуҷҷатҳо",
@@ -5573,7 +5544,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Нақшаи кӯчиши шумо",
-        home: "Асосӣ",
         myPlanSection: "НАҚШАИ МАН",
         roadmap: "Харитаи роҳ",
         checklist: "Рӯйхат",
@@ -6358,11 +6328,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bellAria: "Відкрити сповіщення",
       title: "Сповіщення",
       markAllRead: "Позначити всі як прочитані",
-      items: {
-        visaReminder: { text: "Не забудьте подати на PESEL — залишилося 16 днів", timeAgo: "2 години тому" },
-        newBanks: { text: "До бази Польщі додано нові банки", timeAgo: "5 годин тому" },
-        checklistUpdated: { text: "Ваш чекліст оновлено", timeAgo: "вчора" },
-      },
+      empty: "Поки що немає сповіщень",
     },
     sidebar: {
       documents: "Документи",
@@ -6617,7 +6583,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переїзду",
-        home: "Головна",
         myPlanSection: "МІЙ ПЛАН",
         roadmap: "Дорожня карта",
         checklist: "Чекліст",
