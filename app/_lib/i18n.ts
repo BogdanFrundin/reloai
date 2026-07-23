@@ -1294,7 +1294,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Book appointment",
     },
     insurance: {
-      title: "Insurance in Poland 🇵🇱",
+      title: "Insurance in Poland",
       subtitle: "Health, car, and other types of insurance",
       compareTitle: "Public vs. Private Insurance",
       nfzLabel: "NFZ Public Insurance",
@@ -2335,7 +2335,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Записаться",
     },
     insurance: {
-      title: "Страхование в Польше 🇵🇱",
+      title: "Страхование в Польше",
       subtitle: "Медицинская, автомобильная и другие виды страховок",
       compareTitle: "Государственная vs Частная страховка",
       nfzLabel: "Государственная страховка NFZ",
@@ -3376,7 +3376,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Qabulga yozilish",
     },
     insurance: {
-      title: "Polshada sug'urta 🇵🇱",
+      title: "Polshada sug'urta",
       subtitle: "Tibbiy, avto va boshqa sug'urta turlari",
       compareTitle: "Davlat va xususiy sug'urta",
       nfzLabel: "NFZ davlat sug'urtasi",
@@ -4414,7 +4414,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Randevu al",
     },
     insurance: {
-      title: "Polonya'da Sigorta 🇵🇱",
+      title: "Polonya'da Sigorta",
       subtitle: "Sağlık, araç ve diğer sigorta türleri",
       compareTitle: "Kamu ve Özel Sigorta",
       nfzLabel: "NFZ Kamu Sigortası",
@@ -5452,7 +5452,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Навбат гирифтан",
     },
     insurance: {
-      title: "Суғурта дар Полша 🇵🇱",
+      title: "Суғурта дар Полша",
       subtitle: "Суғуртаи тиббӣ, автомобилӣ ва дигар намудҳо",
       compareTitle: "Суғуртаи давлатӣ vs хусусӣ",
       nfzLabel: "Суғуртаи давлатии NFZ",
@@ -6491,7 +6491,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bookBtn: "Записатися",
     },
     insurance: {
-      title: "Страхування в Польщі 🇵🇱",
+      title: "Страхування в Польщі",
       subtitle: "Медичне, автомобільне та інші види страхування",
       compareTitle: "Державна vs Приватна страховка",
       nfzLabel: "Державна страховка NFZ",

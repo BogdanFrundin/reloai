@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { getFlagUrl } from "../../../_lib/flags";
 
 const INFO_ICON = (
   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -45,7 +47,15 @@ export default function InsurancePage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader title={t.insurance.title} subtitle={t.insurance.subtitle} />
+      <PageHeader
+        title={
+          <span className="inline-flex items-center gap-3">
+            {t.insurance.title}
+            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+          </span>
+        }
+        subtitle={t.insurance.subtitle}
+      />
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {INSURANCE_TYPES.map((key, index) => {
