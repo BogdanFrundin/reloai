@@ -270,6 +270,8 @@ export type Dictionary = {
     tabs: { all: string; passport: string; pesel: string; workPermit: string; insurance: string; bank: string };
     status: { verified: string; pending: string; missing: string; locked: string };
     upload: string;
+    uploadBtn: string;
+    addDocumentBtn: string;
     viewBtn: string;
     deleteBtn: string;
     unlockBtn: string;
@@ -1182,6 +1184,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "All", passport: "Passport", pesel: "PESEL", workPermit: "Work Permit", insurance: "Insurance", bank: "Bank" },
       status: { verified: "Verified", pending: "Pending review", missing: "Missing", locked: "Premium" },
       upload: "Drag & drop or click to upload",
+      uploadBtn: "Upload",
+      addDocumentBtn: "Upload document",
       viewBtn: "View",
       deleteBtn: "Remove",
       unlockBtn: "Unlock with Premium",
@@ -2223,6 +2227,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "Все", passport: "Паспорт", pesel: "PESEL", workPermit: "Разрешение на работу", insurance: "Страховка", bank: "Банк" },
       status: { verified: "Готово", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
       upload: "Перетащите файл или нажмите, чтобы загрузить",
+      uploadBtn: "Загрузить",
+      addDocumentBtn: "Загрузить документ",
       viewBtn: "Просмотр",
       deleteBtn: "Удалить",
       unlockBtn: "Открыть с Premium",
@@ -3264,6 +3270,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "Barchasi", passport: "Pasport", pesel: "PESEL", workPermit: "Ish ruxsatnomasi", insurance: "Sug'urta", bank: "Bank" },
       status: { verified: "Tasdiqlangan", pending: "Ko'rib chiqilmoqda", missing: "Yo'q", locked: "Premium" },
       upload: "Yuklash uchun sudrab tashlang yoki bosing",
+      uploadBtn: "Yuklash",
+      addDocumentBtn: "Hujjat yuklash",
       viewBtn: "Ko'rish",
       deleteBtn: "O'chirish",
       unlockBtn: "Premium bilan ochish",
@@ -4302,6 +4310,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "Tümü", passport: "Pasaport", pesel: "PESEL", workPermit: "Çalışma İzni", insurance: "Sigorta", bank: "Banka" },
       status: { verified: "Onaylandı", pending: "İnceleniyor", missing: "Eksik", locked: "Premium" },
       upload: "Yüklemek için sürükleyin veya tıklayın",
+      uploadBtn: "Yükle",
+      addDocumentBtn: "Belge yükle",
       viewBtn: "Görüntüle",
       deleteBtn: "Kaldır",
       unlockBtn: "Premium ile Aç",
@@ -5340,6 +5350,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "Ҳама", passport: "Шиноснома", pesel: "PESEL", workPermit: "Иҷозати кор", insurance: "Бима", bank: "Бонк" },
       status: { verified: "Тасдиқшуда", pending: "Дар баррасӣ", missing: "Мавҷуд нест", locked: "Премиум" },
       upload: "Барои боркунӣ кашида гузоред ё зер кунед",
+      uploadBtn: "Бор кардан",
+      addDocumentBtn: "Ҳуҷҷат бор кардан",
       viewBtn: "Дидан",
       deleteBtn: "Нест кардан",
       unlockBtn: "Бо Премиум кушоед",
@@ -6379,6 +6391,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tabs: { all: "Усі", passport: "Паспорт", pesel: "PESEL", workPermit: "Дозвіл на роботу", insurance: "Страховка", bank: "Банк" },
       status: { verified: "Готово", pending: "На перевірці", missing: "Відсутній", locked: "Premium" },
       upload: "Перетягніть файл або натисніть, щоб завантажити",
+      uploadBtn: "Завантажити",
+      addDocumentBtn: "Завантажити документ",
       viewBtn: "Перегляд",
       deleteBtn: "Видалити",
       unlockBtn: "Відкрити з Premium",

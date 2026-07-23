@@ -9,6 +9,7 @@ import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
 import { pressScale } from "../../../_lib/motion";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
+import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 
@@ -19,29 +20,74 @@ const TABS: Category[] = ["all", "passport", "pesel", "workPermit", "insurance",
 
 const INITIAL_DOCUMENTS: DocumentItem[] = DOCUMENT_CATALOG;
 
+const DOC_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v5h5" />
+  </svg>
+);
+
+const LOCK_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z"
+    />
+  </svg>
+);
+
+const CHECK_ICON = (
+  <svg className="mr-0.5 -mt-0.5 inline h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+  </svg>
+);
+
+const TRASH_ICON = (
+  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m2 0v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7h12z" />
+  </svg>
+);
+
+const PLUS_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+  </svg>
+);
+
 function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
   const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
   return inCategory.length > 0 && inCategory.every((doc) => doc.status !== "missing");
 }
 
-function UploadZone({
+function DocumentRow({
   doc,
   name,
+  categoryLabel,
+  badge,
+  viewLabel,
   uploadLabel,
+  deleteLabel,
   onUpload,
+  onDelete,
   demoMode,
   onDemoBlocked,
 }: {
   doc: DocumentItem;
   name: string;
+  categoryLabel: string;
+  badge: { label: string; className: string };
+  viewLabel: string;
   uploadLabel: string;
+  deleteLabel: string;
   onUpload: (id: string, file: File) => void;
+  onDelete: (id: string) => void;
   demoMode: boolean;
   onDemoBlocked: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function handleActivate() {
+  function handleUploadClick() {
     if (demoMode) {
       onDemoBlocked();
       return;
@@ -50,15 +96,46 @@ function UploadZone({
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={handleActivate}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") handleActivate();
-      }}
-      className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02] p-6 text-center transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
-    >
+    <div className="flex items-center gap-4 border-b border-white/10 py-4 last:border-b-0">
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-400">
+        {DOC_ICON}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold text-white">{name}</p>
+        <p className="mt-0.5 truncate text-xs text-slate-500">{doc.fileName ?? categoryLabel}</p>
+      </div>
+      <span className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}>
+        {doc.status === "verified" && CHECK_ICON}
+        {badge.label}
+      </span>
+      <div className="flex flex-shrink-0 items-center gap-2">
+        {doc.status === "missing" ? (
+          <button
+            type="button"
+            onClick={handleUploadClick}
+            className={`rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/20 ${pressScale}`}
+          >
+            {uploadLabel}
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              className={`rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+            >
+              {viewLabel}
+            </button>
+            <button
+              type="button"
+              aria-label={deleteLabel}
+              onClick={() => onDelete(doc.id)}
+              className="flex h-7 w-7 items-center justify-center rounded-full text-slate-600 transition-colors duration-150 hover:text-red-400"
+            >
+              {TRASH_ICON}
+            </button>
+          </>
+        )}
+      </div>
       <input
         ref={inputRef}
         type="file"
@@ -68,14 +145,53 @@ function UploadZone({
           if (file) onUpload(doc.id, file);
         }}
       />
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-slate-400">
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14" />
-        </svg>
-      </span>
-      <p className="text-sm font-semibold text-white">{name}</p>
-      <p className="text-xs text-slate-500">{uploadLabel}</p>
     </div>
+  );
+}
+
+function LockedRow({
+  name,
+  categoryLabel,
+  lockedLabel,
+  demoMode,
+  onDemoBlocked,
+}: {
+  name: string;
+  categoryLabel: string;
+  lockedLabel: string;
+  demoMode: boolean;
+  onDemoBlocked: () => void;
+}) {
+  const content = (
+    <>
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-500">
+        {LOCK_ICON}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold text-slate-500">{name}</p>
+        <p className="mt-0.5 truncate text-xs text-slate-600">{categoryLabel}</p>
+      </div>
+      <span className="flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
+        {lockedLabel}
+      </span>
+    </>
+  );
+
+  const className =
+    "flex w-full items-center gap-4 border-b border-white/10 py-4 text-left opacity-60 transition-opacity duration-150 last:border-b-0 hover:opacity-90";
+
+  if (demoMode) {
+    return (
+      <button type="button" onClick={onDemoBlocked} className={className}>
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <Link href="/pricing" className={className}>
+      {content}
+    </Link>
   );
 }
 
@@ -90,6 +206,7 @@ export default function DocumentsPage() {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const addDocumentInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user) {
@@ -175,6 +292,11 @@ export default function DocumentsPage() {
     showAutoCompleteToast();
     syncDocumentStatus(updated);
     syncProgress(next);
+    createNotification({
+      title: "Документ загружен и отправлен на проверку",
+      message: "Мы уведомим вас, как только он будет проверен.",
+      type: "document",
+    });
   }
 
   function handleDelete(id: string) {
@@ -193,14 +315,47 @@ export default function DocumentsPage() {
     setDeleteTargetId(null);
   }
 
+  const firstMissingDoc = documents.find((doc) => doc.status === "missing");
+
+  function handleAddDocumentClick() {
+    if (demoMode) {
+      setPromptOpen(true);
+      return;
+    }
+    if (!firstMissingDoc) return;
+    addDocumentInputRef.current?.click();
+  }
+
   const filtered =
     activeTab === "all" ? documents : documents.filter((doc) => doc.category === activeTab);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
       <Reveal>
-        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{t.documents.title}</h1>
-        <p className="mt-2 text-slate-400">{t.documents.subtitle}</p>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{t.documents.title}</h1>
+            <p className="mt-2 text-slate-400">{t.documents.subtitle}</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleAddDocumentClick}
+            disabled={!demoMode && !firstMissingDoc}
+            className={`flex flex-shrink-0 items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+          >
+            {PLUS_ICON}
+            {t.documents.addDocumentBtn}
+          </button>
+          <input
+            ref={addDocumentInputRef}
+            type="file"
+            className="hidden"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file && firstMissingDoc) handleUpload(firstMissingDoc.id, file);
+            }}
+          />
+        </div>
       </Reveal>
 
       <Reveal delay={60}>
@@ -222,105 +377,44 @@ export default function DocumentsPage() {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((doc, index) => {
-          const name = t.documents.docNames[doc.nameKey];
+      <Reveal delay={100}>
+        <div className="mt-8">
+          {filtered.map((doc) => {
+            const name = t.documents.docNames[doc.nameKey];
+            const categoryLabel = t.documents.tabs[doc.category];
 
-          if (doc.status === "missing") {
-            return (
-              <Reveal key={doc.id} delay={index * 40}>
-                <UploadZone
-                  doc={doc}
+            if (doc.status === "locked") {
+              return (
+                <LockedRow
+                  key={doc.id}
                   name={name}
-                  uploadLabel={t.documents.upload}
-                  onUpload={handleUpload}
+                  categoryLabel={categoryLabel}
+                  lockedLabel={STATUS_BADGE.locked.label}
                   demoMode={demoMode}
                   onDemoBlocked={() => setPromptOpen(true)}
                 />
-              </Reveal>
-            );
-          }
+              );
+            }
 
-          if (doc.status === "locked") {
             return (
-              <Reveal key={doc.id} delay={index * 40}>
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                  <div className="pointer-events-none select-none blur-sm">
-                    <p className="text-sm font-semibold text-white">{name}</p>
-                    <p className="mt-1 text-xs text-slate-500">{t.documents.tabs[doc.category]}</p>
-                  </div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/50 p-4 text-center backdrop-blur-sm">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
-                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z" />
-                      </svg>
-                    </span>
-                    <p className="text-xs font-medium text-slate-300">{name}</p>
-                    {demoMode ? (
-                      <button
-                        type="button"
-                        onClick={() => setPromptOpen(true)}
-                        className={`mt-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-                      >
-                        {t.documents.unlockBtn}
-                      </button>
-                    ) : (
-                      <Link
-                        href="/pricing"
-                        className={`mt-1 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-                      >
-                        {t.documents.unlockBtn}
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
+              <DocumentRow
+                key={doc.id}
+                doc={doc}
+                name={name}
+                categoryLabel={categoryLabel}
+                badge={STATUS_BADGE[doc.status]}
+                viewLabel={t.documents.viewBtn}
+                uploadLabel={t.documents.uploadBtn}
+                deleteLabel={t.documents.deleteBtn}
+                onUpload={handleUpload}
+                onDelete={(id) => setDeleteTargetId(id)}
+                demoMode={demoMode}
+                onDemoBlocked={() => setPromptOpen(true)}
+              />
             );
-          }
-
-          const badge = STATUS_BADGE[doc.status];
-
-          return (
-            <Reveal key={doc.id} delay={index * 40}>
-              <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-semibold text-white">{name}</p>
-                    <span
-                      className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}
-                    >
-                      {doc.status === "verified" && (
-                        <svg className="mr-0.5 -mt-0.5 inline h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                        </svg>
-                      )}
-                      {badge.label}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs text-slate-500">
-                    {doc.fileName ?? t.documents.tabs[doc.category]}
-                  </p>
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <button
-                    type="button"
-                    className={`flex-1 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
-                  >
-                    {t.documents.viewBtn}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDeleteTargetId(doc.id)}
-                    className={`rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-400 transition-colors duration-150 hover:border-red-500/40 hover:text-red-400 ${pressScale}`}
-                  >
-                    {t.documents.deleteBtn}
-                  </button>
-                </div>
-              </div>
-            </Reveal>
-          );
-        })}
-      </div>
+          })}
+        </div>
+      </Reveal>
 
       {toastVisible && (
         <div className="animate-slide-up fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 shadow-xl shadow-black/40 backdrop-blur-xl">
