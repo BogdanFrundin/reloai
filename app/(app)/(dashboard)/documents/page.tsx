@@ -17,15 +17,24 @@ type Category = "all" | DocumentItem["category"];
 type Status = DocStatus;
 
 const TABS: Category[] = ["all", "passport", "pesel", "workPermit", "insurance", "bank"];
+const CATEGORIES: DocumentItem["category"][] = ["passport", "pesel", "workPermit", "insurance", "bank"];
+
+const CATEGORY_EMOJI: Record<DocumentItem["category"], string> = {
+  passport: "🪪",
+  pesel: "📋",
+  workPermit: "💼",
+  insurance: "🛡️",
+  bank: "🏦",
+};
+
+const STATUS_BORDER_CLASS: Record<Status, string> = {
+  verified: "border-l-emerald-500",
+  pending: "border-l-amber-500",
+  missing: "border-l-white/15",
+  locked: "border-l-accent/40",
+};
 
 const INITIAL_DOCUMENTS: DocumentItem[] = DOCUMENT_CATALOG;
-
-const DOC_ICON = (
-  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v5h5" />
-  </svg>
-);
 
 const LOCK_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -49,6 +58,12 @@ const TRASH_ICON = (
   </svg>
 );
 
+const ARROW_ICON = (
+  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+  </svg>
+);
+
 const PLUS_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -63,7 +78,7 @@ function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["catego
 function DocumentRow({
   doc,
   name,
-  categoryLabel,
+  hint,
   badge,
   viewLabel,
   uploadLabel,
@@ -75,7 +90,7 @@ function DocumentRow({
 }: {
   doc: DocumentItem;
   name: string;
-  categoryLabel: string;
+  hint: string;
   badge: { label: string; className: string };
   viewLabel: string;
   uploadLabel: string;
@@ -96,13 +111,15 @@ function DocumentRow({
   }
 
   return (
-    <div className="flex items-center gap-4 border-b border-white/10 py-4 last:border-b-0">
-      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-400">
-        {DOC_ICON}
+    <div
+      className={`flex items-center gap-4 border-b border-l-4 border-white/10 py-4 pl-4 last:border-b-0 ${STATUS_BORDER_CLASS[doc.status]}`}
+    >
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-base">
+        {CATEGORY_EMOJI[doc.category]}
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-white">{name}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-500">{doc.fileName ?? categoryLabel}</p>
+        <p className="mt-0.5 truncate text-xs text-slate-500">{doc.fileName ?? hint}</p>
       </div>
       <span className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}>
         {doc.status === "verified" && CHECK_ICON}
@@ -113,9 +130,10 @@ function DocumentRow({
           <button
             type="button"
             onClick={handleUploadClick}
-            className={`rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/20 ${pressScale}`}
+            className={`flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
             {uploadLabel}
+            {ARROW_ICON}
           </button>
         ) : (
           <>
@@ -151,13 +169,13 @@ function DocumentRow({
 
 function LockedRow({
   name,
-  categoryLabel,
+  hint,
   lockedLabel,
   demoMode,
   onDemoBlocked,
 }: {
   name: string;
-  categoryLabel: string;
+  hint: string;
   lockedLabel: string;
   demoMode: boolean;
   onDemoBlocked: () => void;
@@ -169,7 +187,7 @@ function LockedRow({
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-slate-500">{name}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-600">{categoryLabel}</p>
+        <p className="mt-0.5 truncate text-xs text-slate-600">{hint}</p>
       </div>
       <span className="flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
         {lockedLabel}
@@ -177,8 +195,7 @@ function LockedRow({
     </>
   );
 
-  const className =
-    "flex w-full items-center gap-4 border-b border-white/10 py-4 text-left opacity-60 transition-opacity duration-150 last:border-b-0 hover:opacity-90";
+  const className = `flex w-full items-center gap-4 border-b border-l-4 border-white/10 py-4 pl-4 text-left opacity-60 transition-opacity duration-150 last:border-b-0 hover:opacity-90 ${STATUS_BORDER_CLASS.locked}`;
 
   if (demoMode) {
     return (
@@ -326,8 +343,14 @@ export default function DocumentsPage() {
     addDocumentInputRef.current?.click();
   }
 
-  const filtered =
-    activeTab === "all" ? documents : documents.filter((doc) => doc.category === activeTab);
+  const relevantDocs = documents.filter((doc) => doc.status !== "locked");
+  const totalCount = relevantDocs.length;
+  const verifiedCount = relevantDocs.filter((doc) => doc.status === "verified").length;
+  const pendingCount = relevantDocs.filter((doc) => doc.status === "pending").length;
+  const missingCount = relevantDocs.filter((doc) => doc.status === "missing").length;
+  const progressPercent = totalCount === 0 ? 0 : Math.round((verifiedCount / totalCount) * 100);
+
+  const categoriesToRender = activeTab === "all" ? CATEGORIES : [activeTab as DocumentItem["category"]];
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -358,7 +381,37 @@ export default function DocumentsPage() {
         </div>
       </Reveal>
 
-      <Reveal delay={60}>
+      <Reveal delay={40}>
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm font-semibold text-white">
+              {t.documents.progressSummary
+                .replace("{completed}", String(verifiedCount))
+                .replace("{total}", String(totalCount))}
+            </p>
+            <span className="text-sm font-semibold text-accent-bright">{progressPercent}%</span>
+          </div>
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
+              ✅ {verifiedCount} {t.documents.status.verified}
+            </span>
+            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-400">
+              🔄 {pendingCount} {t.documents.status.pending}
+            </span>
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-400">
+              ❌ {missingCount} {t.documents.status.missing}
+            </span>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={80}>
         <div className="mt-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => (
             <button
@@ -377,44 +430,61 @@ export default function DocumentsPage() {
         </div>
       </Reveal>
 
-      <Reveal delay={100}>
-        <div className="mt-8">
-          {filtered.map((doc) => {
-            const name = t.documents.docNames[doc.nameKey];
-            const categoryLabel = t.documents.tabs[doc.category];
+      <div className="mt-8 space-y-8">
+        {categoriesToRender.map((category, index) => {
+          const docsInCategory = documents.filter((doc) => doc.category === category);
+          if (docsInCategory.length === 0) return null;
 
-            if (doc.status === "locked") {
-              return (
-                <LockedRow
-                  key={doc.id}
-                  name={name}
-                  categoryLabel={categoryLabel}
-                  lockedLabel={STATUS_BADGE.locked.label}
-                  demoMode={demoMode}
-                  onDemoBlocked={() => setPromptOpen(true)}
-                />
-              );
-            }
+          return (
+            <Reveal key={category} delay={120 + index * 40}>
+              <section>
+                {activeTab === "all" && (
+                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-300">
+                    <span>{CATEGORY_EMOJI[category]}</span>
+                    <span>{t.documents.tabs[category]}</span>
+                  </h2>
+                )}
+                <div>
+                  {docsInCategory.map((doc) => {
+                    const name = t.documents.docNames[doc.nameKey];
+                    const hint = t.documents.docHints[doc.nameKey];
 
-            return (
-              <DocumentRow
-                key={doc.id}
-                doc={doc}
-                name={name}
-                categoryLabel={categoryLabel}
-                badge={STATUS_BADGE[doc.status]}
-                viewLabel={t.documents.viewBtn}
-                uploadLabel={t.documents.uploadBtn}
-                deleteLabel={t.documents.deleteBtn}
-                onUpload={handleUpload}
-                onDelete={(id) => setDeleteTargetId(id)}
-                demoMode={demoMode}
-                onDemoBlocked={() => setPromptOpen(true)}
-              />
-            );
-          })}
-        </div>
-      </Reveal>
+                    if (doc.status === "locked") {
+                      return (
+                        <LockedRow
+                          key={doc.id}
+                          name={name}
+                          hint={hint}
+                          lockedLabel={STATUS_BADGE.locked.label}
+                          demoMode={demoMode}
+                          onDemoBlocked={() => setPromptOpen(true)}
+                        />
+                      );
+                    }
+
+                    return (
+                      <DocumentRow
+                        key={doc.id}
+                        doc={doc}
+                        name={name}
+                        hint={hint}
+                        badge={STATUS_BADGE[doc.status]}
+                        viewLabel={t.documents.viewBtn}
+                        uploadLabel={t.documents.uploadBtn}
+                        deleteLabel={t.documents.deleteBtn}
+                        onUpload={handleUpload}
+                        onDelete={(id) => setDeleteTargetId(id)}
+                        demoMode={demoMode}
+                        onDemoBlocked={() => setPromptOpen(true)}
+                      />
+                    );
+                  })}
+                </div>
+              </section>
+            </Reveal>
+          );
+        })}
+      </div>
 
       {toastVisible && (
         <div className="animate-slide-up fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 shadow-xl shadow-black/40 backdrop-blur-xl">
