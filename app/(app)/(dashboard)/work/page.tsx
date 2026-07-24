@@ -9,6 +9,8 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { useLanguage } from "../../../_components/LanguageProvider";
 
+const LAST_PROFESSION_KEY = "lastProfession";
+
 const SALARY_DATA: { keywords: string[]; pln: number; eur: number }[] = [
   { keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
   { keywords: ["designer", "ux", "ui", "дизайнер"], pln: 7200, eur: 1650 },
@@ -87,7 +89,14 @@ function getSuggestions(query: string): string[] {
 
 export default function WorkPage() {
   const { t } = useLanguage();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      return window.localStorage.getItem(LAST_PROFESSION_KEY) ?? "";
+    } catch {
+      return "";
+    }
+  });
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -95,6 +104,15 @@ export default function WorkPage() {
   const suggestions = useMemo(() => getSuggestions(query), [query]);
   const profession = query.trim();
   const professionPl = useMemo(() => (profession ? translateProfessionToPolish(profession) : ""), [profession]);
+
+  useEffect(() => {
+    if (!profession) return;
+    try {
+      window.localStorage.setItem(LAST_PROFESSION_KEY, profession);
+    } catch {
+      // Storage can be unavailable (private browsing, quota) — persistence is a nice-to-have here.
+    }
+  }, [profession]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
