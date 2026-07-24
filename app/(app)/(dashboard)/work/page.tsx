@@ -66,39 +66,6 @@ function translateProfessionToPolish(profession: string): string {
   return PROFESSION_PL_TRANSLATIONS[profession.trim().toLowerCase()] ?? profession;
 }
 
-// Deterministic pseudo-random count so the same query always shows the same
-// number (no real vacancy-count API backs this) and there's no SSR/client mismatch.
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash);
-}
-
-function getMockVacancyCount(seed: string, min: number, max: number): number {
-  return min + (hashString(seed) % (max - min + 1));
-}
-
-function getRuPluralForm(count: number): "one" | "few" | "many" {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-  if (mod10 === 1 && mod100 !== 11) return "one";
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "few";
-  return "many";
-}
-
-function getVacanciesFoundText(
-  templates: { vacanciesFoundOne: string; vacanciesFoundFew: string; vacanciesFoundMany: string },
-  lang: string,
-  count: number,
-): string {
-  const form = lang === "ru" || lang === "uk" ? getRuPluralForm(count) : count === 1 ? "one" : "many";
-  const template =
-    form === "one" ? templates.vacanciesFoundOne : form === "few" ? templates.vacanciesFoundFew : templates.vacanciesFoundMany;
-  return template.replace("{count}", String(count));
-}
-
 function lookupSalary(query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return null;
@@ -123,7 +90,7 @@ function getSuggestions(query: string): string[] {
 }
 
 export default function WorkPage() {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -132,10 +99,6 @@ export default function WorkPage() {
   const suggestions = useMemo(() => getSuggestions(query), [query]);
   const profession = query.trim();
   const professionPl = useMemo(() => (profession ? translateProfessionToPolish(profession) : ""), [profession]);
-  const vacancyCount = useMemo(
-    () => (profession ? getMockVacancyCount(profession.toLowerCase(), 24, 180) : 0),
-    [profession],
-  );
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -246,31 +209,23 @@ export default function WorkPage() {
               <p className="mt-3 text-xs text-slate-500">{t.work.salaryNote}</p>
 
               <div className="mt-5 border-t border-white/10 pt-4">
-                <p className="text-sm font-semibold text-white">
-                  {getVacanciesFoundText(t.work, lang, vacancyCount)}
-                </p>
+                <p className="text-sm font-semibold text-white">{t.work.searchByProfession}</p>
                 <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-                  {PROFESSION_JOB_SITES.map((site) => {
-                    const siteCount = getMockVacancyCount(`${site.key}:${profession.toLowerCase()}`, 6, 90);
-                    return (
-                      <a
-                        key={site.key}
-                        href={site.buildHref(professionPl)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
-                      >
-                        <span className="font-semibold text-white">{site.name}</span>
-                        <span className="flex flex-shrink-0 items-center gap-1.5 text-xs font-medium text-accent-bright">
-                          {t.work.viewVacanciesBtn}
-                          <span aria-hidden>→</span>
-                          <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent-bright">
-                            {siteCount}
-                          </span>
-                        </span>
-                      </a>
-                    );
-                  })}
+                  {PROFESSION_JOB_SITES.map((site) => (
+                    <a
+                      key={site.key}
+                      href={site.buildHref(professionPl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
+                    >
+                      <span className="font-semibold text-white">{site.name}</span>
+                      <span className="flex flex-shrink-0 items-center gap-1.5 text-xs font-medium text-accent-bright">
+                        {t.work.viewVacanciesBtn}
+                        <span aria-hidden>→</span>
+                      </span>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
