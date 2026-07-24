@@ -111,8 +111,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-background/60 backdrop-blur-xl transition-[box-shadow,border-color] duration-300 ease-[var(--ease-out-strong)] ${
-        scrolled ? "border-border-subtle shadow-lg shadow-black/30" : "border-transparent"
+      className={`sticky top-0 z-50 relative border-b border-transparent bg-background/60 backdrop-blur-xl transition-[box-shadow,border-color] duration-300 ease-[var(--ease-out-strong)] ${
+        scrolled ? "shadow-[0_20px_40px_-24px_rgba(0,0,0,0.35)]" : ""
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
@@ -241,6 +241,11 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-6 translate-y-full bg-gradient-to-b from-background/40 to-transparent"
+      />
     </header>
   );
 }
