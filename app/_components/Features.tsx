@@ -24,10 +24,11 @@ const ICONS: ReactNode[] = [
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
   </svg>,
   <svg {...ICON_PROPS} key="banking">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5L12 4l9 6.5M4.5 10.5V19a1 1 0 001 1h13a1 1 0 001-1v-8.5M9 20v-6h6v6" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L3 8h18L12 3zM5 8v10M9 8v10M15 8v10M19 8v10M3 21h18" />
   </svg>,
   <svg {...ICON_PROPS} key="healthcare">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1.5 4 2.5.5-1 2-2.5 4-2.5 3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
   </svg>,
   <svg {...ICON_PROPS} key="chat">
     <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.97-4.03 9-9 9-1.5 0-2.91-.37-4.15-1.02L3 21l1.07-3.78A8.96 8.96 0 013 12c0-4.97 4.03-9 9-9s9 4.03 9 9z" />
