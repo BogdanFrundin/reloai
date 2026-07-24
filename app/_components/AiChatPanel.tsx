@@ -5,6 +5,7 @@ import Link from "next/link";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
+import UpgradeModal from "./UpgradeModal";
 import { supabase } from "../../lib/supabase";
 
 type MessageAction = { type: "section"; href: string } | { type: "premium" };
@@ -107,6 +108,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [greetingInputs, setGreetingInputs] = useState({ t, profile });
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   // Recompute the still-untouched initial greeting when language/profile change,
   // following React's "adjust state during render" pattern instead of an effect.
@@ -259,12 +261,22 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
               {message.from === "user" ? message.text : renderMessageBody(message.text)}
             </div>
             {message.from === "ai" && message.action && (
-              <Link
-                href={message.action.type === "premium" ? "/pricing" : message.action.href}
-                className="mt-1.5 inline-flex w-fit items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 hover:bg-accent/15"
-              >
-                {message.action.type === "premium" ? t.aiChat.premiumLabel : t.aiChat.actionLabel}
-              </Link>
+              message.action.type === "premium" ? (
+                <button
+                  type="button"
+                  onClick={() => setUpgradeOpen(true)}
+                  className="mt-1.5 inline-flex w-fit items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 hover:bg-accent/15"
+                >
+                  {t.aiChat.premiumLabel}
+                </button>
+              ) : (
+                <Link
+                  href={message.action.href}
+                  className="mt-1.5 inline-flex w-fit items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 hover:bg-accent/15"
+                >
+                  {t.aiChat.actionLabel}
+                </Link>
+              )
             )}
             {message.time !== null && (
               <span className="mt-1 px-1 text-[10px] text-text-muted">{formatTime(message.time)}</span>
@@ -324,6 +336,8 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
           )}
         </button>
       </form>
+
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </div>
   );
 }
