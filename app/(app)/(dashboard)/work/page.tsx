@@ -99,6 +99,7 @@ export default function WorkPage() {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
   const result = useMemo(() => lookupSalary(query), [query]);
   const suggestions = useMemo(() => getSuggestions(query), [query]);
   const profession = query.trim();
@@ -109,7 +110,7 @@ export default function WorkPage() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
       }
     }
@@ -169,7 +170,7 @@ export default function WorkPage() {
         <h2 className="text-xl font-bold tracking-tight text-white">{t.work.salarySearch}</h2>
         <p className="mt-1 text-sm text-slate-400">{t.work.salarySearchSub}</p>
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-          <div className="relative">
+          <div ref={searchContainerRef} className="relative">
             <input
               ref={inputRef}
               type="text"
