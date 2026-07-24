@@ -1,16 +1,18 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import MiniLangSwitcher from "./MiniLangSwitcher";
 import NotificationBell from "./NotificationBell";
 import ProfileAvatar from "./ProfileAvatar";
+import UpgradeModal from "./UpgradeModal";
 import { pressScale } from "../_lib/motion";
 
 export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const { profile } = useAuth();
   const { t } = useLanguage();
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   const planValue = profile?.plan ?? "free";
   const isFree = planValue === "free";
@@ -49,18 +51,21 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       <div className="flex items-center gap-3">
         <MiniLangSwitcher />
 
-        <Link
-          href="/pricing"
+        <button
+          type="button"
+          onClick={() => setUpgradeOpen(true)}
           className="hidden items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 sm:flex"
         >
           {planLabel}
           {isFree && <span className="text-text-muted">· {t.topbar.upgrade}</span>}
-        </Link>
+        </button>
 
         <NotificationBell />
 
         <ProfileAvatar />
       </div>
+
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </header>
   );
 }
