@@ -387,7 +387,16 @@ export default function ProfilePage() {
               </p>
               <p className="text-sm text-slate-300">
                 <span className="text-slate-500">{p.currentStepLabel}: </span>
-                <span className="font-medium text-white">{currentStep ? currentStep.title : p.allStepsDone}</span>
+                {currentStep ? (
+                  <Link
+                    href={`/dashboard#${currentStep.documentType}`}
+                    className="font-medium text-white underline decoration-white/30 underline-offset-2 transition-colors duration-150 hover:text-accent-bright hover:decoration-accent-bright"
+                  >
+                    {currentStep.title}
+                  </Link>
+                ) : (
+                  <span className="font-medium text-white">{p.allStepsDone}</span>
+                )}
               </p>
             </div>
           </div>

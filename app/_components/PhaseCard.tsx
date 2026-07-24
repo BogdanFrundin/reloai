@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
 import type { Phase, PhaseStatus } from "../_lib/checklist";
@@ -93,6 +93,23 @@ export default function PhaseCard({
   const isActive = status === "in_progress";
   const isWaiting = status === "waiting";
 
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash && phase.steps.some((step) => step.documentType === hash)) {
+      setExpanded(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount only, to react to the URL the page was loaded with
+  }, []);
+
+  useEffect(() => {
+    if (!expanded) return;
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    // The step only exists in the DOM once expanded — the browser's automatic
+    // hash-scroll already ran (and missed) during navigation, so scroll manually.
+    document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [expanded]);
+
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
 
   return (
@@ -141,7 +158,8 @@ export default function PhaseCard({
               return (
                 <div
                   key={step.documentType}
-                  className="flex items-center gap-3 rounded-xl p-2.5 transition-colors duration-150"
+                  id={step.documentType}
+                  className="flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150"
                 >
                   <button
                     type="button"
