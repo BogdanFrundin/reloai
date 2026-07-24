@@ -29,12 +29,8 @@ const JOB_SITES = [
 
 const PROFESSION_JOB_SITES = [
   { key: "pracuj", name: "Pracuj.pl", buildHref: (q: string) => `https://www.pracuj.pl/praca/${encodeURIComponent(q)};kw` },
-  { key: "nofluff", name: "NoFluffJobs", buildHref: (q: string) => `https://nofluffjobs.com/pl/jobs/${encodeURIComponent(q)}` },
-  {
-    key: "justjoin",
-    name: "JustJoin.it",
-    buildHref: (q: string) => `https://justjoin.it/job-offers/all-locations/all-categories?keyword=${encodeURIComponent(q)}`,
-  },
+  { key: "nofluff", name: "NoFluffJobs", buildHref: (q: string) => `https://nofluffjobs.com/pl/jobs?search=${encodeURIComponent(q)}` },
+  { key: "justjoin", name: "JustJoin.it", buildHref: (q: string) => `https://justjoin.it/?keyword=${encodeURIComponent(q)}` },
   { key: "olx", name: "OLX", buildHref: (q: string) => `https://www.olx.pl/praca/q-${encodeURIComponent(q)}/` },
 ] as const;
 
