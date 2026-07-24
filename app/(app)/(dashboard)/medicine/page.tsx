@@ -7,6 +7,49 @@ import StarRating from "../../../_components/StarRating";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 
+const PHONE_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 002.25-2.25v-1.372a1.125 1.125 0 00-.852-1.09l-4.423-1.106a1.125 1.125 0 00-1.173.417l-.97 1.293a11.25 11.25 0 01-6.226-6.226l1.293-.97a1.125 1.125 0 00.417-1.173L7.962 3.852a1.125 1.125 0 00-1.09-.852H5.5A2.25 2.25 0 003.25 5.25v1.5z"
+    />
+  </svg>
+);
+
+const ER_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m9 0a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+
+const PHARMACY_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8.25 3.75h7.5v3.375c0 .621.504 1.125 1.125 1.125h.375A2.25 2.25 0 0119.5 10.5v7.125A2.625 2.625 0 0116.875 20.25h-9.75A2.625 2.625 0 014.5 17.625V10.5a2.25 2.25 0 012.25-2.25h.375c.621 0 1.125-.504 1.125-1.125V3.75z"
+    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 13.5h4.5M12 11.25v4.5" />
+  </svg>
+);
+
+const LINK_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+  </svg>
+);
+
+const TOOTH_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8 3.5c-2.485 0-4.25 2.1-4.25 4.9 0 2.061.517 3.86 1.033 5.657.42 1.464.84 2.926 1.008 4.523.107 1.017.858 1.92 1.959 1.92.98 0 1.688-.716 1.897-1.62.309-1.334.652-3.42 1.353-3.42s1.044 2.086 1.353 3.42c.209.904.916 1.62 1.897 1.62 1.101 0 1.852-.903 1.96-1.92.166-1.597.586-3.059 1.007-4.523.516-1.797 1.033-3.596 1.033-5.657 0-2.8-1.765-4.9-4.25-4.9-1.045 0-1.802.451-2.5.9-.698-.449-1.455-.9-2.5-.9z"
+    />
+  </svg>
+);
+
 const CLINICS = [
   {
     name: "Medicover Centrum",
@@ -88,6 +131,118 @@ export default function MedicinePage() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </Reveal>
+
+      <Reveal delay={100} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.nfzTitle}</h2>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6">
+          <ol className="space-y-4">
+            {t.medicine.nfzSteps.map((step, index) => (
+              <li key={step} className="flex items-start gap-4">
+                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-sm font-bold text-accent-bright">
+                  {index + 1}
+                </span>
+                <div className="pt-1">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    {t.medicine.stepLabel} {index + 1}
+                  </p>
+                  <p className="mt-0.5 text-sm text-slate-200">{step}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Reveal>
+
+      <Reveal delay={130} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.emergencyTitle}</h2>
+        <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm sm:p-6">
+          <div className="flex items-start gap-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+              {PHONE_ICON}
+            </span>
+            <div>
+              <p className="text-sm text-slate-300">{t.medicine.emergencyNumber}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a
+                  href="tel:112"
+                  className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300 transition-colors duration-150 hover:bg-red-500/20"
+                >
+                  112
+                </a>
+                <a
+                  href="tel:999"
+                  className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300 transition-colors duration-150 hover:bg-red-500/20"
+                >
+                  999
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-start gap-4 border-t border-white/10 pt-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-slate-300">
+              {ER_ICON}
+            </span>
+            <p className="pt-2 text-sm text-slate-300">{t.medicine.emergencyEr}</p>
+          </div>
+
+          <div className="mt-4 flex items-start gap-4 border-t border-white/10 pt-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-slate-300">
+              {PHARMACY_ICON}
+            </span>
+            <p className="pt-2 text-sm text-slate-300">
+              {t.medicine.emergencyPharmacy}{" "}
+              <a
+                href="https://aptekadyzurna.pl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-accent-bright transition-colors duration-150 hover:text-white"
+              >
+                aptekadyzurna.pl
+              </a>
+            </p>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={160} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.usefulSitesTitle}</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {t.medicine.usefulSites.map((site) => (
+            <a
+              key={site.url}
+              href={`https://${site.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors duration-150 hover:border-accent/40 hover:bg-white/[0.05]"
+            >
+              <div>
+                <p className="text-sm font-semibold text-accent-bright">{site.url}</p>
+                <p className="mt-1 text-sm text-slate-400">{site.desc}</p>
+              </div>
+              <span className="mt-1 flex-shrink-0 text-slate-500 transition-colors duration-150 group-hover:text-accent-bright">
+                {LINK_ICON}
+              </span>
+            </a>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal delay={190} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.dentalTitle}</h2>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6">
+          <div className="flex items-start gap-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {TOOTH_ICON}
+            </span>
+            <ul className="space-y-3 pt-2 text-sm text-slate-300">
+              <li>{t.medicine.dentalNfz}</li>
+              <li>{t.medicine.dentalPrivate}</li>
+              <li>{t.medicine.dentalChains}</li>
+            </ul>
+          </div>
         </div>
       </Reveal>
     </div>

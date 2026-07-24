@@ -326,6 +326,24 @@ export type Dictionary = {
     warsaw: string;
     languages: { ruUa: string; en: string; ru: string; ua: string };
     bookBtn: string;
+    nfzTitle: string;
+    nfzSteps: [string, string, string, string];
+    stepLabel: string;
+    emergencyTitle: string;
+    emergencyNumber: string;
+    emergencyEr: string;
+    emergencyPharmacy: string;
+    usefulSitesTitle: string;
+    usefulSites: [
+      { url: string; desc: string },
+      { url: string; desc: string },
+      { url: string; desc: string },
+      { url: string; desc: string },
+    ];
+    dentalTitle: string;
+    dentalNfz: string;
+    dentalPrivate: string;
+    dentalChains: string;
   };
   insurance: {
     title: string;
@@ -1312,6 +1330,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Ukrainian speaking",
       },
       bookBtn: "Book appointment",
+      nfzTitle: "How to get NFZ health insurance",
+      nfzSteps: [
+        "Get a job under an employment contract (umowa o pracę) — your employer registers you with ZUS automatically",
+        "Get a PESEL number",
+        "Confirm your coverage on the eWUŚ website (ewus.nfz.gov.pl)",
+        "Book an appointment at any public clinic",
+      ],
+      stepLabel: "Step",
+      emergencyTitle: "Emergency and urgent care",
+      emergencyNumber: "Emergency number in Poland: 112 or 999",
+      emergencyEr: "The nearest ER (SOR) takes walk-ins with no appointment, free of charge",
+      emergencyPharmacy: "Duty pharmacy finder:",
+      usefulSitesTitle: "Useful websites",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Book a doctor online — Russian-speaking doctors available" },
+        { url: "ewus.nfz.gov.pl", desc: "Check your NFZ insurance status" },
+        { url: "nfz.gov.pl", desc: "Official NFZ website" },
+        { url: "aptekadyzurna.pl", desc: "Find a duty (24-hour) pharmacy" },
+      ],
+      dentalTitle: "Dental care",
+      dentalNfz: "NFZ covers basic treatment — fillings, extractions",
+      dentalPrivate: "Private dentistry: 150–400 PLN per visit",
+      dentalChains: "Recommended chains: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Insurance in Poland",
@@ -2371,6 +2412,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Говорят по-украински",
       },
       bookBtn: "Записаться",
+      nfzTitle: "Как получить медицинскую страховку NFZ",
+      nfzSteps: [
+        "Устройтесь на работу по umowie o pracę → работодатель автоматически регистрирует вас в ZUS",
+        "Получите номер PESEL",
+        "Подтвердите страховку на сайте eWUŚ (ewus.nfz.gov.pl)",
+        "Запишитесь к врачу в любую государственную клинику",
+      ],
+      stepLabel: "Шаг",
+      emergencyTitle: "Скорая помощь и экстренные случаи",
+      emergencyNumber: "Номер скорой помощи в Польше: 112 или 999",
+      emergencyEr: "Ближайшее отделение неотложной помощи (SOR) принимает без записи и бесплатно",
+      emergencyPharmacy: "Дежурная аптека:",
+      usefulSitesTitle: "Полезные сайты",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Запись к врачу онлайн — есть русскоязычные врачи" },
+        { url: "ewus.nfz.gov.pl", desc: "Проверить свою страховку NFZ" },
+        { url: "nfz.gov.pl", desc: "Официальный сайт NFZ" },
+        { url: "aptekadyzurna.pl", desc: "Найти дежурную аптеку" },
+      ],
+      dentalTitle: "Стоматология",
+      dentalNfz: "NFZ покрывает базовое лечение — пломбы, удаление зубов",
+      dentalPrivate: "Частная стоматология: 150–400 PLN за приём",
+      dentalChains: "Рекомендуемые сети: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Страхование в Польше",
@@ -3430,6 +3494,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Ukrain tilida xizmat",
       },
       bookBtn: "Qabulga yozilish",
+      nfzTitle: "NFZ tibbiy sug'urtasini qanday olish mumkin",
+      nfzSteps: [
+        "Mehnat shartnomasi (umowa o pracę) asosida ishga joylashing — ish beruvchi sizni avtomatik ravishda ZUS'ga ro'yxatdan o'tkazadi",
+        "PESEL raqamini oling",
+        "Sug'urtangizni eWUŚ saytida tasdiqlang (ewus.nfz.gov.pl)",
+        "Istalgan davlat poliklinikasiga shifokorga yoziling",
+      ],
+      stepLabel: "Qadam",
+      emergencyTitle: "Tez yordam va favqulodda holatlar",
+      emergencyNumber: "Polshada tez yordam raqami: 112 yoki 999",
+      emergencyEr: "Eng yaqin tez yordam bo'limi (SOR) navbatsiz va bepul qabul qiladi",
+      emergencyPharmacy: "Navbatchi dorixona:",
+      usefulSitesTitle: "Foydali saytlar",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Shifokorga onlayn yozilish — rus tilida so'zlashuvchi shifokorlar bor" },
+        { url: "ewus.nfz.gov.pl", desc: "NFZ sug'urtangizni tekshirish" },
+        { url: "nfz.gov.pl", desc: "NFZ rasmiy sayti" },
+        { url: "aptekadyzurna.pl", desc: "Navbatchi dorixonani topish" },
+      ],
+      dentalTitle: "Stomatologiya",
+      dentalNfz: "NFZ asosiy davolashni qoplaydi — plombalash, tish olish",
+      dentalPrivate: "Xususiy stomatologiya: qabul uchun 150–400 PLN",
+      dentalChains: "Tavsiya etilgan tarmoqlar: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Polshada sug'urta",
@@ -4486,6 +4573,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Ukraynaca konuşuluyor",
       },
       bookBtn: "Randevu al",
+      nfzTitle: "NFZ sağlık sigortası nasıl alınır",
+      nfzSteps: [
+        "İş sözleşmesiyle (umowa o pracę) işe girin — işvereniniz sizi otomatik olarak ZUS'a kaydeder",
+        "PESEL numarası alın",
+        "Sigortanızı eWUŚ web sitesinden onaylayın (ewus.nfz.gov.pl)",
+        "Herhangi bir devlet kliniğinden randevu alın",
+      ],
+      stepLabel: "Adım",
+      emergencyTitle: "Acil durum ve ambulans",
+      emergencyNumber: "Polonya'da acil numara: 112 veya 999",
+      emergencyEr: "En yakın acil servis (SOR) randevusuz ve ücretsiz kabul eder",
+      emergencyPharmacy: "Nöbetçi eczane bulucu:",
+      usefulSitesTitle: "Faydalı web siteleri",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Online doktor randevusu — Rusça konuşan doktorlar mevcut" },
+        { url: "ewus.nfz.gov.pl", desc: "NFZ sigorta durumunuzu kontrol edin" },
+        { url: "nfz.gov.pl", desc: "Resmi NFZ web sitesi" },
+        { url: "aptekadyzurna.pl", desc: "Nöbetçi eczane bulun" },
+      ],
+      dentalTitle: "Diş hekimliği",
+      dentalNfz: "NFZ temel tedaviyi karşılar — dolgu, çekim",
+      dentalPrivate: "Özel diş hekimliği: randevu başına 150–400 PLN",
+      dentalChains: "Önerilen zincirler: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Polonya'da Sigorta",
@@ -5542,6 +5652,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Бо забони украинӣ",
       },
       bookBtn: "Навбат гирифтан",
+      nfzTitle: "Чӣ тавр суғуртаи тиббии NFZ гирифта мешавад",
+      nfzSteps: [
+        "Бо шартномаи меҳнатӣ (umowa o pracę) кор кунед — корфармо шуморо ба таври худкор дар ZUS сабти ном мекунад",
+        "Рақами PESEL гиред",
+        "Суғуртаи худро дар сомонаи eWUŚ тасдиқ кунед (ewus.nfz.gov.pl)",
+        "Ба ягон клиникаи давлатӣ ба назди духтур навишта шавед",
+      ],
+      stepLabel: "Қадам",
+      emergencyTitle: "Ёрии таъҷилӣ ва ҳолатҳои фавқулодда",
+      emergencyNumber: "Рақами ёрии таъҷилӣ дар Полша: 112 ё 999",
+      emergencyEr: "Наздиктарин шӯъбаи ёрии таъҷилӣ (SOR) бидуни навбат ва ройгон қабул мекунад",
+      emergencyPharmacy: "Дорухонаи навбатдор:",
+      usefulSitesTitle: "Сомонаҳои муфид",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Навишта шудан ба назди духтур онлайн — духтурони русзабон мавҷуданд" },
+        { url: "ewus.nfz.gov.pl", desc: "Санҷиши суғуртаи NFZ" },
+        { url: "nfz.gov.pl", desc: "Сомонаи расмии NFZ" },
+        { url: "aptekadyzurna.pl", desc: "Ёфтани дорухонаи навбатдор" },
+      ],
+      dentalTitle: "Дандонпизишкӣ",
+      dentalNfz: "NFZ табобати асосиро фаро мегирад — пломба, кашидани дандон",
+      dentalPrivate: "Дандонпизишкии хусусӣ: 150–400 PLN барои қабул",
+      dentalChains: "Шабакаҳои тавсияшуда: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Суғурта дар Полша",
@@ -6599,6 +6732,29 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ua: "Говорять українською",
       },
       bookBtn: "Записатися",
+      nfzTitle: "Як отримати медичну страховку NFZ",
+      nfzSteps: [
+        "Влаштуйтеся на роботу за трудовим договором (umowa o pracę) — роботодавець автоматично реєструє вас у ZUS",
+        "Отримайте номер PESEL",
+        "Підтвердіть страховку на сайті eWUŚ (ewus.nfz.gov.pl)",
+        "Запишіться до лікаря в будь-яку державну клініку",
+      ],
+      stepLabel: "Крок",
+      emergencyTitle: "Швидка допомога та невідкладні випадки",
+      emergencyNumber: "Номер швидкої допомоги в Польщі: 112 або 999",
+      emergencyEr: "Найближче відділення невідкладної допомоги (SOR) приймає без запису та безкоштовно",
+      emergencyPharmacy: "Чергова аптека:",
+      usefulSitesTitle: "Корисні сайти",
+      usefulSites: [
+        { url: "znany-lekarz.pl", desc: "Запис до лікаря онлайн — є російськомовні лікарі" },
+        { url: "ewus.nfz.gov.pl", desc: "Перевірити свою страховку NFZ" },
+        { url: "nfz.gov.pl", desc: "Офіційний сайт NFZ" },
+        { url: "aptekadyzurna.pl", desc: "Знайти чергову аптеку" },
+      ],
+      dentalTitle: "Стоматологія",
+      dentalNfz: "NFZ покриває базове лікування — пломби, видалення зубів",
+      dentalPrivate: "Приватна стоматологія: 150–400 злотих за прийом",
+      dentalChains: "Рекомендовані мережі: Dental+, Medicover Stomatologia",
     },
     insurance: {
       title: "Страхування в Польщі",
