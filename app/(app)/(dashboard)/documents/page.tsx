@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Reveal from "../../../_components/Reveal";
 import RegisterPromptModal from "../../../_components/RegisterPromptModal";
 import SectionCompleteModal from "../../../_components/SectionCompleteModal";
 import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
+import UpgradeModal from "../../../_components/UpgradeModal";
 import { pressScale } from "../../../_lib/motion";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -173,12 +173,14 @@ function LockedRow({
   lockedLabel,
   demoMode,
   onDemoBlocked,
+  onUpgradeClick,
 }: {
   name: string;
   hint: string;
   lockedLabel: string;
   demoMode: boolean;
   onDemoBlocked: () => void;
+  onUpgradeClick: () => void;
 }) {
   const content = (
     <>
@@ -206,9 +208,9 @@ function LockedRow({
   }
 
   return (
-    <Link href="/pricing" className={className}>
+    <button type="button" onClick={onUpgradeClick} className={className}>
       {content}
-    </Link>
+    </button>
   );
 }
 
@@ -219,6 +221,7 @@ export default function DocumentsPage() {
   const [activeTab, setActiveTab] = useState<Category>("all");
   const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [sectionCompleteOpen, setSectionCompleteOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
@@ -458,6 +461,7 @@ export default function DocumentsPage() {
                           lockedLabel={STATUS_BADGE.locked.label}
                           demoMode={demoMode}
                           onDemoBlocked={() => setPromptOpen(true)}
+                          onUpgradeClick={() => setUpgradeOpen(true)}
                         />
                       );
                     }
@@ -498,6 +502,7 @@ export default function DocumentsPage() {
       )}
 
       <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
       <SectionCompleteModal open={sectionCompleteOpen} onClose={() => setSectionCompleteOpen(false)} />
       <DeleteConfirmModal
         open={deleteTargetId !== null}
