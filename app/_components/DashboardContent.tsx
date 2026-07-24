@@ -37,10 +37,8 @@ export default function DashboardContent() {
     phases,
     phaseStatuses,
     completed,
-    saving,
     progressPercent,
     loading,
-    toggleStep,
     registerPromptOpen,
     setRegisterPromptOpen,
   } = useDashboardProgress();
@@ -111,8 +109,6 @@ export default function DashboardContent() {
               status={phaseStatuses[phase.key]}
               index={index}
               completed={completed}
-              saving={saving}
-              onToggle={toggleStep}
             />
           ))}
       </div>

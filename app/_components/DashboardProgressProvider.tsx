@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
-import { createNotification } from "../_lib/notifications";
 import { supabase } from "../../lib/supabase";
 import {
   STEPS_COMPLETED_ON_ONBOARDING,
@@ -25,8 +24,6 @@ type DashboardProgressValue = {
   completed: Set<string>;
   progressPercent: number;
   loading: boolean;
-  saving: string | null;
-  toggleStep: (documentType: string) => Promise<void>;
   registerPromptOpen: boolean;
   setRegisterPromptOpen: (open: boolean) => void;
 };
@@ -39,7 +36,6 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
   const { t } = useLanguage();
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState<string | null>(null);
   const [registerPromptOpen, setRegisterPromptOpen] = useState(false);
 
   const country = profile?.country || searchParams.get("country") || "Poland";
@@ -79,53 +75,6 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
   const progressPercent =
     checklistSteps.length > 0 ? Math.round((completed.size / checklistSteps.length) * 100) : 0;
 
-  async function toggleStep(documentType: string) {
-    if (!user) {
-      setRegisterPromptOpen(true);
-      return;
-    }
-    if (saving) return;
-    const isChecked = completed.has(documentType);
-    const nextChecked = !isChecked;
-
-    setSaving(documentType);
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (nextChecked) next.add(documentType);
-      else next.delete(documentType);
-      return next;
-    });
-
-    const { error } = await supabase.from("progress").upsert(
-      {
-        user_id: user.id,
-        country,
-        document_type: documentType,
-        steps_completed: nextChecked ? 1 : 0,
-        total_steps: 1,
-      },
-      { onConflict: "user_id,document_type" },
-    );
-
-    if (error) {
-      // Revert the optimistic update if the write failed.
-      setCompleted((prev) => {
-        const next = new Set(prev);
-        if (nextChecked) next.delete(documentType);
-        else next.add(documentType);
-        return next;
-      });
-    } else if (nextChecked) {
-      createNotification({
-        title: "Шаг выполнен! Продолжайте в том же духе 💪",
-        message: "Ваш прогресс сохранён — посмотрите, что дальше.",
-        type: "checklist",
-      });
-    }
-
-    setSaving(null);
-  }
-
   return (
     <DashboardProgressContext.Provider
       value={{
@@ -136,8 +85,6 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         completed,
         progressPercent,
         loading,
-        saving,
-        toggleStep,
         registerPromptOpen,
         setRegisterPromptOpen,
       }}

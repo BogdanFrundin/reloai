@@ -76,15 +76,11 @@ export default function PhaseCard({
   status,
   index,
   completed,
-  saving,
-  onToggle,
 }: {
   phase: Phase;
   status: PhaseStatus;
   index: number;
   completed: Set<string>;
-  saving: string | null;
-  onToggle: (documentType: string) => void;
 }) {
   const { t } = useLanguage();
   const d = t.dashboard;
@@ -161,16 +157,9 @@ export default function PhaseCard({
                   id={step.documentType}
                   className="flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150"
                 >
-                  <button
-                    type="button"
-                    onClick={() => onToggle(step.documentType)}
-                    disabled={saving === step.documentType}
-                    aria-pressed={checked}
-                    aria-label={step.title}
-                    className="flex-shrink-0 disabled:opacity-60"
-                  >
+                  <span className="flex-shrink-0" aria-hidden="true">
                     <Checkbox checked={checked} />
-                  </button>
+                  </span>
                   <div className="flex-1">
                     <p className={`text-sm font-medium ${checked ? "text-slate-400" : "text-white"}`}>{step.title}</p>
                     <p className="mt-0.5 text-xs text-slate-500">{step.description}</p>
