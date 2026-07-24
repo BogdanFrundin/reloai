@@ -182,7 +182,7 @@ function RouteCard({
 export default function OnboardingResultsPage() {
   const router = useRouter();
   const { user, profile, refreshProfile } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [result, setResult] = useState<RouteEngineResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectingId, setSelectingId] = useState<string | null>(null);
@@ -218,7 +218,7 @@ export default function OnboardingResultsPage() {
             current_country: profile?.current_country,
             country: profile?.country,
             goal: profile?.goal,
-            language: profile?.language,
+            language: lang,
           }),
           signal: controller.signal,
         });
