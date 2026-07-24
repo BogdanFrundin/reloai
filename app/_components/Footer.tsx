@@ -30,7 +30,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative border-t border-white/10">
+    <footer className="relative border-t border-border-subtle">
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
@@ -42,14 +42,14 @@ export default function Footer() {
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-white font-bold transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105">
                 R
               </span>
-              <span className="text-lg font-semibold tracking-tight text-white">
+              <span className="text-lg font-semibold tracking-tight text-text-primary">
                 ReloAI
               </span>
             </a>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-muted">
               {t.footer.description}
             </p>
-            <div className="mt-6 flex gap-4 text-slate-500">
+            <div className="mt-6 flex gap-4 text-text-muted">
               <a
                 href="#"
                 aria-label="X (Twitter)"
@@ -73,13 +73,13 @@ export default function Footer() {
 
           {FOOTER_LINKS.map((column) => (
             <div key={column.heading}>
-              <h3 className="text-sm font-semibold text-white">{column.heading}</h3>
+              <h3 className="text-sm font-semibold text-text-primary">{column.heading}</h3>
               <ul className="mt-4 space-y-3">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-slate-500 transition-colors duration-150 hover:text-accent-bright"
+                      className="text-sm text-text-muted transition-colors duration-150 hover:text-accent-bright"
                     >
                       {link.label}
                     </a>
@@ -90,7 +90,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-slate-500">
+        <div className="mt-12 border-t border-border-subtle pt-6 text-center text-sm text-text-muted">
           © {new Date().getFullYear()} ReloAI. {t.footer.rights}
         </div>
         <p className="mt-4 text-center text-xs leading-relaxed text-slate-600">{t.footer.disclaimer}</p>

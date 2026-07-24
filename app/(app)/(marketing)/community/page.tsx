@@ -58,7 +58,7 @@ export default function CommunityPage() {
               className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                 activeTab === tab
                   ? "border-accent/50 bg-accent/10 text-accent-bright"
-                  : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
+                  : "border-border-subtle bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
               }`}
             >
               {t.community.cats[tab]}
@@ -70,7 +70,7 @@ export default function CommunityPage() {
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((channel, index) => (
           <Reveal key={channel.name} delay={index * 40}>
-            <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
+            <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
@@ -84,14 +84,14 @@ export default function CommunityPage() {
                   {t.community.cats[channel.category]}
                 </span>
               </div>
-              <p className="mt-3 text-sm font-semibold text-white">{channel.name}</p>
-              <p className="mt-1 text-xs text-slate-500 transition-colors duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-accent-bright motion-reduce:transition-none">
+              <p className="mt-3 text-sm font-semibold text-text-primary">{channel.name}</p>
+              <p className="mt-1 text-xs text-text-muted transition-colors duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-accent-bright motion-reduce:transition-none">
                 {channel.members} {t.community.members}
               </p>
               <button
                 type="button"
                 onClick={() => !user && setPromptOpen(true)}
-                className={`mt-4 self-start rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none ${pressScale}`}
+                className={`mt-4 self-start rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-xs font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none ${pressScale}`}
               >
                 {t.community.join}
               </button>

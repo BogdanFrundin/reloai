@@ -62,17 +62,17 @@ export default function InsurancePage() {
           const type = t.insurance.types[key];
           return (
             <Reveal key={key} delay={index * 50}>
-              <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
+              <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
                 <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
                   {TYPE_ICONS[key]}
                 </span>
-                <p className="mt-3 text-lg font-semibold text-white">{type.name}</p>
-                <p className="mt-1 text-xs text-slate-500">{type.provider}</p>
+                <p className="mt-3 text-lg font-semibold text-text-primary">{type.name}</p>
+                <p className="mt-1 text-xs text-text-muted">{type.provider}</p>
                 <p className="mt-2 text-sm font-medium text-accent-bright">{type.price}</p>
-                <p className="mt-2 flex-1 text-sm text-slate-400">{type.desc}</p>
+                <p className="mt-2 flex-1 text-sm text-text-muted">{type.desc}</p>
                 <Link
                   href="#"
-                  className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+                  className="mt-5 inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
                 >
                   {t.insurance.learnMoreBtn}
                 </Link>
@@ -83,14 +83,14 @@ export default function InsurancePage() {
       </div>
 
       <Reveal delay={200} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.insurance.compareTitle}</h2>
-        <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
-          <div className="grid grid-cols-3 border-b border-white/10 bg-white/[0.03] text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.insurance.compareTitle}</h2>
+        <div className="mt-4 overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
+          <div className="grid grid-cols-3 border-b border-border-subtle bg-surface-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
             <div className="p-4"></div>
             <div className="p-4 text-accent-bright">
               <span className="inline-flex items-center gap-1.5 normal-case tracking-normal">
                 {t.insurance.nfzLabel}
-                <span title={t.insurance.nfzTooltip} className="cursor-help text-slate-500">
+                <span title={t.insurance.nfzTooltip} className="cursor-help text-text-muted">
                   {INFO_ICON}
                 </span>
               </span>
@@ -101,12 +101,12 @@ export default function InsurancePage() {
             <div
               key={row.label}
               className={`grid grid-cols-3 text-sm ${
-                index !== t.insurance.rows.length - 1 ? "border-b border-white/5" : ""
+                index !== t.insurance.rows.length - 1 ? "border-b border-border-subtle" : ""
               }`}
             >
-              <div className="p-4 font-medium text-white">{row.label}</div>
-              <div className="p-4 text-slate-400">{row.nfz}</div>
-              <div className="p-4 text-slate-400">{row.pvt}</div>
+              <div className="p-4 font-medium text-text-primary">{row.label}</div>
+              <div className="p-4 text-text-muted">{row.nfz}</div>
+              <div className="p-4 text-text-muted">{row.pvt}</div>
             </div>
           ))}
         </div>

@@ -30,7 +30,7 @@ export default function MiniLangSwitcher() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className={`flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/40 hover:bg-white/10 ${pressScale}`}
+        className={`flex items-center gap-1.5 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-accent/40 hover:bg-surface-hover ${pressScale}`}
       >
         <Image
           src={getFlagUrl(current.flag, "sm")}
@@ -42,7 +42,7 @@ export default function MiniLangSwitcher() {
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`h-3 w-3 text-slate-500 transition-transform duration-150 ${open ? "rotate-180" : ""}`}
+          className={`h-3 w-3 text-text-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -55,7 +55,7 @@ export default function MiniLangSwitcher() {
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 z-50 mt-1.5 w-40 overflow-hidden rounded-xl border border-white/10 bg-[#0d0d0f]/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl"
+          className="absolute right-0 z-50 mt-1.5 w-40 overflow-hidden rounded-xl border border-border-subtle bg-panel/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl"
         >
           {LANGUAGES.map((l) => (
             <li key={l.code}>
@@ -68,7 +68,7 @@ export default function MiniLangSwitcher() {
                   setOpen(false);
                 }}
                 className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
-                  l.code === lang ? "font-semibold text-accent-bright" : "text-slate-300"
+                  l.code === lang ? "font-semibold text-accent-bright" : "text-text-secondary"
                 }`}
               >
                 <Image

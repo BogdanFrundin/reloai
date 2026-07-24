@@ -43,7 +43,7 @@ export default function Sidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0a0c] backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 lg:self-start lg:bg-black/40 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -51,7 +51,7 @@ export default function Sidebar({
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
             R
           </span>
-          <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
+          <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
         </Link>
 
         {/* Main navigation */}
@@ -67,8 +67,8 @@ export default function Sidebar({
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
                   isActive
-                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 }`}
               >
                 {NAV_ICONS[key]}
@@ -85,7 +85,7 @@ export default function Sidebar({
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
                 isOtherActive
                   ? "bg-accent/10 text-accent-bright"
-                  : "text-slate-300 hover:bg-white/5 hover:text-white"
+                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {OTHER_SERVICES_ICON}
@@ -96,7 +96,7 @@ export default function Sidebar({
             </button>
 
             {otherOpen && (
-              <div className="mt-1 space-y-1 border-l border-white/10 pl-4">
+              <div className="mt-1 space-y-1 border-l border-border-subtle pl-4">
                 {OTHER_ORDER.map((key) => {
                   const href = HREFS[key];
                   const isActive = pathname === href;
@@ -109,7 +109,7 @@ export default function Sidebar({
                       className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                         isActive
                           ? "bg-accent/10 text-accent-bright"
-                          : "text-slate-400 hover:bg-white/5 hover:text-white"
+                          : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
                       }`}
                     >
                       {NAV_ICONS[key]}
@@ -123,14 +123,14 @@ export default function Sidebar({
         </nav>
 
         {/* User actions */}
-        <div className="space-y-1 border-t border-white/10 p-3">
+        <div className="space-y-1 border-t border-border-subtle p-3">
           <Link
             href="/profile"
             onClick={onClose}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
               pathname === "/profile"
                 ? "bg-accent/10 text-accent-bright"
-                : "text-slate-300 hover:bg-white/5 hover:text-white"
+                : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             }`}
           >
             {PROFILE_ICON}
@@ -139,7 +139,7 @@ export default function Sidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {SETTINGS_ICON}
             <span>{s.settings}</span>
@@ -147,7 +147,7 @@ export default function Sidebar({
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {LOGOUT_ICON}
             <span>{s.logout}</span>

@@ -103,14 +103,14 @@ export default function SettingsPage() {
       <div className="mt-10 max-w-2xl space-y-6">
         {/* Account */}
         <Reveal>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">
               {s.accountSection}{" "}
               {accountSaved && <span className="text-xs font-normal text-accent-bright">{s.saved}</span>}
             </p>
             <div className="mt-4 space-y-3">
               <label className="block">
-                <span className="text-xs text-slate-500">{s.nameLabel}</span>
+                <span className="text-xs text-text-muted">{s.nameLabel}</span>
                 <input
                   type="text"
                   value={name}
@@ -118,11 +118,11 @@ export default function SettingsPage() {
                     setName(event.target.value);
                     setAccountSaved(false);
                   }}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 text-sm text-white outline-none transition-colors duration-150 focus:border-accent/50"
+                  className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
                 />
               </label>
               <label className="block">
-                <span className="text-xs text-slate-500">{s.emailLabel}</span>
+                <span className="text-xs text-text-muted">{s.emailLabel}</span>
                 <input
                   type="email"
                   value={email}
@@ -130,7 +130,7 @@ export default function SettingsPage() {
                     setEmail(event.target.value);
                     setAccountSaved(false);
                   }}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 text-sm text-white outline-none transition-colors duration-150 focus:border-accent/50"
+                  className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
                 />
               </label>
               <button
@@ -147,12 +147,12 @@ export default function SettingsPage() {
 
         {/* Language */}
         <Reveal delay={50}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">
               {s.languageSection}{" "}
-              {savingLang && <span className="text-xs font-normal text-slate-500">{s.saving}</span>}
+              {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
             </p>
-            <p className="mt-1 text-xs text-slate-500">{s.languageDesc}</p>
+            <p className="mt-1 text-xs text-text-muted">{s.languageDesc}</p>
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {LANGUAGES.map((l) => (
                 <button
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                   className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
                     lang === l.code
                       ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
+                      : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
                   }`}
                 >
                   <Image
@@ -182,14 +182,14 @@ export default function SettingsPage() {
 
         {/* Notifications */}
         <Reveal delay={100}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{s.notifications}</p>
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
             <div className="mt-4 space-y-4">
               {NOTIFICATION_SETTINGS.map((setting) => (
                 <div key={setting.key} className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-medium text-white">{setting.label}</p>
-                    <p className="text-xs text-slate-500">{setting.description}</p>
+                    <p className="text-sm font-medium text-text-primary">{setting.label}</p>
+                    <p className="text-xs text-text-muted">{setting.description}</p>
                   </div>
                   <ToggleSwitch
                     checked={notifications[setting.key]}
@@ -204,16 +204,65 @@ export default function SettingsPage() {
 
         {/* Theme */}
         <Reveal delay={150}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{s.themeSection}</p>
-            <p className="mt-1 text-xs text-slate-500">{s.themeDesc}</p>
-            <div className="mt-4 flex items-center justify-between gap-4">
-              <span className="text-sm text-slate-300">{theme === "dark" ? s.themeDark : s.themeLight}</span>
-              <ToggleSwitch
-                checked={theme === "dark"}
-                onChange={(checked) => setTheme(checked ? "dark" : "light")}
-                label={s.themeSection}
-              />
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">{s.themeSection}</p>
+            <p className="mt-1 text-xs text-text-muted">{s.themeDesc}</p>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => setTheme("light")}
+                aria-pressed={theme === "light"}
+                className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                  theme === "light"
+                    ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                    : "border-border-subtle bg-surface-1 hover:border-border-strong"
+                }`}
+              >
+                {/* Fixed preview mockup: always shows what light theme looks like, regardless of the live theme */}
+                <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg bg-white p-2.5">
+                  <div className="flex gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  </div>
+                  <div className="h-1.5 w-3/4 rounded-full bg-slate-300" />
+                  <div className="h-1.5 w-1/2 rounded-full bg-slate-200" />
+                  <div className="h-1.5 w-2/3 rounded-full bg-slate-200" />
+                </div>
+                <span
+                  className={`text-sm font-medium ${theme === "light" ? "text-text-primary" : "text-text-secondary"}`}
+                >
+                  {s.themeLight}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setTheme("dark")}
+                aria-pressed={theme === "dark"}
+                className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                  theme === "dark"
+                    ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                    : "border-border-subtle bg-surface-1 hover:border-border-strong"
+                }`}
+              >
+                {/* Fixed preview mockup: always shows what dark theme looks like, regardless of the live theme */}
+                <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0d0d0f] p-2.5">
+                  <div className="flex gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+                  </div>
+                  <div className="h-1.5 w-3/4 rounded-full bg-white/25" />
+                  <div className="h-1.5 w-1/2 rounded-full bg-white/15" />
+                  <div className="h-1.5 w-2/3 rounded-full bg-white/15" />
+                </div>
+                <span
+                  className={`text-sm font-medium ${theme === "dark" ? "text-text-primary" : "text-text-secondary"}`}
+                >
+                  {s.themeDark}
+                </span>
+              </button>
             </div>
           </div>
         </Reveal>
@@ -221,8 +270,8 @@ export default function SettingsPage() {
         {/* Danger zone */}
         <Reveal delay={175}>
           <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{s.dangerSection}</p>
-            <p className="mt-1 text-xs text-slate-500">{s.dangerDesc}</p>
+            <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
+            <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(true)}
@@ -238,7 +287,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className={`flex w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
+            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
           >
             {t.profile.logOut}
           </button>
@@ -260,7 +309,7 @@ export default function SettingsPage() {
         >
           <div
             onClick={(event) => event.stopPropagation()}
-            className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 text-center shadow-2xl shadow-black/40"
+            className="w-full max-w-sm rounded-2xl border border-border-subtle bg-panel p-6 text-center shadow-2xl shadow-black/40"
           >
             <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/15 text-red-400">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -271,14 +320,14 @@ export default function SettingsPage() {
                 />
               </svg>
             </span>
-            <h2 className="mt-4 text-lg font-bold text-white">{s.deleteConfirmTitle}</h2>
-            <p className="mt-2 text-sm text-slate-400">{s.deleteConfirmBody}</p>
+            <h2 className="mt-4 text-lg font-bold text-text-primary">{s.deleteConfirmTitle}</h2>
+            <p className="mt-2 text-sm text-text-muted">{s.deleteConfirmBody}</p>
             <div className="mt-6 flex gap-3">
               <button
                 type="button"
                 onClick={() => setDeleteConfirmOpen(false)}
                 disabled={deleting}
-                className={`flex-1 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/30 hover:text-white disabled:opacity-60 ${pressScale}`}
+                className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary disabled:opacity-60 ${pressScale}`}
               >
                 {t.common.cancelBtn}
               </button>

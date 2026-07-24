@@ -103,7 +103,7 @@ export default function NotificationBell() {
         aria-label={n.bellAria}
         aria-expanded={menuOpen}
         aria-haspopup="menu"
-        className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition-colors duration-150 hover:border-white/20 hover:text-white"
+        className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary"
       >
         {BELL_ICON}
         {unreadCount > 0 && (
@@ -118,12 +118,12 @@ export default function NotificationBell() {
           <div aria-hidden onClick={() => setMenuOpen(false)} className="fixed inset-0 z-40" />
           <div
             role="menu"
-            className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-white/10 bg-[#0d0d0f] p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
+            className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-border-subtle bg-panel p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
           >
-            <p className="px-3 py-2 text-sm font-semibold text-white">{n.title}</p>
+            <p className="px-3 py-2 text-sm font-semibold text-text-primary">{n.title}</p>
 
             {notifications.length === 0 ? (
-              <p className="px-3 py-6 text-center text-sm text-slate-500">{n.empty}</p>
+              <p className="px-3 py-6 text-center text-sm text-text-muted">{n.empty}</p>
             ) : (
               <div className="max-h-96 space-y-1 overflow-y-auto">
                 {notifications.map((item) => (
@@ -132,17 +132,17 @@ export default function NotificationBell() {
                     type="button"
                     role="menuitem"
                     onClick={() => handleSelect(item)}
-                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-white/5 ${
+                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover ${
                       item.read ? "opacity-60" : "bg-accent/[0.05]"
                     }`}
                   >
-                    <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300">
+                    <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary">
                       {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm leading-snug text-slate-200">{item.title}</p>
-                      {item.message && <p className="mt-0.5 text-xs leading-snug text-slate-400">{item.message}</p>}
-                      <p className="mt-1 text-xs text-slate-500">{formatTimeAgo(item.created_at, lang)}</p>
+                      <p className="text-sm leading-snug text-text-secondary">{item.title}</p>
+                      {item.message && <p className="mt-0.5 text-xs leading-snug text-text-muted">{item.message}</p>}
+                      <p className="mt-1 text-xs text-text-muted">{formatTimeAgo(item.created_at, lang)}</p>
                     </div>
                     {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
                   </button>
@@ -154,7 +154,7 @@ export default function NotificationBell() {
               type="button"
               onClick={markAllRead}
               disabled={unreadCount === 0}
-              className="mt-1 flex w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-accent-bright transition-colors duration-150 hover:bg-white/5 disabled:cursor-not-allowed disabled:text-slate-600 disabled:hover:bg-transparent"
+              className="mt-1 flex w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-accent-bright transition-colors duration-150 hover:bg-surface-hover disabled:cursor-not-allowed disabled:text-slate-600 disabled:hover:bg-transparent"
             >
               {n.markAllRead}
             </button>

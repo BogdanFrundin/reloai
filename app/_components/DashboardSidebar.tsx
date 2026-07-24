@@ -91,7 +91,7 @@ export default function DashboardSidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0a0c] backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-[220px] lg:translate-x-0 lg:self-start lg:bg-black/40 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-[220px] lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -100,12 +100,12 @@ export default function DashboardSidebar({
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
               R
             </span>
-            <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
+            <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
           </Link>
-          <p className="mt-1.5 text-xs text-slate-500">{d.tagline}</p>
+          <p className="mt-1.5 text-xs text-text-muted">{d.tagline}</p>
 
           {countryEntry && (
-            <div className="mt-2.5 flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-1.5">
+            <div className="mt-2.5 flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-1.5">
               <Image
                 src={getFlagUrl(COUNTRY_FLAG_CODE[country] ?? "pl", "sm")}
                 alt={countryEntry.name}
@@ -114,17 +114,17 @@ export default function DashboardSidebar({
                 className="rounded-sm"
                 unoptimized
               />
-              <span className="text-sm font-medium text-white">{countryEntry.name}</span>
+              <span className="text-sm font-medium text-text-primary">{countryEntry.name}</span>
             </div>
           )}
         </div>
 
         <nav className="scrollbar-hide flex-1 space-y-3 overflow-y-auto px-3 py-1.5">
-          <div className="border-b border-white/10 pb-1.5">
+          <div className="border-b border-border-subtle pb-1.5">
             <Link
               href="/"
               onClick={onClose}
-              className="flex items-center gap-3 rounded-xl px-3 py-1.5 text-[13px] font-medium text-slate-400 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+              className="flex items-center gap-3 rounded-xl px-3 py-1.5 text-[13px] font-medium text-text-muted transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
             >
               {HOME_ICON}
               <span>{d.home}</span>
@@ -132,15 +132,15 @@ export default function DashboardSidebar({
           </div>
 
           <div>
-            <p className="px-3 text-[11px] font-semibold tracking-wider text-slate-500">{d.myPlanSection}</p>
+            <p className="px-3 text-[11px] font-semibold tracking-wider text-text-muted">{d.myPlanSection}</p>
             <div className="mt-1 space-y-1">
               <Link
                 href="/dashboard"
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
                   pathname === "/dashboard"
-                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 }`}
               >
                 {ROADMAP_ICON}
@@ -151,8 +151,8 @@ export default function DashboardSidebar({
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
                   pathname === "/dashboard/ai"
-                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 }`}
               >
                 {AI_ASSISTANT_ICON}
@@ -163,8 +163,8 @@ export default function DashboardSidebar({
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
                   pathname === "/documents"
-                    ? "border-accent-bright bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                    : "border-transparent text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                    : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 }`}
               >
                 {NAV_ICONS.documents}
@@ -174,7 +174,7 @@ export default function DashboardSidebar({
           </div>
 
           <div>
-            <p className="px-3 text-[11px] font-semibold tracking-wider text-slate-500">{d.servicesSection}</p>
+            <p className="px-3 text-[11px] font-semibold tracking-wider text-text-muted">{d.servicesSection}</p>
             <div className="mt-1 space-y-1">
               {SERVICES_ORDER.map((key) => {
                 const href = SERVICE_HREFS[key];
@@ -186,7 +186,7 @@ export default function DashboardSidebar({
                     href={href}
                     onClick={onClose}
                     className={`flex items-center gap-3 rounded-xl px-3 py-1.5 text-[13px] font-medium transition-colors duration-150 ${
-                      isActive ? "bg-accent/10 text-accent-bright" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      isActive ? "bg-accent/10 text-accent-bright" : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
                     }`}
                   >
                     {NAV_ICONS[key]}
@@ -198,14 +198,14 @@ export default function DashboardSidebar({
           </div>
         </nav>
 
-        <div className="space-y-0.5 border-t border-white/10 p-2">
+        <div className="space-y-0.5 border-t border-border-subtle p-2">
           <Link
             href="/profile"
             onClick={onClose}
             className={`flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
               pathname === "/profile"
-                ? "bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                : "text-slate-300 hover:bg-white/5 hover:text-white"
+                ? "bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             }`}
           >
             {PROFILE_ICON}
@@ -216,8 +216,8 @@ export default function DashboardSidebar({
             onClick={onClose}
             className={`flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
               pathname === "/settings"
-                ? "bg-accent/20 text-white shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
-                : "text-slate-300 hover:bg-white/5 hover:text-white"
+                ? "bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             }`}
           >
             {SETTINGS_ICON}
@@ -226,7 +226,7 @@ export default function DashboardSidebar({
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-[13px] font-medium text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-[13px] font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {LOGOUT_ICON}
             <span>{s.logout}</span>

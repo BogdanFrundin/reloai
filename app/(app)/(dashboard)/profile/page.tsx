@@ -57,8 +57,8 @@ function DifficultyBadge({ difficulty, label }: { difficulty: string; label: str
 function InfoRow({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
-      <span className="text-sm text-slate-400">{label}</span>
-      <span className="flex items-center gap-2 text-sm font-medium text-white">{children}</span>
+      <span className="text-sm text-text-muted">{label}</span>
+      <span className="flex items-center gap-2 text-sm font-medium text-text-primary">{children}</span>
     </div>
   );
 }
@@ -150,7 +150,7 @@ export default function ProfilePage() {
   const isFree = planValue === "free";
   const isPro = planValue === "pro";
   const PLAN_BADGE: Record<string, { label: string; className: string }> = {
-    free: { label: t.appPricing.freeName, className: "border-white/15 bg-white/5 text-slate-300" },
+    free: { label: t.appPricing.freeName, className: "border-border-strong bg-surface-1 text-text-secondary" },
     premium: { label: t.appPricing.premiumName, className: "border-accent/30 bg-accent/10 text-accent-bright" },
     pro: { label: t.appPricing.proName, className: "border-purple-400/30 bg-purple-500/10 text-purple-300" },
   };
@@ -190,8 +190,8 @@ export default function ProfilePage() {
       <div className="mt-10 max-w-2xl space-y-6">
         {/* Section 1 — Personal Info */}
         <Reveal>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{p.personalSection}</p>
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">{p.personalSection}</p>
             <div className="mt-4 flex items-center gap-4">
               <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-xl font-semibold text-white">
                 {avatarUrl ? (
@@ -202,17 +202,17 @@ export default function ProfilePage() {
                 )}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-lg font-semibold text-white">{profile?.name || p.unnamed}</p>
-                <p className="truncate text-sm text-slate-400">{user?.email}</p>
+                <p className="truncate text-lg font-semibold text-text-primary">{profile?.name || p.unnamed}</p>
+                <p className="truncate text-sm text-text-muted">{user?.email}</p>
               </div>
               <span className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold ${planBadge.className}`}>
                 {planBadge.label}
               </span>
             </div>
-            <div className="mt-4 space-y-1 border-t border-white/10 pt-3">
+            <div className="mt-4 space-y-1 border-t border-border-subtle pt-3">
               {memberSince && <InfoRow label={p.memberSinceLabel}>{memberSince}</InfoRow>}
               <div className="flex items-center justify-between gap-4 py-2.5">
-                <span className="text-sm text-slate-400">{p.planLabel}</span>
+                <span className="text-sm text-text-muted">{p.planLabel}</span>
                 {isPro ? (
                   <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-400">
                     {p.maxPlanBadge}
@@ -237,9 +237,9 @@ export default function ProfilePage() {
 
         {/* Section 2 — Relocation Profile */}
         <Reveal delay={50}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-white">{p.relocationSection}</p>
-            <div className="mt-2 divide-y divide-white/5">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">{p.relocationSection}</p>
+            <div className="mt-2 divide-y divide-border-subtle">
               <InfoRow label={t.onboarding.citizenshipLabel}>
                 {profile?.citizenship ? (
                   <>
@@ -254,7 +254,7 @@ export default function ProfilePage() {
                     {getCountryName(profile.citizenship, lang)}
                   </>
                 ) : (
-                  <span className="text-slate-500">{p.notSet}</span>
+                  <span className="text-text-muted">{p.notSet}</span>
                 )}
               </InfoRow>
 
@@ -272,7 +272,7 @@ export default function ProfilePage() {
                     {getCountryName(profile.current_country, lang)}
                   </>
                 ) : (
-                  <span className="text-slate-500">{p.notSet}</span>
+                  <span className="text-text-muted">{p.notSet}</span>
                 )}
               </InfoRow>
 
@@ -293,18 +293,18 @@ export default function ProfilePage() {
                     {profile?.city ? `, ${profile.city}` : ""}
                   </>
                 ) : (
-                  <span className="text-slate-500">{p.notSet}</span>
+                  <span className="text-text-muted">{p.notSet}</span>
                 )}
               </InfoRow>
 
               <InfoRow label={t.onboarding.steps.goal.question}>
-                {goalDisplay ?? <span className="text-slate-500">{p.notSet}</span>}
+                {goalDisplay ?? <span className="text-text-muted">{p.notSet}</span>}
               </InfoRow>
 
               {goal === "work" && (
                 <InfoRow label={p.jobOfferLabel}>
                   {profile?.job_offer === "yes" ? p.yes : profile?.job_offer === "no" ? p.no : (
-                    <span className="text-slate-500">{p.notSet}</span>
+                    <span className="text-text-muted">{p.notSet}</span>
                   )}
                 </InfoRow>
               )}
@@ -312,40 +312,40 @@ export default function ProfilePage() {
               {goal === "study" && (
                 <InfoRow label={p.alreadyAdmittedLabel}>
                   {profile?.already_admitted === "yes" ? p.yes : profile?.already_admitted === "no" ? p.no : (
-                    <span className="text-slate-500">{p.notSet}</span>
+                    <span className="text-text-muted">{p.notSet}</span>
                   )}
                 </InfoRow>
               )}
             </div>
 
-            <div className="mt-3 border-t border-white/10 pt-4">
-              <p className="text-xs font-medium text-slate-500">{p.routeLabel}</p>
+            <div className="mt-3 border-t border-border-subtle pt-4">
+              <p className="text-xs font-medium text-text-muted">{p.routeLabel}</p>
               {route ? (
-                <div className="mt-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                  <p className="text-sm font-semibold text-white">{route.name}</p>
-                  <p className="mt-1 text-xs text-slate-400">{route.description}</p>
+                <div className="mt-2 rounded-xl border border-border-subtle bg-surface-1 p-4">
+                  <p className="text-sm font-semibold text-text-primary">{route.name}</p>
+                  <p className="mt-1 text-xs text-text-muted">{route.description}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <SpeedBadge speed={route.speed} label={speedLabel(route.speed)} />
                     <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel(route.difficulty)} />
                   </div>
                   <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
                     <div>
-                      <p className="text-slate-500">{t.onboarding.results.approvalRate}</p>
-                      <p className="mt-0.5 font-semibold text-slate-200">{route.approval_rate}%</p>
+                      <p className="text-text-muted">{t.onboarding.results.approvalRate}</p>
+                      <p className="mt-0.5 font-semibold text-text-secondary">{route.approval_rate}%</p>
                     </div>
                     <div>
-                      <p className="text-slate-500">{t.onboarding.results.timeline}</p>
-                      <p className="mt-0.5 font-semibold text-slate-200">{route.timeline}</p>
+                      <p className="text-text-muted">{t.onboarding.results.timeline}</p>
+                      <p className="mt-0.5 font-semibold text-text-secondary">{route.timeline}</p>
                     </div>
                     <div>
-                      <p className="text-slate-500">{t.onboarding.results.cost}</p>
-                      <p className="mt-0.5 font-semibold text-slate-200">{route.cost}</p>
+                      <p className="text-text-muted">{t.onboarding.results.cost}</p>
+                      <p className="mt-0.5 font-semibold text-text-secondary">{route.cost}</p>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-4">
-                  <span className="text-sm text-slate-500">{p.noRouteSelected}</span>
+                <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
+                  <span className="text-sm text-text-muted">{p.noRouteSelected}</span>
                   <Link
                     href="/onboarding/results"
                     className={`flex-shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
@@ -368,34 +368,34 @@ export default function ProfilePage() {
 
         {/* Section 3 — Progress Overview */}
         <Reveal delay={100}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-white">{p.progressSection}</p>
+              <p className="text-sm font-semibold text-text-primary">{p.progressSection}</p>
               <span className="text-sm font-semibold text-accent-bright">
                 {progressLoading ? "…" : `${progressPercent}%`}
               </span>
             </div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border-subtle">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
                 style={{ width: `${progressLoading ? 0 : progressPercent}%` }}
               />
             </div>
             <div className="mt-4 space-y-1">
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-text-muted">
                 {p.stepsCompletedLabel.replace("{completed}", String(completed.size)).replace("{total}", String(checklistSteps.length))}
               </p>
-              <p className="text-sm text-slate-300">
-                <span className="text-slate-500">{p.currentStepLabel}: </span>
+              <p className="text-sm text-text-secondary">
+                <span className="text-text-muted">{p.currentStepLabel}: </span>
                 {currentStep ? (
                   <Link
                     href={`/dashboard#${currentStep.documentType}`}
-                    className="font-medium text-white underline decoration-white/30 underline-offset-2 transition-colors duration-150 hover:text-accent-bright hover:decoration-accent-bright"
+                    className="font-medium text-text-primary underline decoration-border-strong underline-offset-2 transition-colors duration-150 hover:text-accent-bright hover:decoration-accent-bright"
                   >
                     {currentStep.title}
                   </Link>
                 ) : (
-                  <span className="font-medium text-white">{p.allStepsDone}</span>
+                  <span className="font-medium text-text-primary">{p.allStepsDone}</span>
                 )}
               </p>
             </div>
@@ -404,9 +404,9 @@ export default function ProfilePage() {
 
         {/* Section 4 — Documents Status */}
         <Reveal delay={150}>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-white">{p.documentsSection}</p>
+              <p className="text-sm font-semibold text-text-primary">{p.documentsSection}</p>
               <Link href="/documents" className="text-xs font-medium text-accent-bright hover:underline">
                 {p.viewAllDocuments}
               </Link>
@@ -415,9 +415,9 @@ export default function ProfilePage() {
               {documents.map((doc) => (
                 <div
                   key={doc.id}
-                  className="flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5"
+                  className="flex items-center justify-between gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5"
                 >
-                  <span className="truncate text-xs font-medium text-slate-300">
+                  <span className="truncate text-xs font-medium text-text-secondary">
                     {t.documents.docNames[doc.nameKey]}
                   </span>
                   <span
@@ -436,7 +436,7 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className={`flex w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
+            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
           >
             {p.logOut}
           </button>
@@ -452,13 +452,13 @@ export default function ProfilePage() {
         >
           <div
             onClick={(event) => event.stopPropagation()}
-            className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 shadow-2xl shadow-black/40"
+            className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-6 shadow-2xl shadow-black/40"
           >
-            <h2 className="text-lg font-bold text-white">{p.editModalTitle}</h2>
+            <h2 className="text-lg font-bold text-text-primary">{p.editModalTitle}</h2>
 
             <div className="mt-5 space-y-4">
               <label className="block">
-                <span className="text-xs text-slate-500">{t.onboarding.citizenshipLabel}</span>
+                <span className="text-xs text-text-muted">{t.onboarding.citizenshipLabel}</span>
                 <div className="mt-1.5">
                   <SearchableCountrySelect
                     lang={lang}
@@ -470,7 +470,7 @@ export default function ProfilePage() {
               </label>
 
               <label className="block">
-                <span className="text-xs text-slate-500">{t.onboarding.currentCountryLabel}</span>
+                <span className="text-xs text-text-muted">{t.onboarding.currentCountryLabel}</span>
                 <div className="mt-1.5">
                   <SearchableCountrySelect
                     lang={lang}
@@ -482,18 +482,18 @@ export default function ProfilePage() {
               </label>
 
               <label className="block">
-                <span className="text-xs text-slate-500">{p.cityLabel}</span>
+                <span className="text-xs text-text-muted">{p.cityLabel}</span>
                 <input
                   type="text"
                   value={formCity}
                   onChange={(event) => setFormCity(event.target.value)}
                   placeholder={p.cityPlaceholder}
-                  className="mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none transition-colors duration-150 focus:border-accent"
+                  className="mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors duration-150 focus:border-accent"
                 />
               </label>
 
               <div>
-                <span className="text-xs text-slate-500">{t.onboarding.steps.goal.question}</span>
+                <span className="text-xs text-text-muted">{t.onboarding.steps.goal.question}</span>
                 <div className="mt-1.5 grid grid-cols-2 gap-2">
                   {GOAL_KEYS.map((key) => (
                     <button
@@ -503,7 +503,7 @@ export default function ProfilePage() {
                       className={`rounded-xl border px-3 py-2 text-left text-xs font-medium transition-colors duration-150 ${
                         formGoal === key
                           ? "border-accent/50 bg-accent/10 text-accent-bright"
-                          : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
+                          : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
                       }`}
                     >
                       {t.onboarding.goalOptions[key]}
@@ -514,7 +514,7 @@ export default function ProfilePage() {
 
               {formGoal === "work" && (
                 <div>
-                  <span className="text-xs text-slate-500">{p.jobOfferLabel}</span>
+                  <span className="text-xs text-text-muted">{p.jobOfferLabel}</span>
                   <div className="mt-1.5 flex gap-2">
                     {(["yes", "no"] as const).map((value) => (
                       <button
@@ -524,7 +524,7 @@ export default function ProfilePage() {
                         className={`flex-1 rounded-xl border px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                           formJobOffer === value
                             ? "border-accent/50 bg-accent/10 text-accent-bright"
-                            : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
+                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
                         }`}
                       >
                         {value === "yes" ? p.yes : p.no}
@@ -536,7 +536,7 @@ export default function ProfilePage() {
 
               {formGoal === "study" && (
                 <div>
-                  <span className="text-xs text-slate-500">{p.alreadyAdmittedLabel}</span>
+                  <span className="text-xs text-text-muted">{p.alreadyAdmittedLabel}</span>
                   <div className="mt-1.5 flex gap-2">
                     {(["yes", "no"] as const).map((value) => (
                       <button
@@ -546,7 +546,7 @@ export default function ProfilePage() {
                         className={`flex-1 rounded-xl border px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                           formAlreadyAdmitted === value
                             ? "border-accent/50 bg-accent/10 text-accent-bright"
-                            : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:text-white"
+                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
                         }`}
                       >
                         {value === "yes" ? p.yes : p.no}
@@ -562,7 +562,7 @@ export default function ProfilePage() {
                 type="button"
                 onClick={() => setEditOpen(false)}
                 disabled={savingEdit}
-                className={`flex-1 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/30 hover:text-white disabled:opacity-60 ${pressScale}`}
+                className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary disabled:opacity-60 ${pressScale}`}
               >
                 {t.common.cancelBtn}
               </button>

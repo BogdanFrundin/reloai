@@ -10,7 +10,7 @@ function Checkbox({ checked }: { checked: boolean }) {
   return (
     <span
       className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg border transition-colors duration-150 ${
-        checked ? "border-accent bg-accent text-white" : "border-white/20 bg-white/5"
+        checked ? "border-accent bg-accent text-white" : "border-border-strong bg-surface-1"
       }`}
     >
       {checked && (
@@ -40,7 +40,7 @@ function StatusIcon({ status }: { status: PhaseStatus }) {
   }
 
   return (
-    <svg className="h-5 w-5 flex-shrink-0 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <svg className="h-5 w-5 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -56,7 +56,7 @@ function StatusBadge({ status, label }: { status: PhaseStatus; label: string }) 
       ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
       : status === "in_progress"
         ? "border-accent/40 bg-accent/10 text-accent-bright"
-        : "border-white/15 bg-white/5 text-slate-400";
+        : "border-border-strong bg-surface-1 text-text-muted";
 
   return (
     <span className={`inline-block flex-shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>
@@ -115,8 +115,8 @@ export default function PhaseCard({
           isActive
             ? "border border-accent/40 bg-accent/[0.04]"
             : isWaiting
-              ? "border border-white/5 bg-white/[0.02] opacity-60"
-              : "border border-white/10 bg-white/[0.02]"
+              ? "border border-border-subtle bg-surface-1 opacity-60"
+              : "border border-border-subtle bg-surface-1"
         }`}
       >
         <button
@@ -128,11 +128,11 @@ export default function PhaseCard({
           className="flex w-full flex-col items-start gap-3 text-left disabled:cursor-not-allowed"
         >
           <div className="flex w-full items-center justify-between">
-            <span className="text-xs font-semibold tracking-wider text-slate-500">0{index + 1}</span>
+            <span className="text-xs font-semibold tracking-wider text-text-muted">0{index + 1}</span>
             <div className="flex items-center gap-2">
               <StatusIcon status={status} />
               {!isWaiting && (
-                <span className={`text-slate-500 transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
+                <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
                   {CHEVRON_ICON}
                 </span>
               )}
@@ -140,15 +140,15 @@ export default function PhaseCard({
           </div>
 
           <div>
-            <p className="text-base font-semibold text-white">{d.phases[phase.key]}</p>
-            <p className="mt-1 text-sm text-slate-400">{d.phaseDescriptions[phase.key]}</p>
+            <p className="text-base font-semibold text-text-primary">{d.phases[phase.key]}</p>
+            <p className="mt-1 text-sm text-text-muted">{d.phaseDescriptions[phase.key]}</p>
           </div>
 
           <StatusBadge status={status} label={statusLabel} />
         </button>
 
         {expanded && !isWaiting && (
-          <div className="mt-4 space-y-2 border-t border-white/10 pt-4">
+          <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
             {phase.steps.map((step) => {
               const checked = completed.has(step.documentType);
               return (
@@ -161,14 +161,14 @@ export default function PhaseCard({
                     <Checkbox checked={checked} />
                   </span>
                   <div className="flex-1">
-                    <p className={`text-sm font-medium ${checked ? "text-slate-400" : "text-white"}`}>{step.title}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">{step.description}</p>
+                    <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
+                    <p className="mt-0.5 text-xs text-text-muted">{step.description}</p>
                   </div>
                   {step.documentType === "documents" && (
                     <Link
                       href="/documents"
                       onClick={(event) => event.stopPropagation()}
-                      className="flex-shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
+                      className="flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
                     >
                       {d.openBtn}
                     </Link>

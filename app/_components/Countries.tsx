@@ -129,7 +129,7 @@ export default function Countries() {
           >
             {t.directions.heading}
           </h2>
-          <p className="mt-5 text-base text-slate-500">
+          <p className="mt-5 text-base text-text-muted">
             {t.directions.subheading}
           </p>
         </Reveal>
@@ -228,7 +228,7 @@ export default function Countries() {
 
                     {/* Coming soon — badge */}
                     {card.comingSoon && (
-                      <span className="absolute right-5 top-5 z-10 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 backdrop-blur-md">
+                      <span className="absolute right-5 top-5 z-10 rounded-full border border-border-strong bg-black/60 px-3 py-1.5 text-[11px] font-semibold text-text-secondary backdrop-blur-md">
                         {t.directions.comingSoonBadge}
                       </span>
                     )}
@@ -267,7 +267,7 @@ export default function Countries() {
                       </h3>
 
                       {/* One-line description */}
-                      <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
+                      <p className="mt-2 text-sm font-medium leading-relaxed text-text-muted">
                         {cardText.subtitle}
                       </p>
 
@@ -278,7 +278,7 @@ export default function Countries() {
                       {card.comingSoon ? (
                         <span
                           aria-disabled="true"
-                          className="inline-flex w-fit cursor-not-allowed items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-[22px] py-[10px] text-sm font-semibold text-slate-500 line-through decoration-slate-500"
+                          className="inline-flex w-fit cursor-not-allowed items-center gap-2.5 rounded-full border border-border-subtle bg-surface-1 px-[22px] py-[10px] text-sm font-semibold text-text-muted line-through decoration-slate-500"
                         >
                           {t.directions.comingSoonCta}
                         </span>

@@ -350,11 +350,11 @@ export default function OnboardingPage() {
         disabled={option.disabled}
         className={`relative flex items-center gap-4 rounded-2xl border p-5 text-left backdrop-blur-sm transition-[border-color,background-color,box-shadow,transform] duration-200 ease-[var(--ease-out-strong)] ${
           option.disabled
-            ? "cursor-not-allowed border-white/5 bg-white/[0.02] opacity-50"
+            ? "cursor-not-allowed border-border-subtle bg-surface-1 opacity-50"
             : `[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 ${
                 isSelected
                   ? "border-accent/60 bg-accent/10 shadow-[0_0_30px_-10px_var(--accent)]"
-                  : "border-white/10 bg-white/[0.03] [@media(hover:hover)_and_(pointer:fine)]:hover:border-white/20 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06]"
+                  : "border-border-subtle bg-surface-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-border-strong [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover"
               }`
         }`}
       >
@@ -363,21 +363,21 @@ export default function OnboardingPage() {
         ) : (
           <span
             className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
-              isSelected ? "bg-accent/20 text-accent-bright" : "bg-white/5 text-slate-300"
+              isSelected ? "bg-accent/20 text-accent-bright" : "bg-surface-1 text-text-secondary"
             }`}
           >
             {option.icon}
           </span>
         )}
-        <span className="flex-1 text-sm font-semibold text-white">{option.label}</span>
+        <span className="flex-1 text-sm font-semibold text-text-primary">{option.label}</span>
         {option.disabled ? (
-          <span className="rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+          <span className="rounded-full border border-border-strong px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
             {t.onboarding.comingSoon}
           </span>
         ) : (
           <span
             className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
-              isSelected ? "border-accent bg-accent text-white" : "border-white/20"
+              isSelected ? "border-accent bg-accent text-white" : "border-border-strong"
             }`}
           >
             {isSelected && (
@@ -405,14 +405,14 @@ export default function OnboardingPage() {
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
                 R
               </span>
-              <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
+              <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
             </Link>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-text-muted">
               {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
             </p>
           </div>
 
-          <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-border-subtle">
             <div
               className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-500 ease-[var(--ease-out-strong)]"
               style={{ width: `${((step + 1) / STEP_ORDER.length) * 100}%` }}
@@ -421,8 +421,8 @@ export default function OnboardingPage() {
 
           <div className="flex flex-1 flex-col justify-center py-12">
             <Reveal key={step}>
-              <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{question}</h1>
-              <p className="mt-3 text-slate-400">{subheading}</p>
+              <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{question}</h1>
+              <p className="mt-3 text-text-muted">{subheading}</p>
 
               {stepKey === "language" && (
                 <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -434,7 +434,7 @@ export default function OnboardingPage() {
 
               {stepKey === "citizenship" && (
                 <div className="mt-10">
-                  <label className="text-sm font-medium text-slate-300">{t.onboarding.citizenshipLabel}</label>
+                  <label className="text-sm font-medium text-text-secondary">{t.onboarding.citizenshipLabel}</label>
                   <div className="mt-1.5">
                     <SearchableCountrySelect
                       lang={lang}
@@ -448,7 +448,7 @@ export default function OnboardingPage() {
 
               {stepKey === "currentCountry" && (
                 <div className="mt-10">
-                  <label className="text-sm font-medium text-slate-300">{t.onboarding.currentCountryLabel}</label>
+                  <label className="text-sm font-medium text-text-secondary">{t.onboarding.currentCountryLabel}</label>
                   <div className="mt-1.5">
                     <SearchableCountrySelect
                       lang={lang}
@@ -483,7 +483,7 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleBack}
               disabled={step === 0}
-              className={`rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:border-white/30 disabled:cursor-not-allowed disabled:opacity-0 ${pressScale}`}
+              className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-0 ${pressScale}`}
             >
               {t.onboarding.back}
             </button>
@@ -499,14 +499,14 @@ export default function OnboardingPage() {
                     onMouseLeave={() => setShowSkipTip(false)}
                     onFocus={() => setShowSkipTip(true)}
                     onBlur={() => setShowSkipTip(false)}
-                    className={`rounded-full border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/40 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+                    className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
                   >
                     {t.onboarding.skip}
                   </button>
                   {showSkipTip && (
                     <div
                       role="tooltip"
-                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-white/10 bg-[#0d0d0f]/95 px-3 py-2 text-xs leading-relaxed text-slate-300 shadow-xl shadow-black/40 backdrop-blur-xl"
+                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-border-subtle bg-panel/95 px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-xl shadow-black/40 backdrop-blur-xl"
                     >
                       {t.onboarding.skipTooltip}
                     </div>

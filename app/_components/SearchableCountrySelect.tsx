@@ -6,7 +6,7 @@ import { getCountryList } from "../_lib/countries";
 import { getFlagUrl } from "../_lib/flags";
 
 const inputCls =
-  "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+  "w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export default function SearchableCountrySelect({
   lang,
@@ -77,10 +77,10 @@ export default function SearchableCountrySelect({
       {open && (
         <ul
           role="listbox"
-          className="absolute z-20 mt-1.5 max-h-64 w-full overflow-y-auto rounded-xl border border-white/10 bg-[#0d0d0f]/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl"
+          className="absolute z-20 mt-1.5 max-h-64 w-full overflow-y-auto rounded-xl border border-border-subtle bg-panel/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl"
         >
           {filtered.length === 0 && (
-            <li className="px-4 py-2.5 text-sm text-slate-500">No matches</li>
+            <li className="px-4 py-2.5 text-sm text-text-muted">No matches</li>
           )}
           {filtered.map((country) => (
             <li key={country.code}>
@@ -94,7 +94,7 @@ export default function SearchableCountrySelect({
                   setOpen(false);
                 }}
                 className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
-                  country.code === value ? "font-semibold text-accent-bright" : "text-slate-300"
+                  country.code === value ? "font-semibold text-accent-bright" : "text-text-secondary"
                 }`}
               >
                 <Image

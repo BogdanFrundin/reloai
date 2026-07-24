@@ -103,10 +103,10 @@ export default function Pricing() {
     <section id="pricing" className="py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
             {t.pricing.heading}
           </h2>
-          <p className="mt-4 text-lg text-slate-400">{t.pricing.subheading}</p>
+          <p className="mt-4 text-lg text-text-muted">{t.pricing.subheading}</p>
         </Reveal>
 
         <div className="mt-16 grid gap-8 lg:grid-cols-3">
@@ -116,7 +116,7 @@ export default function Pricing() {
                 className={`relative flex h-full flex-col rounded-3xl p-8 backdrop-blur-sm transition-[transform,box-shadow,border-color] duration-200 ease-[var(--ease-out-strong)] motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 ${
                   plan.highlighted
                     ? "border border-accent/50 bg-accent/[0.07] shadow-[0_0_50px_-12px_var(--accent)] lg:-translate-y-3 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_70px_-10px_var(--accent)]"
-                    : "border border-white/10 bg-white/[0.03] [@media(hover:hover)_and_(pointer:fine)]:hover:border-white/20 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.05]"
+                    : "border border-border-subtle bg-surface-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-border-strong [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.05]"
                 }`}
               >
                 {plan.highlighted && (
@@ -131,12 +131,12 @@ export default function Pricing() {
                   </span>
                 )}
 
-                <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
-                <p className="mt-1 text-sm text-slate-400">{plan.description}</p>
+                <h3 className="text-lg font-semibold text-text-primary">{plan.name}</h3>
+                <p className="mt-1 text-sm text-text-muted">{plan.description}</p>
 
                 <div className="mt-6 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold tracking-tight text-white">{plan.price}</span>
-                  <span className="text-slate-400">{plan.period}</span>
+                  <span className="text-4xl font-bold tracking-tight text-text-primary">{plan.price}</span>
+                  <span className="text-text-muted">{plan.period}</span>
                 </div>
 
                 <ul className="mt-8 flex-1 space-y-3">
@@ -144,7 +144,7 @@ export default function Pricing() {
                     <li
                       key={feat.text}
                       className={`flex items-start gap-2 text-sm ${
-                        feat.included ? "text-slate-300" : "text-slate-600"
+                        feat.included ? "text-text-secondary" : "text-slate-600"
                       }`}
                     >
                       {feat.included ? <CheckIcon /> : <LockIcon />}
@@ -158,7 +158,7 @@ export default function Pricing() {
                   className={`mt-8 rounded-full px-6 py-3 text-center text-sm font-semibold transition-colors duration-150 ${pressScale} ${
                     plan.highlighted
                       ? "bg-accent text-white hover:bg-accent-bright"
-                      : "border border-white/15 bg-white/5 text-white hover:border-accent/50"
+                      : "border border-border-strong bg-surface-1 text-text-primary hover:border-accent/50"
                   }`}
                 >
                   {plan.cta}

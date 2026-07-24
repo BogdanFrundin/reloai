@@ -212,14 +212,14 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
   const showQuickReplies = messages.length === 1;
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
-      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+    <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-xl">
+      <div className="flex items-center gap-3 border-b border-border-subtle px-5 py-4">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
           AI
         </span>
         <div className="flex-1">
-          <p className="text-sm font-semibold text-white">{t.chat.assistantName}</p>
-          <p className="flex items-center gap-1.5 text-xs text-slate-400">
+          <p className="text-sm font-semibold text-text-primary">{t.chat.assistantName}</p>
+          <p className="flex items-center gap-1.5 text-xs text-text-muted">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 motion-reduce:animate-none" />
               <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -232,7 +232,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
             type="button"
             onClick={onClose}
             aria-label={t.aiChat.closeAria}
-            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-white/5 hover:text-white ${pressScale}`}
+            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-text-muted transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary ${pressScale}`}
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -253,7 +253,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 message.from === "user"
                   ? "rounded-br-md bg-accent text-white"
-                  : "rounded-bl-md border border-white/10 bg-white/[0.06] text-slate-200"
+                  : "rounded-bl-md border border-border-subtle bg-surface-2 text-text-secondary"
               }`}
             >
               {message.from === "user" ? message.text : renderMessageBody(message.text)}
@@ -267,7 +267,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
               </Link>
             )}
             {message.time !== null && (
-              <span className="mt-1 px-1 text-[10px] text-slate-500">{formatTime(message.time)}</span>
+              <span className="mt-1 px-1 text-[10px] text-text-muted">{formatTime(message.time)}</span>
             )}
           </div>
         ))}
@@ -289,7 +289,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
 
         {isTyping && (
           <div className="flex justify-start transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
-            <div className="flex items-center gap-1 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.06] px-4 py-3">
+            <div className="flex items-center gap-1 rounded-2xl rounded-bl-md border border-border-subtle bg-surface-2 px-4 py-3">
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.2s] motion-reduce:animate-none" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.1s] motion-reduce:animate-none" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 motion-reduce:animate-none" />
@@ -298,13 +298,13 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-white/10 p-3">
+      <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-border-subtle p-3">
         <input
           type="text"
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder={t.aiChat.placeholder}
-          className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
         />
         <button
           type="submit"

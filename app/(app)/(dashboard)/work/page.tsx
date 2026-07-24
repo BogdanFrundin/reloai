@@ -149,16 +149,16 @@ export default function WorkPage() {
       />
 
       <Reveal delay={40} className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.contractVsB2B}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
           {CONTRACT_TYPES.map((type, index) => (
             <Reveal key={type.name} delay={index * 40}>
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-                <p className="text-sm font-semibold text-white">{type.name}</p>
-                <p className="text-xs text-slate-500">{type.subtitle}</p>
+              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
+                <p className="text-xs text-text-muted">{type.subtitle}</p>
                 <ul className="mt-4 space-y-2.5">
                   {type.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-slate-400">
+                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
                       <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
                       </svg>
@@ -173,9 +173,9 @@ export default function WorkPage() {
       </Reveal>
 
       <Reveal delay={80} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.salarySearch}</h2>
-        <p className="mt-1 text-sm text-slate-400">{t.work.salarySearchSub}</p>
-        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.salarySearch}</h2>
+        <p className="mt-1 text-sm text-text-muted">{t.work.salarySearchSub}</p>
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
           <div ref={searchContainerRef} className="relative">
             <input
               ref={inputRef}
@@ -184,10 +184,10 @@ export default function WorkPage() {
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => setShowSuggestions(true)}
               placeholder={t.work.placeholder}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="w-full rounded-xl border border-border-subtle bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-white/10 bg-slate-950 backdrop-blur-sm shadow-lg z-10">
+              <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-border-subtle bg-slate-950 backdrop-blur-sm shadow-lg z-10">
                 <ul className="max-h-48 overflow-y-auto">
                   {suggestions.map((suggestion, index) => (
                     <li key={`${suggestion}-${index}`}>
@@ -198,7 +198,7 @@ export default function WorkPage() {
                           handleSuggestionClick(suggestion);
                         }}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
+                        className="w-full px-4 py-2.5 text-left text-sm text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
                       >
                         {suggestion}
                       </button>
@@ -210,20 +210,20 @@ export default function WorkPage() {
           </div>
           {result && (
             <div className="mt-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
-              <p className="text-sm font-medium text-slate-300">{t.work.averageSalary}</p>
-              <p className="mt-2 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-3xl font-bold text-transparent">
+              <p className="text-sm font-medium text-text-secondary">{t.work.averageSalary}</p>
+              <p className="mt-2 bg-gradient-to-br from-text-primary to-text-muted bg-clip-text text-3xl font-bold text-transparent">
                 {result.pln.toLocaleString("ru-RU")} PLN / месяц
               </p>
               <p className="mt-1 text-lg font-semibold text-accent-bright">
                 ≈ €{result.eur.toLocaleString("ru-RU")} / месяц
               </p>
               {"fallback" in result && (
-                <p className="mt-2 text-xs text-slate-500">{t.work.noExactData}</p>
+                <p className="mt-2 text-xs text-text-muted">{t.work.noExactData}</p>
               )}
-              <p className="mt-3 text-xs text-slate-500">{t.work.salaryNote}</p>
+              <p className="mt-3 text-xs text-text-muted">{t.work.salaryNote}</p>
 
-              <div className="mt-5 border-t border-white/10 pt-4">
-                <p className="text-sm font-semibold text-white">{t.work.searchByProfession}</p>
+              <div className="mt-5 border-t border-border-subtle pt-4">
+                <p className="text-sm font-semibold text-text-primary">{t.work.searchByProfession}</p>
                 <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                   {PROFESSION_JOB_SITES.map((site) => (
                     <a
@@ -231,9 +231,9 @@ export default function WorkPage() {
                       href={site.buildHref(professionPl)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
+                      className={`flex items-center justify-between gap-3 rounded-xl border border-border-subtle bg-surface-1 px-4 py-2.5 text-sm transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
                     >
-                      <span className="font-semibold text-white">{site.name}</span>
+                      <span className="font-semibold text-text-primary">{site.name}</span>
                       <span className="flex flex-shrink-0 items-center gap-1.5 text-xs font-medium text-accent-bright">
                         {t.work.viewVacanciesBtn}
                         <span aria-hidden>→</span>
@@ -248,16 +248,16 @@ export default function WorkPage() {
       </Reveal>
 
       <Reveal delay={120} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.work.jobSites}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.jobSites}</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {JOB_SITES.map((site, index) => (
             <Reveal key={site.key} delay={index * 40}>
-              <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
+              <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
                   {site.name.slice(0, 2).toUpperCase()}
                 </span>
-                <p className="mt-3 text-sm font-semibold text-white">{site.name}</p>
-                <p className="mt-1 flex-1 text-xs text-slate-500">{t.work.jobSiteDescs[site.key]}</p>
+                <p className="mt-3 text-sm font-semibold text-text-primary">{site.name}</p>
+                <p className="mt-1 flex-1 text-xs text-text-muted">{t.work.jobSiteDescs[site.key]}</p>
                 <Link
                   href={site.href}
                   target="_blank"

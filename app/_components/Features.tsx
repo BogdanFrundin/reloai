@@ -41,23 +41,23 @@ export default function Features() {
     <section id="features" className="py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
             {t.features.heading}
           </h2>
-          <p className="mt-4 text-lg text-slate-400">{t.features.subheading}</p>
+          <p className="mt-4 text-lg text-text-muted">{t.features.subheading}</p>
         </Reveal>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.features.items.map((feature, index) => (
             <Reveal key={feature.title} delay={index * 60}>
               <div
-                className={`group h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm ${cardHover}`}
+                className={`group h-full rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm ${cardHover}`}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent-bright transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110">
                   {ICONS[index]}
                 </div>
-                <h3 className="mt-5 text-lg font-semibold text-white">{feature.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                <h3 className="mt-5 text-lg font-semibold text-text-primary">{feature.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">
                   {feature.description}
                 </p>
               </div>

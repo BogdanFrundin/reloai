@@ -34,7 +34,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight text-text-primary sm:text-6xl lg:text-7xl">
               {t.hero.headline1}
               <br />
               <span className="bg-gradient-to-r from-accent via-accent-bright to-[#bcd2ff] bg-clip-text text-transparent">
@@ -44,7 +44,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={140}>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-text-muted">
               {t.hero.subtext}
             </p>
           </Reveal>
@@ -59,7 +59,7 @@ export default function Hero() {
               </Link>
               <a
                 href="#how-it-works"
-                className={`rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-center text-base font-semibold text-white transition-colors duration-150 hover:border-accent/50 hover:text-accent-bright ${pressScale}`}
+                className={`rounded-full border border-border-strong bg-surface-1 px-7 py-3.5 text-center text-base font-semibold text-text-primary transition-colors duration-150 hover:border-accent/50 hover:text-accent-bright ${pressScale}`}
               >
                 {t.hero.seeHowItWorks}
               </a>
@@ -67,7 +67,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={260}>
-            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
+            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-text-muted">
               <span className="flex items-center gap-1.5">
                 <svg className="h-4 w-4 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                   <circle cx="12" cy="12" r="9" />

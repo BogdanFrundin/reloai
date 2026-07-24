@@ -13,7 +13,7 @@ import { pressScale } from "../_lib/motion";
 import { supabase } from "../../lib/supabase";
 
 const inputClasses =
-  "mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+  "mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -74,14 +74,14 @@ export default function LoginPage() {
       </div>
 
       <AuthShell>
-        <h1 className="text-2xl font-bold tracking-tight text-white">{a.heading}</h1>
-        <p className="mt-1.5 text-sm text-slate-400">{a.subtext}</p>
+        <h1 className="text-2xl font-bold tracking-tight text-text-primary">{a.heading}</h1>
+        <p className="mt-1.5 text-sm text-text-muted">{a.subtext}</p>
 
         <button
           type="button"
           onClick={handleGoogleSignIn}
           disabled={googleLoading}
-          className={`mt-6 flex w-full items-center justify-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:border-white/30 hover:bg-white/10 disabled:opacity-60 ${pressScale}`}
+          className={`mt-6 flex w-full items-center justify-center gap-3 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover disabled:opacity-60 ${pressScale}`}
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.47a5.54 5.54 0 0 1-2.4 3.63v3.02h3.86c2.26-2.09 3.56-5.17 3.56-8.68z" />
@@ -93,9 +93,9 @@ export default function LoginPage() {
         </button>
 
         <div className="my-6 flex items-center gap-3">
-          <span className="h-px flex-1 bg-white/10" />
-          <span className="text-xs uppercase tracking-wider text-slate-500">{dictionaries[lang].auth.or}</span>
-          <span className="h-px flex-1 bg-white/10" />
+          <span className="h-px flex-1 bg-border-subtle" />
+          <span className="text-xs uppercase tracking-wider text-text-muted">{dictionaries[lang].auth.or}</span>
+          <span className="h-px flex-1 bg-border-subtle" />
         </div>
 
         {error && (
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="text-sm font-medium text-slate-300">
+            <label htmlFor="email" className="text-sm font-medium text-text-secondary">
               {a.email}
             </label>
             <input
@@ -131,7 +131,7 @@ export default function LoginPage() {
           <div className="flex justify-end">
             <button
               type="button"
-              className="text-sm text-slate-400 transition-colors duration-150 hover:text-accent-bright"
+              className="text-sm text-text-muted transition-colors duration-150 hover:text-accent-bright"
             >
               {a.forgotPassword}
             </button>
@@ -146,9 +146,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-400">
+        <p className="mt-6 text-center text-sm text-text-muted">
           {a.noAccount}{" "}
-          <Link href="/register" className="font-semibold text-accent-bright hover:text-white">
+          <Link href="/register" className="font-semibold text-accent-bright hover:text-text-primary">
             {a.register}
           </Link>
         </p>

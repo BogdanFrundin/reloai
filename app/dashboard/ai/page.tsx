@@ -192,17 +192,17 @@ export default function DashboardAiPage() {
   return (
     <div className="flex h-full flex-col">
       <div className="pb-4">
-        <h1 className="text-xl font-bold tracking-tight text-white">AI Ассистент</h1>
-        <p className="text-sm text-slate-400">Ваш персональный помощник по переезду</p>
+        <h1 className="text-xl font-bold tracking-tight text-text-primary">AI Ассистент</h1>
+        <p className="text-sm text-text-muted">Ваш персональный помощник по переезду</p>
       </div>
 
       <div className="flex min-h-0 flex-1 gap-4">
-        <aside className="flex w-[250px] flex-shrink-0 flex-col rounded-2xl border border-white/10 bg-white/[0.02]">
-          <div className="border-b border-white/10 p-3">
+        <aside className="flex w-[250px] flex-shrink-0 flex-col rounded-2xl border border-border-subtle bg-surface-1">
+          <div className="border-b border-border-subtle p-3">
             <button
               type="button"
               onClick={startNewChat}
-              className={`flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+              className={`flex w-full items-center justify-center gap-2 rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -212,7 +212,7 @@ export default function DashboardAiPage() {
           </div>
           <div className="flex-1 overflow-y-auto p-2">
             {sessions.length === 0 ? (
-              <p className="px-2 py-3 text-xs text-slate-500">История пуста</p>
+              <p className="px-2 py-3 text-xs text-text-muted">История пуста</p>
             ) : (
               <div className="space-y-1">
                 {sessions.map((session) => (
@@ -222,12 +222,12 @@ export default function DashboardAiPage() {
                     onClick={() => openSession(session)}
                     className={`block w-full rounded-xl px-3 py-2.5 text-left transition-colors duration-150 ${
                       session.id === activeSessionId
-                        ? "bg-accent/15 text-white"
-                        : "text-slate-400 hover:bg-white/5 hover:text-white"
+                        ? "bg-accent/15 text-accent-bright"
+                        : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
                     }`}
                   >
                     <p className="truncate text-sm font-medium">{session.title}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">{formatSessionDate(session.created_at)}</p>
+                    <p className="mt-0.5 text-xs text-text-muted">{formatSessionDate(session.created_at)}</p>
                   </button>
                 ))}
               </div>
@@ -235,15 +235,15 @@ export default function DashboardAiPage() {
           </div>
         </aside>
 
-        <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+        <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1">
           {isEmpty ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-lg font-bold text-white">
                 AI
               </span>
               <div>
-                <h2 className="text-2xl font-bold text-white">Чем могу помочь?</h2>
-                <p className="mt-2 text-sm text-slate-400">Задайте вопрос о переезде — или выберите один из примеров ниже.</p>
+                <h2 className="text-2xl font-bold text-text-primary">Чем могу помочь?</h2>
+                <p className="mt-2 text-sm text-text-muted">Задайте вопрос о переезде — или выберите один из примеров ниже.</p>
               </div>
               <div className="grid w-full max-w-xl gap-2.5 sm:grid-cols-2">
                 {t.aiChat.quickReplies.map((reply) => (
@@ -251,7 +251,7 @@ export default function DashboardAiPage() {
                     key={reply}
                     type="button"
                     onClick={() => sendMessage(reply)}
-                    className={`rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left text-sm text-slate-300 transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 hover:text-white ${pressScale}`}
+                    className={`rounded-2xl border border-border-subtle bg-surface-1 px-4 py-3 text-left text-sm text-text-secondary transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 hover:text-text-primary ${pressScale}`}
                   >
                     {reply}
                   </button>
@@ -272,20 +272,20 @@ export default function DashboardAiPage() {
                       className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%] ${
                         message.from === "user"
                           ? "rounded-br-md bg-accent text-white"
-                          : "rounded-bl-md border border-white/10 bg-white/[0.06] text-slate-200"
+                          : "rounded-bl-md border border-border-subtle bg-surface-2 text-text-secondary"
                       }`}
                     >
                       {message.from === "user" ? message.text : renderMessageBody(message.text)}
                     </div>
                     {message.time !== null && (
-                      <span className="mt-1 px-1 text-[10px] text-slate-500">{formatTime(message.time)}</span>
+                      <span className="mt-1 px-1 text-[10px] text-text-muted">{formatTime(message.time)}</span>
                     )}
                   </div>
                 ))}
 
                 {isTyping && (
                   <div className="flex justify-start transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
-                    <div className="flex items-center gap-1 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.06] px-4 py-3">
+                    <div className="flex items-center gap-1 rounded-2xl rounded-bl-md border border-border-subtle bg-surface-2 px-4 py-3">
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.2s] motion-reduce:animate-none" />
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.1s] motion-reduce:animate-none" />
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-500 motion-reduce:animate-none" />
@@ -296,14 +296,14 @@ export default function DashboardAiPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="border-t border-white/10 p-3 sm:p-4">
+          <form onSubmit={handleSubmit} className="border-t border-border-subtle p-3 sm:p-4">
             <div className="mx-auto flex max-w-3xl items-center gap-3">
               <input
                 type="text"
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 placeholder={t.aiChat.placeholder}
-                className="flex-1 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+                className="flex-1 rounded-2xl border border-border-subtle bg-surface-1 px-5 py-4 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
               />
               <button
                 type="submit"

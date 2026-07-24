@@ -75,28 +75,28 @@ export default function DashboardContent() {
       <WelcomeToast />
 
       <Reveal>
-        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
           {t.dashboard.relocation.replace("{country}", countryEntry?.name ?? country)}
         </h1>
-        <p className="mt-2 text-slate-400">{subtitle}</p>
+        <p className="mt-2 text-text-muted">{subtitle}</p>
       </Reveal>
 
       {showWelcome && profile?.selected_route && (
         <Reveal>
           <div className="mt-8 rounded-2xl border border-accent/30 bg-accent/[0.06] p-6 shadow-[0_0_40px_-14px_var(--accent)]">
             <p className="font-semibold text-accent-bright">✓ Welcome!</p>
-            <h2 className="mt-2 text-xl font-bold text-white">Your relocation plan is ready</h2>
-            <p className="mt-2 text-sm text-slate-300">
+            <h2 className="mt-2 text-xl font-bold text-text-primary">Your relocation plan is ready</h2>
+            <p className="mt-2 text-sm text-text-secondary">
               We&apos;ve selected <span className="font-semibold">{profile.selected_route.name}</span> as your
               recommended route based on your profile.
             </p>
-            <p className="mt-1 text-xs text-slate-400">{profile.selected_route.description}</p>
+            <p className="mt-1 text-xs text-text-muted">{profile.selected_route.description}</p>
           </div>
         </Reveal>
       )}
 
       {!loading && phases.length > 0 && (
-        <h2 id="checklist" className="mt-8 scroll-mt-24 text-lg font-semibold text-white">
+        <h2 id="checklist" className="mt-8 scroll-mt-24 text-lg font-semibold text-text-primary">
           {t.dashboard.route.checklistHeading}
         </h2>
       )}

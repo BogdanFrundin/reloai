@@ -42,10 +42,10 @@ export default function BanksPage() {
         {BANKS.map((bank, index) => (
           <Reveal key={bank.key} delay={index * 50}>
             <div
-              className={`group relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
+              className={`group relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
                 bank.badge
                   ? "border-accent/50 bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
-                  : "border-white/10 bg-white/[0.03]"
+                  : "border-border-subtle bg-surface-1"
               }`}
             >
               {bank.badge && (
@@ -56,13 +56,13 @@ export default function BanksPage() {
               <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
                 {bank.name.slice(0, 2).toUpperCase()}
               </span>
-              <p className="mt-3 text-lg font-semibold text-white">{bank.name}</p>
+              <p className="mt-3 text-lg font-semibold text-text-primary">{bank.name}</p>
               <div className="mt-2">
                 <StarRating rating={bank.rating} />
               </div>
               <ul className="mt-4 flex-1 space-y-2.5">
                 {t.banks.features[bank.key].map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm text-slate-400">
+                  <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
                     </svg>
@@ -74,7 +74,7 @@ export default function BanksPage() {
                 href={bank.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+                className="mt-5 inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
               >
                 {t.banks.openAccount}
               </Link>
@@ -84,39 +84,39 @@ export default function BanksPage() {
       </div>
 
       <Reveal delay={200} className="mt-12">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
+        <div className="rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
           <button
             type="button"
             onClick={() => setGuideOpen((prev) => !prev)}
             aria-expanded={guideOpen}
             className="flex w-full items-center justify-between gap-3 px-6 py-5 text-left"
           >
-            <h2 className="text-lg font-bold text-white">{t.banks.guide.heading}</h2>
+            <h2 className="text-lg font-bold text-text-primary">{t.banks.guide.heading}</h2>
             <span
-              className={`flex-shrink-0 text-slate-400 transition-transform duration-150 ${guideOpen ? "rotate-180" : ""}`}
+              className={`flex-shrink-0 text-text-muted transition-transform duration-150 ${guideOpen ? "rotate-180" : ""}`}
             >
               {CHEVRON_ICON}
             </span>
           </button>
 
           {guideOpen && (
-            <div className="space-y-6 border-t border-white/10 px-6 py-6">
+            <div className="space-y-6 border-t border-border-subtle px-6 py-6">
               <div className="space-y-4">
                 {t.banks.guide.steps.map((step, index) => (
                   <div key={step} className="flex items-start gap-4">
                     <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent-bright">
                       {index + 1}
                     </span>
-                    <p className="text-sm leading-relaxed text-slate-300">{step}</p>
+                    <p className="text-sm leading-relaxed text-text-secondary">{step}</p>
                   </div>
                 ))}
               </div>
 
               <div className="rounded-xl border border-accent/20 bg-accent/[0.04] p-5">
-                <p className="text-sm font-semibold text-white">{t.banks.guide.tipsHeading}</p>
+                <p className="text-sm font-semibold text-text-primary">{t.banks.guide.tipsHeading}</p>
                 <ul className="mt-3 space-y-2">
                   {t.banks.guide.tips.map((tip) => (
-                    <li key={tip} className="flex items-start gap-2 text-sm text-slate-300">
+                    <li key={tip} className="flex items-start gap-2 text-sm text-text-secondary">
                       <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent-bright" />
                       {tip}
                     </li>

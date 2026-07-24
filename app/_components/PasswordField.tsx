@@ -10,7 +10,7 @@ import {
 import type { Dictionary } from "../_lib/i18n";
 
 const inputClasses =
-  "mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+  "mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 interface Props {
   value: string;
@@ -60,7 +60,7 @@ export default function PasswordField({
 
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-medium text-slate-300">
+      <label htmlFor={id} className="text-sm font-medium text-text-secondary">
         {label}
       </label>
       <input
@@ -83,7 +83,7 @@ export default function PasswordField({
                 <div
                   key={i}
                   className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                    i <= segments ? barColor : "bg-white/10"
+                    i <= segments ? barColor : "bg-border-subtle"
                   }`}
                 />
               ))}
@@ -106,7 +106,7 @@ export default function PasswordField({
                   >
                     {met ? "✓" : "✗"}
                   </span>
-                  <span className={met ? "text-slate-400" : "text-slate-500"}>{label}</span>
+                  <span className={met ? "text-text-muted" : "text-text-muted"}>{label}</span>
                 </li>
               );
             })}

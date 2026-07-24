@@ -22,14 +22,14 @@ export default function ChatMockup() {
   ];
 
   return (
-    <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-6">
-      <div className="mb-4 flex items-center gap-3 border-b border-white/10 pb-4">
+    <div className="w-full max-w-md rounded-3xl border border-border-subtle bg-surface-1 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-6">
+      <div className="mb-4 flex items-center gap-3 border-b border-border-subtle pb-4">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
           AI
         </span>
         <div>
-          <p className="text-sm font-semibold text-white">{t.chat.assistantName}</p>
-          <p className="flex items-center gap-1.5 text-xs text-slate-400">
+          <p className="text-sm font-semibold text-text-primary">{t.chat.assistantName}</p>
+          <p className="flex items-center gap-1.5 text-xs text-text-muted">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 motion-reduce:animate-none" />
               <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -46,7 +46,7 @@ export default function ChatMockup() {
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 message.from === "user"
                   ? "rounded-br-md bg-accent text-white"
-                  : "rounded-bl-md border border-white/10 bg-white/[0.06] text-slate-200"
+                  : "rounded-bl-md border border-border-subtle bg-surface-2 text-text-secondary"
               }`}
             >
               {message.text}
@@ -74,8 +74,8 @@ export default function ChatMockup() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
-        <div className="flex-1 truncate rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-slate-500">
+      <div className="mt-4 flex items-center gap-2 border-t border-border-subtle pt-4">
+        <div className="flex-1 truncate rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-muted">
           {t.heroDemo.inputPlaceholder}
         </div>
         <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent text-white">

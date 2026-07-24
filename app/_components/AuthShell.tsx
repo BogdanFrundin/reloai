@@ -16,11 +16,11 @@ export default function AuthShell({ children }: { children: ReactNode }) {
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-base font-bold text-white shadow-[0_0_20px_-4px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105">
           R
         </span>
-        <span className="text-xl font-semibold tracking-tight text-white">ReloAI</span>
+        <span className="text-xl font-semibold tracking-tight text-text-primary">ReloAI</span>
       </Link>
 
       <Reveal className="w-full max-w-md">
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/40 backdrop-blur-xl">
+        <div className="rounded-3xl border border-border-subtle bg-surface-1 p-8 shadow-2xl shadow-black/40 backdrop-blur-xl">
           {children}
         </div>
       </Reveal>

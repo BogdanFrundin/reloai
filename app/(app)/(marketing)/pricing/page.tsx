@@ -91,10 +91,10 @@ function PlanButton({ plan, ap }: { plan: PlanDef; ap: Dictionary["appPricing"] 
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className={`flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white transition-colors duration-150 ${pressScale} ${
+        className={`flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-150 ${pressScale} ${
           plan.highlighted
-            ? "bg-accent shadow-[0_0_30px_-8px_var(--accent)] hover:bg-accent-bright disabled:opacity-75"
-            : "border border-white/15 bg-white/5 hover:border-accent/40 hover:text-accent-bright disabled:opacity-60"
+            ? "bg-accent text-white shadow-[0_0_30px_-8px_var(--accent)] hover:bg-accent-bright disabled:opacity-75"
+            : "border border-border-strong bg-surface-1 text-text-primary hover:border-accent/40 hover:text-accent-bright disabled:opacity-60"
         }`}
       >
         {loading && (
@@ -106,7 +106,7 @@ function PlanButton({ plan, ap }: { plan: PlanDef; ap: Dictionary["appPricing"] 
         {loading ? ap.activating : plan.cta}
       </button>
       {plan.key !== "free" && (
-        <p className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+        <p className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-text-muted">
           <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z" />
           </svg>
@@ -133,7 +133,7 @@ export default function PricingPage() {
               className={`relative flex h-full flex-col rounded-2xl border p-7 backdrop-blur-sm ${
                 plan.highlighted
                   ? "border-accent/50 bg-accent/[0.06] shadow-[0_0_50px_-12px_var(--accent)]"
-                  : "border-white/10 bg-white/[0.03]"
+                  : "border-border-subtle bg-surface-1"
               }`}
             >
               {plan.highlighted && (
@@ -148,11 +148,11 @@ export default function PricingPage() {
                 </span>
               )}
 
-              <p className="text-lg font-semibold text-white">{plan.name}</p>
-              <p className="mt-1 text-sm text-slate-400">{plan.description}</p>
+              <p className="text-lg font-semibold text-text-primary">{plan.name}</p>
+              <p className="mt-1 text-sm text-text-muted">{plan.description}</p>
               <p className="mt-5">
-                <span className="text-4xl font-bold text-white">{plan.price}</span>
-                <span className="text-sm text-slate-500"> {plan.period}</span>
+                <span className="text-4xl font-bold text-text-primary">{plan.price}</span>
+                <span className="text-sm text-text-muted"> {plan.period}</span>
               </p>
 
               <ul className="mt-6 flex-1 space-y-3">
@@ -160,7 +160,7 @@ export default function PricingPage() {
                   <li
                     key={feat.text}
                     className={`flex items-start gap-2 text-sm ${
-                      feat.included ? "text-slate-300" : "text-slate-600"
+                      feat.included ? "text-text-secondary" : "text-slate-600"
                     }`}
                   >
                     {feat.included ? (

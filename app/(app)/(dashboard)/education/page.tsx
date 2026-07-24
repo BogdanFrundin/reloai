@@ -195,13 +195,13 @@ const BANNER_COUNTRY_KEY: Record<CountryKey, keyof Dictionary["education"]["bann
 type EduDict = Dictionary["education"];
 
 const cardHoverClass =
-  "group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none";
+  "group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none";
 
 const iconBadgeClass =
   "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none";
 
 const learnMoreBtnClass =
-  "inline-flex w-fit items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none";
+  "inline-flex w-fit items-center rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-xs font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none";
 
 function TypeBadge({ type, t }: { type: ItemType; t: EduDict }) {
   return type === "public" ? (
@@ -217,7 +217,7 @@ function TypeBadge({ type, t }: { type: ItemType; t: EduDict }) {
 
 function InfoBanner({ text }: { text: string }) {
   return (
-    <div className="flex gap-3 rounded-2xl border border-accent/25 bg-accent/[0.07] p-4 text-sm leading-relaxed text-slate-300">
+    <div className="flex gap-3 rounded-2xl border border-accent/25 bg-accent/[0.07] p-4 text-sm leading-relaxed text-text-secondary">
       <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
@@ -229,8 +229,8 @@ function InfoBanner({ text }: { text: string }) {
 function Row({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className="flex items-baseline justify-between gap-3 text-xs">
-      <span className="text-slate-500">{label}</span>
-      <span className={`text-right ${highlight ? "font-semibold text-white" : "text-slate-300"}`}>{value}</span>
+      <span className="text-text-muted">{label}</span>
+      <span className={`text-right ${highlight ? "font-semibold text-text-primary" : "text-text-secondary"}`}>{value}</span>
     </div>
   );
 }
@@ -247,17 +247,17 @@ function CourseCard({ course, t, lang }: { course: Course; t: EduDict; lang: Lan
         </svg>
       </span>
       <div className="mt-3 flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold leading-snug text-white">{course.name}</p>
+        <p className="text-sm font-semibold leading-snug text-text-primary">{course.name}</p>
         <TypeBadge type={course.type} t={t} />
       </div>
       <p className="mt-1.5 text-xs font-medium text-accent-bright">{trField(course.language, lang)}</p>
-      <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
+      <div className="mt-4 space-y-2 border-t border-border-subtle pt-3">
         <Row label={t.rowFormat} value={trField(course.format, lang)} />
         <Row label={t.rowLevel} value={trField(course.level, lang)} />
         <Row label={t.rowPrice} value={trField(course.price, lang)} highlight />
       </div>
       {course.note && (
-        <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
+        <p className="mt-3 rounded-xl bg-surface-1 px-3 py-2 text-[11px] leading-relaxed text-text-muted">
           {trField(course.note, lang)}
         </p>
       )}
@@ -280,17 +280,17 @@ function SchoolCard({ school, t, lang }: { school: School; t: EduDict; lang: Lan
         </svg>
       </span>
       <div className="mt-3 flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold leading-snug text-white">{school.name}</p>
+        <p className="text-sm font-semibold leading-snug text-text-primary">{school.name}</p>
         <TypeBadge type={school.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{trPlace(school.area, lang)}</p>
-      <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
+      <p className="mt-1 text-xs text-text-muted">{trPlace(school.area, lang)}</p>
+      <div className="mt-4 space-y-2 border-t border-border-subtle pt-3">
         <Row label={t.rowInstruction} value={trField(school.instruction, lang)} />
         <Row label={t.rowAges} value={school.ages} />
         <Row label={t.rowPrice} value={trField(school.price, lang)} highlight />
       </div>
       {school.note && (
-        <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
+        <p className="mt-3 rounded-xl bg-surface-1 px-3 py-2 text-[11px] leading-relaxed text-text-muted">
           {trField(school.note, lang)}
         </p>
       )}
@@ -312,17 +312,17 @@ function KindergartenCard({ k, t, lang }: { k: Kindergarten; t: EduDict; lang: L
         </svg>
       </span>
       <div className="mt-3 flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold leading-snug text-white">{k.name}</p>
+        <p className="text-sm font-semibold leading-snug text-text-primary">{k.name}</p>
         <TypeBadge type={k.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{trPlace(k.area, lang)}</p>
-      <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
+      <p className="mt-1 text-xs text-text-muted">{trPlace(k.area, lang)}</p>
+      <div className="mt-4 space-y-2 border-t border-border-subtle pt-3">
         <Row label={t.rowAges} value={k.ages} />
         <Row label={t.rowPrice} value={trField(k.price, lang)} highlight />
         {k.waitingList && <Row label={t.rowWaiting} value={trField(k.waitingList, lang)} />}
       </div>
       {k.note && (
-        <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
+        <p className="mt-3 rounded-xl bg-surface-1 px-3 py-2 text-[11px] leading-relaxed text-text-muted">
           {trField(k.note, lang)}
         </p>
       )}
@@ -346,27 +346,27 @@ function UniversityCard({ uni, t, lang }: { uni: University; t: EduDict; lang: L
         </svg>
       </span>
       <div className="mt-3 flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold leading-snug text-white">{uni.name}</p>
+        <p className="text-sm font-semibold leading-snug text-text-primary">{uni.name}</p>
         <TypeBadge type={uni.type} t={t} />
       </div>
-      <p className="mt-1 text-xs text-slate-500">{trPlace(uni.location, lang)}</p>
+      <p className="mt-1 text-xs text-text-muted">{trPlace(uni.location, lang)}</p>
       <div className="mt-3 flex flex-wrap gap-1">
         {uni.programs.slice(0, 3).map((p) => (
-          <span key={p} className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-400">{trField(p, lang)}</span>
+          <span key={p} className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">{trField(p, lang)}</span>
         ))}
         {uni.programs.length > 3 && (
-          <span className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-500">
+          <span className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">
             +{uni.programs.length - 3} {t.morePrograms}
           </span>
         )}
       </div>
-      <div className="mt-4 space-y-2 border-t border-white/5 pt-3">
+      <div className="mt-4 space-y-2 border-t border-border-subtle pt-3">
         <Row label={t.rowInstruction} value={trField(uni.instruction, lang)} />
         <Row label={t.rowTuition} value={trField(uni.tuition, lang)} highlight />
         {uni.deadline && <Row label={t.rowDeadline} value={trField(uni.deadline, lang)} />}
       </div>
       {uni.note && (
-        <p className="mt-3 rounded-xl bg-white/[0.03] px-3 py-2 text-[11px] leading-relaxed text-slate-500">
+        <p className="mt-3 rounded-xl bg-surface-1 px-3 py-2 text-[11px] leading-relaxed text-text-muted">
           {trField(uni.note, lang)}
         </p>
       )}
@@ -440,7 +440,7 @@ export default function EducationPage() {
       />
 
       {/* Tab bar */}
-      <div className="mt-8 flex gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="mt-8 flex gap-1 overflow-x-auto rounded-2xl border border-border-subtle bg-surface-1 p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -449,7 +449,7 @@ export default function EducationPage() {
             className={`flex-shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-150 ${
               activeTab === tab.id
                 ? "bg-accent text-white shadow-[0_0_20px_-6px_var(--accent)]"
-                : "text-slate-400 hover:text-white"
+                : "text-text-muted hover:text-text-primary"
             }`}
           >
             {tab.label}
@@ -467,7 +467,7 @@ export default function EducationPage() {
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
               filter === f.id
                 ? "border-accent bg-accent/15 text-accent-bright"
-                : "border-white/15 bg-white/[0.03] text-slate-400 hover:border-white/30 hover:text-white"
+                : "border-border-strong bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
             }`}
           >
             {f.label}
@@ -537,5 +537,5 @@ export default function EducationPage() {
 }
 
 function EmptyState({ text }: { text: string }) {
-  return <p className="py-14 text-center text-sm text-slate-500">{text}</p>;
+  return <p className="py-14 text-center text-sm text-text-muted">{text}</p>;
 }

@@ -30,7 +30,7 @@ const CATEGORY_EMOJI: Record<DocumentItem["category"], string> = {
 const STATUS_BORDER_CLASS: Record<Status, string> = {
   verified: "border-l-emerald-500",
   pending: "border-l-amber-500",
-  missing: "border-l-white/15",
+  missing: "border-l-border-strong",
   locked: "border-l-accent/40",
 };
 
@@ -112,14 +112,14 @@ function DocumentRow({
 
   return (
     <div
-      className={`flex items-center gap-4 border-b border-l-4 border-white/10 py-4 pl-4 last:border-b-0 ${STATUS_BORDER_CLASS[doc.status]}`}
+      className={`flex items-center gap-4 border-b border-l-4 border-border-subtle py-4 pl-4 last:border-b-0 ${STATUS_BORDER_CLASS[doc.status]}`}
     >
-      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-base">
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-surface-1 text-base">
         {CATEGORY_EMOJI[doc.category]}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-white">{name}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-500">{doc.fileName ?? hint}</p>
+        <p className="truncate text-sm font-semibold text-text-primary">{name}</p>
+        <p className="mt-0.5 truncate text-xs text-text-muted">{doc.fileName ?? hint}</p>
       </div>
       <span className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}>
         {doc.status === "verified" && CHECK_ICON}
@@ -139,7 +139,7 @@ function DocumentRow({
           <>
             <button
               type="button"
-              className={`rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+              className={`rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
             >
               {viewLabel}
             </button>
@@ -182,11 +182,11 @@ function LockedRow({
 }) {
   const content = (
     <>
-      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-500">
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-surface-1 text-text-muted">
         {LOCK_ICON}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-slate-500">{name}</p>
+        <p className="truncate text-sm font-semibold text-text-muted">{name}</p>
         <p className="mt-0.5 truncate text-xs text-slate-600">{hint}</p>
       </div>
       <span className="flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
@@ -195,7 +195,7 @@ function LockedRow({
     </>
   );
 
-  const className = `flex w-full items-center gap-4 border-b border-l-4 border-white/10 py-4 pl-4 text-left opacity-60 transition-opacity duration-150 last:border-b-0 hover:opacity-90 ${STATUS_BORDER_CLASS.locked}`;
+  const className = `flex w-full items-center gap-4 border-b border-l-4 border-border-subtle py-4 pl-4 text-left opacity-60 transition-opacity duration-150 last:border-b-0 hover:opacity-90 ${STATUS_BORDER_CLASS.locked}`;
 
   if (demoMode) {
     return (
@@ -357,8 +357,8 @@ export default function DocumentsPage() {
       <Reveal>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{t.documents.title}</h1>
-            <p className="mt-2 text-slate-400">{t.documents.subtitle}</p>
+            <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{t.documents.title}</h1>
+            <p className="mt-2 text-text-muted">{t.documents.subtitle}</p>
           </div>
           <button
             type="button"
@@ -382,16 +382,16 @@ export default function DocumentsPage() {
       </Reveal>
 
       <Reveal delay={40}>
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
+        <div className="mt-6 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-text-primary">
               {t.documents.progressSummary
                 .replace("{completed}", String(verifiedCount))
                 .replace("{total}", String(totalCount))}
             </p>
             <span className="text-sm font-semibold text-accent-bright">{progressPercent}%</span>
           </div>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border-subtle">
             <div
               className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
               style={{ width: `${progressPercent}%` }}
@@ -404,7 +404,7 @@ export default function DocumentsPage() {
             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-400">
               🔄 {pendingCount} {t.documents.status.pending}
             </span>
-            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-400">
+            <span className="rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-medium text-text-muted">
               ❌ {missingCount} {t.documents.status.missing}
             </span>
           </div>
@@ -421,7 +421,7 @@ export default function DocumentsPage() {
               className={`flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                 activeTab === tab
                   ? "border-accent/50 bg-accent/10 text-accent-bright"
-                  : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
+                  : "border-border-subtle bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
               }`}
             >
               {t.documents.tabs[tab]}
@@ -439,7 +439,7 @@ export default function DocumentsPage() {
             <Reveal key={category} delay={120 + index * 40}>
               <section>
                 {activeTab === "all" && (
-                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-300">
+                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
                     <span>{CATEGORY_EMOJI[category]}</span>
                     <span>{t.documents.tabs[category]}</span>
                   </h2>

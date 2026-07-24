@@ -97,21 +97,21 @@ export default function MedicinePage() {
       />
 
       <Reveal delay={80} className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.clinicsTitle}</h2>
-        <p className="mt-1 text-sm text-slate-400">{t.medicine.clinicsSub}</p>
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.clinicsTitle}</h2>
+        <p className="mt-1 text-sm text-text-muted">{t.medicine.clinicsSub}</p>
         <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {CLINICS.map((clinic, index) => (
             <Reveal key={clinic.name} delay={index * 40}>
-              <div className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.06] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
+              <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
                 <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
                   </svg>
                 </span>
-                <p className="mt-3 min-h-10 text-sm font-semibold text-white">{clinic.name}</p>
-                <p className="mt-1 min-h-8 text-xs text-slate-500">{clinic.street}, {t.medicine.warsaw}</p>
-                <p className="mt-1 min-h-4 text-xs text-slate-500">{clinic.phone}</p>
+                <p className="mt-3 min-h-10 text-sm font-semibold text-text-primary">{clinic.name}</p>
+                <p className="mt-1 min-h-8 text-xs text-text-muted">{clinic.street}, {t.medicine.warsaw}</p>
+                <p className="mt-1 min-h-4 text-xs text-text-muted">{clinic.phone}</p>
                 <div className="mt-3 min-h-7">
                   {clinic.languagesKey && (
                     <span className="inline-flex w-fit items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[11px] font-medium text-accent-bright">
@@ -124,7 +124,7 @@ export default function MedicinePage() {
                 </div>
                 <a
                   href={`tel:${clinic.phone.replace(/\s+/g, "")}`}
-                  className="mt-auto inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-slate-300 opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+                  className="mt-auto inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
                 >
                   {t.medicine.bookBtn}
                 </a>
@@ -135,8 +135,8 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={100} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.nfzTitle}</h2>
-        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.nfzTitle}</h2>
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
           <ol className="space-y-4">
             {t.medicine.nfzSteps.map((step, index) => (
               <li key={step} className="flex items-start gap-4">
@@ -144,10 +144,10 @@ export default function MedicinePage() {
                   {index + 1}
                 </span>
                 <div className="pt-1">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
                     {t.medicine.stepLabel} {index + 1}
                   </p>
-                  <p className="mt-0.5 text-sm text-slate-200">{step}</p>
+                  <p className="mt-0.5 text-sm text-text-secondary">{step}</p>
                 </div>
               </li>
             ))}
@@ -156,14 +156,14 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={130} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.emergencyTitle}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.emergencyTitle}</h2>
         <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm sm:p-6">
           <div className="flex items-start gap-4">
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
               {PHONE_ICON}
             </span>
             <div>
-              <p className="text-sm text-slate-300">{t.medicine.emergencyNumber}</p>
+              <p className="text-sm text-text-secondary">{t.medicine.emergencyNumber}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <a
                   href="tel:112"
@@ -181,24 +181,24 @@ export default function MedicinePage() {
             </div>
           </div>
 
-          <div className="mt-4 flex items-start gap-4 border-t border-white/10 pt-4">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-slate-300">
+          <div className="mt-4 flex items-start gap-4 border-t border-border-subtle pt-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-1 text-text-secondary">
               {ER_ICON}
             </span>
-            <p className="pt-2 text-sm text-slate-300">{t.medicine.emergencyEr}</p>
+            <p className="pt-2 text-sm text-text-secondary">{t.medicine.emergencyEr}</p>
           </div>
 
-          <div className="mt-4 flex items-start gap-4 border-t border-white/10 pt-4">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/5 text-slate-300">
+          <div className="mt-4 flex items-start gap-4 border-t border-border-subtle pt-4">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-1 text-text-secondary">
               {PHARMACY_ICON}
             </span>
-            <p className="pt-2 text-sm text-slate-300">
+            <p className="pt-2 text-sm text-text-secondary">
               {t.medicine.emergencyPharmacy}{" "}
               <a
                 href="https://aptekadyzurna.pl"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-accent-bright transition-colors duration-150 hover:text-white"
+                className="font-semibold text-accent-bright transition-colors duration-150 hover:text-text-primary"
               >
                 aptekadyzurna.pl
               </a>
@@ -208,7 +208,7 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={160} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.usefulSitesTitle}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.usefulSitesTitle}</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {t.medicine.usefulSites.map((site) => (
             <a
@@ -216,13 +216,13 @@ export default function MedicinePage() {
               href={`https://${site.url}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors duration-150 hover:border-accent/40 hover:bg-white/[0.05]"
+              className="group flex items-start justify-between gap-3 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-colors duration-150 hover:border-accent/40 hover:bg-white/[0.05]"
             >
               <div>
                 <p className="text-sm font-semibold text-accent-bright">{site.url}</p>
-                <p className="mt-1 text-sm text-slate-400">{site.desc}</p>
+                <p className="mt-1 text-sm text-text-muted">{site.desc}</p>
               </div>
-              <span className="mt-1 flex-shrink-0 text-slate-500 transition-colors duration-150 group-hover:text-accent-bright">
+              <span className="mt-1 flex-shrink-0 text-text-muted transition-colors duration-150 group-hover:text-accent-bright">
                 {LINK_ICON}
               </span>
             </a>
@@ -231,13 +231,13 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={190} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-white">{t.medicine.dentalTitle}</h2>
-        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.dentalTitle}</h2>
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
           <div className="flex items-start gap-4">
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {TOOTH_ICON}
             </span>
-            <ul className="space-y-3 pt-2 text-sm text-slate-300">
+            <ul className="space-y-3 pt-2 text-sm text-text-secondary">
               <li>{t.medicine.dentalNfz}</li>
               <li>{t.medicine.dentalPrivate}</li>
               <li>{t.medicine.dentalChains}</li>

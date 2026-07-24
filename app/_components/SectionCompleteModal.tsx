@@ -23,13 +23,13 @@ export default function SectionCompleteModal({
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 text-center shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
+        className="w-full max-w-sm rounded-2xl border border-border-subtle bg-panel p-6 text-center shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
       >
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/15 text-2xl">
           🎉
         </span>
-        <h2 className="mt-4 text-lg font-bold text-white">{t.documents.sectionCompleteHeading}</h2>
-        <p className="mt-2 text-sm text-slate-400">{t.documents.sectionCompleteBody}</p>
+        <h2 className="mt-4 text-lg font-bold text-text-primary">{t.documents.sectionCompleteHeading}</h2>
+        <p className="mt-2 text-sm text-text-muted">{t.documents.sectionCompleteBody}</p>
         <button
           type="button"
           onClick={onClose}

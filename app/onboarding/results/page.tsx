@@ -112,7 +112,7 @@ function RouteCard({
       className={`relative flex flex-col rounded-2xl border p-6 backdrop-blur-sm transition-[border-color,box-shadow] duration-200 ${
         isRecommended
           ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]"
-          : "border-white/10 bg-white/[0.03]"
+          : "border-border-subtle bg-surface-1"
       }`}
     >
       {isRecommended && (
@@ -123,8 +123,8 @@ function RouteCard({
 
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-white">{route.name}</h3>
-          <p className="mt-1 text-sm text-slate-300">{route.description}</p>
+          <h3 className="text-lg font-semibold text-text-primary">{route.name}</h3>
+          <p className="mt-1 text-sm text-text-secondary">{route.description}</p>
         </div>
       </div>
 
@@ -135,23 +135,23 @@ function RouteCard({
 
       <div className="mt-5 grid gap-4 sm:grid-cols-3 text-sm">
         <div>
-          <p className="text-xs text-slate-500">{labels.results.approvalRate}</p>
-          <p className="mt-1 font-semibold text-slate-200">{route.approval_rate}%</p>
+          <p className="text-xs text-text-muted">{labels.results.approvalRate}</p>
+          <p className="mt-1 font-semibold text-text-secondary">{route.approval_rate}%</p>
         </div>
         <div>
-          <p className="text-xs text-slate-500">{labels.results.timeline}</p>
-          <p className="mt-1 font-semibold text-slate-200">{route.timeline}</p>
+          <p className="text-xs text-text-muted">{labels.results.timeline}</p>
+          <p className="mt-1 font-semibold text-text-secondary">{route.timeline}</p>
         </div>
         <div>
-          <p className="text-xs text-slate-500">{labels.results.cost}</p>
-          <p className="mt-1 font-semibold text-slate-200">{route.cost}</p>
+          <p className="text-xs text-text-muted">{labels.results.cost}</p>
+          <p className="mt-1 font-semibold text-text-secondary">{route.cost}</p>
         </div>
       </div>
 
       {route.steps && route.steps.length > 0 && (
         <div className="mt-4">
-          <p className="text-xs text-slate-500">{labels.results.steps}</p>
-          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-slate-200">
+          <p className="text-xs text-text-muted">{labels.results.steps}</p>
+          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-text-secondary">
             {route.steps.map((step, index) => (
               <span key={step} className="flex items-center gap-1.5">
                 {index > 0 && <span className="text-slate-600">→</span>}
@@ -163,8 +163,8 @@ function RouteCard({
       )}
 
       {route.bestFor && (
-        <p className="mt-3 text-xs text-slate-500">
-          {labels.results.bestFor}: <span className="text-slate-300">{route.bestFor}</span>
+        <p className="mt-3 text-xs text-text-muted">
+          {labels.results.bestFor}: <span className="text-text-secondary">{route.bestFor}</span>
         </p>
       )}
 
@@ -294,7 +294,7 @@ export default function OnboardingResultsPage() {
         <div className="mx-auto flex w-full max-w-4xl flex-col">
           <div className="mb-12 text-center">
             <Reveal>
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">{t.onboarding.results.heading}</h1>
+              <h1 className="text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">{t.onboarding.results.heading}</h1>
             </Reveal>
           </div>
 
@@ -305,7 +305,7 @@ export default function OnboardingResultsPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                 </svg>
-                <p className="mt-4 text-slate-400">{t.onboarding.results.loading}</p>
+                <p className="mt-4 text-text-muted">{t.onboarding.results.loading}</p>
               </div>
             </Reveal>
           )}

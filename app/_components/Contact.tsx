@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 import { pressScale } from "../_lib/motion";
 
 const inputClasses =
-  "mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 [color-scheme:dark]";
+  "mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 export default function Contact() {
   const { t, lang } = useLanguage();
@@ -26,12 +26,12 @@ export default function Contact() {
 
       <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <Reveal>
-          <h2 className="bg-gradient-to-r from-white via-accent-bright to-accent bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl lg:text-5xl">
+          <h2 className="bg-gradient-to-r from-text-primary via-accent-bright to-accent bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl lg:text-5xl">
             {t.contact.heading}
           </h2>
-          <p className="mt-4 max-w-md text-lg text-slate-400">{t.contact.subtext}</p>
+          <p className="mt-4 max-w-md text-lg text-text-muted">{t.contact.subtext}</p>
 
-          <div className="mt-10 space-y-4 text-sm text-slate-300">
+          <div className="mt-10 space-y-4 text-sm text-text-secondary">
             <p className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -49,7 +49,7 @@ export default function Contact() {
 
         <Reveal
           delay={100}
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-7 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-8"
+          className="rounded-3xl border border-border-subtle bg-surface-1 p-7 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-8"
         >
           {submitted ? (
             <div className="flex h-full min-h-[280px] flex-col items-center justify-center text-center transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95">
@@ -58,15 +58,15 @@ export default function Contact() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </span>
-              <h3 className="mt-4 text-lg font-semibold text-white">
+              <h3 className="mt-4 text-lg font-semibold text-text-primary">
                 {t.contact.success.title}
               </h3>
-              <p className="mt-2 text-sm text-slate-400">{t.contact.success.subtext}</p>
+              <p className="mt-2 text-sm text-text-muted">{t.contact.success.subtext}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="name" className="text-sm font-medium text-slate-300">
+                <label htmlFor="name" className="text-sm font-medium text-text-secondary">
                   {t.contact.form.fullName}
                 </label>
                 <input
@@ -80,7 +80,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="email" className="text-sm font-medium text-slate-300">
+                <label htmlFor="email" className="text-sm font-medium text-text-secondary">
                   {t.contact.form.emailLabel}
                 </label>
                 <input
@@ -94,7 +94,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="destination" className="text-sm font-medium text-slate-300">
+                <label htmlFor="destination" className="text-sm font-medium text-text-secondary">
                   {t.contact.form.movingTo}
                 </label>
                 <select
@@ -105,7 +105,7 @@ export default function Contact() {
                   className={inputClasses}
                 >
                   {t.contact.form.destinations.map((destination) => (
-                    <option key={destination} className="bg-[#0a0a0a] text-white">
+                    <option key={destination} className="bg-panel text-text-primary">
                       {destination}
                     </option>
                   ))}
@@ -113,7 +113,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="text-sm font-medium text-slate-300">
+                <label htmlFor="message" className="text-sm font-medium text-text-secondary">
                   {t.contact.form.message}
                 </label>
                 <textarea

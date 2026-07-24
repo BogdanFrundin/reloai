@@ -30,6 +30,6 @@ export const DOCUMENT_CATALOG: DocumentItem[] = [
 export const STATUS_BADGE_CLASS: Record<DocStatus, string> = {
   verified: "border-emerald-500/30 bg-emerald-500/15 text-emerald-400",
   pending: "border-amber-500/30 bg-amber-500/15 text-amber-400",
-  missing: "border-white/15 bg-white/5 text-slate-400",
+  missing: "border-border-strong bg-surface-1 text-text-muted",
   locked: "border-accent/30 bg-accent/10 text-accent-bright",
 };

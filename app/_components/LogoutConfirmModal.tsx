@@ -28,7 +28,7 @@ export default function LogoutConfirmModal({
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 text-center shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
+        className="w-full max-w-sm rounded-2xl border border-border-subtle bg-panel p-6 text-center shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
       >
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/15 text-red-400">
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -39,13 +39,13 @@ export default function LogoutConfirmModal({
             />
           </svg>
         </span>
-        <h2 className="mt-4 text-lg font-bold text-white">{t.common.logoutConfirmTitle}</h2>
-        <p className="mt-2 text-sm text-slate-400">{t.common.logoutConfirmBody}</p>
+        <h2 className="mt-4 text-lg font-bold text-text-primary">{t.common.logoutConfirmTitle}</h2>
+        <p className="mt-2 text-sm text-text-muted">{t.common.logoutConfirmBody}</p>
         <div className="mt-6 flex gap-3">
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-slate-300 transition-colors duration-150 hover:border-white/30 hover:text-white ${pressScale}`}
+            className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
           >
             {t.common.cancelBtn}
           </button>

@@ -34,7 +34,7 @@ function formatExpiry(raw: string, prev: string): string {
 }
 
 const inputCls =
-  "mt-1.5 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+  "mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow,background-color] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
 
 function CheckoutContent() {
   const router = useRouter();
@@ -117,9 +117,9 @@ function CheckoutContent() {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
               R
             </span>
-            <span className="text-sm font-semibold tracking-tight text-white">ReloAI</span>
+            <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
           </Link>
-          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+          <div className="flex items-center gap-1.5 text-xs text-text-muted">
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-10.5a1.5 1.5 0 01-1.5-1.5v-7.5a1.5 1.5 0 011.5-1.5z" />
             </svg>
@@ -129,22 +129,22 @@ function CheckoutContent() {
 
         <div className="mx-auto mt-10 w-full max-w-lg space-y-5">
           {/* Order summary */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t.checkout.orderSummary}</p>
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">{t.checkout.orderSummary}</p>
             <div className="mt-4 flex items-start justify-between gap-4">
               <div>
-                <p className="text-lg font-bold text-white">ReloAI {meta.name}</p>
-                <p className="mt-0.5 text-sm text-slate-400">{t.checkout.subscription}</p>
+                <p className="text-lg font-bold text-text-primary">ReloAI {meta.name}</p>
+                <p className="mt-0.5 text-sm text-text-muted">{t.checkout.subscription}</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-white">{meta.price}</p>
-                <p className="text-xs text-slate-500">{t.checkout.perMonth}</p>
+                <p className="text-2xl font-bold text-text-primary">{meta.price}</p>
+                <p className="text-xs text-text-muted">{t.checkout.perMonth}</p>
               </div>
             </div>
 
-            <ul className="mt-5 space-y-2 border-t border-white/5 pt-4">
+            <ul className="mt-5 space-y-2 border-t border-border-subtle pt-4">
               {meta.features.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-xs text-slate-400">
+                <li key={f} className="flex items-center gap-2 text-xs text-text-muted">
                   <svg className="h-3.5 w-3.5 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
                   </svg>
@@ -153,15 +153,15 @@ function CheckoutContent() {
               ))}
             </ul>
 
-            <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-4 text-sm">
-              <span className="text-slate-400">{t.checkout.totalToday}</span>
-              <span className="font-bold text-white">{meta.priceNum}</span>
+            <div className="mt-5 flex items-center justify-between border-t border-border-subtle pt-4 text-sm">
+              <span className="text-text-muted">{t.checkout.totalToday}</span>
+              <span className="font-bold text-text-primary">{meta.priceNum}</span>
             </div>
           </div>
 
           {/* Payment form */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{t.checkout.paymentDetails}</p>
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">{t.checkout.paymentDetails}</p>
 
             {error && (
               <p className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-400">
@@ -172,7 +172,7 @@ function CheckoutContent() {
             <div className="mt-5 space-y-4">
               {/* Card number */}
               <div>
-                <label htmlFor="card-number" className="text-sm font-medium text-slate-300">
+                <label htmlFor="card-number" className="text-sm font-medium text-text-secondary">
                   {t.checkout.cardNumber}
                 </label>
                 <div className="relative">
@@ -195,7 +195,7 @@ function CheckoutContent() {
               {/* Expiry + CVC */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="expiry" className="text-sm font-medium text-slate-300">
+                  <label htmlFor="expiry" className="text-sm font-medium text-text-secondary">
                     {t.checkout.expiryDate}
                   </label>
                   <input
@@ -211,7 +211,7 @@ function CheckoutContent() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="cvc" className="text-sm font-medium text-slate-300">
+                  <label htmlFor="cvc" className="text-sm font-medium text-text-secondary">
                     {t.checkout.cvc}
                   </label>
                   <input
@@ -230,7 +230,7 @@ function CheckoutContent() {
 
               {/* Cardholder name */}
               <div>
-                <label htmlFor="card-name" className="text-sm font-medium text-slate-300">
+                <label htmlFor="card-name" className="text-sm font-medium text-text-secondary">
                   {t.checkout.cardholderName}
                 </label>
                 <input
@@ -280,9 +280,9 @@ function CheckoutContent() {
 
           <p className="pb-6 text-center text-xs text-slate-600">
             {t.checkout.termsPrefix}{" "}
-            <Link href="/" className="underline hover:text-slate-400">{t.checkout.termsService}</Link>
+            <Link href="/" className="underline hover:text-text-muted">{t.checkout.termsService}</Link>
             {" "}{t.checkout.and}{" "}
-            <Link href="/" className="underline hover:text-slate-400">{t.checkout.privacyPolicy}</Link>.
+            <Link href="/" className="underline hover:text-text-muted">{t.checkout.privacyPolicy}</Link>.
           </p>
         </div>
       </div>

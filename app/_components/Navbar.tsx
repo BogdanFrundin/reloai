@@ -34,7 +34,7 @@ function LanguageSelector() {
         onClick={() => setOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-medium text-white transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
+        className={`flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-3 py-2 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
       >
         <Image
           src={getFlagUrl(current.flag, "sm")}
@@ -46,7 +46,7 @@ function LanguageSelector() {
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`h-4 w-4 text-slate-400 transition-transform duration-200 ease-[var(--ease-out-strong)] ${open ? "rotate-180" : ""}`}
+          className={`h-4 w-4 text-text-muted transition-transform duration-200 ease-[var(--ease-out-strong)] ${open ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -60,7 +60,7 @@ function LanguageSelector() {
         <ul
           role="listbox"
           style={{ transformOrigin: "top right" }}
-          className="absolute right-0 z-50 mt-2 w-48 origin-top-right overflow-hidden rounded-xl border border-white/10 bg-[#0d0d0f]/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
+          className="absolute right-0 z-50 mt-2 w-48 origin-top-right overflow-hidden rounded-xl border border-border-subtle bg-panel/95 py-1 shadow-xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
         >
           {LANGUAGES.map((l) => (
             <li key={l.code}>
@@ -73,7 +73,7 @@ function LanguageSelector() {
                   setOpen(false);
                 }}
                 className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
-                  l.code === lang ? "font-semibold text-accent-bright" : "text-slate-200"
+                  l.code === lang ? "font-semibold text-accent-bright" : "text-text-secondary"
                 }`}
               >
                 <Image
@@ -111,8 +111,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-black/60 backdrop-blur-xl transition-[box-shadow,border-color] duration-300 ease-[var(--ease-out-strong)] ${
-        scrolled ? "border-white/10 shadow-lg shadow-black/30" : "border-transparent"
+      className={`sticky top-0 z-50 border-b bg-background/60 backdrop-blur-xl transition-[box-shadow,border-color] duration-300 ease-[var(--ease-out-strong)] ${
+        scrolled ? "border-border-subtle shadow-lg shadow-black/30" : "border-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
@@ -120,7 +120,7 @@ export default function Navbar() {
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-white font-bold shadow-[0_0_20px_-4px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105">
             R
           </span>
-          <span className="text-lg font-semibold tracking-tight text-white">
+          <span className="text-lg font-semibold tracking-tight text-text-primary">
             ReloAI
           </span>
         </Link>
@@ -130,7 +130,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="relative text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-white"
+              className="relative text-sm font-medium text-text-muted transition-colors duration-150 hover:text-text-primary"
             >
               {link.label}
             </a>
@@ -143,7 +143,7 @@ export default function Navbar() {
             (user ? (
               <Link
                 href="/dashboard"
-                className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 py-1.5 pl-1.5 pr-4 text-sm font-semibold text-white transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
+                className={`flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 py-1.5 pl-1.5 pr-4 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-xs font-bold text-white">
                   {initials}
@@ -154,7 +154,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-white"
+                  className="text-sm font-medium text-text-muted transition-colors duration-150 hover:text-text-primary"
                 >
                   {t.nav.login}
                 </Link>
@@ -175,7 +175,7 @@ export default function Navbar() {
             onClick={() => setOpen((prev) => !prev)}
             aria-label="Toggle menu"
             aria-expanded={open}
-            className={`flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-white ${pressScale}`}
+            className={`flex h-10 w-10 items-center justify-center rounded-lg border border-border-strong bg-surface-1 text-text-primary ${pressScale}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -196,14 +196,14 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-black/80 px-6 py-4 backdrop-blur-xl transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] starting:opacity-0 starting:-translate-y-2 lg:hidden">
+        <div className="border-t border-border-subtle bg-panel/95 px-6 py-4 backdrop-blur-xl transition-[opacity,transform] duration-200 ease-[var(--ease-out-strong)] starting:opacity-0 starting:-translate-y-2 lg:hidden">
           <div className="flex flex-col gap-4">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-sm font-medium text-slate-300 transition-colors duration-150 hover:text-white"
+                className="text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
               >
                 {link.label}
               </a>
@@ -213,7 +213,7 @@ export default function Navbar() {
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className={`mt-2 flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 py-2.5 text-center text-sm font-semibold text-white hover:border-accent/50 ${pressScale}`}
+                  className={`mt-2 flex items-center justify-center gap-2 rounded-full border border-border-strong bg-surface-1 py-2.5 text-center text-sm font-semibold text-text-primary hover:border-accent/50 ${pressScale}`}
                 >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-[10px] font-bold text-white">
                     {initials}
@@ -225,7 +225,7 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setOpen(false)}
-                    className="text-sm font-medium text-slate-300 transition-colors duration-150 hover:text-white"
+                    className="text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
                   >
                     {t.nav.login}
                   </Link>
