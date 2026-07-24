@@ -56,59 +56,57 @@ export default function Reviews() {
             onScroll={handleScroll}
             className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {items.map((review, index) => (
+            {items.map((review) => (
               <div key={review.name} className="w-full flex-shrink-0 snap-start px-1 sm:px-8">
-                <Reveal delay={index * 60}>
-                  <div className="mx-auto flex h-full max-w-2xl flex-col rounded-2xl border border-border-subtle bg-surface-1 p-7 backdrop-blur-sm sm:p-10">
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-1 text-accent-bright">
-                        {Array.from({ length: 5 }).map((_, starIndex) => (
-                          <svg
-                            key={starIndex}
-                            xmlns="http://www.w3.org/2000/svg"
-                            className={`h-4 w-4 ${starIndex < review.rating ? "" : "text-border-strong"}`}
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
-                          </svg>
-                        ))}
-                      </div>
-                      <span className="font-serif text-4xl leading-none text-border-subtle" aria-hidden>
-                        &rdquo;
-                      </span>
-                    </div>
-                    <p className="mt-5 flex-1 text-base leading-relaxed text-text-secondary">
-                      &ldquo;{review.quote}&rdquo;
-                    </p>
-
-                    {review.documentBadge && (
-                      <span className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-border-subtle bg-surface-1 px-3 py-1.5 text-xs text-text-muted">
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+                <div className="mx-auto flex h-full max-w-2xl flex-col rounded-2xl border border-border-subtle bg-surface-1 p-7 backdrop-blur-sm sm:p-10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-1 text-accent-bright">
+                      {Array.from({ length: 5 }).map((_, starIndex) => (
+                        <svg
+                          key={starIndex}
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`h-4 w-4 ${starIndex < review.rating ? "" : "text-border-strong"}`}
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
                         </svg>
-                        {review.documentBadge}
-                      </span>
-                    )}
+                      ))}
+                    </div>
+                    <span className="font-serif text-4xl leading-none text-border-subtle" aria-hidden>
+                      &rdquo;
+                    </span>
+                  </div>
+                  <p className="mt-5 flex-1 text-base leading-relaxed text-text-secondary">
+                    &ldquo;{review.quote}&rdquo;
+                  </p>
 
-                    <div className="mt-6 flex items-center gap-3">
-                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white">
-                        {review.initials}
-                      </span>
-                      <div>
-                        <p className="text-sm font-semibold text-text-primary">{review.name}</p>
-                        <p className="flex items-center gap-1.5 text-xs text-text-muted">
-                          <span>{review.fromFlag}</span>
-                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                          </svg>
-                          <span>{review.toFlag}</span>
-                          <span className="ml-1">{review.route}</span>
-                        </p>
-                      </div>
+                  {review.documentBadge && (
+                    <span className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-border-subtle bg-surface-1 px-3 py-1.5 text-xs text-text-muted">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+                      </svg>
+                      {review.documentBadge}
+                    </span>
+                  )}
+
+                  <div className="mt-6 flex items-center gap-3">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white">
+                      {review.initials}
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-text-primary">{review.name}</p>
+                      <p className="flex items-center gap-1.5 text-xs text-text-muted">
+                        <span>{review.fromFlag}</span>
+                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                        <span>{review.toFlag}</span>
+                        <span className="ml-1">{review.route}</span>
+                      </p>
                     </div>
                   </div>
-                </Reveal>
+                </div>
               </div>
             ))}
           </div>
@@ -144,7 +142,7 @@ export default function Reviews() {
               aria-label={`Go to review ${index + 1}`}
               aria-current={activeIndex === index}
               className={`h-2 rounded-full transition-all duration-200 ${
-                activeIndex === index ? "w-6 bg-accent-bright" : "w-2 bg-white/20 hover:bg-white/40"
+                activeIndex === index ? "w-6 bg-accent-bright" : "w-2 bg-border-strong hover:bg-text-muted"
               }`}
             />
           ))}
