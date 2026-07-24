@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import LogoutConfirmModal from "../../../_components/LogoutConfirmModal";
+import UpgradeModal from "../../../_components/UpgradeModal";
 import SearchableCountrySelect from "../../../_components/SearchableCountrySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -70,6 +71,7 @@ export default function ProfilePage() {
   const p = t.profile;
 
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
@@ -218,8 +220,9 @@ export default function ProfilePage() {
                     {p.maxPlanBadge}
                   </span>
                 ) : (
-                  <Link
-                    href="/pricing"
+                  <button
+                    type="button"
+                    onClick={() => setUpgradeOpen(true)}
                     title={p.upgradeTooltip}
                     className={`flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 ${pressScale} ${
                       isFree
@@ -228,7 +231,7 @@ export default function ProfilePage() {
                     }`}
                   >
                     {isFree ? p.upgradeBadge : p.upgradeToProBadge}
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>
@@ -595,6 +598,7 @@ export default function ProfilePage() {
         onClose={() => setLogoutConfirmOpen(false)}
         onConfirm={confirmLogOut}
       />
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </div>
   );
 }
