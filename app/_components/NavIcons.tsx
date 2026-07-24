@@ -24,12 +24,12 @@ export const NAV_ICONS: Record<MainKey | OtherKey, ReactNode> = {
   ),
   banks: (
     <svg {...ICON_PROPS}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5L12 4l9 6.5M4.5 10.5V19a1 1 0 001 1h13a1 1 0 001-1v-8.5M9 20v-6h6v6" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L3 8h18L12 3zM5 8v10M9 8v10M15 8v10M19 8v10M3 21h18" />
     </svg>
   ),
   medicine: (
     <svg {...ICON_PROPS}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1.5 4 2.5.5-1 2-2.5 4-2.5 3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
     </svg>
   ),
   insurance: (
