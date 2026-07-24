@@ -20,6 +20,7 @@ export type Dictionary = {
     reviews: string;
     login: string;
     getStarted: string;
+    goToDashboard: string;
   };
   common: {
     cancelBtn: string;
@@ -412,6 +413,7 @@ export type Dictionary = {
     };
     sidebar: {
       tagline: string;
+      home: string;
       myPlanSection: string;
       roadmap: string;
       checklist: string;
@@ -621,6 +623,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Reviews",
       login: "Log in",
       getStarted: "Get Started",
+      goToDashboard: "Go to dashboard →",
     },
     common: {
       cancelBtn: "Cancel",
@@ -1411,6 +1414,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Your relocation plan",
+        home: "Home",
         myPlanSection: "MY PLAN",
         roadmap: "Roadmap",
         checklist: "Checklist",
@@ -1681,6 +1685,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Отзывы",
       login: "Войти",
       getStarted: "Начать",
+      goToDashboard: "Мой план →",
     },
     common: {
       cancelBtn: "Отмена",
@@ -2471,6 +2476,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переезда",
+        home: "Домой",
         myPlanSection: "МОЙ ПЛАН",
         roadmap: "Дорожная карта",
         checklist: "Чеклист",
@@ -2741,6 +2747,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Sharhlar",
       login: "Kirish",
       getStarted: "Boshlash",
+      goToDashboard: "Rejamga o'tish →",
     },
     common: {
       cancelBtn: "Bekor qilish",
@@ -3531,6 +3538,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Sizning ko'chish rejangiz",
+        home: "Bosh sahifa",
         myPlanSection: "MENING REJAM",
         roadmap: "Yo'l xaritasi",
         checklist: "Ro'yxat",
@@ -3799,6 +3807,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Yorumlar",
       login: "Giriş yap",
       getStarted: "Başla",
+      goToDashboard: "Panele git →",
     },
     common: {
       cancelBtn: "İptal",
@@ -4588,6 +4597,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Taşınma planınız",
+        home: "Ana sayfa",
         myPlanSection: "PLANIM",
         roadmap: "Yol haritası",
         checklist: "Kontrol listesi",
@@ -4856,6 +4866,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Шарҳҳо",
       login: "Воридшавӣ",
       getStarted: "Сар кардан",
+      goToDashboard: "Нақшаи ман →",
     },
     common: {
       cancelBtn: "Бекор кардан",
@@ -5645,6 +5656,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Нақшаи кӯчиши шумо",
+        home: "Асосӣ",
         myPlanSection: "НАҚШАИ МАН",
         roadmap: "Харитаи роҳ",
         checklist: "Рӯйхат",
@@ -5913,6 +5925,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       reviews: "Відгуки",
       login: "Увійти",
       getStarted: "Почати",
+      goToDashboard: "Мій план →",
     },
     common: {
       cancelBtn: "Скасувати",
@@ -6703,6 +6716,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переїзду",
+        home: "Головна",
         myPlanSection: "МІЙ ПЛАН",
         roadmap: "Дорожня карта",
         checklist: "Чекліст",

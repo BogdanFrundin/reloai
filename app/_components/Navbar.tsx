@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
+import { useAuth } from "./AuthProvider";
 import { LANGUAGES } from "../_lib/i18n";
 import { useScrolled } from "../_lib/useScrolled";
 import { pressScale } from "../_lib/motion";
 import { getFlagUrl } from "../_lib/flags";
+import { getInitials } from "../_lib/initials";
 
 function LanguageSelector() {
   const { lang, setLang } = useLanguage();
@@ -96,6 +98,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { t } = useLanguage();
   const scrolled = useScrolled();
+  const { user, profile, loading } = useAuth();
+  const initials = getInitials(profile?.name, user?.email);
 
   const NAV_LINKS = [
     { href: "#how-it-works", label: t.nav.howItWorks },
@@ -135,18 +139,33 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-4 lg:flex">
           <LanguageSelector />
-          <Link
-            href="/login"
-            className="text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-white"
-          >
-            {t.nav.login}
-          </Link>
-          <Link
-            href="/register"
-            className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-          >
-            {t.nav.getStarted}
-          </Link>
+          {!loading &&
+            (user ? (
+              <Link
+                href="/dashboard"
+                className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 py-1.5 pl-1.5 pr-4 text-sm font-semibold text-white transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-xs font-bold text-white">
+                  {initials}
+                </span>
+                {t.nav.goToDashboard}
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-slate-400 transition-colors duration-150 hover:text-white"
+                >
+                  {t.nav.login}
+                </Link>
+                <Link
+                  href="/register"
+                  className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                >
+                  {t.nav.getStarted}
+                </Link>
+              </>
+            ))}
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
@@ -189,20 +208,36 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="text-sm font-medium text-slate-300 transition-colors duration-150 hover:text-white"
-            >
-              {t.nav.login}
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => setOpen(false)}
-              className={`mt-2 rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] hover:bg-accent-bright ${pressScale}`}
-            >
-              {t.nav.getStarted}
-            </Link>
+            {!loading &&
+              (user ? (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setOpen(false)}
+                  className={`mt-2 flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 py-2.5 text-center text-sm font-semibold text-white hover:border-accent/50 ${pressScale}`}
+                >
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-[10px] font-bold text-white">
+                    {initials}
+                  </span>
+                  {t.nav.goToDashboard}
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium text-slate-300 transition-colors duration-150 hover:text-white"
+                  >
+                    {t.nav.login}
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setOpen(false)}
+                    className={`mt-2 rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-white shadow-[0_0_24px_-6px_var(--accent)] hover:bg-accent-bright ${pressScale}`}
+                  >
+                    {t.nav.getStarted}
+                  </Link>
+                </>
+              ))}
           </div>
         </div>
       )}
