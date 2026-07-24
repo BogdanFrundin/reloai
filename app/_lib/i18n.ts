@@ -212,9 +212,6 @@ export type Dictionary = {
     upgrade: string;
     openMenuAria: string;
     avatarAria: string;
-    profileMenuProfile: string;
-    profileMenuSettings: string;
-    profileMenuLogout: string;
   };
   notifications: {
     bellAria: string;
@@ -1131,10 +1128,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Search documents, tasks...",
       upgrade: "Upgrade",
       openMenuAria: "Open menu",
-      avatarAria: "Open profile menu",
-      profileMenuProfile: "Profile",
-      profileMenuSettings: "Settings",
-      profileMenuLogout: "Log out",
+      avatarAria: "Go to profile",
     },
     notifications: {
       bellAria: "Open notifications",
@@ -2193,10 +2187,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Поиск документов, задач...",
       upgrade: "Улучшить",
       openMenuAria: "Открыть меню",
-      avatarAria: "Открыть меню профиля",
-      profileMenuProfile: "Профиль",
-      profileMenuSettings: "Настройки",
-      profileMenuLogout: "Выйти",
+      avatarAria: "Перейти в профиль",
     },
     notifications: {
       bellAria: "Открыть уведомления",
@@ -3255,10 +3246,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Hujjatlar, vazifalarni qidirish...",
       upgrade: "Yaxshilash",
       openMenuAria: "Menyuni ochish",
-      avatarAria: "Profil menyusini ochish",
-      profileMenuProfile: "Profil",
-      profileMenuSettings: "Sozlamalar",
-      profileMenuLogout: "Chiqish",
+      avatarAria: "Profilga o'tish",
     },
     notifications: {
       bellAria: "Bildirishnomalarni ochish",
@@ -4314,10 +4302,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Belge, görev ara...",
       upgrade: "Yükselt",
       openMenuAria: "Menüyü aç",
-      avatarAria: "Profil menüsünü aç",
-      profileMenuProfile: "Profil",
-      profileMenuSettings: "Ayarlar",
-      profileMenuLogout: "Çıkış yap",
+      avatarAria: "Profile git",
     },
     notifications: {
       bellAria: "Bildirimleri aç",
@@ -5373,10 +5358,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Ҷустуҷӯи ҳуҷҷатҳо, вазифаҳо...",
       upgrade: "Беҳтар кардан",
       openMenuAria: "Кушодани меню",
-      avatarAria: "Кушодани менюи профил",
-      profileMenuProfile: "Профил",
-      profileMenuSettings: "Танзимот",
-      profileMenuLogout: "Баромадан",
+      avatarAria: "Гузариш ба профил",
     },
     notifications: {
       bellAria: "Кушодани огоҳиномаҳо",
@@ -6433,10 +6415,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       searchPlaceholder: "Пошук документів, завдань...",
       upgrade: "Покращити",
       openMenuAria: "Відкрити меню",
-      avatarAria: "Відкрити меню профілю",
-      profileMenuProfile: "Профіль",
-      profileMenuSettings: "Налаштування",
-      profileMenuLogout: "Вийти",
+      avatarAria: "Перейти до профілю",
     },
     notifications: {
       bellAria: "Відкрити сповіщення",
