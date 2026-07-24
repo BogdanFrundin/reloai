@@ -187,7 +187,10 @@ export default function WorkPage() {
                     <li key={`${suggestion}-${index}`}>
                       <button
                         type="button"
-                        onMouseDown={(event) => event.preventDefault()}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                          handleSuggestionClick(suggestion);
+                        }}
                         onClick={() => handleSuggestionClick(suggestion)}
                         className="w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-white/10 hover:text-white transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg"
                       >
