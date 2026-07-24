@@ -363,6 +363,10 @@ export type Dictionary = {
     noExactData: string;
     jobSites: string;
     visitSite: string;
+    vacanciesFoundOne: string;
+    vacanciesFoundFew: string;
+    vacanciesFoundMany: string;
+    viewVacanciesBtn: string;
     employmentSubtitle: string;
     b2bSubtitle: string;
     b2bContractName: string;
@@ -1348,6 +1352,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "No exact data for this role yet — showing the national average.",
       jobSites: "Job Sites",
       visitSite: "Visit site",
+      vacanciesFoundOne: "Found {count} vacancy",
+      vacanciesFoundFew: "Found {count} vacancies",
+      vacanciesFoundMany: "Found {count} vacancies",
+      viewVacanciesBtn: "View vacancies",
       employmentSubtitle: "Employment contract",
       b2bSubtitle: "Self-employment",
       b2bContractName: "B2B Contract",
@@ -2406,6 +2414,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "Точных данных по этой профессии пока нет — показываем среднюю по стране.",
       jobSites: "Сайты вакансий",
       visitSite: "Перейти на сайт",
+      vacanciesFoundOne: "Найдена {count} вакансия",
+      vacanciesFoundFew: "Найдено {count} вакансии",
+      vacanciesFoundMany: "Найдено {count} вакансий",
+      viewVacanciesBtn: "Смотреть вакансии",
       employmentSubtitle: "Трудовой договор",
       b2bSubtitle: "Самозанятость",
       b2bContractName: "Договор B2B",
@@ -3464,6 +3476,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "Bu kasb uchun aniq ma'lumot hali yo'q — mamlakat bo'yicha o'rtacha ko'rsatkich ko'rsatilmoqda.",
       jobSites: "Ish qidirish saytlari",
       visitSite: "Saytga o'tish",
+      vacanciesFoundOne: "{count} ta bo'sh ish o'rni topildi",
+      vacanciesFoundFew: "{count} ta bo'sh ish o'rni topildi",
+      vacanciesFoundMany: "{count} ta bo'sh ish o'rni topildi",
+      viewVacanciesBtn: "Vakansiyalarni ko'rish",
       employmentSubtitle: "Mehnat shartnomasi",
       b2bSubtitle: "O'z ishi (B2B)",
       b2bContractName: "B2B shartnoma",
@@ -4519,6 +4535,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "Bu meslek için henüz kesin veri yok — ulusal ortalama gösteriliyor.",
       jobSites: "İş Siteleri",
       visitSite: "Siteyi ziyaret et",
+      vacanciesFoundOne: "{count} iş ilanı bulundu",
+      vacanciesFoundFew: "{count} iş ilanı bulundu",
+      vacanciesFoundMany: "{count} iş ilanı bulundu",
+      viewVacanciesBtn: "İlanları görüntüle",
       employmentSubtitle: "İş sözleşmesi",
       b2bSubtitle: "Serbest çalışma",
       b2bContractName: "B2B Sözleşmesi",
@@ -5574,6 +5594,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "Барои ин касб ҳанӯз маълумоти дақиқ нест — нишондиҳандаи миёнаи миллӣ нишон дода мешавад.",
       jobSites: "Сомонаҳои корӣ",
       visitSite: "Ба сомона гузаред",
+      vacanciesFoundOne: "{count} ҷои кории холӣ ёфт шуд",
+      vacanciesFoundFew: "{count} ҷои кории холӣ ёфт шуд",
+      vacanciesFoundMany: "{count} ҷои кории холӣ ёфт шуд",
+      viewVacanciesBtn: "Ҷойҳои кориро дидан",
       employmentSubtitle: "Шартномаи меҳнатӣ",
       b2bContractName: "Шартномаи B2B",
       b2bSubtitle: "Кори мустақил (B2B)",
@@ -6630,6 +6654,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       noExactData: "Точних даних щодо цієї професії поки немає — показуємо середню по країні.",
       jobSites: "Сайти вакансій",
       visitSite: "Перейти на сайт",
+      vacanciesFoundOne: "Знайдено {count} вакансію",
+      vacanciesFoundFew: "Знайдено {count} вакансії",
+      vacanciesFoundMany: "Знайдено {count} вакансій",
+      viewVacanciesBtn: "Переглянути вакансії",
       employmentSubtitle: "Трудовий договір",
       b2bSubtitle: "Самозайнятість",
       b2bContractName: "Договір B2B",
