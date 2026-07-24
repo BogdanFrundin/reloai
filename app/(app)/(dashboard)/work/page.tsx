@@ -28,7 +28,7 @@ const JOB_SITES = [
 ] as const;
 
 const PROFESSION_JOB_SITES = [
-  { key: "pracuj", name: "Pracuj.pl", buildHref: (q: string) => `https://www.pracuj.pl/praca/${encodeURIComponent(q)}` },
+  { key: "pracuj", name: "Pracuj.pl", buildHref: (q: string) => `https://www.pracuj.pl/praca/${encodeURIComponent(q)};kw` },
   { key: "nofluff", name: "NoFluffJobs", buildHref: (q: string) => `https://nofluffjobs.com/pl/jobs/${encodeURIComponent(q)}` },
   {
     key: "justjoin",
@@ -37,6 +37,34 @@ const PROFESSION_JOB_SITES = [
   },
   { key: "olx", name: "OLX", buildHref: (q: string) => `https://www.olx.pl/praca/q-${encodeURIComponent(q)}/` },
 ] as const;
+
+// Job sites are Polish, so search terms need to be in Polish to return results.
+const PROFESSION_PL_TRANSLATIONS: Record<string, string> = {
+  программист: "programista",
+  преподаватель: "nauczyciel",
+  водитель: "kierowca",
+  строитель: "budowlaniec",
+  повар: "kucharz",
+  врач: "lekarz",
+  медсестра: "pielęgniarka",
+  бухгалтер: "księgowy",
+  менеджер: "menedżer",
+  продавец: "sprzedawca",
+  юрист: "prawnik",
+  инженер: "inżynier",
+  дизайнер: "designer",
+  маркетолог: "marketingowiec",
+  переводчик: "tłumacz",
+  охранник: "ochroniarz",
+  уборщик: "sprzątacz",
+  электрик: "elektryk",
+  сантехник: "hydraulik",
+  механик: "mechanik",
+};
+
+function translateProfessionToPolish(profession: string): string {
+  return PROFESSION_PL_TRANSLATIONS[profession.trim().toLowerCase()] ?? profession;
+}
 
 // Deterministic pseudo-random count so the same query always shows the same
 // number (no real vacancy-count API backs this) and there's no SSR/client mismatch.
@@ -103,6 +131,7 @@ export default function WorkPage() {
   const result = useMemo(() => lookupSalary(query), [query]);
   const suggestions = useMemo(() => getSuggestions(query), [query]);
   const profession = query.trim();
+  const professionPl = useMemo(() => (profession ? translateProfessionToPolish(profession) : ""), [profession]);
   const vacancyCount = useMemo(
     () => (profession ? getMockVacancyCount(profession.toLowerCase(), 24, 180) : 0),
     [profession],
@@ -226,7 +255,7 @@ export default function WorkPage() {
                     return (
                       <a
                         key={site.key}
-                        href={site.buildHref(profession)}
+                        href={site.buildHref(professionPl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 ${pressScale}`}
