@@ -6,6 +6,7 @@ import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
+import HelpButton from "../../../_components/HelpButton";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 
@@ -78,6 +79,14 @@ export default function BanksPage() {
               >
                 {t.banks.openAccount}
               </Link>
+              <div className="mt-2.5 flex justify-center">
+                <HelpButton
+                  guideHeading={`Как открыть счёт в ${bank.name}`}
+                  guideSteps={[...t.banks.guide.steps]}
+                  aiQuestion={`Как открыть счёт в ${bank.name}?`}
+                  label="Как это получить?"
+                />
+              </div>
             </div>
           </Reveal>
         ))}

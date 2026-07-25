@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { pressScale } from "../../_lib/motion";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
@@ -35,9 +36,12 @@ function formatSessionDate(iso: string): string {
   return new Date(iso).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
-export default function DashboardAiPage() {
+function DashboardAiContent() {
   const { user, profile } = useAuth();
   const { t, lang } = useLanguage();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const autoSentRef = useRef(false);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [sessionsLoaded, setSessionsLoaded] = useState(false);
@@ -81,6 +85,17 @@ export default function DashboardAiPage() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (autoSentRef.current || !sessionsLoaded) return;
+    const q = searchParams.get("q");
+    if (q && messages.length === 0) {
+      autoSentRef.current = true;
+      sendMessage(q);
+      router.replace("/dashboard/ai");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once, guarded by autoSentRef, once sessions have loaded
+  }, [sessionsLoaded, searchParams]);
 
   async function persistSession(allMessages: Message[], sessionId: string | null): Promise<string | null> {
     if (!user) return null;
@@ -327,5 +342,13 @@ export default function DashboardAiPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DashboardAiPage() {
+  return (
+    <Suspense fallback={null}>
+      <DashboardAiContent />
+    </Suspense>
   );
 }
