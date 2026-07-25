@@ -12,10 +12,27 @@ import { supabase } from "../../lib/supabase";
 
 function buildPlanMeta(
   t: Dictionary,
-): Record<string, { name: string; price: string; originalPrice?: string; priceNum: string; features: string[] }> {
+): Record<
+  string,
+  { name: string; price: string; originalPrice?: string; discountLabel?: string; priceNum: string; features: string[] }
+> {
   return {
-    premium: { name: "Premium", price: "€29", originalPrice: "€99", priceNum: "€29.00", features: t.checkout.premiumFeatures },
-    pro: { name: "Pro", price: "€49", originalPrice: "€149", priceNum: "€49.00", features: t.checkout.proFeatures },
+    premium: {
+      name: "Premium",
+      price: "€29",
+      originalPrice: "€99",
+      discountLabel: "-71%",
+      priceNum: "€29.00",
+      features: t.checkout.premiumFeatures,
+    },
+    pro: {
+      name: "Pro",
+      price: "€49",
+      originalPrice: "€149",
+      discountLabel: "-67%",
+      priceNum: "€49.00",
+      features: t.checkout.proFeatures,
+    },
   };
 }
 
@@ -137,10 +154,17 @@ function CheckoutContent() {
                 <p className="mt-0.5 text-sm text-text-muted">{t.checkout.subscription}</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-text-primary">
-                  {meta.originalPrice && (
-                    <span className="mr-2 text-lg font-medium text-text-muted line-through">{meta.originalPrice}</span>
-                  )}
+                {meta.originalPrice && (
+                  <div className="flex items-center justify-end gap-1.5">
+                    <span className="text-xs font-medium text-text-muted/70 line-through">{meta.originalPrice}</span>
+                    {meta.discountLabel && (
+                      <span className="rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-600">
+                        {meta.discountLabel}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <p className={`text-2xl font-bold text-text-primary ${meta.originalPrice ? "mt-0.5" : ""}`}>
                   {meta.price}
                 </p>
                 <p className="text-xs text-text-muted">{t.checkout.perMonth}</p>

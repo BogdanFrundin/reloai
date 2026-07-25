@@ -16,6 +16,7 @@ interface PlanDef {
   name: string;
   price: string;
   originalPrice?: string;
+  discountLabel?: string;
   period: string;
   description: string;
   badge: string | null;
@@ -42,6 +43,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       name: ap.premiumName,
       price: "€29",
       originalPrice: "€99",
+      discountLabel: "-71%",
       period: ap.perMonth,
       description: ap.premiumDesc,
       badge: ap.mostPopular,
@@ -53,6 +55,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       name: ap.proName,
       price: "€49",
       originalPrice: "€149",
+      discountLabel: "-67%",
       period: ap.perMonth,
       description: ap.proDesc,
       badge: null,
@@ -137,12 +140,21 @@ export default function Pricing() {
                 <h3 className="text-lg font-semibold text-text-primary">{plan.name}</h3>
                 <p className="mt-1 text-sm text-text-muted">{plan.description}</p>
 
-                <div className="mt-6 flex items-baseline gap-1">
+                <div className="mt-6">
                   {plan.originalPrice && (
-                    <span className="mr-2 text-lg font-medium text-text-muted line-through">{plan.originalPrice}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-text-muted/70 line-through">{plan.originalPrice}</span>
+                      {plan.discountLabel && (
+                        <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[11px] font-semibold text-red-600">
+                          {plan.discountLabel}
+                        </span>
+                      )}
+                    </div>
                   )}
-                  <span className="text-4xl font-bold tracking-tight text-text-primary">{plan.price}</span>
-                  <span className="text-text-muted">{plan.period}</span>
+                  <p className={`flex items-baseline gap-1 ${plan.originalPrice ? "mt-0.5" : ""}`}>
+                    <span className="text-4xl font-bold tracking-tight text-text-primary">{plan.price}</span>
+                    <span className="text-text-muted">{plan.period}</span>
+                  </p>
                 </div>
 
                 <ul className="mt-8 flex-1 space-y-3">

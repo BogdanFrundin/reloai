@@ -21,6 +21,7 @@ interface PlanDef {
   name: string;
   price: string;
   originalPrice?: string;
+  discountLabel?: string;
   period: string;
   description: string;
   badge: string | null;
@@ -49,6 +50,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       name: ap.premiumName,
       price: "€29",
       originalPrice: "€99",
+      discountLabel: "-71%",
       period: ap.perMonth,
       description: ap.premiumDesc,
       badge: ap.mostPopular,
@@ -61,6 +63,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       name: ap.proName,
       price: "€49",
       originalPrice: "€149",
+      discountLabel: "-67%",
       period: ap.perMonth,
       description: ap.proDesc,
       badge: null,
@@ -164,13 +167,22 @@ export default function PricingPlansGrid({ onPlanSelected }: { onPlanSelected?: 
 
             <p className="text-lg font-semibold text-text-primary">{plan.name}</p>
             <p className="mt-1 text-sm text-text-muted">{plan.description}</p>
-            <p className="mt-5">
+            <div className="mt-5">
               {plan.originalPrice && (
-                <span className="mr-2 text-lg font-medium text-text-muted line-through">{plan.originalPrice}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-text-muted/70 line-through">{plan.originalPrice}</span>
+                  {plan.discountLabel && (
+                    <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[11px] font-semibold text-red-600">
+                      {plan.discountLabel}
+                    </span>
+                  )}
+                </div>
               )}
-              <span className="text-4xl font-bold text-text-primary">{plan.price}</span>
-              <span className="text-sm text-text-muted"> {plan.period}</span>
-            </p>
+              <p className={plan.originalPrice ? "mt-0.5" : ""}>
+                <span className="text-4xl font-bold text-text-primary">{plan.price}</span>
+                <span className="text-sm text-text-muted"> {plan.period}</span>
+              </p>
+            </div>
 
             <ul className="mt-6 flex-1 space-y-3">
               {plan.features.map((feat) => (
