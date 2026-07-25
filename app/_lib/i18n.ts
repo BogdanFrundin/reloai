@@ -67,7 +67,7 @@ export type Dictionary = {
   countries: {
     heading: string;
     subheading: string;
-    list: { flag: string; name: string; highlight: string; points: string[] }[];
+    list: { flag: string; name: string; nameDeclined?: string; highlight: string; points: string[] }[];
     planMyMoveTo: string;
   };
   directions: {
@@ -2156,6 +2156,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "pl",
           name: "Польша",
+          nameDeclined: "Польшу",
           highlight: "Быстрорастущий tech-хаб",
           points: [
             "Разбор Karta Pobytu (вид на жительство)",
@@ -2166,6 +2167,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "de",
           name: "Германия",
+          nameDeclined: "Германию",
           highlight: "EU Blue Card и визы для поиска работы",
           points: [
             "Anmeldung и приёмы в Bürgeramt",
@@ -2176,6 +2178,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "es",
           name: "Испания",
+          nameDeclined: "Испанию",
           highlight: "Популярно среди удалённых сотрудников",
           points: [
             "Проверка на Digital Nomad Visa",
@@ -7688,6 +7691,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "pl",
           name: "Польща",
+          nameDeclined: "Польщі",
           highlight: "Швидкозростаючий tech-хаб",
           points: [
             "Розбір Karta Pobytu (посвідка на проживання)",
@@ -7698,6 +7702,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "de",
           name: "Німеччина",
+          nameDeclined: "Німеччини",
           highlight: "EU Blue Card і візи для пошуку роботи",
           points: [
             "Anmeldung і прийоми в Bürgeramt",
@@ -7708,6 +7713,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           flag: "es",
           name: "Іспанія",
+          nameDeclined: "Іспанії",
           highlight: "Популярно серед віддалених працівників",
           points: [
             "Перевірка на Digital Nomad Visa",

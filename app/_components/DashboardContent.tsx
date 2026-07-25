@@ -76,7 +76,7 @@ export default function DashboardContent() {
 
       <Reveal>
         <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-          {t.dashboard.relocation.replace("{country}", countryEntry?.name ?? country)}
+          {t.dashboard.relocation.replace("{country}", countryEntry?.nameDeclined ?? countryEntry?.name ?? country)}
         </h1>
         <p className="mt-2 text-text-muted">{subtitle}</p>
       </Reveal>
