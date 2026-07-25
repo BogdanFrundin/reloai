@@ -417,6 +417,7 @@ export type Dictionary = {
     openBtn: string;
     expandBtn: string;
     collapseBtn: string;
+    stepsCompletedTemplate: string;
     countdown: {
       heading: string;
       remaining: string;
@@ -1660,6 +1661,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Open",
       expandBtn: "Expand",
       collapseBtn: "Collapse",
+      stepsCompletedTemplate: "{done} of {total} steps completed",
       countdown: {
         heading: "You have 30 days of legal stay under the visa-free regime",
         remaining: "{days} days left — apply for your PESEL and residence card in time",
@@ -3048,6 +3050,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Открыть",
       expandBtn: "Развернуть",
       collapseBtn: "Свернуть",
+      stepsCompletedTemplate: "{done} из {total} шагов выполнено",
       countdown: {
         heading: "У вас 30 дней легального пребывания по визовому режиму",
         remaining: "Осталось {days} дней — нужно успеть подать на PESEL и карту побыту",
@@ -4433,6 +4436,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Ochish",
       expandBtn: "Yoyish",
       collapseBtn: "Yig'ish",
+      stepsCompletedTemplate: "{total} tadan {done} tasi bajarildi",
       countdown: {
         heading: "Sizda vizasiz rejim bo'yicha 30 kunlik qonuniy turish muddati bor",
         remaining: "{days} kun qoldi — PESEL va karta pobytu uchun ariza berishga ulgurish kerak",
@@ -5815,6 +5819,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Aç",
       expandBtn: "Genişlet",
       collapseBtn: "Daralt",
+      stepsCompletedTemplate: "{total} adımdan {done} tamamlandı",
       countdown: {
         heading: "Vizesiz rejim kapsamında 30 günlük yasal kalış hakkınız var",
         remaining: "{days} gün kaldı — PESEL ve ikamet kartı başvurunuzu zamanında yapmanız gerekiyor",
@@ -7197,6 +7202,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Кушодан",
       expandBtn: "Кушодан",
       collapseBtn: "Пӯшидан",
+      stepsCompletedTemplate: "{done} аз {total} қадам иҷро шуд",
       countdown: {
         heading: "Шумо 30 рӯз иқомати қонунӣ дар низоми бидуни виза доред",
         remaining: "{days} рӯз боқӣ мондааст — бояд барои PESEL ва карти иқомат дар мӯҳлат муроҷиат кунед",
@@ -8583,6 +8589,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Відкрити",
       expandBtn: "Розгорнути",
       collapseBtn: "Згорнути",
+      stepsCompletedTemplate: "{done} із {total} кроків виконано",
       countdown: {
         heading: "У вас 30 днів легального перебування за візовим режимом",
         remaining: "Залишилося {days} днів — потрібно встигнути подати на PESEL і карту побиту",

@@ -1,11 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
 import HelpButton from "./HelpButton";
 import type { Phase, PhaseStatus } from "../_lib/checklist";
+
+const PHASE_ICONS: Record<string, ReactNode> = {
+  beforeDeparture: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V6a3 3 0 013-3h1.5a3 3 0 013 3v3M4.5 9h15l-1 10.5a1.5 1.5 0 01-1.494 1.5H6.994A1.5 1.5 0 015.5 19.5L4.5 9z" />
+    </svg>
+  ),
+  legalization: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+    </svg>
+  ),
+  residenceCard: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 8.25v10.5a1.5 1.5 0 001.5 1.5h16.5a1.5 1.5 0 001.5-1.5V8.25M2.25 8.25V6a1.5 1.5 0 011.5-1.5h16.5A1.5 1.5 0 0121.75 6v2.25M6 15h4.5" />
+    </svg>
+  ),
+  workTaxes: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5h18M3 7.5v10.5a1.5 1.5 0 001.5 1.5h15a1.5 1.5 0 001.5-1.5V7.5M8 7.5V5.25A1.5 1.5 0 019.5 3.75h5A1.5 1.5 0 0116 5.25V7.5" />
+    </svg>
+  ),
+};
 
 function Checkbox({ checked }: { checked: boolean }) {
   return (
@@ -109,17 +132,22 @@ export default function PhaseCard({
 
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
 
+  const doneStepsCount = phase.steps.filter((s) => completed.has(s.documentType)).length;
+
   return (
     <Reveal delay={index * 60}>
       <div
-        className={`rounded-2xl p-5 transition-[border-color,opacity] duration-200 ease-[var(--ease-out-strong)] ${
+        className={`relative overflow-hidden rounded-2xl p-5 transition-[border-color,opacity] duration-200 ease-[var(--ease-out-strong)] ${
           isActive
-            ? "border border-accent/40 bg-accent/[0.04]"
+            ? "border border-accent/40 bg-accent/[0.04] shadow-[0_0_30px_-14px_var(--accent)]"
             : isWaiting
               ? "border border-border-subtle bg-surface-1 opacity-60"
               : "border border-border-subtle bg-surface-1"
         }`}
       >
+        {isActive && (
+          <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent" />
+        )}
         <button
           type="button"
           onClick={() => !isWaiting && setExpanded((prev) => !prev)}
@@ -129,7 +157,17 @@ export default function PhaseCard({
           className="flex w-full flex-col items-start gap-3 text-left disabled:cursor-not-allowed"
         >
           <div className="flex w-full items-center justify-between">
-            <span className="text-xs font-semibold tracking-wider text-text-muted">0{index + 1}</span>
+            <span
+              className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${
+                isDone
+                  ? "bg-emerald-500/15 text-emerald-400"
+                  : isActive
+                    ? "bg-accent/15 text-accent-bright"
+                    : "bg-surface-2 text-text-muted"
+              }`}
+            >
+              {PHASE_ICONS[phase.key]}
+            </span>
             <div className="flex items-center gap-2">
               <StatusIcon status={status} />
               {!isWaiting && (
@@ -141,9 +179,26 @@ export default function PhaseCard({
           </div>
 
           <div>
+            <span className="text-[10px] font-semibold tracking-wider text-text-muted">0{index + 1}</span>
             <p className="text-base font-semibold text-text-primary">{d.phases[phase.key]}</p>
             <p className="mt-1 text-sm text-text-muted">{d.phaseDescriptions[phase.key]}</p>
           </div>
+
+          {!isWaiting && (
+            <div className="mt-3 w-full">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
+                <div
+                  className={`h-full rounded-full transition-[width] duration-500 ease-[var(--ease-out-strong)] ${isDone ? "bg-emerald-400" : "bg-accent"}`}
+                  style={{ width: `${phase.steps.length > 0 ? Math.round((doneStepsCount / phase.steps.length) * 100) : 0}%` }}
+                />
+              </div>
+              <p className="mt-1.5 text-[11px] text-text-muted">
+                {d.stepsCompletedTemplate
+                  .replace("{done}", String(doneStepsCount))
+                  .replace("{total}", String(phase.steps.length))}
+              </p>
+            </div>
+          )}
 
           <StatusBadge status={status} label={statusLabel} />
         </button>
