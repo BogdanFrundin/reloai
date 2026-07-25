@@ -747,7 +747,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Country-specific guidance that goes beyond generic checklists.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Poland",
           highlight: "Fast-growing tech hub",
           points: [
@@ -757,7 +757,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Germany",
           highlight: "EU Blue Card & job seeker visas",
           points: [
@@ -767,7 +767,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "Spain",
           highlight: "Popular for remote workers",
           points: [
@@ -847,8 +847,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna K.",
           route: "Ukraine → Poland",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Got my PESEL in 2 days. Without ReloAI I would've spent a week just looking for information.",
           initials: "AK",
@@ -856,8 +856,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Mikhail S.",
           route: "Russia → Germany",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "AI helped me figure out Anmeldung. Explained everything clearly and gave me office addresses.",
           initials: "MS",
@@ -865,8 +865,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Olga M.",
           route: "Belarus → Spain",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "Started a business in Spain. The checklist saved me a month of work and €2,000 in lawyer fees.",
           initials: "OM",
@@ -874,8 +874,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry P.",
           route: "Kazakhstan → Poland",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "The progress tracker really helps. I always know exactly what step I'm on.",
           initials: "DP",
@@ -883,8 +883,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Leyla R.",
           route: "Uzbekistan → Germany",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Found a job in Germany through the jobs section. The AI even wrote my cover letter.",
           initials: "LR",
@@ -892,8 +892,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Timur A.",
           route: "Tajikistan → Spain",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "Got my NIE in 3 weeks. I thought it would take half a year.",
           initials: "TA",
@@ -901,8 +901,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Karina N.",
           route: "Ukraine → Germany",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Moved with my family. Found a school for the kids and a Russian-speaking doctor.",
           initials: "KN",
@@ -910,8 +910,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Artyom V.",
           route: "Russia → Spain",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — sorted it in 6 weeks following ReloAI's guide.",
           initials: "AV",
@@ -920,8 +920,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Zarina I.",
           route: "Kazakhstan → Poland",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Opened an mBank account on the first try. The AI told me exactly which documents to bring.",
           initials: "ZI",
@@ -929,8 +929,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Bogdan F.",
           route: "Ukraine → Poland",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Best relocation service out there. Saved me time and nerves.",
           initials: "BF",
@@ -939,8 +939,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Alexey K.",
           route: "Kazakhstan → Poland",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Got my PESEL in 3 days — the AI told me all the documents I'd need in advance.",
           initials: "AK",
@@ -948,8 +948,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Nilufar R.",
           route: "Uzbekistan → Poland",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "Found an apartment in Warsaw in a week with ReloAI's help.",
           initials: "NR",
@@ -957,8 +957,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry V.",
           route: "Belarus → Germany",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Got my Blue Card without a lawyer, saved €2,000.",
           initials: "DV",
@@ -967,8 +967,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Malika S.",
           route: "Tajikistan → Poland",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "Opened a PKO BP account on the first try, the AI prepared my document list.",
           initials: "MS",
@@ -976,8 +976,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna P.",
           route: "Ukraine → Spain",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — every step laid out, sorted it in a month.",
           initials: "AP",
@@ -986,8 +986,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Aziz T.",
           route: "Uzbekistan → Germany",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Got into university in Munich — the AI helped me gather the documents for my student visa.",
           initials: "AT",
@@ -995,8 +995,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Svetlana I.",
           route: "Russia → Poland",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Moved with my husband and kids, found a kindergarten and school in two weeks.",
           initials: "SI",
@@ -1004,8 +1004,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Roman K.",
           route: "Belarus → Germany",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Started a sole proprietorship in Berlin, the checklist helped with all the paperwork.",
           initials: "RK",
@@ -1013,8 +1013,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dinara Zh.",
           route: "Kazakhstan → Poland",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Got into Warsaw University and received my student residence card with no issues.",
           initials: "DZ",
@@ -1023,8 +1023,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Yulia N.",
           route: "Ukraine → Spain",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Found a remote job and got my NIE in a month, all according to the guide.",
           initials: "YN",
@@ -1829,7 +1829,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Гид по конкретной стране — не просто общие списки.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Польша",
           highlight: "Быстрорастущий tech-хаб",
           points: [
@@ -1839,7 +1839,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Германия",
           highlight: "EU Blue Card и визы для поиска работы",
           points: [
@@ -1849,7 +1849,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "Испания",
           highlight: "Популярно среди удалённых сотрудников",
           points: [
@@ -1929,8 +1929,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна К.",
           route: "Украина → Польша",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Получила PESEL за 2 дня. Без ReloAI потратила бы неделю на поиски информации.",
           initials: "АК",
@@ -1938,8 +1938,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Михаил С.",
           route: "Россия → Германия",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "AI помог разобраться с Anmeldung. Объяснил всё на русском, дал адреса бюро.",
           initials: "МС",
@@ -1947,8 +1947,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Ольга М.",
           route: "Беларусь → Испания",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "Открыла бизнес в Испании. Чеклист сэкономил месяц работы и 2000 евро на юристе.",
           initials: "ОМ",
@@ -1956,8 +1956,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитрий П.",
           route: "Казахстан → Польша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "Прогресс-трекер очень помогает. Всегда знаю на каком шаге нахожусь.",
           initials: "ДП",
@@ -1965,8 +1965,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Лейла Р.",
           route: "Узбекистан → Германия",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Нашла работу в Германии через раздел вакансий. AI написал сопроводительное письмо.",
           initials: "ЛР",
@@ -1974,8 +1974,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Тимур А.",
           route: "Таджикистан → Испания",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "NIE получил за 3 недели. Раньше думал это займёт полгода.",
           initials: "ТА",
@@ -1983,8 +1983,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Карина Н.",
           route: "Украина → Германия",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Переехала с семьёй. Нашли школу для детей и врача говорящего по-русски.",
           initials: "КН",
@@ -1992,8 +1992,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Артём В.",
           route: "Россия → Испания",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — оформил за 6 недель по инструкции ReloAI.",
           initials: "АВ",
@@ -2002,8 +2002,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Зарина И.",
           route: "Казахстан → Польша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Открыла счёт в mBank с первого раза. AI подсказал какие документы взять.",
           initials: "ЗИ",
@@ -2011,8 +2011,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Богдан Ф.",
           route: "Украина → Польша",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Лучший сервис для переезда. Сэкономил время и нервы.",
           initials: "БФ",
@@ -2021,8 +2021,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Алексей К.",
           route: "Казахстан → Польша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Получил PESEL за 3 дня, AI подсказал все документы заранее.",
           initials: "АК",
@@ -2030,8 +2030,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Нилуфар Р.",
           route: "Узбекистан → Польша",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "Нашла жильё в Варшаве за неделю с помощью ReloAI.",
           initials: "НР",
@@ -2039,8 +2039,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитрий В.",
           route: "Беларусь → Германия",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Blue Card оформил без юриста, сэкономил €2000.",
           initials: "ДВ",
@@ -2049,8 +2049,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Малика С.",
           route: "Таджикистан → Польша",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "Открыла счёт в PKO BP с первого раза, AI подготовил список документов.",
           initials: "МС",
@@ -2058,8 +2058,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна П.",
           route: "Украина → Испания",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — всё по шагам, оформила за месяц.",
           initials: "АП",
@@ -2068,8 +2068,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Азиз Т.",
           route: "Узбекистан → Германия",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Поступил в университет в Мюнхене, AI помог собрать документы для студенческой визы.",
           initials: "АТ",
@@ -2077,8 +2077,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Светлана И.",
           route: "Россия → Польша",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Переехала с мужем и детьми, нашли садик и школу за две недели.",
           initials: "СИ",
@@ -2086,8 +2086,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Роман К.",
           route: "Беларусь → Германия",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Открыл ИП в Берлине, чеклист помог со всеми справками.",
           initials: "РК",
@@ -2095,8 +2095,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Динара Ж.",
           route: "Казахстан → Польша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Поступила в Варшавский университет, получила карту побыту студента без проблем.",
           initials: "ДЖ",
@@ -2105,8 +2105,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Юлия Н.",
           route: "Украина → Испания",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Нашла удалённую работу и оформила NIE за месяц, всё по инструкции.",
           initials: "ЮН",
@@ -2911,7 +2911,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Oddiy ro'yxatlardan ko'ra ko'proq — davlatga xos maslahat.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Polsha",
           highlight: "Tez rivojlanayotgan tech-markaz",
           points: [
@@ -2921,7 +2921,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Germaniya",
           highlight: "EU Blue Card va ish izlovchi vizalari",
           points: [
@@ -2931,7 +2931,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "Ispaniya",
           highlight: "Masofadan ishlovchilar orasida mashhur",
           points: [
@@ -3011,8 +3011,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna K.",
           route: "Ukraina → Polsha",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL'imni 2 kunda oldim. ReloAI bo'lmaganida ma'lumot qidirishga bir hafta sarflagan bo'lardim.",
           initials: "AK",
@@ -3020,8 +3020,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Mikhail S.",
           route: "Rossiya → Germaniya",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "AI Anmeldungni tushunishimga yordam berdi. Hammasini tushuntirdi va idoralar manzilini berdi.",
           initials: "MS",
@@ -3029,8 +3029,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Olga M.",
           route: "Belarus → Ispaniya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "Ispaniyada biznes ochdim. Ro'yxat menga bir oy vaqt va 2000 yevro advokat xarajatini tejadi.",
           initials: "OM",
@@ -3038,8 +3038,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry P.",
           route: "Qozog'iston → Polsha",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "Progress-trekeri juda yordam beradi. Doim qaysi bosqichda ekanligimni bilaman.",
           initials: "DP",
@@ -3047,8 +3047,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Leyla R.",
           route: "O'zbekiston → Germaniya",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Ish o'rinlari bo'limi orqali Germaniyadan ish topdim. AI hatto motivatsion xat ham yozib berdi.",
           initials: "LR",
@@ -3056,8 +3056,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Timur A.",
           route: "Tojikiston → Ispaniya",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "NIE'ni 3 haftada oldim. Avval yarim yil ketadi deb o'ylagandim.",
           initials: "TA",
@@ -3065,8 +3065,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Karina N.",
           route: "Ukraina → Germaniya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Oila bilan ko'chib o'tdim. Bolalar uchun maktab va rus tilida gaplashadigan shifokor topdik.",
           initials: "KN",
@@ -3074,8 +3074,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Artyom V.",
           route: "Rossiya → Ispaniya",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — ReloAI qo'llanmasi bo'yicha 6 haftada rasmiylashtirdim.",
           initials: "AV",
@@ -3084,8 +3084,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Zarina I.",
           route: "Qozog'iston → Polsha",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "mBank'da birinchi urinishda hisob ochdim. AI qaysi hujjatlarni olib borish kerakligini aytdi.",
           initials: "ZI",
@@ -3093,8 +3093,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Bogdan F.",
           route: "Ukraina → Polsha",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Ko'chish uchun eng yaxshi xizmat. Vaqt va asablarimni tejadim.",
           initials: "BF",
@@ -3103,8 +3103,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Alexey K.",
           route: "Qozog'iston → Polsha",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL'imni 3 kunda oldim — AI barcha kerakli hujjatlarni oldindan aytib berdi.",
           initials: "AK",
@@ -3112,8 +3112,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Nilufar R.",
           route: "O'zbekiston → Polsha",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "ReloAI yordamida Varshavada bir haftada kvartira topdim.",
           initials: "NR",
@@ -3121,8 +3121,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry V.",
           route: "Belarus → Germaniya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Blue Card'ni advokatsiz rasmiylashtirdim, €2000 tejadim.",
           initials: "DV",
@@ -3131,8 +3131,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Malika S.",
           route: "Tojikiston → Polsha",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "PKO BP'da birinchi urinishda hisob ochdim, AI hujjatlar ro'yxatini tayyorladi.",
           initials: "MS",
@@ -3140,8 +3140,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna P.",
           route: "Ukraina → Ispaniya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — barchasi qadam-baqadam, bir oyda rasmiylashtirdim.",
           initials: "AP",
@@ -3150,8 +3150,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Aziz T.",
           route: "O'zbekiston → Germaniya",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Myunxendagi universitetga kirdim — AI talaba vizasi uchun hujjatlarni yig'ishga yordam berdi.",
           initials: "AT",
@@ -3159,8 +3159,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Svetlana I.",
           route: "Rossiya → Polsha",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Er va bolalarim bilan ko'chib o'tdim, ikki haftada bog'cha va maktab topdik.",
           initials: "SI",
@@ -3168,8 +3168,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Roman K.",
           route: "Belarus → Germaniya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Berlinda yakka tartibdagi tadbirkorlik ochdim, ro'yxat barcha hujjatlar bilan yordam berdi.",
           initials: "RK",
@@ -3177,8 +3177,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dinara Zh.",
           route: "Qozog'iston → Polsha",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Varshava universitetiga kirdim va talaba turar joy kartasini muammosiz oldim.",
           initials: "DZ",
@@ -3187,8 +3187,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Yulia N.",
           route: "Ukraina → Ispaniya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Masofaviy ish topdim va bir oyda NIE oldim, hammasi qo'llanma bo'yicha.",
           initials: "YN",
@@ -3990,7 +3990,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Genel kontrol listelerinin ötesine geçen ülkeye özel rehberlik.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Polonya",
           highlight: "Hızla büyüyen teknoloji merkezi",
           points: [
@@ -4000,7 +4000,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Almanya",
           highlight: "AB Mavi Kartı ve iş arama vizeleri",
           points: [
@@ -4010,7 +4010,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "İspanya",
           highlight: "Uzaktan çalışanlar arasında popüler",
           points: [
@@ -4090,8 +4090,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna K.",
           route: "Ukrayna → Polonya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL'imi 2 günde aldım. ReloAI olmasaydı bilgi aramak için bir hafta harcardım.",
           initials: "AK",
@@ -4099,8 +4099,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Mikhail S.",
           route: "Rusya → Almanya",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "Yapay zeka Anmeldung konusunda yardımcı oldu. Her şeyi açıkladı ve büro adreslerini verdi.",
           initials: "MS",
@@ -4108,8 +4108,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Olga M.",
           route: "Belarus → İspanya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "İspanya'da bir işletme açtım. Kontrol listesi bir aylık iş ve 2000 avro avukat ücreti tasarrufu sağladı.",
           initials: "OM",
@@ -4117,8 +4117,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry P.",
           route: "Kazakistan → Polonya",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "İlerleme takipçisi gerçekten çok yardımcı oluyor. Hangi adımda olduğumu her zaman biliyorum.",
           initials: "DP",
@@ -4126,8 +4126,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Leyla R.",
           route: "Özbekistan → Almanya",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "İş ilanları bölümü sayesinde Almanya'da iş buldum. Yapay zeka ön yazımı bile yazdı.",
           initials: "LR",
@@ -4135,8 +4135,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Timur A.",
           route: "Tacikistan → İspanya",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "NIE'mi 3 haftada aldım. Yarım yıl süreceğini düşünüyordum.",
           initials: "TA",
@@ -4144,8 +4144,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Karina N.",
           route: "Ukrayna → Almanya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Ailemle taşındım. Çocuklar için okul ve Rusça konuşan bir doktor bulduk.",
           initials: "KN",
@@ -4153,8 +4153,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Artyom V.",
           route: "Rusya → İspanya",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — ReloAI rehberini takip ederek 6 haftada hallettim.",
           initials: "AV",
@@ -4163,8 +4163,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Zarina I.",
           route: "Kazakistan → Polonya",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "mBank'ta ilk denemede hesap açtım. Yapay zeka hangi belgeleri getirmem gerektiğini söyledi.",
           initials: "ZI",
@@ -4172,8 +4172,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Bogdan F.",
           route: "Ukrayna → Polonya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Taşınma için en iyi hizmet. Zamandan ve sinirden tasarruf ettim.",
           initials: "BF",
@@ -4182,8 +4182,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Alexey K.",
           route: "Kazakistan → Polonya",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL'imi 3 günde aldım — yapay zeka gereken tüm belgeleri önceden söyledi.",
           initials: "AK",
@@ -4191,8 +4191,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Nilufar R.",
           route: "Özbekistan → Polonya",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "ReloAI'nin yardımıyla Varşova'da bir haftada daire buldum.",
           initials: "NR",
@@ -4200,8 +4200,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dmitry V.",
           route: "Belarus → Almanya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Blue Card'ımı avukatsız çıkardım, €2000 tasarruf ettim.",
           initials: "DV",
@@ -4210,8 +4210,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Malika S.",
           route: "Tacikistan → Polonya",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "PKO BP'de ilk denemede hesap açtım, yapay zeka belge listesini hazırladı.",
           initials: "MS",
@@ -4219,8 +4219,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Anna P.",
           route: "Ukrayna → İspanya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — adım adım anlatıldı, bir ayda hallettim.",
           initials: "AP",
@@ -4229,8 +4229,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Aziz T.",
           route: "Özbekistan → Almanya",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Münih'te üniversiteye girdim — yapay zeka öğrenci vizesi için belgeleri toplamama yardım etti.",
           initials: "AT",
@@ -4238,8 +4238,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Svetlana I.",
           route: "Rusya → Polonya",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Eşim ve çocuklarımla taşındım, iki haftada kreş ve okul bulduk.",
           initials: "SI",
@@ -4247,8 +4247,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Roman K.",
           route: "Belarus → Almanya",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Berlin'de şahıs şirketi açtım, kontrol listesi tüm evraklarda yardımcı oldu.",
           initials: "RK",
@@ -4256,8 +4256,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Dinara Zh.",
           route: "Kazakistan → Polonya",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Varşova Üniversitesi'ne girdim ve öğrenci ikamet kartımı sorunsuzca aldım.",
           initials: "DZ",
@@ -4266,8 +4266,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Yulia N.",
           route: "Ukrayna → İspanya",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Uzaktan iş buldum ve bir ayda NIE aldım, her şey rehbere göre.",
           initials: "YN",
@@ -5069,7 +5069,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Роҳнамоии хосси кишвар, на танҳо рӯйхати умумӣ.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Лаҳистон",
           highlight: "Маркази технологии зуд рушдкунанда",
           points: [
@@ -5079,7 +5079,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Олмон",
           highlight: "EU Blue Card ва раводидҳои ҷустуҷӯи кор",
           points: [
@@ -5089,7 +5089,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "Испания",
           highlight: "Маъмул дар миёни кормандони дурдаст",
           points: [
@@ -5169,8 +5169,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна К.",
           route: "Украина → Полша",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL-ро дар 2 рӯз гирифтам. Бе ReloAI як ҳафта барои ҷустуҷӯи маълумот сарф мекардам.",
           initials: "АК",
@@ -5178,8 +5178,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Михаил С.",
           route: "Русия → Олмон",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "AI ба фаҳмидани Anmeldung кӯмак кард. Ҳама чизро фаҳмонд ва суроғаи идораҳоро дод.",
           initials: "МС",
@@ -5187,8 +5187,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Ольга М.",
           route: "Белоруссия → Испания",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "Дар Испания бизнес кушодам. Рӯйхат як моҳ вақт ва 2000 евро ҳаққи ҳуқуқшиносро сарфа кард.",
           initials: "ОМ",
@@ -5196,8 +5196,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитрий П.",
           route: "Қазоқистон → Полша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "Пайгирии пешравӣ хеле кӯмак мекунад. Ҳамеша медонам, ки дар кадом қадам ҳастам.",
           initials: "ДП",
@@ -5205,8 +5205,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Лейла Р.",
           route: "Ӯзбекистон → Олмон",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Тавассути бахши ҷойҳои корӣ дар Олмон кор ёфтам. AI ҳатто мактуби ҳамроҳиро навишт.",
           initials: "ЛР",
@@ -5214,8 +5214,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Тимур А.",
           route: "Тоҷикистон → Испания",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "NIE-ро дар 3 ҳафта гирифтам. Пештар фикр мекардам, ки ним сол вақт мегирад.",
           initials: "ТА",
@@ -5223,8 +5223,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Карина Н.",
           route: "Украина → Олмон",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Бо оила кӯчидам. Барои кӯдакон мактаб ва духтури русзабонро ёфтем.",
           initials: "КН",
@@ -5232,8 +5232,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Артём В.",
           route: "Русия → Испания",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — тибқи дастури ReloAI дар 6 ҳафта расмӣ кардам.",
           initials: "АВ",
@@ -5242,8 +5242,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Зарина И.",
           route: "Қазоқистон → Полша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Дар mBank аз бори аввал ҳисоб кушодам. AI гуфт, ки кадом ҳуҷҷатҳоро гирам.",
           initials: "ЗИ",
@@ -5251,8 +5251,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Богдан Ф.",
           route: "Украина → Полша",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Беҳтарин хидмат барои кӯчидан. Вақт ва асабамро сарфа кард.",
           initials: "БФ",
@@ -5261,8 +5261,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Алексей К.",
           route: "Қазоқистон → Полша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "PESEL-ро дар 3 рӯз гирифтам, AI ҳамаи ҳуҷҷатҳоро пешакӣ гуфт.",
           initials: "АК",
@@ -5270,8 +5270,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Нилуфар Р.",
           route: "Ӯзбекистон → Полша",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "Бо кӯмаки ReloAI дар Варшава дар як ҳафта хона ёфтам.",
           initials: "НР",
@@ -5279,8 +5279,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитрий В.",
           route: "Белоруссия → Олмон",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Blue Card-ро бе ҳуқуқшинос гирифтам, 2000 евро сарфа кардам.",
           initials: "ДВ",
@@ -5289,8 +5289,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Малика С.",
           route: "Тоҷикистон → Полша",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "Дар PKO BP аз бори аввал ҳисоб кушодам, AI рӯйхати ҳуҷҷатҳоро омода кард.",
           initials: "МС",
@@ -5298,8 +5298,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна П.",
           route: "Украина → Испания",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — ҳама қадам ба қадам, дар як моҳ расмӣ кардам.",
           initials: "АП",
@@ -5308,8 +5308,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Азиз Т.",
           route: "Ӯзбекистон → Олмон",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Ба донишгоҳи Мюнхен дохил шудам — AI дар ҷамъоварии ҳуҷҷатҳо барои визаи донишҷӯӣ кӯмак кард.",
           initials: "АТ",
@@ -5317,8 +5317,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Светлана И.",
           route: "Русия → Полша",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Бо шавҳар ва фарзандон кӯчидам, дар ду ҳафта боғча ва мактаб ёфтем.",
           initials: "СИ",
@@ -5326,8 +5326,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Роман К.",
           route: "Белоруссия → Олмон",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Дар Берлин соҳибкории инфиродӣ кушодам, рӯйхат бо ҳамаи справкаҳо кӯмак кард.",
           initials: "РК",
@@ -5335,8 +5335,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Динара Ж.",
           route: "Қазоқистон → Полша",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Ба Донишгоҳи Варшава дохил шудам ва корти иқомати донишҷӯиро бе мушкилот гирифтам.",
           initials: "ДЖ",
@@ -5345,8 +5345,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Юлия Н.",
           route: "Украина → Испания",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Кори дурдастӣ ёфтам ва NIE-ро дар як моҳ гирифтам, ҳама тибқи дастур.",
           initials: "ЮН",
@@ -6149,7 +6149,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subheading: "Гід по конкретній країні — не просто загальні списки.",
       list: [
         {
-          flag: "🇵🇱",
+          flag: "pl",
           name: "Польща",
           highlight: "Швидкозростаючий tech-хаб",
           points: [
@@ -6159,7 +6159,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇩🇪",
+          flag: "de",
           name: "Німеччина",
           highlight: "EU Blue Card і візи для пошуку роботи",
           points: [
@@ -6169,7 +6169,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           ],
         },
         {
-          flag: "🇪🇸",
+          flag: "es",
           name: "Іспанія",
           highlight: "Популярно серед віддалених працівників",
           points: [
@@ -6249,8 +6249,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна К.",
           route: "Україна → Польща",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Отримала PESEL за 2 дні. Без ReloAI витратила б тиждень на пошук інформації.",
           initials: "АК",
@@ -6258,8 +6258,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Михайло С.",
           route: "Росія → Німеччина",
-          fromFlag: "🇷🇺",
-          toFlag: "🇩🇪",
+          fromFlag: "ru",
+          toFlag: "de",
           rating: 5,
           quote: "AI допоміг розібратися з Anmeldung. Пояснив усе зрозуміло, дав адреси бюро.",
           initials: "МС",
@@ -6267,8 +6267,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Ольга М.",
           route: "Білорусь → Іспанія",
-          fromFlag: "🇧🇾",
-          toFlag: "🇪🇸",
+          fromFlag: "by",
+          toFlag: "es",
           rating: 5,
           quote: "Відкрила бізнес в Іспанії. Чеклист заощадив місяць роботи і 2000 євро на юристі.",
           initials: "ОМ",
@@ -6276,8 +6276,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитро П.",
           route: "Казахстан → Польща",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 4,
           quote: "Прогрес-трекер дуже допомагає. Завжди знаю, на якому кроці перебуваю.",
           initials: "ДП",
@@ -6285,8 +6285,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Лейла Р.",
           route: "Узбекистан → Німеччина",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Знайшла роботу в Німеччині через розділ вакансій. AI написав супровідний лист.",
           initials: "ЛР",
@@ -6294,8 +6294,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Тимур А.",
           route: "Таджикистан → Іспанія",
-          fromFlag: "🇹🇯",
-          toFlag: "🇪🇸",
+          fromFlag: "tj",
+          toFlag: "es",
           rating: 5,
           quote: "NIE отримав за 3 тижні. Раніше думав, що це займе півроку.",
           initials: "ТА",
@@ -6303,8 +6303,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Карина Н.",
           route: "Україна → Німеччина",
-          fromFlag: "🇺🇦",
-          toFlag: "🇩🇪",
+          fromFlag: "ua",
+          toFlag: "de",
           rating: 5,
           quote: "Переїхала з сім'єю. Знайшли школу для дітей і лікаря, що розмовляє російською.",
           initials: "КН",
@@ -6312,8 +6312,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Артем В.",
           route: "Росія → Іспанія",
-          fromFlag: "🇷🇺",
-          toFlag: "🇪🇸",
+          fromFlag: "ru",
+          toFlag: "es",
           rating: 4,
           quote: "Digital Nomad Visa — оформив за 6 тижнів за інструкцією ReloAI.",
           initials: "АВ",
@@ -6322,8 +6322,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Заріна І.",
           route: "Казахстан → Польща",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Відкрила рахунок у mBank з першого разу. AI підказав, які документи взяти.",
           initials: "ЗІ",
@@ -6331,8 +6331,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Богдан Ф.",
           route: "Україна → Польща",
-          fromFlag: "🇺🇦",
-          toFlag: "🇵🇱",
+          fromFlag: "ua",
+          toFlag: "pl",
           rating: 5,
           quote: "Найкращий сервіс для переїзду. Заощадив час і нерви.",
           initials: "БФ",
@@ -6341,8 +6341,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Олексій К.",
           route: "Казахстан → Польща",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Отримав PESEL за 3 дні — AI заздалегідь підказав усі документи.",
           initials: "ОК",
@@ -6350,8 +6350,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Нілуфар Р.",
           route: "Узбекистан → Польща",
-          fromFlag: "🇺🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "uz",
+          toFlag: "pl",
           rating: 5,
           quote: "Знайшла квартиру у Варшаві за тиждень за допомогою ReloAI.",
           initials: "НР",
@@ -6359,8 +6359,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дмитро В.",
           route: "Білорусь → Німеччина",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Оформив Blue Card без юриста, заощадив €2000.",
           initials: "ДВ",
@@ -6369,8 +6369,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Маліка С.",
           route: "Таджикистан → Польща",
-          fromFlag: "🇹🇯",
-          toFlag: "🇵🇱",
+          fromFlag: "tj",
+          toFlag: "pl",
           rating: 5,
           quote: "Відкрила рахунок у PKO BP з першого разу, AI підготував список документів.",
           initials: "МС",
@@ -6378,8 +6378,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Анна П.",
           route: "Україна → Іспанія",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 5,
           quote: "Digital Nomad Visa — усе покроково, оформила за місяць.",
           initials: "АП",
@@ -6388,8 +6388,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Азіз Т.",
           route: "Узбекистан → Німеччина",
-          fromFlag: "🇺🇿",
-          toFlag: "🇩🇪",
+          fromFlag: "uz",
+          toFlag: "de",
           rating: 5,
           quote: "Вступив до університету в Мюнхені — AI допоміг зібрати документи для студентської візи.",
           initials: "АТ",
@@ -6397,8 +6397,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Світлана І.",
           route: "Росія → Польща",
-          fromFlag: "🇷🇺",
-          toFlag: "🇵🇱",
+          fromFlag: "ru",
+          toFlag: "pl",
           rating: 5,
           quote: "Переїхала з чоловіком і дітьми, знайшли садочок і школу за два тижні.",
           initials: "СІ",
@@ -6406,8 +6406,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Роман К.",
           route: "Білорусь → Німеччина",
-          fromFlag: "🇧🇾",
-          toFlag: "🇩🇪",
+          fromFlag: "by",
+          toFlag: "de",
           rating: 4,
           quote: "Відкрив ФОП у Берліні, чекліст допоміг з усіма довідками.",
           initials: "РК",
@@ -6415,8 +6415,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Дінара Ж.",
           route: "Казахстан → Польща",
-          fromFlag: "🇰🇿",
-          toFlag: "🇵🇱",
+          fromFlag: "kz",
+          toFlag: "pl",
           rating: 5,
           quote: "Вступила до Варшавського університету, отримала студентську карту побиту без проблем.",
           initials: "ДЖ",
@@ -6425,8 +6425,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           name: "Юлія Н.",
           route: "Україна → Іспанія",
-          fromFlag: "🇺🇦",
-          toFlag: "🇪🇸",
+          fromFlag: "ua",
+          toFlag: "es",
           rating: 4,
           quote: "Знайшла віддалену роботу й оформила NIE за місяць, усе за інструкцією.",
           initials: "ЮН",
