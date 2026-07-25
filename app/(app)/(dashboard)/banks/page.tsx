@@ -81,10 +81,10 @@ export default function BanksPage() {
               </Link>
               <div className="mt-2.5 flex justify-center">
                 <HelpButton
-                  guideHeading={`Как открыть счёт в ${bank.name}`}
+                  guideHeading={t.banks.openAccountAt.replace("{bank}", bank.name)}
                   guideSteps={[...t.banks.guide.steps]}
-                  aiQuestion={`Как открыть счёт в ${bank.name}?`}
-                  label="Как это получить?"
+                  aiQuestion={`${t.banks.openAccountAt.replace("{bank}", bank.name)}?`}
+                  label={t.helpButton.label}
                 />
               </div>
             </div>

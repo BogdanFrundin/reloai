@@ -323,6 +323,7 @@ export type Dictionary = {
       tipsHeading: string;
       tips: [string, string, string, string];
     };
+    openAccountAt: string;
   };
   medicine: {
     title: string;
@@ -482,6 +483,14 @@ export type Dictionary = {
         byCountry: { poland: string; germany: string; spain: string };
       };
     };
+    stepGuides: Record<string, { heading: string; steps: string[] }>;
+    howToGetQuestion: string;
+  };
+  helpButton: {
+    label: string;
+    openGuide: string;
+    askAi: string;
+    askAiFooter: string;
   };
   appPricing: {
     title: string;
@@ -1365,6 +1374,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Bring your rental agreement as proof of address",
         ],
       },
+      openAccountAt: "How to open an account at {bank}",
     },
     medicine: {
       title: "Medicine in Poland",
@@ -1572,6 +1582,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "How to get your visa or entry permit",
+          steps: [
+            "Determine the visa or entry basis that fits your goal (work, study, business, family reunification).",
+            "Gather the basic document set: passport, invitation or proof of purpose, insurance, proof of funds.",
+            "Submit your application at the consulate or visa center of your destination country.",
+            "Wait for a decision and attend an interview if required.",
+            "Once approved, confirm your entry deadline and what to do on arrival.",
+          ],
+        },
+        business_registration: {
+          heading: "How to register a business",
+          steps: [
+            "Choose a legal structure (sole proprietorship, LLC, or local equivalent) depending on the country.",
+            "Prepare your founding documents and proof of a registered address.",
+            "File your registration with the relevant business registry.",
+            "Get your company's tax and statistical numbers.",
+            "Open a business bank account.",
+          ],
+        },
+        documents: {
+          heading: "What documents you need to prepare",
+          steps: [
+            "Gather originals and copies of key documents: passport, certificates, diplomas (apostilled if needed).",
+            "Get notarized translations into the destination country's language where required.",
+            "Upload scans to the Documents section in ReloAI to track their status.",
+            "Check each document's status: Done, Under review, or Missing.",
+            "Keep the originals on hand — you may need them in person at government offices.",
+          ],
+        },
+        biometric: {
+          heading: "How to complete your biometric appointment",
+          steps: [
+            "Book a biometric appointment with the immigration office or consulate — often possible online.",
+            "Bring your passport, appointment confirmation, and supporting documents.",
+            "Your fingerprints and photo will be taken at the appointment.",
+            "Keep the receipt or application number — you can use it to track your document's status.",
+            "Wait for notification that your card or permit is ready.",
+          ],
+        },
+        address_registration: {
+          heading: "How to register your address",
+          steps: [
+            "Find permanent or temporary housing and get the owner's consent to register (a rental agreement or landlord's confirmation).",
+            "Prepare your passport and proof of your right to use the property.",
+            "Go to your local municipal office in person or through the government portal.",
+            "Fill out the address registration form.",
+            "Get your registration confirmation — you'll need it for later steps (residence permit, tax ID, etc.).",
+          ],
+        },
+        residence_permit: {
+          heading: "How to get your residence permit",
+          steps: [
+            "Confirm you have a valid basis to apply: work, study, business, or family reunification.",
+            "Gather your documents: passport, photo, proof of purpose, insurance, proof of income and address.",
+            "Submit your application to the local immigration office — in person or online.",
+            "Complete your biometric appointment if you haven't already.",
+            "Wait for a decision — this can take from a few weeks to several months, so track your application status.",
+          ],
+        },
+        tax_id: {
+          heading: "How to get your tax ID",
+          steps: [
+            "Work out which number you need: a general ID number or a business tax number.",
+            "Gather your passport and, if you have it, proof of address registration.",
+            "Submit your application to the local municipal office or tax authority.",
+            "Wait for your number to be issued — often possible the same day.",
+            "Keep the confirmation document — you'll need the number for employment, banking, and health insurance.",
+          ],
+        },
+        employment_registration: {
+          heading: "How to formalize your employment",
+          steps: [
+            "Check with your employer which type of work permit or contract you need.",
+            "Prepare your documents: passport, residence permit or work visa, diploma if required.",
+            "Sign your employment contract and make sure your employer files the required notifications.",
+            "Get your social insurance number if you don't have one yet.",
+            "Confirm that contributions and taxes are being deducted correctly from your first paycheck.",
+          ],
+        },
+      },
+      howToGetQuestion: "How do I get: {title}?",
+    },
+    helpButton: {
+      label: "How to get this?",
+      openGuide: "📄 Open instructions",
+      askAi: "💬 Ask AI",
+      askAiFooter: "Still have questions? Ask AI →",
     },
     appPricing: {
       title: "Choose your plan",
@@ -2490,6 +2589,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Возьмите с собой договор аренды как подтверждение адреса",
         ],
       },
+      openAccountAt: "Как открыть счёт в {bank}",
     },
     medicine: {
       title: "Медицина в Польше",
@@ -2697,6 +2797,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "Как оформить визу или основание на въезд",
+          steps: [
+            "Определите тип визы или основания для въезда в зависимости от вашей цели (работа, учёба, бизнес, воссоединение семьи).",
+            "Соберите базовый пакет документов: загранпаспорт, приглашение или подтверждение цели поездки, страховку, финансовые гарантии.",
+            "Подайте заявление в консульство или визовый центр страны переезда.",
+            "Дождитесь решения и, при необходимости, пройдите собеседование.",
+            "После получения визы уточните сроки въезда и что делать по прибытии.",
+          ],
+        },
+        business_registration: {
+          heading: "Как зарегистрировать бизнес",
+          steps: [
+            "Выберите организационно-правовую форму (ИП, ООО и аналоги) в зависимости от страны.",
+            "Подготовьте учредительные документы и подтверждение юридического адреса.",
+            "Подайте заявление на регистрацию в соответствующий государственный реестр.",
+            "Получите налоговый и статистический номера компании.",
+            "Откройте расчётный счёт на имя бизнеса.",
+          ],
+        },
+        documents: {
+          heading: "Какие документы нужно подготовить",
+          steps: [
+            "Соберите оригиналы и копии основных документов: паспорт, свидетельства, дипломы (при необходимости — с апостилем).",
+            "Сделайте нотариально заверенные переводы документов на язык страны переезда, если это требуется.",
+            "Загрузите сканы документов в раздел «Документы» в ReloAI, чтобы отслеживать их статус.",
+            "Проверяйте статус каждого документа: Готово, На проверке или Отсутствует.",
+            "Держите оригиналы под рукой — они могут понадобиться при личной подаче в госорганы.",
+          ],
+        },
+        biometric: {
+          heading: "Как пройти биометрию",
+          steps: [
+            "Запишитесь на подачу биометрических данных в миграционную службу или консульство — часто это можно сделать онлайн.",
+            "Возьмите с собой паспорт, приглашение на приём и подтверждающие документы.",
+            "На приёме у вас снимут отпечатки пальцев и сделают фото.",
+            "Сохраните расписку или номер заявки — по нему можно отслеживать готовность документа.",
+            "Дождитесь уведомления о готовности карты или разрешения.",
+          ],
+        },
+        address_registration: {
+          heading: "Как зарегистрировать адрес проживания",
+          steps: [
+            "Найдите постоянное или временное жильё и получите от владельца согласие на регистрацию (договор аренды или согласие собственника).",
+            "Подготовьте паспорт и документ, подтверждающий право пользования жильём.",
+            "Обратитесь в местную администрацию лично или через портал госуслуг.",
+            "Заполните заявление о регистрации по месту жительства.",
+            "Получите подтверждение регистрации — оно понадобится для дальнейших процедур (ВНЖ, налоговый номер и т.д.).",
+          ],
+        },
+        residence_permit: {
+          heading: "Как получить вид на жительство",
+          steps: [
+            "Убедитесь, что у вас есть основание для подачи: работа, учёба, бизнес или воссоединение семьи.",
+            "Соберите пакет документов: паспорт, фото, подтверждение цели пребывания, страховку, подтверждение дохода и адреса.",
+            "Подайте заявление в местное миграционное управление — лично или онлайн.",
+            "Пройдите биометрию, если это не было сделано раньше.",
+            "Дождитесь решения — это может занять от нескольких недель до нескольких месяцев, отслеживайте статус заявления.",
+          ],
+        },
+        tax_id: {
+          heading: "Как получить налоговый идентификационный номер",
+          steps: [
+            "Определите, какой номер вам нужен: общий идентификационный или налоговый номер для бизнеса.",
+            "Соберите паспорт и, при наличии, подтверждение адреса регистрации.",
+            "Подайте заявление в местную администрацию или налоговую службу.",
+            "Дождитесь присвоения номера — часто это можно сделать в день обращения.",
+            "Сохраните подтверждающий документ — номер понадобится для трудоустройства, банка и медицинской страховки.",
+          ],
+        },
+        employment_registration: {
+          heading: "Как оформить трудоустройство",
+          steps: [
+            "Уточните у работодателя, какой тип разрешения на работу или трудового договора вам нужен.",
+            "Подготовьте документы: паспорт, вид на жительство или рабочую визу, диплом при необходимости.",
+            "Подпишите трудовой договор и убедитесь, что работодатель подал уведомление в соответствующие органы (если требуется).",
+            "Получите номер социального страхования, если он ещё не оформлен.",
+            "Проверьте, что все взносы и налоги отчисляются корректно с первой зарплаты.",
+          ],
+        },
+      },
+      howToGetQuestion: "Как получить: {title}?",
+    },
+    helpButton: {
+      label: "Как это получить?",
+      openGuide: "📄 Открыть инструкцию",
+      askAi: "💬 Спросить ИИ",
+      askAiFooter: "Остались вопросы? Спросить ИИ →",
     },
     appPricing: {
       title: "Выберите тариф",
@@ -3615,6 +3804,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Manzil tasdig'i sifatida ijara shartnomasini olib boring",
         ],
       },
+      openAccountAt: "{bank}da hisobni qanday ochish",
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -3822,6 +4012,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "Viza yoki kirish uchun asosni qanday olish mumkin",
+          steps: [
+            "Maqsadingizga mos viza yoki kirish asosini aniqlang (ish, o'qish, biznes, oilani birlashtirish).",
+            "Asosiy hujjatlar to'plamini yig'ing: xorijiy pasport, taklifnoma yoki sayohat maqsadi tasdig'i, sug'urta, moliyaviy kafolatlar.",
+            "Ko'chib boradigan mamlakat konsulligi yoki viza markaziga ariza topshiring.",
+            "Qaror kutib turing va zarur bo'lsa, suhbatdan o'ting.",
+            "Viza olgach, kirish muddatlarini va kelganingizda nima qilish kerakligini aniqlashtiring.",
+          ],
+        },
+        business_registration: {
+          heading: "Biznesni qanday ro'yxatdan o'tkazish mumkin",
+          steps: [
+            "Mamlakatga qarab tashkiliy-huquqiy shaklni tanlang (YaTT, MChJ va o'xshashlari).",
+            "Ta'sis hujjatlarini va yuridik manzil tasdig'ini tayyorlang.",
+            "Tegishli davlat reyestrida ro'yxatdan o'tish uchun ariza bering.",
+            "Kompaniyaning soliq va statistika raqamlarini oling.",
+            "Biznes nomiga hisob raqami oching.",
+          ],
+        },
+        documents: {
+          heading: "Qanday hujjatlarni tayyorlash kerak",
+          steps: [
+            "Asosiy hujjatlarning asl nusxalari va nusxalarini yig'ing: pasport, guvohnomalar, diplomlar (kerak bo'lsa — apostil bilan).",
+            "Agar talab qilinsa, hujjatlarning ko'chib boradigan mamlakat tiliga notarial tasdiqlangan tarjimasini qiling.",
+            "Hujjatlar holatini kuzatish uchun skanerlarini ReloAI'dagi «Hujjatlar» bo'limiga yuklang.",
+            "Har bir hujjat holatini tekshiring: Tayyor, Tekshiruvda yoki Yo'q.",
+            "Asl nusxalarni yoningizda saqlang — davlat organlariga shaxsan murojaat qilganda kerak bo'lishi mumkin.",
+          ],
+        },
+        biometric: {
+          heading: "Biometriyani qanday topshirish mumkin",
+          steps: [
+            "Migratsiya xizmati yoki konsullikda biometrik ma'lumot topshirishga yoziling — ko'pincha buni onlayn qilish mumkin.",
+            "O'zingiz bilan pasport, qabulga taklifnoma va tasdiqlovchi hujjatlarni olib boring.",
+            "Qabulda sizning barmoq izlaringiz olinadi va suratga tushirilasiz.",
+            "Kvitansiya yoki ariza raqamini saqlang — u orqali hujjat tayyorligini kuzatish mumkin.",
+            "Karta yoki ruxsatnoma tayyor bo'lgani haqida xabarnomani kuting.",
+          ],
+        },
+        address_registration: {
+          heading: "Yashash manzilini qanday ro'yxatdan o'tkazish mumkin",
+          steps: [
+            "Doimiy yoki vaqtinchalik uy toping va egasidan ro'yxatga olish uchun rozilik oling (ijara shartnomasi yoki mulkdor roziligi).",
+            "Pasport va uydan foydalanish huquqini tasdiqlovchi hujjatni tayyorlang.",
+            "Shaxsan yoki davlat xizmatlari portali orqali mahalliy ma'muriyatga murojaat qiling.",
+            "Yashash joyi bo'yicha ro'yxatga olish uchun ariza to'ldiring.",
+            "Ro'yxatga olish tasdig'ini oling — u keyingi jarayonlar uchun kerak bo'ladi (yashash ruxsatnomasi, soliq raqami va h.k.).",
+          ],
+        },
+        residence_permit: {
+          heading: "Yashash ruxsatnomasini qanday olish mumkin",
+          steps: [
+            "Ariza berish uchun asosingiz borligiga ishonch hosil qiling: ish, o'qish, biznes yoki oilani birlashtirish.",
+            "Hujjatlar to'plamini yig'ing: pasport, surat, sayohat maqsadi tasdig'i, sug'urta, daromad va manzil tasdig'i.",
+            "Mahalliy migratsiya boshqarmasiga — shaxsan yoki onlayn — ariza topshiring.",
+            "Agar oldin qilinmagan bo'lsa, biometriyadan o'ting.",
+            "Qarorni kuting — bu bir necha haftadan bir necha oygacha davom etishi mumkin, ariza holatini kuzatib boring.",
+          ],
+        },
+        tax_id: {
+          heading: "Soliq identifikatsiya raqamini qanday olish mumkin",
+          steps: [
+            "Qaysi raqam kerakligini aniqlang: umumiy identifikatsiya raqami yoki biznes uchun soliq raqami.",
+            "Pasport va, agar bo'lsa, manzil ro'yxatga olinganligi tasdig'ini yig'ing.",
+            "Mahalliy ma'muriyat yoki soliq xizmatiga ariza topshiring.",
+            "Raqam berilishini kuting — ko'pincha buni murojaat qilgan kuningiz olish mumkin.",
+            "Tasdiqlovchi hujjatni saqlang — raqam ish, bank va tibbiy sug'urta uchun kerak bo'ladi.",
+          ],
+        },
+        employment_registration: {
+          heading: "Ishga rasmiy joylashishni qanday amalga oshirish mumkin",
+          steps: [
+            "Ish beruvchingizdan qanday turdagi ish ruxsatnomasi yoki mehnat shartnomasi kerakligini aniqlashtiring.",
+            "Hujjatlarni tayyorlang: pasport, yashash ruxsatnomasi yoki ish vizasi, zarur bo'lsa diplom.",
+            "Mehnat shartnomasini imzolang va ish beruvchi tegishli organlarga xabarnoma topshirganiga ishonch hosil qiling (agar talab qilinsa).",
+            "Agar hali rasmiylashtirilmagan bo'lsa, ijtimoiy sug'urta raqamini oling.",
+            "Birinchi maoshingizdan barcha to'lovlar va soliqlar to'g'ri ushlab qolinayotganini tekshiring.",
+          ],
+        },
+      },
+      howToGetQuestion: "Qanday olish mumkin: {title}?",
+    },
+    helpButton: {
+      label: "Buni qanday olish mumkin?",
+      openGuide: "📄 Yo'riqnomani ochish",
+      askAi: "💬 AI'dan so'rash",
+      askAiFooter: "Savollaringiz qoldimi? AI'dan so'rang →",
     },
     appPricing: {
       title: "Rejangizni tanlang",
@@ -4737,6 +5016,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Adres kanıtı olarak kira sözleşmenizi yanınıza alın",
         ],
       },
+      openAccountAt: "{bank}'de hesap nasıl açılır",
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -4944,6 +5224,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "Vize veya giriş izni nasıl alınır",
+          steps: [
+            "Amacınıza uygun vize veya giriş türünü belirleyin (çalışma, eğitim, iş, aile birleşimi).",
+            "Temel belge setini toplayın: pasaport, davetiye veya seyahat amacı kanıtı, sigorta, mali güvence.",
+            "Gideceğiniz ülkenin konsolosluğuna veya vize merkezine başvurun.",
+            "Karar bekleyin ve gerekirse mülakata katılın.",
+            "Vizenizi aldıktan sonra giriş sürelerini ve vardığınızda yapmanız gerekenleri netleştirin.",
+          ],
+        },
+        business_registration: {
+          heading: "İşletme nasıl kurulur",
+          steps: [
+            "Ülkeye göre bir hukuki yapı seçin (şahıs şirketi, limited şirket vb.).",
+            "Kuruluş belgelerinizi ve tescilli adres kanıtınızı hazırlayın.",
+            "İlgili ticaret siciline başvurunuzu yapın.",
+            "Şirketinizin vergi ve istatistik numaralarını alın.",
+            "İşletme adına bir banka hesabı açın.",
+          ],
+        },
+        documents: {
+          heading: "Hangi belgeleri hazırlamanız gerekiyor",
+          steps: [
+            "Temel belgelerin asıllarını ve kopyalarını toplayın: pasaport, sertifikalar, diplomalar (gerekirse apostil ile).",
+            "Gerekiyorsa belgelerin gideceğiniz ülkenin diline noter onaylı çevirilerini yaptırın.",
+            "Durumlarını takip etmek için taramaları ReloAI'daki «Belgeler» bölümüne yükleyin.",
+            "Her belgenin durumunu kontrol edin: Tamamlandı, İncelemede veya Eksik.",
+            "Asıl belgeleri yanınızda bulundurun — devlet dairelerine şahsen başvururken gerekebilir.",
+          ],
+        },
+        biometric: {
+          heading: "Biyometri nasıl tamamlanır",
+          steps: [
+            "Göçmenlik dairesi veya konsoloslukta biyometri randevusu alın — genellikle çevrimiçi mümkündür.",
+            "Yanınıza pasaportunuzu, randevu onayınızı ve destekleyici belgelerinizi alın.",
+            "Randevuda parmak izleriniz alınır ve fotoğrafınız çekilir.",
+            "Makbuzu veya başvuru numaranızı saklayın — belgenizin durumunu bununla takip edebilirsiniz.",
+            "Kartınızın veya izninizin hazır olduğuna dair bildirimi bekleyin.",
+          ],
+        },
+        address_registration: {
+          heading: "Adres nasıl kaydettirilir",
+          steps: [
+            "Kalıcı veya geçici bir konut bulun ve sahibinden kayıt için onay alın (kira sözleşmesi veya ev sahibinin onayı).",
+            "Pasaportunuzu ve mülkü kullanma hakkınızı gösteren belgeyi hazırlayın.",
+            "Şahsen veya e-devlet portalı üzerinden yerel belediyeye başvurun.",
+            "Adres kaydı formunu doldurun.",
+            "Kayıt onayınızı alın — sonraki adımlar için gerekecek (oturma izni, vergi numarası vb.).",
+          ],
+        },
+        residence_permit: {
+          heading: "Oturma izni nasıl alınır",
+          steps: [
+            "Başvurmak için geçerli bir dayanağınız olduğundan emin olun: çalışma, eğitim, iş veya aile birleşimi.",
+            "Belgelerinizi toplayın: pasaport, fotoğraf, amaç kanıtı, sigorta, gelir ve adres kanıtı.",
+            "Başvurunuzu yerel göçmenlik dairesine — şahsen veya çevrimiçi — yapın.",
+            "Daha önce yapılmadıysa biyometri randevunuzu tamamlayın.",
+            "Kararı bekleyin — bu birkaç haftadan birkaç aya kadar sürebilir, başvuru durumunuzu takip edin.",
+          ],
+        },
+        tax_id: {
+          heading: "Vergi kimlik numarası nasıl alınır",
+          steps: [
+            "Hangi numaraya ihtiyacınız olduğunu belirleyin: genel kimlik numarası mı yoksa işletme vergi numarası mı.",
+            "Pasaportunuzu ve varsa adres kaydı kanıtınızı toplayın.",
+            "Yerel belediyeye veya vergi dairesine başvurunuzu yapın.",
+            "Numaranızın verilmesini bekleyin — genellikle aynı gün mümkündür.",
+            "Onay belgesini saklayın — numara işe başlama, bankacılık ve sağlık sigortası için gerekecek.",
+          ],
+        },
+        employment_registration: {
+          heading: "İşe resmi olarak nasıl başlanır",
+          steps: [
+            "İşvereninize hangi tür çalışma izni veya sözleşme gerektiğini sorun.",
+            "Belgelerinizi hazırlayın: pasaport, oturma izni veya çalışma vizesi, gerekirse diploma.",
+            "İş sözleşmenizi imzalayın ve işvereninizin gerekli bildirimleri yaptığından emin olun.",
+            "Henüz yoksa sosyal sigorta numaranızı alın.",
+            "İlk maaşınızdan itibaren kesintilerin ve vergilerin doğru yapıldığını kontrol edin.",
+          ],
+        },
+      },
+      howToGetQuestion: "Nasıl alınır: {title}?",
+    },
+    helpButton: {
+      label: "Bu nasıl alınır?",
+      openGuide: "📄 Talimatları aç",
+      askAi: "💬 Yapay zekaya sor",
+      askAiFooter: "Sorularınız mı var? Yapay zekaya sorun →",
     },
     appPricing: {
       title: "Planınızı seçin",
@@ -5859,6 +6228,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Шартномаи иҷораро ҳамчун тасдиқи суроға бо худ гиред",
         ],
       },
+      openAccountAt: "Чӣ тавр дар {bank} ҳисоб кушоем",
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -6066,6 +6436,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "Чӣ тавр раводид ё асоси воридшавӣ гирем",
+          steps: [
+            "Намуди раводид ё асоси воридшавиро вобаста ба мақсади худ муайян кунед (кор, таҳсил, бизнес, муттаҳидшавии оила).",
+            "Бастаи асосии ҳуҷҷатҳоро ҷамъ кунед: шиноснома, даъватнома ё тасдиқи мақсади сафар, суғурта, кафолатҳои молиявӣ.",
+            "Ба консулгарӣ ё маркази раводиди кишвари кӯчиш ариза диҳед.",
+            "Қарорро интизор шавед ва дар сурати зарурат мусоҳиба гузаронед.",
+            "Пас аз гирифтани раводид, мӯҳлати воридшавӣ ва амали баъдиро аниқ кунед.",
+          ],
+        },
+        business_registration: {
+          heading: "Чӣ тавр бизнесро ба қайд гирем",
+          steps: [
+            "Вобаста ба кишвар шакли ташкилию ҳуқуқиро интихоб кунед (соҳибкори инфиродӣ, ҶДММ ва монанди инҳо).",
+            "Ҳуҷҷатҳои таъсисӣ ва тасдиқи суроғаи ҳуқуқиро омода кунед.",
+            "Ба феҳристи давлатии дахлдор барои қайд ариза диҳед.",
+            "Рақамҳои андоз ва омори ширкатро гиред.",
+            "Ҳисоби бонкиро ба номи бизнес кушоед.",
+          ],
+        },
+        documents: {
+          heading: "Кадом ҳуҷҷатҳоро омода кардан лозим аст",
+          steps: [
+            "Нусхаҳои аслӣ ва нусхабардории ҳуҷҷатҳои асосиро ҷамъ кунед: шиноснома, шаҳодатномаҳо, дипломҳо (агар лозим — бо апостил).",
+            "Агар талаб карда шавад, тарҷумаи нотариалии ҳуҷҷатҳоро ба забони кишвари кӯчиш кунед.",
+            "Барои пайгирии вазъият, сканҳоро ба бахши «Ҳуҷҷатҳо» дар ReloAI бор кунед.",
+            "Вазъияти ҳар як ҳуҷҷатро тафтиш кунед: Тайёр, Дар тафтиш ё Мавҷуд нест.",
+            "Нусхаҳои аслиро дар дасти худ нигоҳ доред — ҳангоми муроҷиати шахсӣ ба идораҳои давлатӣ лозим шуда метавонанд.",
+          ],
+        },
+        biometric: {
+          heading: "Чӣ тавр биометрияро супорем",
+          steps: [
+            "Ба хидмати муҳоҷират ё консулгарӣ барои супоридани маълумоти биометрӣ навишт шавед — аксар вақт инро онлайн кардан мумкин аст.",
+            "Бо худ шиноснома, даъватнома ба қабул ва ҳуҷҷатҳои тасдиқкунандаро гиред.",
+            "Дар қабул нақши ангуштони шумо гирифта мешавад ва акс гирифта мешавад.",
+            "Расид ё рақами арзаро нигоҳ доред — тавассути он метавонед тайёр будани ҳуҷҷатро пайгирӣ кунед.",
+            "Огоҳинома дар бораи тайёр будани корт ё иҷозатро интизор шавед.",
+          ],
+        },
+        address_registration: {
+          heading: "Чӣ тавр суроғаи истиқоматро ба қайд гирем",
+          steps: [
+            "Манзили доимӣ ё муваққатӣ пайдо кунед ва аз соҳиб барои қайд розигӣ гиред (шартномаи иҷора ё розигии соҳибмулк).",
+            "Шиноснома ва ҳуҷҷати тасдиқкунандаи ҳуқуқи истифодаи манзилро омода кунед.",
+            "Шахсан ё тавассути портали хидматрасониҳои давлатӣ ба маъмурияти маҳаллӣ муроҷиат кунед.",
+            "Аризаи қайди ҷои истиқоматро пур кунед.",
+            "Тасдиқи қайдро гиред — он барои расмиёти минбаъда лозим мешавад (иҷозати истиқомат, рақами андоз ва ғайра).",
+          ],
+        },
+        residence_permit: {
+          heading: "Чӣ тавр иҷозати истиқомат гирем",
+          steps: [
+            "Мутмаин шавед, ки барои муроҷиат асос доред: кор, таҳсил, бизнес ё муттаҳидшавии оила.",
+            "Бастаи ҳуҷҷатҳоро ҷамъ кунед: шиноснома, акс, тасдиқи мақсади истиқомат, суғурта, тасдиқи даромад ва суроға.",
+            "Ба идораи муҳоҷирати маҳаллӣ — шахсан ё онлайн — ариза диҳед.",
+            "Агар пештар анҷом надода бошед, биометрияро супоред.",
+            "Қарорро интизор шавед — ин метавонад аз якчанд ҳафта то якчанд моҳ давом кунад, вазъияти аризаро пайгирӣ кунед.",
+          ],
+        },
+        tax_id: {
+          heading: "Чӣ тавр рақами шиносномаи андоз гирем",
+          steps: [
+            "Муайян кунед, ки кадом рақам лозим аст: рақами умумии шиносномавӣ ё рақами андози бизнес.",
+            "Шиноснома ва, агар мавҷуд бошад, тасдиқи қайди суроғаро ҷамъ кунед.",
+            "Ба маъмурияти маҳаллӣ ё хидмати андоз ариза диҳед.",
+            "Додани рақамро интизор шавед — аксар вақт инро дар ҳамон рӯзи муроҷиат гирифтан мумкин аст.",
+            "Ҳуҷҷати тасдиқкунандаро нигоҳ доред — рақам барои кор, бонк ва суғуртаи тиббӣ лозим мешавад.",
+          ],
+        },
+        employment_registration: {
+          heading: "Чӣ тавр шуғлро расмӣ кунем",
+          steps: [
+            "Аз корфармо пурсед, ки кадом навъи иҷозати кор ё шартномаи меҳнатӣ лозим аст.",
+            "Ҳуҷҷатҳоро омода кунед: шиноснома, иҷозати истиқомат ё раводиди корӣ, дар сурати лозим — диплом.",
+            "Шартномаи меҳнатиро имзо кунед ва мутмаин шавед, ки корфармо огоҳиномаи заруриро пешниҳод кардааст.",
+            "Агар ҳанӯз расмӣ нашуда бошад, рақами суғуртаи иҷтимоиро гиред.",
+            "Тафтиш кунед, ки аз аввалин маоши шумо ҳама пардохтҳо ва андозҳо дуруст нигоҳ дошта мешаванд.",
+          ],
+        },
+      },
+      howToGetQuestion: "Чӣ тавр гирем: {title}?",
+    },
+    helpButton: {
+      label: "Инро чӣ тавр гирем?",
+      openGuide: "📄 Дастурро кушоед",
+      askAi: "💬 Аз AI пурсед",
+      askAiFooter: "Саволҳо мондаанд? Аз AI пурсед →",
     },
     appPricing: {
       title: "Нақшаи худро интихоб кунед",
@@ -6982,6 +7441,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           "Візьміть із собою договір оренди як підтвердження адреси",
         ],
       },
+      openAccountAt: "Як відкрити рахунок у {bank}",
     },
     medicine: {
       title: "Медицина в Польщі",
@@ -7189,6 +7649,95 @@ export const dictionaries: Record<Lang, Dictionary> = {
           },
         },
       },
+      stepGuides: {
+        visa_eligibility: {
+          heading: "Як оформити візу або підставу для в'їзду",
+          steps: [
+            "Визначте тип візи або підставу для в'їзду залежно від вашої мети (робота, навчання, бізнес, возз'єднання сім'ї).",
+            "Зберіть базовий пакет документів: закордонний паспорт, запрошення або підтвердження мети поїздки, страховку, фінансові гарантії.",
+            "Подайте заяву до консульства або візового центру країни переїзду.",
+            "Дочекайтеся рішення і, за потреби, пройдіть співбесіду.",
+            "Після отримання візи уточніть терміни в'їзду та що робити після прибуття.",
+          ],
+        },
+        business_registration: {
+          heading: "Як зареєструвати бізнес",
+          steps: [
+            "Оберіть організаційно-правову форму (ФОП, ТОВ та аналоги) залежно від країни.",
+            "Підготуйте установчі документи та підтвердження юридичної адреси.",
+            "Подайте заяву на реєстрацію у відповідний державний реєстр.",
+            "Отримайте податковий і статистичний номери компанії.",
+            "Відкрийте розрахунковий рахунок на ім'я бізнесу.",
+          ],
+        },
+        documents: {
+          heading: "Які документи потрібно підготувати",
+          steps: [
+            "Зберіть оригінали та копії основних документів: паспорт, свідоцтва, дипломи (за потреби — з апостилем).",
+            "Зробіть нотаріально завірені переклади документів мовою країни переїзду, якщо це вимагається.",
+            "Завантажте скани документів у розділ «Документи» в ReloAI, щоб відстежувати їх статус.",
+            "Перевіряйте статус кожного документа: Готово, На перевірці або Відсутній.",
+            "Тримайте оригінали під рукою — вони можуть знадобитися при особистій подачі в держоргани.",
+          ],
+        },
+        biometric: {
+          heading: "Як пройти біометрію",
+          steps: [
+            "Запишіться на подання біометричних даних до міграційної служби або консульства — часто це можна зробити онлайн.",
+            "Візьміть із собою паспорт, запрошення на прийом і підтверджувальні документи.",
+            "На прийомі у вас знімуть відбитки пальців і зроблять фото.",
+            "Збережіть розписку або номер заявки — за ним можна відстежувати готовність документа.",
+            "Дочекайтеся повідомлення про готовність картки чи дозволу.",
+          ],
+        },
+        address_registration: {
+          heading: "Як зареєструвати адресу проживання",
+          steps: [
+            "Знайдіть постійне або тимчасове житло і отримайте від власника згоду на реєстрацію (договір оренди або згода власника).",
+            "Підготуйте паспорт і документ, що підтверджує право користування житлом.",
+            "Зверніться до місцевої адміністрації особисто або через портал держпослуг.",
+            "Заповніть заяву про реєстрацію за місцем проживання.",
+            "Отримайте підтвердження реєстрації — воно знадобиться для подальших процедур (ВНП, податковий номер тощо).",
+          ],
+        },
+        residence_permit: {
+          heading: "Як отримати посвідку на проживання",
+          steps: [
+            "Переконайтеся, що у вас є підстава для подачі: робота, навчання, бізнес або возз'єднання сім'ї.",
+            "Зберіть пакет документів: паспорт, фото, підтвердження мети перебування, страховку, підтвердження доходу та адреси.",
+            "Подайте заяву до місцевого міграційного управління — особисто або онлайн.",
+            "Пройдіть біометрію, якщо це не було зроблено раніше.",
+            "Дочекайтеся рішення — це може зайняти від кількох тижнів до кількох місяців, відстежуйте статус заяви.",
+          ],
+        },
+        tax_id: {
+          heading: "Як отримати податковий ідентифікаційний номер",
+          steps: [
+            "Визначте, який номер вам потрібен: загальний ідентифікаційний чи податковий номер для бізнесу.",
+            "Зберіть паспорт і, за наявності, підтвердження реєстрації адреси.",
+            "Подайте заяву до місцевої адміністрації або податкової служби.",
+            "Дочекайтеся присвоєння номера — часто це можна зробити в день звернення.",
+            "Збережіть підтверджувальний документ — номер знадобиться для працевлаштування, банку та медичної страховки.",
+          ],
+        },
+        employment_registration: {
+          heading: "Як оформити працевлаштування",
+          steps: [
+            "Уточніть у роботодавця, який тип дозволу на роботу чи трудового договору вам потрібен.",
+            "Підготуйте документи: паспорт, посвідку на проживання або робочу візу, диплом за потреби.",
+            "Підпишіть трудовий договір і переконайтеся, що роботодавець подав повідомлення до відповідних органів (якщо потрібно).",
+            "Отримайте номер соціального страхування, якщо він ще не оформлений.",
+            "Перевірте, що всі внески та податки утримуються коректно з першої зарплати.",
+          ],
+        },
+      },
+      howToGetQuestion: "Як отримати: {title}?",
+    },
+    helpButton: {
+      label: "Як це отримати?",
+      openGuide: "📄 Відкрити інструкцію",
+      askAi: "💬 Запитати ШІ",
+      askAiFooter: "Залишились питання? Запитати ШІ →",
     },
     appPricing: {
       title: "Оберіть тариф",
