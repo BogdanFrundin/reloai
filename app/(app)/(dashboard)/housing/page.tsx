@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
+import HelpButton from "../../../_components/HelpButton";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
@@ -136,15 +137,25 @@ export default function HousingPage() {
                 </span>
                 <p className="mt-3 text-sm font-semibold text-text-primary">{site.name}</p>
                 <p className="mt-1 flex-1 text-xs text-text-muted">{t.housing.websiteDescs[site.key]}</p>
-                <Link
-                  href={site.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-4 inline-flex w-fit items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white motion-reduce:transition-none ${pressScale}`}
-                >
-                  {t.housing.visitSite}
-                  <span aria-hidden>→</span>
-                </Link>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <Link
+                    href={site.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex w-fit items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white motion-reduce:transition-none ${pressScale}`}
+                  >
+                    {t.housing.visitSite}
+                    <span aria-hidden>→</span>
+                  </Link>
+                  {t.housing.guides[site.key] && (
+                    <HelpButton
+                      guideHeading={t.housing.guides[site.key].heading}
+                      guideSteps={t.housing.guides[site.key].steps}
+                      aiQuestion={t.housing.guides[site.key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  )}
+                </div>
               </div>
             </Reveal>
           ))}

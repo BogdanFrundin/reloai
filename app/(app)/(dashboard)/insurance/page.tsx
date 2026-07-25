@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
+import HelpButton from "../../../_components/HelpButton";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 
@@ -76,6 +77,16 @@ export default function InsurancePage() {
                 >
                   {t.insurance.learnMoreBtn}
                 </Link>
+                {t.insurance.guides[key] && (
+                  <div className="mt-2.5 flex justify-center">
+                    <HelpButton
+                      guideHeading={t.insurance.guides[key].heading}
+                      guideSteps={t.insurance.guides[key].steps}
+                      aiQuestion={t.insurance.guides[key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  </div>
+                )}
               </div>
             </Reveal>
           );

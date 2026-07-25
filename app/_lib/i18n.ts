@@ -310,6 +310,7 @@ export type Dictionary = {
     expatsChoiceBadge: string;
     showAllDistricts: string;
     showFewerDistricts: string;
+    guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
   };
   banks: {
     title: string;
@@ -337,6 +338,7 @@ export type Dictionary = {
     bookBtn: string;
     nfzTitle: string;
     nfzSteps: [string, string, string, string];
+    nfzAiQuestion: string;
     stepLabel: string;
     emergencyTitle: string;
     emergencyNumber: string;
@@ -374,6 +376,7 @@ export type Dictionary = {
       home: { name: string; provider: string; price: string; desc: string };
       travel: { name: string; provider: string; price: string; desc: string };
     };
+    guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
   };
   work: {
     title: string;
@@ -396,6 +399,7 @@ export type Dictionary = {
     employmentFeatures: [string, string, string];
     b2bFeatures: [string, string, string];
     jobSiteDescs: { pracuj: string; nofluff: string; linkedin: string };
+    guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
   };
   community: {
     title: string;
@@ -1347,6 +1351,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Релокантов' choice",
       showAllDistricts: "Show all 18 Warsaw districts →",
       showFewerDistricts: "Show fewer districts",
+      guides: {
+        olx: {
+          heading: "How to search for housing on OLX",
+          steps: [
+            "Go to Real Estate → Rent and set filters for city, price, and number of rooms.",
+            "Save listings and turn on notifications for new offers matching your criteria.",
+            "Message the seller through the built-in chat — never send money before viewing the apartment in person.",
+            "Arrange a viewing and check the apartment's condition and paperwork before signing a contract.",
+          ],
+          aiQuestion: "How do I search for housing on OLX?",
+        },
+        otodom: {
+          heading: "How to search for housing on Otodom",
+          steps: [
+            "Use Otodom's advanced filters — metro, floor, furnished or not — to narrow your search.",
+            "Look for listings marked \"from owner\" — this often means no agency commission.",
+            "Contact the poster through the site and confirm a viewing date.",
+            "Before signing, ask for a handover protocol (protokół zdawczo-odbiorczy) for the apartment.",
+          ],
+          aiQuestion: "How do I search for housing on Otodom?",
+        },
+        gratka: {
+          heading: "How to search for housing on Gratka",
+          steps: [
+            "Set your region and budget in Gratka's search — it's especially strong outside major cities.",
+            "Check the listing's publish date — older listings are often no longer available.",
+            "Contact the seller by phone or through the site's form to confirm details.",
+            "Always ask for a rental contract and verify ownership before paying a deposit.",
+          ],
+          aiQuestion: "How do I search for housing on Gratka?",
+        },
+      },
     },
     banks: {
       title: "Banks in Poland",
@@ -1441,6 +1477,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Confirm your coverage on the eWUŚ website (ewus.nfz.gov.pl)",
         "Book an appointment at any public clinic",
       ],
+      nfzAiQuestion: "How do I register with NFZ?",
       stepLabel: "Step",
       emergencyTitle: "Emergency and urgent care",
       emergencyNumber: "Emergency number in Poland: 112 or 999",
@@ -1478,6 +1515,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Home insurance", provider: "Warta", price: "200–600 PLN/year", desc: "Protects your apartment or house against fire, water damage, and theft." },
         travel: { name: "Travel insurance", provider: "Allianz", price: "20–80 PLN/trip", desc: "Covers medical expenses and emergencies while travelling around Europe." },
       },
+      guides: {
+        medical: {
+          heading: "How to get medical insurance",
+          steps: [
+            "Choose your coverage level — a basic package or an extended one with dental and specialist care.",
+            "Compare offers from a few insurers (LUX MED, Medicover, Signal Iduna) on price and clinic network.",
+            "Take out the policy online or at the insurer's office — you'll usually need your passport and PESEL.",
+            "Keep your policy number — you'll need it when booking appointments.",
+          ],
+          aiQuestion: "How do I get medical insurance in Poland?",
+        },
+        car: {
+          heading: "How to get car insurance (OC/AC)",
+          steps: [
+            "OC (mandatory third-party liability) is required by law for any registered car.",
+            "Compare OC rates from several insurers — prices vary a lot based on driving history.",
+            "Optionally add AC (theft and damage cover) for fuller protection.",
+            "Get a policy online in a few minutes — you'll need your car details and driving licence.",
+          ],
+          aiQuestion: "How do I get car insurance in Poland?",
+        },
+        home: {
+          heading: "How to get home insurance",
+          steps: [
+            "Decide what to insure — the property itself, the contents, or liability.",
+            "Gather basic info about the apartment: size, address, building type.",
+            "Compare offers from a few insurers — many banks give a discount when bundled with a mortgage.",
+            "Take out the policy online or through an agent, and keep proof for your landlord if required.",
+          ],
+          aiQuestion: "How do I get home insurance in Poland?",
+        },
+        travel: {
+          heading: "How to get travel insurance",
+          steps: [
+            "Decide on the length and purpose of your trip — this determines the coverage level you need.",
+            "Check that the policy covers medical costs, evacuation, and trip cancellation.",
+            "Compare offers online — getting a policy takes a couple of minutes and no in-person visit.",
+            "Save the policy on your phone or print it — you may need it at the border or at a hospital.",
+          ],
+          aiQuestion: "How do I get travel insurance?",
+        },
+      },
     },
     work: {
       title: "Work in Poland",
@@ -1511,6 +1590,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Poland's largest job board, all industries.",
         nofluff: "Tech-focused, salaries listed upfront.",
         linkedin: "International roles, strong for English speakers.",
+      },
+      guides: {
+        employment: {
+          heading: "How to get an employment contract (umowa o pracę)",
+          steps: [
+            "Your employer must sign a written employment contract with you before you start work.",
+            "Check that the contract states your position, salary, schedule, and probation period if any.",
+            "Your employer registers you with ZUS (social insurance) — this gives you access to NFZ and pension contributions.",
+            "Keep a copy of the contract — you'll need it for your residence permit and other procedures.",
+          ],
+          aiQuestion: "How do I get an employment contract in Poland?",
+        },
+        b2b: {
+          heading: "How to set up a B2B contract (self-employment)",
+          steps: [
+            "Register a sole proprietorship (JDG) through the CEIDG website — this can be done online in a day.",
+            "Choose a tax form (general rules, flat tax, or ryczałt) together with an accountant.",
+            "Sign a B2B contract with the contracting company — this is a civil-law contract, not an employment one.",
+            "Pay your ZUS contributions yourself every month and file your tax return.",
+          ],
+          aiQuestion: "How do I set up a B2B contract in Poland?",
+        },
+        pracuj: {
+          heading: "How to find a job on Pracuj.pl",
+          steps: [
+            "Create a profile and upload your CV — many listings let you apply with one click.",
+            "Use filters for city, salary, and required English/Polish level.",
+            "Set up alerts for keywords matching your profession so you don't miss new postings.",
+            "Be ready for some interviews to be in Polish — confirm the interview language in advance.",
+          ],
+          aiQuestion: "How do I find a job on Pracuj.pl?",
+        },
+        nofluff: {
+          heading: "How to find a job on NoFluffJobs",
+          steps: [
+            "NoFluffJobs specializes in tech — it's easy to filter listings by tech stack here.",
+            "Note that listings show the salary range upfront, which makes comparing offers easier.",
+            "Fill out your profile in English — many IT companies in Poland operate in English.",
+            "Apply directly through the site — most companies respond within a few days.",
+          ],
+          aiQuestion: "How do I find a job on NoFluffJobs?",
+        },
+        linkedin: {
+          heading: "How to find a job on LinkedIn",
+          steps: [
+            "Fill out your profile completely — experience, skills, and recommendations improve your chances of being found by recruiters.",
+            "Turn on \"Open to work\", visible only to recruiters, so your search stays private from your current employer.",
+            "Use location filters (Poland/Warsaw) and remote work filters to narrow your search.",
+            "Message recruiters directly — a direct message is often more effective than applying through a form.",
+          ],
+          aiQuestion: "How do I find a job on LinkedIn?",
+        },
       },
     },
     community: {
@@ -2605,6 +2736,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Выбор релокантов",
       showAllDistricts: "Показать все 18 районов Варшавы →",
       showFewerDistricts: "Свернуть список районов",
+      guides: {
+        olx: {
+          heading: "Как искать жильё на OLX",
+          steps: [
+            "Перейдите в раздел «Недвижимость» → «Аренда» и задайте фильтры по городу, цене и числу комнат.",
+            "Сохраняйте объявления и настройте уведомления о новых предложениях по вашим критериям.",
+            "Пишите продавцу через встроенный чат — никогда не переводите деньги до личного просмотра квартиры.",
+            "Договоритесь о просмотре и проверьте состояние квартиры и документы перед подписанием договора.",
+          ],
+          aiQuestion: "Как искать жильё на OLX?",
+        },
+        otodom: {
+          heading: "Как искать жильё на Otodom",
+          steps: [
+            "Используйте расширенные фильтры Otodom — метро, этаж, наличие мебели — чтобы сузить поиск.",
+            "Обращайте внимание на пометку «от собственника» — часто это означает отсутствие комиссии агентству.",
+            "Свяжитесь с объявителем через сайт и уточните доступность даты просмотра.",
+            "Перед подписанием договора попросите протокол приёма-передачи квартиры (protokół zdawczo-odbiorczy).",
+          ],
+          aiQuestion: "Как искать жильё на Otodom?",
+        },
+        gratka: {
+          heading: "Как искать жильё на Gratka",
+          steps: [
+            "Задайте регион и бюджет в поиске Gratka — сервис особенно силён за пределами крупных городов.",
+            "Проверяйте дату публикации объявления — старые объявления часто уже неактуальны.",
+            "Свяжитесь с продавцом по телефону или через форму на сайте, чтобы уточнить детали.",
+            "Перед оплатой залога всегда просите договор аренды и проверяйте право собственности.",
+          ],
+          aiQuestion: "Как искать жильё на Gratka?",
+        },
+      },
     },
     banks: {
       title: "Банки в Польше",
@@ -2699,6 +2862,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Подтвердите страховку на сайте eWUŚ (ewus.nfz.gov.pl)",
         "Запишитесь к врачу в любую государственную клинику",
       ],
+      nfzAiQuestion: "Как зарегистрироваться в NFZ?",
       stepLabel: "Шаг",
       emergencyTitle: "Скорая помощь и экстренные случаи",
       emergencyNumber: "Номер скорой помощи в Польше: 112 или 999",
@@ -2736,6 +2900,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Страховка жилья", provider: "Warta", price: "200–600 zł/год", desc: "Защита квартиры или дома от пожара, залива и кражи имущества." },
         travel: { name: "Туристическая страховка", provider: "Allianz", price: "20–80 zł/поездка", desc: "Покрытие медицинских расходов и форс-мажоров во время путешествий по Европе." },
       },
+      guides: {
+        medical: {
+          heading: "Как оформить медицинскую страховку",
+          steps: [
+            "Выберите тип покрытия — базовый пакет или расширенный со стоматологией и специалистами.",
+            "Сравните предложения нескольких страховщиков (LUX MED, Medicover, Signal Iduna) по цене и сети клиник.",
+            "Оформите полис онлайн или в офисе страховой компании — обычно нужен паспорт и PESEL.",
+            "Сохраните номер полиса — он понадобится при записи к врачу.",
+          ],
+          aiQuestion: "Как оформить медицинскую страховку в Польше?",
+        },
+        car: {
+          heading: "Как оформить автостраховку (OC/AC)",
+          steps: [
+            "OC (обязательная гражданская ответственность) требуется по закону для любого зарегистрированного автомобиля.",
+            "Сравните тарифы OC у нескольких страховщиков — цена сильно варьируется в зависимости от истории вождения.",
+            "При желании добавьте AC (страхование от угона и повреждений) для более полной защиты.",
+            "Оформите полис онлайн за несколько минут — потребуются данные автомобиля и водительские права.",
+          ],
+          aiQuestion: "Как оформить автостраховку в Польше?",
+        },
+        home: {
+          heading: "Как оформить страховку жилья",
+          steps: [
+            "Определите, что нужно застраховать — само жильё, имущество внутри или гражданскую ответственность.",
+            "Соберите базовую информацию о квартире: площадь, адрес, тип строения.",
+            "Сравните предложения нескольких страховщиков — многие банки предлагают скидку при оформлении вместе с ипотекой.",
+            "Оформите полис онлайн или через агента и сохраните подтверждение для арендодателя, если требуется.",
+          ],
+          aiQuestion: "Как оформить страховку жилья в Польше?",
+        },
+        travel: {
+          heading: "Как оформить туристическую страховку",
+          steps: [
+            "Определите длительность и цель поездки — от этого зависит нужный уровень покрытия.",
+            "Проверьте, что полис покрывает медицинские расходы, эвакуацию и отмену поездки.",
+            "Сравните предложения онлайн — оформление занимает пару минут и не требует личного визита.",
+            "Сохраните полис в телефоне или распечатайте — он может понадобиться на границе или в больнице.",
+          ],
+          aiQuestion: "Как оформить туристическую страховку?",
+        },
+      },
     },
     work: {
       title: "Работа в Польше",
@@ -2769,6 +2975,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Крупнейшая доска вакансий Польши, все отрасли.",
         nofluff: "Ориентирован на IT, зарплаты указаны сразу.",
         linkedin: "Международные вакансии, хорош для англоговорящих.",
+      },
+      guides: {
+        employment: {
+          heading: "Как оформить трудовой договор (umowa o pracę)",
+          steps: [
+            "Работодатель обязан заключить с вами письменный трудовой договор до начала работы.",
+            "Проверьте, что в договоре указаны должность, зарплата, график и испытательный срок, если он есть.",
+            "Работодатель регистрирует вас в ZUS (социальное страхование) — это даёт доступ к NFZ и пенсионным взносам.",
+            "Сохраните копию договора — она понадобится для вида на жительство и других процедур.",
+          ],
+          aiQuestion: "Как оформить трудовой договор в Польше?",
+        },
+        b2b: {
+          heading: "Как оформить контракт B2B (самозанятость)",
+          steps: [
+            "Зарегистрируйте индивидуальную деятельность (JDG) через сайт CEIDG — это можно сделать онлайн за один день.",
+            "Выберите форму налогообложения (общие правила, линейный налог или ryczałt) вместе с бухгалтером.",
+            "Подпишите контракт B2B с компанией-заказчиком — это гражданско-правовой, а не трудовой договор.",
+            "Ежемесячно платите взносы в ZUS самостоятельно и подавайте налоговую декларацию.",
+          ],
+          aiQuestion: "Как оформить контракт B2B в Польше?",
+        },
+        pracuj: {
+          heading: "Как искать работу на Pracuj.pl",
+          steps: [
+            "Создайте профиль и загрузите резюме (CV) — многие вакансии позволяют откликнуться в один клик.",
+            "Используйте фильтры по городу, зарплате и уровню английского/польского языка.",
+            "Настройте уведомления по ключевым словам вашей профессии, чтобы не пропустить новые вакансии.",
+            "Готовьтесь, что часть собеседований проходит на польском — уточняйте язык интервью заранее.",
+          ],
+          aiQuestion: "Как искать работу на Pracuj.pl?",
+        },
+        nofluff: {
+          heading: "Как искать работу на NoFluffJobs",
+          steps: [
+            "NoFluffJobs специализируется на IT — здесь удобно фильтровать вакансии по стеку технологий.",
+            "Обратите внимание, что вакансии показывают вилку зарплаты сразу — это упрощает сравнение предложений.",
+            "Заполните профиль на английском языке — многие IT-компании в Польше работают на английском.",
+            "Откликайтесь напрямую через сайт — большинство компаний отвечают в течение нескольких дней.",
+          ],
+          aiQuestion: "Как искать работу на NoFluffJobs?",
+        },
+        linkedin: {
+          heading: "Как искать работу на LinkedIn",
+          steps: [
+            "Заполните профиль полностью — опыт, навыки и рекомендации повышают шанс, что рекрутер найдёт вас сам.",
+            "Включите статус «Open to work», видимый только рекрутерам, чтобы не афишировать поиск текущему работодателю.",
+            "Используйте фильтры по локации (Poland/Warsaw) и удалённой работе для точного поиска.",
+            "Пишите рекрутерам в личные сообщения — прямой контакт часто эффективнее отклика через форму.",
+          ],
+          aiQuestion: "Как искать работу на LinkedIn?",
+        },
       },
     },
     community: {
@@ -3863,6 +4121,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Chet elliklar tanlovi",
       showAllDistricts: "Varshavaning barcha 18 ta tumanini ko'rsatish →",
       showFewerDistricts: "Ro'yxatni yig'ish",
+      guides: {
+        olx: {
+          heading: "OLX'da uy-joy qanday qidiriladi",
+          steps: [
+            "«Ko'chmas mulk» → «Ijara» bo'limiga o'ting va shahar, narx va xonalar soni bo'yicha filtrlarni sozlang.",
+            "E'lonlarni saqlang va mezonlaringizga mos yangi takliflar haqida bildirishnomalarni yoqing.",
+            "Sotuvchiga ilova ichidagi chat orqali yozing — kvartirani shaxsan ko'rmasdan pul o'tkazmang.",
+            "Ko'rish uchun kelishing va shartnomani imzolashdan oldin kvartira holati va hujjatlarini tekshiring.",
+          ],
+          aiQuestion: "OLX'da uy-joyni qanday qidiraman?",
+        },
+        otodom: {
+          heading: "Otodom'da uy-joy qanday qidiriladi",
+          steps: [
+            "Qidiruvni toraytirish uchun Otodom'ning kengaytirilgan filtrlaridan foydalaning — metro, qavat, mebelli yoki yo'q.",
+            "«Egasidan» belgisiga e'tibor bering — bu ko'pincha agentlik komissiyasi yo'qligini bildiradi.",
+            "E'lon beruvchi bilan sayt orqali bog'laning va ko'rish sanasini aniqlashtiring.",
+            "Shartnomani imzolashdan oldin kvartirani topshirish-qabul qilish dalolatnomasini (protokół zdawczo-odbiorczy) so'rang.",
+          ],
+          aiQuestion: "Otodom'da uy-joyni qanday qidiraman?",
+        },
+        gratka: {
+          heading: "Gratka'da uy-joy qanday qidiriladi",
+          steps: [
+            "Gratka qidiruvida hudud va byudjetni belgilang — xizmat ayniqsa yirik shaharlardan tashqarida kuchli.",
+            "E'lonning e'lon qilingan sanasini tekshiring — eski e'lonlar ko'pincha allaqachon dolzarb emas.",
+            "Tafsilotlarni aniqlashtirish uchun sotuvchi bilan telefon orqali yoki saytdagi shakl orqali bog'laning.",
+            "Garovni to'lashdan oldin har doim ijara shartnomasini so'rang va mulkchilik huquqini tekshiring.",
+          ],
+          aiQuestion: "Gratka'da uy-joyni qanday qidiraman?",
+        },
+      },
     },
     banks: {
       title: "Polshadagi banklar",
@@ -3957,6 +4247,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Sug'urtangizni eWUŚ saytida tasdiqlang (ewus.nfz.gov.pl)",
         "Istalgan davlat poliklinikasiga shifokorga yoziling",
       ],
+      nfzAiQuestion: "NFZ'da qanday ro'yxatdan o'taman?",
       stepLabel: "Qadam",
       emergencyTitle: "Tez yordam va favqulodda holatlar",
       emergencyNumber: "Polshada tez yordam raqami: 112 yoki 999",
@@ -3994,6 +4285,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Uy-joy sug'urtasi", provider: "Warta", price: "Yiliga 200–600 PLN", desc: "Kvartira yoki uyni yong'in, suv toshqini va o'g'irlikdan himoya qiladi." },
         travel: { name: "Sayohat sug'urtasi", provider: "Allianz", price: "Safar uchun 20–80 PLN", desc: "Yevropa bo'ylab sayohat paytida tibbiy xarajatlar va favqulodda holatlarni qoplaydi." },
       },
+      guides: {
+        medical: {
+          heading: "Tibbiy sug'urtani qanday rasmiylashtirish",
+          steps: [
+            "Qamrov darajasini tanlang — asosiy paket yoki stomatologiya va mutaxassislarni o'z ichiga olgan kengaytirilgan paket.",
+            "Bir nechta sug'urtachining (LUX MED, Medicover, Signal Iduna) narxi va klinikalar tarmog'i bo'yicha takliflarini solishtiring.",
+            "Polisni onlayn yoki sug'urta kompaniyasi ofisida rasmiylashtiring — odatda pasport va PESEL kerak bo'ladi.",
+            "Polis raqamini saqlang — u shifokorga yozilishda kerak bo'ladi.",
+          ],
+          aiQuestion: "Polshada tibbiy sug'urtani qanday rasmiylashtiraman?",
+        },
+        car: {
+          heading: "Avtomobil sug'urtasini (OC/AC) qanday rasmiylashtirish",
+          steps: [
+            "OC (majburiy fuqarolik javobgarligi) ro'yxatdan o'tgan har qanday avtomobil uchun qonun bo'yicha talab qilinadi.",
+            "Bir nechta sug'urtachining OC tariflarini solishtiring — narx haydash tarixiga qarab juda farq qiladi.",
+            "Istasangiz, to'liqroq himoya uchun AC (o'g'irlik va shikastlanishdan sug'urta) qo'shing.",
+            "Polisni onlayn bir necha daqiqada rasmiylashtiring — avtomobil ma'lumotlari va haydovchilik guvohnomasi kerak bo'ladi.",
+          ],
+          aiQuestion: "Polshada avtomobil sug'urtasini qanday rasmiylashtiraman?",
+        },
+        home: {
+          heading: "Uy-joy sug'urtasini qanday rasmiylashtirish",
+          steps: [
+            "Nimani sug'urtalash kerakligini aniqlang — uy-joyning o'zi, ichidagi mol-mulk yoki fuqarolik javobgarligi.",
+            "Kvartira haqida asosiy ma'lumotlarni to'plang: maydoni, manzili, bino turi.",
+            "Bir nechta sug'urtachining takliflarini solishtiring — ko'p banklar ipoteka bilan birga rasmiylashtirilganda chegirma taklif qiladi.",
+            "Polisni onlayn yoki agent orqali rasmiylashtiring va zarur bo'lsa, uy egasi uchun tasdiqni saqlang.",
+          ],
+          aiQuestion: "Polshada uy-joy sug'urtasini qanday rasmiylashtiraman?",
+        },
+        travel: {
+          heading: "Sayohat sug'urtasini qanday rasmiylashtirish",
+          steps: [
+            "Safar davomiyligi va maqsadini aniqlang — bu kerakli qamrov darajasini belgilaydi.",
+            "Polis tibbiy xarajatlar, evakuatsiya va safarni bekor qilishni qoplashini tekshiring.",
+            "Onlayn takliflarni solishtiring — rasmiylashtirish bir necha daqiqa oladi va shaxsan tashrif buyurish shart emas.",
+            "Polisni telefoningizda saqlang yoki chop eting — u chegarada yoki kasalxonada kerak bo'lishi mumkin.",
+          ],
+          aiQuestion: "Sayohat sug'urtasini qanday rasmiylashtiraman?",
+        },
+      },
     },
     work: {
       title: "Polshada ish",
@@ -4027,6 +4360,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Polshaning eng katta ish qidirish sayti, barcha sohalar bo'yicha.",
         nofluff: "Texnologiya sohasiga yo'naltirilgan, maoshlar oldindan ko'rsatiladi.",
         linkedin: "Xalqaro lavozimlar, ingliz tilida so'zlashuvchilar uchun qulay.",
+      },
+      guides: {
+        employment: {
+          heading: "Mehnat shartnomasini (umowa o pracę) qanday olish",
+          steps: [
+            "Ish beruvchi ish boshlashdan oldin siz bilan yozma mehnat shartnomasi tuzishi shart.",
+            "Shartnomada lavozim, maosh, jadval va agar mavjud bo'lsa, sinov muddati ko'rsatilganligini tekshiring.",
+            "Ish beruvchi sizni ZUS'da (ijtimoiy sug'urta) ro'yxatdan o'tkazadi — bu NFZ va pensiya badallariga kirish imkonini beradi.",
+            "Shartnoma nusxasini saqlang — u yashash ruxsatnomasi va boshqa jarayonlar uchun kerak bo'ladi.",
+          ],
+          aiQuestion: "Polshada mehnat shartnomasini qanday olaman?",
+        },
+        b2b: {
+          heading: "B2B shartnomasini (o'z-o'zini bandlik) qanday tuzish",
+          steps: [
+            "CEIDG sayti orqali yakka tartibdagi faoliyatni (JDG) ro'yxatdan o'tkazing — buni bir kunda onlayn qilish mumkin.",
+            "Buxgalter bilan birgalikda soliq shaklini (umumiy qoidalar, yagona soliq yoki ryczałt) tanlang.",
+            "Buyurtmachi kompaniya bilan B2B shartnomasini imzolang — bu mehnat emas, fuqarolik-huquqiy shartnoma.",
+            "ZUS badallarini har oy o'zingiz to'lang va soliq deklaratsiyasini topshiring.",
+          ],
+          aiQuestion: "Polshada B2B shartnomasini qanday tuzaman?",
+        },
+        pracuj: {
+          heading: "Pracuj.pl'da ish qanday izlanadi",
+          steps: [
+            "Profil yarating va rezyume (CV) yuklang — ko'p vakansiyalarga bir marta bosish bilan murojaat qilish mumkin.",
+            "Shahar, maosh va ingliz/polyak tili darajasi bo'yicha filtrlardan foydalaning.",
+            "Yangi vakansiyalarni o'tkazib yubormaslik uchun kasbingizga oid kalit so'zlar bo'yicha bildirishnomalarni sozlang.",
+            "Ba'zi suhbatlar polyak tilida o'tishiga tayyor bo'ling — intervyu tilini oldindan aniqlashtiring.",
+          ],
+          aiQuestion: "Pracuj.pl'da ishni qanday izlayman?",
+        },
+        nofluff: {
+          heading: "NoFluffJobs'da ish qanday izlanadi",
+          steps: [
+            "NoFluffJobs IT sohasiga ixtisoslashgan — bu yerda vakansiyalarni texnologiyalar to'plami bo'yicha filtrlash qulay.",
+            "Vakansiyalar maosh oralig'ini darhol ko'rsatishiga e'tibor bering — bu takliflarni solishtirishni osonlashtiradi.",
+            "Profilingizni ingliz tilida to'ldiring — Polshadagi ko'p IT-kompaniyalar ingliz tilida ishlaydi.",
+            "Sayt orqali to'g'ridan-to'g'ri murojaat qiling — ko'pchilik kompaniyalar bir necha kun ichida javob beradi.",
+          ],
+          aiQuestion: "NoFluffJobs'da ishni qanday izlayman?",
+        },
+        linkedin: {
+          heading: "LinkedIn'da ish qanday izlanadi",
+          steps: [
+            "Profilingizni to'liq to'ldiring — tajriba, ko'nikmalar va tavsiyalar rekruter sizni o'zi topish imkoniyatini oshiradi.",
+            "Faqat rekruterlarga ko'rinadigan «Open to work» holatini yoqing — shunda joriy ish beruvchingiz izlanishingizni bilmaydi.",
+            "Aniq qidiruv uchun joylashuv (Poland/Warsaw) va masofaviy ish filtrlaridan foydalaning.",
+            "Rekruterlarga shaxsiy xabar yozing — to'g'ridan-to'g'ri muloqot ko'pincha shakl orqali murojaat qilishdan samaraliroq.",
+          ],
+          aiQuestion: "LinkedIn'da ishni qanday izlayman?",
+        },
       },
     },
     community: {
@@ -5118,6 +5503,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Göçmenlerin tercihi",
       showAllDistricts: "Varşova'nın 18 ilçesinin tümünü göster →",
       showFewerDistricts: "Listeyi daralt",
+      guides: {
+        olx: {
+          heading: "OLX'te konut nasıl aranır",
+          steps: [
+            "Emlak → Kiralık bölümüne gidin ve şehir, fiyat ve oda sayısına göre filtre ayarlayın.",
+            "İlanları kaydedin ve kriterlerinize uyan yeni teklifler için bildirimleri açın.",
+            "Satıcıya uygulama içi sohbet üzerinden yazın — daireyi şahsen görmeden asla para göndermeyin.",
+            "Bir görüntüleme ayarlayın ve sözleşmeyi imzalamadan önce dairenin durumunu ve evraklarını kontrol edin.",
+          ],
+          aiQuestion: "OLX'te konutu nasıl ararım?",
+        },
+        otodom: {
+          heading: "Otodom'da konut nasıl aranır",
+          steps: [
+            "Aramanızı daraltmak için Otodom'un gelişmiş filtrelerini kullanın — metro, kat, eşyalı olup olmadığı.",
+            "\"Sahibinden\" ibaresine dikkat edin — bu genellikle emlakçı komisyonu olmadığı anlamına gelir.",
+            "İlan sahibiyle site üzerinden iletişime geçin ve bir görüntüleme tarihi belirleyin.",
+            "İmzalamadan önce dairenin teslim tutanağını (protokół zdawczo-odbiorczy) isteyin.",
+          ],
+          aiQuestion: "Otodom'da konutu nasıl ararım?",
+        },
+        gratka: {
+          heading: "Gratka'da konut nasıl aranır",
+          steps: [
+            "Gratka aramasında bölge ve bütçenizi belirleyin — hizmet özellikle büyük şehirler dışında güçlüdür.",
+            "İlanın yayın tarihini kontrol edin — eski ilanlar genellikle artık geçerli değildir.",
+            "Detayları netleştirmek için satıcıyla telefonla veya sitedeki formla iletişime geçin.",
+            "Depozito ödemeden önce her zaman bir kira sözleşmesi isteyin ve mülkiyeti doğrulayın.",
+          ],
+          aiQuestion: "Gratka'da konutu nasıl ararım?",
+        },
+      },
     },
     banks: {
       title: "Polonya'da Bankalar",
@@ -5212,6 +5629,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Sigortanızı eWUŚ web sitesinden onaylayın (ewus.nfz.gov.pl)",
         "Herhangi bir devlet kliniğinden randevu alın",
       ],
+      nfzAiQuestion: "NFZ'ye nasıl kaydolurum?",
       stepLabel: "Adım",
       emergencyTitle: "Acil durum ve ambulans",
       emergencyNumber: "Polonya'da acil numara: 112 veya 999",
@@ -5249,6 +5667,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Konut sigortası", provider: "Warta", price: "Yılda 200–600 PLN", desc: "Evinizi yangın, su hasarı ve hırsızlığa karşı korur." },
         travel: { name: "Seyahat sigortası", provider: "Allianz", price: "Seyahat başına 20–80 PLN", desc: "Avrupa'da seyahat ederken tıbbi masrafları ve acil durumları kapsar." },
       },
+      guides: {
+        medical: {
+          heading: "Sağlık sigortası nasıl yaptırılır",
+          steps: [
+            "Kapsam düzeyinizi seçin — temel paket veya diş hekimliği ve uzmanları içeren genişletilmiş paket.",
+            "Birkaç sigorta şirketinin (LUX MED, Medicover, Signal Iduna) fiyat ve klinik ağını karşılaştırın.",
+            "Poliçeyi çevrimiçi veya sigorta şirketinin ofisinde yaptırın — genellikle pasaport ve PESEL gerekir.",
+            "Poliçe numaranızı saklayın — randevu alırken buna ihtiyacınız olacak.",
+          ],
+          aiQuestion: "Polonya'da sağlık sigortasını nasıl yaptırırım?",
+        },
+        car: {
+          heading: "Araç sigortası (OC/AC) nasıl yaptırılır",
+          steps: [
+            "OC (zorunlu trafik sigortası), tescilli her araç için yasa gereği zorunludur.",
+            "Birkaç sigorta şirketinin OC fiyatlarını karşılaştırın — fiyat sürüş geçmişine göre büyük ölçüde değişir.",
+            "İsterseniz daha kapsamlı koruma için AC (hırsızlık ve hasar sigortası) ekleyin.",
+            "Poliçeyi birkaç dakikada çevrimiçi olarak alın — araç bilgileriniz ve ehliyetiniz gerekecek.",
+          ],
+          aiQuestion: "Polonya'da araç sigortasını nasıl yaptırırım?",
+        },
+        home: {
+          heading: "Ev sigortası nasıl yaptırılır",
+          steps: [
+            "Neyi sigortalatacağınıza karar verin — konutun kendisi, içindeki eşyalar veya sorumluluk.",
+            "Daire hakkında temel bilgileri toplayın: metrekare, adres, bina tipi.",
+            "Birkaç sigorta şirketinin tekliflerini karşılaştırın — birçok banka mortgage ile birlikte alındığında indirim sunar.",
+            "Poliçeyi çevrimiçi veya bir acente aracılığıyla alın ve gerekirse ev sahibiniz için kanıtı saklayın.",
+          ],
+          aiQuestion: "Polonya'da ev sigortasını nasıl yaptırırım?",
+        },
+        travel: {
+          heading: "Seyahat sigortası nasıl yaptırılır",
+          steps: [
+            "Seyahatinizin süresini ve amacını belirleyin — bu ihtiyacınız olan kapsam düzeyini belirler.",
+            "Poliçenin tıbbi masrafları, tahliyeyi ve seyahat iptalini kapsadığını kontrol edin.",
+            "Çevrimiçi teklifleri karşılaştırın — poliçe almak birkaç dakika sürer ve şahsen gitmeye gerek yoktur.",
+            "Poliçeyi telefonunuzda saklayın veya yazdırın — sınırda veya hastanede ihtiyacınız olabilir.",
+          ],
+          aiQuestion: "Seyahat sigortasını nasıl yaptırırım?",
+        },
+      },
     },
     work: {
       title: "Polonya'da İş",
@@ -5282,6 +5742,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Polonya'nın en büyük iş sitesi, tüm sektörler.",
         nofluff: "Teknolojiye odaklı, maaşlar önceden belirtilir.",
         linkedin: "Uluslararası pozisyonlar, İngilizce konuşanlar için güçlü.",
+      },
+      guides: {
+        employment: {
+          heading: "Nasıl iş sözleşmesi (umowa o pracę) alınır",
+          steps: [
+            "İşvereniniz işe başlamadan önce sizinle yazılı bir iş sözleşmesi imzalamak zorundadır.",
+            "Sözleşmede pozisyonunuzun, maaşınızın, çalışma programınızın ve varsa deneme süresinin belirtildiğinden emin olun.",
+            "İşvereniniz sizi ZUS'a (sosyal sigorta) kaydeder — bu size NFZ ve emeklilik katkı payları erişimi sağlar.",
+            "Sözleşmenin bir kopyasını saklayın — oturma izni ve diğer işlemler için gerekecek.",
+          ],
+          aiQuestion: "Polonya'da iş sözleşmesini nasıl alırım?",
+        },
+        b2b: {
+          heading: "B2B sözleşmesi (serbest çalışma) nasıl kurulur",
+          steps: [
+            "CEIDG web sitesi üzerinden şahıs şirketi (JDG) kaydedin — bu bir günde çevrimiçi olarak yapılabilir.",
+            "Bir muhasebeciyle birlikte vergi biçiminizi (genel kurallar, sabit vergi veya ryczałt) seçin.",
+            "Sözleşme yapan şirketle bir B2B sözleşmesi imzalayın — bu bir iş sözleşmesi değil, medeni hukuk sözleşmesidir.",
+            "ZUS katkı paylarınızı her ay kendiniz ödeyin ve vergi beyannamenizi verin.",
+          ],
+          aiQuestion: "Polonya'da B2B sözleşmesini nasıl kurarım?",
+        },
+        pracuj: {
+          heading: "Pracuj.pl'de iş nasıl aranır",
+          steps: [
+            "Bir profil oluşturun ve özgeçmişinizi (CV) yükleyin — birçok ilan tek tıkla başvurmanıza izin verir.",
+            "Şehir, maaş ve İngilizce/Lehçe seviyesine göre filtreleri kullanın.",
+            "Yeni ilanları kaçırmamak için mesleğinizle ilgili anahtar kelimeler için uyarılar ayarlayın.",
+            "Bazı mülakatların Lehçe yapılabileceğine hazır olun — mülakat dilini önceden teyit edin.",
+          ],
+          aiQuestion: "Pracuj.pl'de işi nasıl ararım?",
+        },
+        nofluff: {
+          heading: "NoFluffJobs'ta iş nasıl aranır",
+          steps: [
+            "NoFluffJobs teknolojiye özeldir — ilanları teknoloji yığınına göre filtrelemek burada kolaydır.",
+            "İlanların maaş aralığını önceden gösterdiğine dikkat edin — bu teklifleri karşılaştırmayı kolaylaştırır.",
+            "Profilinizi İngilizce doldurun — Polonya'daki birçok IT şirketi İngilizce çalışır.",
+            "Site üzerinden doğrudan başvurun — çoğu şirket birkaç gün içinde yanıt verir.",
+          ],
+          aiQuestion: "NoFluffJobs'ta işi nasıl ararım?",
+        },
+        linkedin: {
+          heading: "LinkedIn'de iş nasıl aranır",
+          steps: [
+            "Profilinizi tamamen doldurun — deneyim, beceriler ve tavsiyeler, bir işe alım uzmanının sizi kendiliğinden bulma şansını artırır.",
+            "Yalnızca işe alım uzmanlarına görünen \"Open to work\" durumunu açın, böylece aramanız mevcut işvereninizden gizli kalır.",
+            "Kesin bir arama için konum (Poland/Warsaw) ve uzaktan çalışma filtrelerini kullanın.",
+            "İşe alım uzmanlarına doğrudan mesaj gönderin — doğrudan iletişim genellikle bir form üzerinden başvurmaktan daha etkilidir.",
+          ],
+          aiQuestion: "LinkedIn'de işi nasıl ararım?",
+        },
       },
     },
     community: {
@@ -6373,6 +6885,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Интихоби муҳоҷирон",
       showAllDistricts: "Ҳамаи 18 ноҳияи Варшаваро нишон диҳед →",
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
+      guides: {
+        olx: {
+          heading: "Чӣ тавр дар OLX манзил ҷустуҷӯ кунем",
+          steps: [
+            "Ба бахши «Амволи ғайриманқул» → «Иҷора» гузаред ва филтрҳоро аз рӯи шаҳр, нарх ва шумораи хонаҳо танзим кунед.",
+            "Эълонҳоро нигоҳ доред ва барои пешниҳодҳои нав мувофиқи меъёрҳои худ огоҳиномаҳоро фаъол кунед.",
+            "Ба фурӯшанда тавассути чати дохилӣ нависед — то дидани квартира шахсан ҳеҷ гоҳ пул интиқол надиҳед.",
+            "Дидорбинӣ гузаронед ва пеш аз имзо кардани шартнома вазъият ва ҳуҷҷатҳои квартираро тафтиш кунед.",
+          ],
+          aiQuestion: "Чӣ тавр дар OLX манзил ҷустуҷӯ кунам?",
+        },
+        otodom: {
+          heading: "Чӣ тавр дар Otodom манзил ҷустуҷӯ кунем",
+          steps: [
+            "Барои маҳдуд кардани ҷустуҷӯ аз филтрҳои пешрафтаи Otodom истифода баред — метро, ошёна, мавҷудияти мебел.",
+            "Ба нишонаи «аз соҳиб» диққат диҳед — ин аксар вақт маънои набудани комиссияи агентиро дорад.",
+            "Бо эълонкунанда тавассути сомона тамос гиред ва санаи дидорбиниро аниқ кунед.",
+            "Пеш аз имзо кардани шартнома протоколи қабул-супоридани квартираро (protokół zdawczo-odbiorczy) талаб кунед.",
+          ],
+          aiQuestion: "Чӣ тавр дар Otodom манзил ҷустуҷӯ кунам?",
+        },
+        gratka: {
+          heading: "Чӣ тавр дар Gratka манзил ҷустуҷӯ кунем",
+          steps: [
+            "Дар ҷустуҷӯи Gratka минтақа ва буҷаро муайян кунед — хидмат хусусан берун аз шаҳрҳои калон қавӣ аст.",
+            "Санаи нашри эълонро тафтиш кунед — эълонҳои кӯҳна аксар вақт дигар мавҷуд нестанд.",
+            "Барои аниқ кардани тафсилот бо фурӯшанда тавассути телефон ё формаи сомона тамос гиред.",
+            "Пеш аз пардохти депозит ҳамеша шартномаи иҷораро талаб кунед ва ҳуқуқи моликиятро тафтиш кунед.",
+          ],
+          aiQuestion: "Чӣ тавр дар Gratka манзил ҷустуҷӯ кунам?",
+        },
+      },
     },
     banks: {
       title: "Бонкҳо дар Полша",
@@ -6467,6 +7011,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Суғуртаи худро дар сомонаи eWUŚ тасдиқ кунед (ewus.nfz.gov.pl)",
         "Ба ягон клиникаи давлатӣ ба назди духтур навишта шавед",
       ],
+      nfzAiQuestion: "Чӣ тавр дар NFZ сабти ном шавам?",
       stepLabel: "Қадам",
       emergencyTitle: "Ёрии таъҷилӣ ва ҳолатҳои фавқулодда",
       emergencyNumber: "Рақами ёрии таъҷилӣ дар Полша: 112 ё 999",
@@ -6504,6 +7049,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Суғуртаи манзил", provider: "Warta", price: "200–600 PLN дар сол", desc: "Ҳифзи хона ё квартира аз сӯхтор, обхезӣ ва дуздӣ." },
         travel: { name: "Суғуртаи сайёҳӣ", provider: "Allianz", price: "20–80 PLN барои сафар", desc: "Пӯшонидани хароҷоти тиббӣ ва ҳолатҳои фавқулодда ҳангоми сафар дар Аврупо." },
       },
+      guides: {
+        medical: {
+          heading: "Чӣ тавр суғуртаи тиббӣ бигирем",
+          steps: [
+            "Дараҷаи пӯшишро интихоб кунед — бастаи асосӣ ё бастаи васеъ бо стоматология ва мутахассисон.",
+            "Пешниҳодҳои якчанд ширкати суғуртавӣ (LUX MED, Medicover, Signal Iduna) аз рӯи нарх ва шабакаи клиникаҳо муқоиса кунед.",
+            "Полисро онлайн ё дар дафтари ширкати суғуртавӣ гиред — одатан шиноснома ва PESEL лозим аст.",
+            "Рақами полисро нигоҳ доред — он барои навишт шудан ба назди духтур лозим мешавад.",
+          ],
+          aiQuestion: "Чӣ тавр суғуртаи тиббӣ дар Полша бигирам?",
+        },
+        car: {
+          heading: "Чӣ тавр суғуртаи автомобил (OC/AC) бигирем",
+          steps: [
+            "OC (масъулияти маданӣ ҳатмӣ) барои ҳар як автомобили ба қайд гирифташуда мувофиқи қонун талаб карда мешавад.",
+            "Нархҳои OC-и якчанд ширкати суғуртавиро муқоиса кунед — нарх вобаста ба таърихи ронандагӣ хеле фарқ мекунад.",
+            "Агар хоҳед, барои ҳимояи пуртар AC (суғурта аз дуздӣ ва зарар)-ро илова кунед.",
+            "Полисро дар давоми якчанд дақиқа онлайн гиред — маълумоти автомобил ва шаҳодатномаи ронандагӣ лозим мешавад.",
+          ],
+          aiQuestion: "Чӣ тавр суғуртаи автомобил дар Полша бигирам?",
+        },
+        home: {
+          heading: "Чӣ тавр суғуртаи манзил бигирем",
+          steps: [
+            "Муайян кунед, ки чиро суғурта кардан лозим аст — худи манзил, амволи дохилӣ ё масъулияти маданӣ.",
+            "Маълумоти асосӣ дар бораи квартира ҷамъ кунед: масоҳат, суроға, навъи бино.",
+            "Пешниҳодҳои якчанд ширкати суғуртавиро муқоиса кунед — бисёр бонкҳо ҳангоми гирифтани якҷоя бо ипотека тахфиф пешниҳод мекунанд.",
+            "Полисро онлайн ё тавассути агент гиред ва дар сурати лозим тасдиқро барои соҳиби манзил нигоҳ доред.",
+          ],
+          aiQuestion: "Чӣ тавр суғуртаи манзил дар Полша бигирам?",
+        },
+        travel: {
+          heading: "Чӣ тавр суғуртаи сайёҳӣ бигирем",
+          steps: [
+            "Давомнокӣ ва мақсади сафарро муайян кунед — ин дараҷаи пӯшиши заруриро муайян мекунад.",
+            "Тафтиш кунед, ки полис хароҷоти тиббӣ, эвакуатсия ва бекоркунии сафарро пӯшонад.",
+            "Пешниҳодҳоро онлайн муқоиса кунед — гирифтани полис якчанд дақиқа вақт мегирад ва ташрифи шахсӣ лозим нест.",
+            "Полисро дар телефон нигоҳ доред ё чоп кунед — он метавонад дар марз ё бемористон лозим шавад.",
+          ],
+          aiQuestion: "Чӣ тавр суғуртаи сайёҳӣ бигирам?",
+        },
+      },
     },
     work: {
       title: "Кор дар Полша",
@@ -6537,6 +7124,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Бузургтарин сомонаи кории Полша, дар ҳамаи соҳаҳо.",
         nofluff: "Ба технология нигаронидашуда, маошҳо пешакӣ нишон дода мешаванд.",
         linkedin: "Ҷойҳои кории байналмилалӣ, барои англисзабонон мувофиқ.",
+      },
+      guides: {
+        employment: {
+          heading: "Чӣ тавр шартномаи меҳнатӣ (umowa o pracę) гирем",
+          steps: [
+            "Корфармо ҳатмист, ки пеш аз оғози кор бо шумо шартномаи хаттии меҳнатӣ бандад.",
+            "Тафтиш кунед, ки дар шартнома вазифа, маош, ҷадвал ва, агар мавҷуд бошад, мӯҳлати озмоишӣ нишон дода шудааст.",
+            "Корфармо шуморо дар ZUS (суғуртаи иҷтимоӣ) сабти ном мекунад — ин дастрасӣ ба NFZ ва бадалҳои пенсионӣ медиҳад.",
+            "Нусхаи шартномаро нигоҳ доред — он барои иҷозати истиқомат ва расмиёти дигар лозим мешавад.",
+          ],
+          aiQuestion: "Чӣ тавр шартномаи меҳнатӣ дар Полша гирам?",
+        },
+        b2b: {
+          heading: "Чӣ тавр шартномаи B2B (худшуғлӣ) тартиб диҳем",
+          steps: [
+            "Фаъолияти инфиродиро (JDG) тавассути сомонаи CEIDG ба қайд гиред — инро дар як рӯз онлайн кардан мумкин аст.",
+            "Якҷоя бо ҳисобдор шакли андозбандиро (қоидаҳои умумӣ, андози якхела ё ryczałt) интихоб кунед.",
+            "Бо ширкати фармоишгар шартномаи B2B имзо кунед — ин шартномаи ҳуқуқи гражданӣ аст, на меҳнатӣ.",
+            "Бадалҳои ZUS-ро ҳар моҳ худатон пардохт кунед ва эъломияи андозро пешниҳод кунед.",
+          ],
+          aiQuestion: "Чӣ тавр шартномаи B2B дар Полша тартиб диҳам?",
+        },
+        pracuj: {
+          heading: "Чӣ тавр дар Pracuj.pl кор ҷустуҷӯ кунем",
+          steps: [
+            "Профил созед ва резюме (CV)-ро бор кунед — бисёр ҷойҳои холӣ имкон медиҳанд бо як клик муроҷиат кунед.",
+            "Аз филтрҳо аз рӯи шаҳр, маош ва сатҳи забони англисӣ/полякӣ истифода баред.",
+            "Барои аз даст надодани ҷойҳои холии нав огоҳиномаҳоро аз рӯи калимаҳои калидии касби худ танзим кунед.",
+            "Омода бошед, ки баъзе мусоҳибаҳо бо забони поляки мегузаранд — забони мусоҳибаро пешакӣ аниқ кунед.",
+          ],
+          aiQuestion: "Чӣ тавр дар Pracuj.pl кор ҷустуҷӯ кунам?",
+        },
+        nofluff: {
+          heading: "Чӣ тавр дар NoFluffJobs кор ҷустуҷӯ кунем",
+          steps: [
+            "NoFluffJobs ба соҳаи IT ихтисос ёфтааст — дар ин ҷо филтр кардани ҷойҳои холӣ аз рӯи маҷмӯи технологияҳо осон аст.",
+            "Диққат диҳед, ки ҷойҳои холӣ дарҳол диапазони маошро нишон медиҳанд — ин муқоисаи пешниҳодҳоро осон мекунад.",
+            "Профили худро бо забони англисӣ пур кунед — бисёр ширкатҳои IT дар Полша бо забони англисӣ кор мекунанд.",
+            "Мустақим тавассути сомона муроҷиат кунед — аксари ширкатҳо дар давоми якчанд рӯз ҷавоб медиҳанд.",
+          ],
+          aiQuestion: "Чӣ тавр дар NoFluffJobs кор ҷустуҷӯ кунам?",
+        },
+        linkedin: {
+          heading: "Чӣ тавр дар LinkedIn кор ҷустуҷӯ кунем",
+          steps: [
+            "Профили худро пурра пур кунед — таҷриба, малакаҳо ва тавсияҳо имконияти пайдо шудани шуморо аз ҷониби рекрутер зиёд мекунанд.",
+            "Ҳолати «Open to work»-ро фаъол кунед, ки танҳо ба рекрутерон намоён аст, то корфармои ҳозираатон аз ҷустуҷӯи шумо огоҳ нашавад.",
+            "Барои ҷустуҷӯи дақиқ аз филтрҳои ҷойгиршавӣ (Poland/Warsaw) ва кори дурдаст истифода баред.",
+            "Ба рекрутерон паёми шахсӣ нависед — тамоси мустақим аксар вақт назар ба муроҷиат тавассути форма самараноктар аст.",
+          ],
+          aiQuestion: "Чӣ тавр дар LinkedIn кор ҷустуҷӯ кунам?",
+        },
       },
     },
     community: {
@@ -7629,6 +8268,38 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Вибір експатів",
       showAllDistricts: "Показати всі 18 районів Варшави →",
       showFewerDistricts: "Згорнути список районів",
+      guides: {
+        olx: {
+          heading: "Як шукати житло на OLX",
+          steps: [
+            "Перейдіть у розділ «Нерухомість» → «Оренда» і задайте фільтри за містом, ціною та кількістю кімнат.",
+            "Зберігайте оголошення та увімкніть сповіщення про нові пропозиції за вашими критеріями.",
+            "Пишіть продавцю через вбудований чат — ніколи не переказуйте гроші до особистого перегляду квартири.",
+            "Домовтеся про перегляд і перевірте стан квартири та документи перед підписанням договору.",
+          ],
+          aiQuestion: "Як шукати житло на OLX?",
+        },
+        otodom: {
+          heading: "Як шукати житло на Otodom",
+          steps: [
+            "Використовуйте розширені фільтри Otodom — метро, поверх, наявність меблів — щоб звузити пошук.",
+            "Звертайте увагу на позначку «від власника» — часто це означає відсутність комісії агентству.",
+            "Зв'яжіться з автором оголошення через сайт і уточніть дату перегляду.",
+            "Перед підписанням договору попросіть протокол приймання-передачі квартири (protokół zdawczo-odbiorczy).",
+          ],
+          aiQuestion: "Як шукати житло на Otodom?",
+        },
+        gratka: {
+          heading: "Як шукати житло на Gratka",
+          steps: [
+            "Задайте регіон і бюджет у пошуку Gratka — сервіс особливо сильний за межами великих міст.",
+            "Перевіряйте дату публікації оголошення — старі оголошення часто вже неактуальні.",
+            "Зв'яжіться з продавцем по телефону або через форму на сайті, щоб уточнити деталі.",
+            "Перед сплатою застави завжди просіть договір оренди та перевіряйте право власності.",
+          ],
+          aiQuestion: "Як шукати житло на Gratka?",
+        },
+      },
     },
     banks: {
       title: "Банки в Польщі",
@@ -7723,6 +8394,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Підтвердіть страховку на сайті eWUŚ (ewus.nfz.gov.pl)",
         "Запишіться до лікаря в будь-яку державну клініку",
       ],
+      nfzAiQuestion: "Як зареєструватися в NFZ?",
       stepLabel: "Крок",
       emergencyTitle: "Швидка допомога та невідкладні випадки",
       emergencyNumber: "Номер швидкої допомоги в Польщі: 112 або 999",
@@ -7760,6 +8432,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
         home: { name: "Страхування житла", provider: "Warta", price: "200–600 злотих/рік", desc: "Захист квартири чи будинку від пожежі, затоплення та крадіжки майна." },
         travel: { name: "Туристичне страхування", provider: "Allianz", price: "20–80 злотих/поїздка", desc: "Покриття медичних витрат і форс-мажорів під час подорожей Європою." },
       },
+      guides: {
+        medical: {
+          heading: "Як оформити медичне страхування",
+          steps: [
+            "Оберіть тип покриття — базовий пакет або розширений зі стоматологією та спеціалістами.",
+            "Порівняйте пропозиції кількох страховиків (LUX MED, Medicover, Signal Iduna) за ціною та мережею клінік.",
+            "Оформіть поліс онлайн або в офісі страхової компанії — зазвичай потрібен паспорт і PESEL.",
+            "Збережіть номер поліса — він знадобиться при записі до лікаря.",
+          ],
+          aiQuestion: "Як оформити медичне страхування в Польщі?",
+        },
+        car: {
+          heading: "Як оформити автострахування (OC/AC)",
+          steps: [
+            "OC (обов'язкова цивільна відповідальність) вимагається законом для будь-якого зареєстрованого автомобіля.",
+            "Порівняйте тарифи OC у кількох страховиків — ціна сильно варіюється залежно від історії водіння.",
+            "За бажанням додайте AC (страхування від викрадення та пошкоджень) для повнішого захисту.",
+            "Оформіть поліс онлайн за кілька хвилин — знадобляться дані автомобіля та водійські права.",
+          ],
+          aiQuestion: "Як оформити автострахування в Польщі?",
+        },
+        home: {
+          heading: "Як оформити страхування житла",
+          steps: [
+            "Визначте, що потрібно застрахувати — саме житло, майно всередині чи цивільну відповідальність.",
+            "Зберіть базову інформацію про квартиру: площа, адреса, тип будівлі.",
+            "Порівняйте пропозиції кількох страховиків — багато банків пропонують знижку при оформленні разом з іпотекою.",
+            "Оформіть поліс онлайн або через агента і збережіть підтвердження для орендодавця, якщо потрібно.",
+          ],
+          aiQuestion: "Як оформити страхування житла в Польщі?",
+        },
+        travel: {
+          heading: "Як оформити туристичне страхування",
+          steps: [
+            "Визначте тривалість і мету поїздки — від цього залежить потрібний рівень покриття.",
+            "Перевірте, що поліс покриває медичні витрати, евакуацію та скасування поїздки.",
+            "Порівняйте пропозиції онлайн — оформлення займає пару хвилин і не потребує особистого візиту.",
+            "Збережіть поліс у телефоні або роздрукуйте — він може знадобитися на кордоні чи в лікарні.",
+          ],
+          aiQuestion: "Як оформити туристичне страхування?",
+        },
+      },
     },
     work: {
       title: "Робота в Польщі",
@@ -7793,6 +8507,58 @@ export const dictionaries: Record<Lang, Dictionary> = {
         pracuj: "Найбільша дошка вакансій Польщі, усі галузі.",
         nofluff: "Орієнтований на IT, зарплати вказані одразу.",
         linkedin: "Міжнародні вакансії, добре підходить для англомовних.",
+      },
+      guides: {
+        employment: {
+          heading: "Як оформити трудовий договір (umowa o pracę)",
+          steps: [
+            "Роботодавець зобов'язаний укласти з вами письмовий трудовий договір до початку роботи.",
+            "Перевірте, що в договорі вказані посада, зарплата, графік і випробувальний термін, якщо він є.",
+            "Роботодавець реєструє вас у ZUS (соціальне страхування) — це дає доступ до NFZ і пенсійних внесків.",
+            "Збережіть копію договору — вона знадобиться для посвідки на проживання та інших процедур.",
+          ],
+          aiQuestion: "Як оформити трудовий договір у Польщі?",
+        },
+        b2b: {
+          heading: "Як оформити контракт B2B (самозайнятість)",
+          steps: [
+            "Зареєструйте індивідуальну діяльність (JDG) через сайт CEIDG — це можна зробити онлайн за один день.",
+            "Оберіть форму оподаткування (загальні правила, лінійний податок або ryczałt) разом із бухгалтером.",
+            "Підпишіть контракт B2B з компанією-замовником — це цивільно-правовий, а не трудовий договір.",
+            "Щомісяця сплачуйте внески до ZUS самостійно та подавайте податкову декларацію.",
+          ],
+          aiQuestion: "Як оформити контракт B2B у Польщі?",
+        },
+        pracuj: {
+          heading: "Як шукати роботу на Pracuj.pl",
+          steps: [
+            "Створіть профіль і завантажте резюме (CV) — багато вакансій дозволяють відгукнутися в один клік.",
+            "Використовуйте фільтри за містом, зарплатою та рівнем англійської/польської мови.",
+            "Налаштуйте сповіщення за ключовими словами вашої професії, щоб не пропустити нові вакансії.",
+            "Готуйтеся, що частина співбесід проходить польською — уточнюйте мову інтерв'ю заздалегідь.",
+          ],
+          aiQuestion: "Як шукати роботу на Pracuj.pl?",
+        },
+        nofluff: {
+          heading: "Як шукати роботу на NoFluffJobs",
+          steps: [
+            "NoFluffJobs спеціалізується на IT — тут зручно фільтрувати вакансії за стеком технологій.",
+            "Зверніть увагу, що вакансії показують вилку зарплати одразу — це спрощує порівняння пропозицій.",
+            "Заповніть профіль англійською мовою — багато IT-компаній у Польщі працюють англійською.",
+            "Відгукуйтеся напряму через сайт — більшість компаній відповідають протягом кількох днів.",
+          ],
+          aiQuestion: "Як шукати роботу на NoFluffJobs?",
+        },
+        linkedin: {
+          heading: "Як шукати роботу на LinkedIn",
+          steps: [
+            "Заповніть профіль повністю — досвід, навички та рекомендації підвищують шанс, що рекрутер знайде вас сам.",
+            "Увімкніть статус «Open to work», видимий лише рекрутерам, щоб не афішувати пошук поточному роботодавцю.",
+            "Використовуйте фільтри за локацією (Poland/Warsaw) і віддаленою роботою для точного пошуку.",
+            "Пишіть рекрутерам у особисті повідомлення — прямий контакт часто ефективніший за відгук через форму.",
+          ],
+          aiQuestion: "Як шукати роботу на LinkedIn?",
+        },
       },
     },
     community: {

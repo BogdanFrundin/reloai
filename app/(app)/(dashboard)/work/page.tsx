@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState, useRef, useEffect } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
+import HelpButton from "../../../_components/HelpButton";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { useLanguage } from "../../../_components/LanguageProvider";
@@ -132,8 +133,8 @@ export default function WorkPage() {
   };
 
   const CONTRACT_TYPES = [
-    { name: t.work.employmentSubtitle, subtitle: t.work.employmentSubtitle === "Трудовой договор" ? "Со всеми гарантиями работника" : "Full employment benefits", features: t.work.employmentFeatures },
-    { name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
+    { key: "employment" as const, name: t.work.employmentSubtitle, subtitle: t.work.employmentSubtitle === "Трудовой договор" ? "Со всеми гарантиями работника" : "Full employment benefits", features: t.work.employmentFeatures },
+    { key: "b2b" as const, name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
   ];
 
   return (
@@ -166,6 +167,16 @@ export default function WorkPage() {
                     </li>
                   ))}
                 </ul>
+                {t.work.guides[type.key] && (
+                  <div className="mt-4">
+                    <HelpButton
+                      guideHeading={t.work.guides[type.key].heading}
+                      guideSteps={t.work.guides[type.key].steps}
+                      aiQuestion={t.work.guides[type.key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  </div>
+                )}
               </div>
             </Reveal>
           ))}
@@ -258,15 +269,25 @@ export default function WorkPage() {
                 </span>
                 <p className="mt-3 text-sm font-semibold text-text-primary">{site.name}</p>
                 <p className="mt-1 flex-1 text-xs text-text-muted">{t.work.jobSiteDescs[site.key]}</p>
-                <Link
-                  href={site.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white motion-reduce:transition-none ${pressScale}`}
-                >
-                  {t.work.visitSite}
-                  <span aria-hidden>→</span>
-                </Link>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <Link
+                    href={site.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white motion-reduce:transition-none ${pressScale}`}
+                  >
+                    {t.work.visitSite}
+                    <span aria-hidden>→</span>
+                  </Link>
+                  {t.work.guides[site.key] && (
+                    <HelpButton
+                      guideHeading={t.work.guides[site.key].heading}
+                      guideSteps={t.work.guides[site.key].steps}
+                      aiQuestion={t.work.guides[site.key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  )}
+                </div>
               </div>
             </Reveal>
           ))}

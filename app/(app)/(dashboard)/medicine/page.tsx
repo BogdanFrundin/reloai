@@ -4,6 +4,7 @@ import Image from "next/image";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
+import HelpButton from "../../../_components/HelpButton";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 
@@ -135,7 +136,15 @@ export default function MedicinePage() {
       </Reveal>
 
       <Reveal delay={100} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.nfzTitle}</h2>
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.nfzTitle}</h2>
+          <HelpButton
+            guideHeading={t.medicine.nfzTitle}
+            guideSteps={[...t.medicine.nfzSteps]}
+            aiQuestion={t.medicine.nfzAiQuestion}
+            label={t.helpButton.label}
+          />
+        </div>
         <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
           <ol className="space-y-4">
             {t.medicine.nfzSteps.map((step, index) => (
