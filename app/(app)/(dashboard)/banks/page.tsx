@@ -79,14 +79,16 @@ export default function BanksPage() {
               >
                 {t.banks.openAccount}
               </Link>
-              <div className="mt-2.5 flex justify-center">
-                <HelpButton
-                  guideHeading={t.banks.openAccountAt.replace("{bank}", bank.name)}
-                  guideSteps={[...t.banks.guide.steps]}
-                  aiQuestion={`${t.banks.openAccountAt.replace("{bank}", bank.name)}?`}
-                  label={t.helpButton.label}
-                />
-              </div>
+              {t.banks.guides[bank.key] && (
+                <div className="mt-2.5 flex justify-center">
+                  <HelpButton
+                    guideHeading={t.banks.guides[bank.key].heading}
+                    guideSteps={t.banks.guides[bank.key].steps}
+                    aiQuestion={t.banks.guides[bank.key].aiQuestion}
+                    label={t.banks.howToOpenLabel}
+                  />
+                </div>
+              )}
             </div>
           </Reveal>
         ))}

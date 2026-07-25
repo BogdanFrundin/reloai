@@ -21,7 +21,9 @@ export default function HelpButton({
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
+  const [menuDirection, setMenuDirection] = useState<"down" | "up">("down");
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -30,6 +32,15 @@ export default function HelpButton({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  function toggleMenu() {
+    if (!menuOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      setMenuDirection(spaceBelow < 160 ? "up" : "down");
+    }
+    setMenuOpen((p) => !p);
+  }
 
   function askAi() {
     setMenuOpen(false);
@@ -41,8 +52,9 @@ export default function HelpButton({
     <>
       <div className="relative inline-block" ref={containerRef}>
         <button
+          ref={buttonRef}
           type="button"
-          onClick={(e) => { e.stopPropagation(); setMenuOpen((p) => !p); }}
+          onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
           className={`inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 ${pressScale}`}
         >
           <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -51,7 +63,10 @@ export default function HelpButton({
           {label}
         </button>
         {menuOpen && (
-          <div role="menu" className="absolute left-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-border-subtle bg-panel py-1 shadow-xl shadow-black/40 backdrop-blur-xl">
+          <div
+            role="menu"
+            className={`absolute left-0 z-50 w-56 overflow-hidden rounded-xl border border-border-subtle bg-panel py-1 shadow-xl shadow-black/40 backdrop-blur-xl ${menuDirection === "up" ? "bottom-full mb-2" : "top-full mt-2"}`}
+          >
             <button type="button" onClick={(e) => { e.stopPropagation(); setMenuOpen(false); setGuideOpen(true); }} className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary">
               {t.helpButton.openGuide}
             </button>

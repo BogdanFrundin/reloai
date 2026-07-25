@@ -324,6 +324,8 @@ export type Dictionary = {
       tips: [string, string, string, string];
     };
     openAccountAt: string;
+    guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
+    howToOpenLabel: string;
   };
   medicine: {
     title: string;
@@ -1375,6 +1377,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "How to open an account at {bank}",
+      guides: {
+        pkobp: {
+          heading: "How to open an account at PKO BP",
+          steps: [
+            "Get your PESEL — PKO BP, like most traditional banks, requires it to open an account.",
+            "Book an appointment at your nearest branch — PKO BP has the largest network in Poland, so finding one is easy.",
+            "Bring your passport, PESEL, and proof of address (a rental agreement works).",
+            "Sign the contract in person — staff will help you choose the right account type and issue your card.",
+          ],
+          aiQuestion: "How do I open an account at PKO BP?",
+        },
+        mbank: {
+          heading: "How to open an account at mBank",
+          steps: [
+            "Download the mBank app or go to their website — the whole process can be done online, no branch visit needed.",
+            "Fill out the application and verify your identity via video call or a courier who checks your passport.",
+            "Provide your PESEL if you already have one — it speeds things up but isn't required to start.",
+            "Wait for approval — the account is usually opened within a day, and the app is fully in English.",
+          ],
+          aiQuestion: "How do I open an account at mBank?",
+        },
+        santander: {
+          heading: "How to open an account at Santander",
+          steps: [
+            "Choose your account type — Santander offers multi-currency accounts, handy for international transfers.",
+            "Prepare your passport, PESEL, and proof of address.",
+            "Book a branch appointment or apply online if it's available for your status.",
+            "Activate your card and set up mobile banking — the card can be used abroad free of charge.",
+          ],
+          aiQuestion: "How do I open an account at Santander?",
+        },
+        revolut: {
+          heading: "How to open an account at Revolut",
+          steps: [
+            "Download the Revolut app and sign up with your phone number — no branch visit needed.",
+            "Verify your identity with a selfie and a passport scan right in the app.",
+            "No PESEL is required to open an account — it's the fastest option for someone who just arrived.",
+            "Top up your account and start using the multi-currency wallet and card.",
+          ],
+          aiQuestion: "How do I open an account at Revolut?",
+        },
+      },
+      howToOpenLabel: "How to open an account?",
     },
     medicine: {
       title: "Medicine in Poland",
@@ -2590,6 +2635,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "Как открыть счёт в {bank}",
+      guides: {
+        pkobp: {
+          heading: "Как открыть счёт в PKO BP",
+          steps: [
+            "Получите PESEL — PKO BP, как и большинство традиционных банков, требует его для открытия счёта.",
+            "Запишитесь на приём в ближайшее отделение — у PKO BP самая большая сеть в Польше, найти отделение легко.",
+            "Возьмите с собой паспорт, PESEL и подтверждение адреса (например, договор аренды).",
+            "Подпишите договор на месте — сотрудник поможет выбрать подходящий тип счёта и оформить карту.",
+          ],
+          aiQuestion: "Как открыть счёт в PKO BP?",
+        },
+        mbank: {
+          heading: "Как открыть счёт в mBank",
+          steps: [
+            "Скачайте приложение mBank или зайдите на сайт — весь процесс можно пройти онлайн, без визита в отделение.",
+            "Заполните заявку и подтвердите личность через видеозвонок или курьера с проверкой паспорта.",
+            "Укажите PESEL, если он у вас уже есть — это ускорит открытие счёта, но не обязательно на старте.",
+            "Дождитесь одобрения — обычно счёт открывается в течение одного дня, приложение полностью на английском.",
+          ],
+          aiQuestion: "Как открыть счёт в mBank?",
+        },
+        santander: {
+          heading: "Как открыть счёт в Santander",
+          steps: [
+            "Выберите тип счёта — Santander предлагает мультивалютные счета, удобные для международных переводов.",
+            "Подготовьте паспорт, PESEL и подтверждение адреса.",
+            "Запишитесь на приём в отделение или подайте заявку онлайн, если это доступно для вашего статуса.",
+            "Активируйте карту и подключите мобильный банкинг — картой можно бесплатно пользоваться за границей.",
+          ],
+          aiQuestion: "Как открыть счёт в Santander?",
+        },
+        revolut: {
+          heading: "Как открыть счёт в Revolut",
+          steps: [
+            "Скачайте приложение Revolut и зарегистрируйтесь по номеру телефона — отделение посещать не нужно.",
+            "Подтвердите личность через селфи и скан паспорта прямо в приложении.",
+            "PESEL не требуется для открытия счёта — это самый быстрый способ для тех, кто только приехал.",
+            "Пополните счёт и начните пользоваться мультивалютным кошельком и картой.",
+          ],
+          aiQuestion: "Как открыть счёт в Revolut?",
+        },
+      },
+      howToOpenLabel: "Как открыть счёт?",
     },
     medicine: {
       title: "Медицина в Польше",
@@ -3805,6 +3893,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "{bank}da hisobni qanday ochish",
+      guides: {
+        pkobp: {
+          heading: "PKO BP'da hisobni qanday ochish",
+          steps: [
+            "PESEL oling — PKO BP, ko'pchilik an'anaviy banklar kabi, hisob ochish uchun uni talab qiladi.",
+            "Eng yaqin filialga uchrashuvga yoziling — PKO BP Polshada eng katta tarmoqqa ega, filial topish oson.",
+            "O'zingiz bilan pasport, PESEL va manzil tasdig'ini (masalan, ijara shartnomasini) olib boring.",
+            "Shartnomani joyida imzolang — xodim mos hisob turini tanlashda va karta rasmiylashtirishda yordam beradi.",
+          ],
+          aiQuestion: "PKO BP'da hisobni qanday ochsam bo'ladi?",
+        },
+        mbank: {
+          heading: "mBank'da hisobni qanday ochish",
+          steps: [
+            "mBank ilovasini yuklab oling yoki saytga kiring — butun jarayonni onlayn, filialga bormasdan o'tish mumkin.",
+            "Arizani to'ldiring va shaxsingizni video qo'ng'iroq orqali yoki pasportni tekshiruvchi kuryer orqali tasdiqlang.",
+            "Agar allaqachon bo'lsa, PESEL raqamingizni ko'rsating — bu jarayonni tezlashtiradi, lekin boshlash uchun shart emas.",
+            "Tasdiqlashni kuting — hisob odatda bir kun ichida ochiladi, ilova to'liq ingliz tilida.",
+          ],
+          aiQuestion: "mBank'da hisobni qanday ochsam bo'ladi?",
+        },
+        santander: {
+          heading: "Santander'da hisobni qanday ochish",
+          steps: [
+            "Hisob turini tanlang — Santander xalqaro o'tkazmalar uchun qulay bo'lgan ko'p valyutali hisoblarni taklif qiladi.",
+            "Pasport, PESEL va manzil tasdig'ini tayyorlang.",
+            "Filialga uchrashuvga yoziling yoki, agar statusingiz uchun mavjud bo'lsa, onlayn ariza bering.",
+            "Kartangizni faollashtiring va mobil bankingni sozlang — kartani chet elda bepul ishlatish mumkin.",
+          ],
+          aiQuestion: "Santander'da hisobni qanday ochsam bo'ladi?",
+        },
+        revolut: {
+          heading: "Revolut'da hisobni qanday ochish",
+          steps: [
+            "Revolut ilovasini yuklab oling va telefon raqamingiz bilan ro'yxatdan o'ting — filialga borish shart emas.",
+            "Shaxsingizni ilovaning o'zida selfi va pasport skani orqali tasdiqlang.",
+            "Hisob ochish uchun PESEL talab qilinmaydi — bu yaqinda kelganlar uchun eng tezkor variant.",
+            "Hisobingizni to'ldiring va ko'p valyutali hamyon hamda kartadan foydalanishni boshlang.",
+          ],
+          aiQuestion: "Revolut'da hisobni qanday ochsam bo'ladi?",
+        },
+      },
+      howToOpenLabel: "Hisobni qanday ochish mumkin?",
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -5017,6 +5148,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "{bank}'de hesap nasıl açılır",
+      guides: {
+        pkobp: {
+          heading: "PKO BP'de hesap nasıl açılır",
+          steps: [
+            "PESEL alın — PKO BP, çoğu geleneksel banka gibi, hesap açmak için bunu ister.",
+            "En yakın şubeden randevu alın — PKO BP Polonya'nın en büyük şube ağına sahip, bir şube bulmak kolay.",
+            "Yanınıza pasaportunuzu, PESEL'inizi ve adres kanıtınızı (kira sözleşmesi olabilir) alın.",
+            "Sözleşmeyi şubede imzalayın — personel size uygun hesap türünü seçmenizde ve kartınızı çıkarmanızda yardımcı olur.",
+          ],
+          aiQuestion: "PKO BP'de hesabı nasıl açarım?",
+        },
+        mbank: {
+          heading: "mBank'te hesap nasıl açılır",
+          steps: [
+            "mBank uygulamasını indirin veya web sitelerine gidin — tüm süreç çevrimiçi yapılabilir, şubeye gitmenize gerek yok.",
+            "Başvuruyu doldurun ve kimliğinizi video görüşmesi veya pasaportunuzu kontrol eden bir kurye ile doğrulayın.",
+            "Zaten varsa PESEL numaranızı belirtin — bu süreci hızlandırır ama başlamak için zorunlu değildir.",
+            "Onayı bekleyin — hesap genellikle bir gün içinde açılır, uygulama tamamen İngilizce.",
+          ],
+          aiQuestion: "mBank'te hesabı nasıl açarım?",
+        },
+        santander: {
+          heading: "Santander'de hesap nasıl açılır",
+          steps: [
+            "Hesap türünüzü seçin — Santander, uluslararası transferler için kullanışlı olan çoklu para birimi hesapları sunar.",
+            "Pasaportunuzu, PESEL'inizi ve adres kanıtınızı hazırlayın.",
+            "Şubeden randevu alın veya durumunuz için mevcutsa çevrimiçi başvurun.",
+            "Kartınızı etkinleştirin ve mobil bankacılığı kurun — kart yurt dışında ücretsiz kullanılabilir.",
+          ],
+          aiQuestion: "Santander'de hesabı nasıl açarım?",
+        },
+        revolut: {
+          heading: "Revolut'ta hesap nasıl açılır",
+          steps: [
+            "Revolut uygulamasını indirin ve telefon numaranızla kaydolun — şubeye gitmenize gerek yok.",
+            "Kimliğinizi uygulama içinde bir selfie ve pasaport taraması ile doğrulayın.",
+            "Hesap açmak için PESEL gerekmez — bu, yeni gelenler için en hızlı seçenektir.",
+            "Hesabınıza para yükleyin ve çoklu para birimi cüzdanını ve kartı kullanmaya başlayın.",
+          ],
+          aiQuestion: "Revolut'ta hesabı nasıl açarım?",
+        },
+      },
+      howToOpenLabel: "Hesap nasıl açılır?",
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -6229,6 +6403,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "Чӣ тавр дар {bank} ҳисоб кушоем",
+      guides: {
+        pkobp: {
+          heading: "Чӣ тавр дар PKO BP ҳисоб кушоем",
+          steps: [
+            "PESEL гиред — PKO BP, мисли аксари бонкҳои анъанавӣ, барои кушодани ҳисоб онро талаб мекунад.",
+            "Ба филиали наздиктарин навишт шавед — PKO BP бузургтарин шабакаро дар Полша дорад, ёфтани филиал осон аст.",
+            "Бо худ шиноснома, PESEL ва тасдиқи суроға (масалан, шартномаи иҷора) гиред.",
+            "Шартномаро дар ҷо имзо кунед — корманд дар интихоби навъи мувофиқи ҳисоб ва расмиёти корт кӯмак мекунад.",
+          ],
+          aiQuestion: "Чӣ тавр дар PKO BP ҳисоб кушоям?",
+        },
+        mbank: {
+          heading: "Чӣ тавр дар mBank ҳисоб кушоем",
+          steps: [
+            "Барномаи mBank-ро зеркашӣ кунед ё ба сомонаи он гузаред — тамоми раванд метавонад онлайн, бидуни ташрифи филиал гузаронида шавад.",
+            "Аризаро пур кунед ва ҳувияти худро тавассути занги видеоӣ ё курьер бо тафтиши шиноснома тасдиқ кунед.",
+            "Агар аллакай дошта бошед, рақами PESEL-ро нишон диҳед — ин раванди зудтарро таъмин мекунад, аммо барои оғоз ҳатмӣ нест.",
+            "Тасдиқро интизор шавед — ҳисоб одатан дар давоми як рӯз кушода мешавад, барнома пурра ба забони англисӣ аст.",
+          ],
+          aiQuestion: "Чӣ тавр дар mBank ҳисоб кушоям?",
+        },
+        santander: {
+          heading: "Чӣ тавр дар Santander ҳисоб кушоем",
+          steps: [
+            "Навъи ҳисобро интихоб кунед — Santander ҳисобҳои бисёрвалютавӣ пешниҳод мекунад, ки барои интиқолҳои байналмилалӣ қулай аст.",
+            "Шиноснома, PESEL ва тасдиқи суроғаро омода кунед.",
+            "Ба филиал навишт шавед ё, агар барои вазъияти шумо дастрас бошад, онлайн ариза диҳед.",
+            "Кортро фаъол кунед ва бонкдории мобилиро танзим кунед — кортро дар хориҷа ройгон истифода бурдан мумкин аст.",
+          ],
+          aiQuestion: "Чӣ тавр дар Santander ҳисоб кушоям?",
+        },
+        revolut: {
+          heading: "Чӣ тавр дар Revolut ҳисоб кушоем",
+          steps: [
+            "Барномаи Revolut-ро зеркашӣ кунед ва бо рақами телефони худ ба қайд гиред — ба филиал рафтан лозим нест.",
+            "Ҳувияти худро тавассути селфи ва сканери шиноснома дар дохили барнома тасдиқ кунед.",
+            "Барои кушодани ҳисоб PESEL талаб карда намешавад — ин бехатартарин роҳ барои онҳое, ки навакак омадаанд.",
+            "Ҳисоби худро пур кунед ва аз ҳамёни бисёрвалютавӣ ва корт истифода баред.",
+          ],
+          aiQuestion: "Чӣ тавр дар Revolut ҳисоб кушоям?",
+        },
+      },
+      howToOpenLabel: "Чӣ тавр ҳисоб кушоем?",
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -7442,6 +7659,49 @@ export const dictionaries: Record<Lang, Dictionary> = {
         ],
       },
       openAccountAt: "Як відкрити рахунок у {bank}",
+      guides: {
+        pkobp: {
+          heading: "Як відкрити рахунок у PKO BP",
+          steps: [
+            "Отримайте PESEL — PKO BP, як і більшість традиційних банків, вимагає його для відкриття рахунку.",
+            "Запишіться на прийом до найближчого відділення — у PKO BP найбільша мережа в Польщі, знайти відділення легко.",
+            "Візьміть із собою паспорт, PESEL і підтвердження адреси (наприклад, договір оренди).",
+            "Підпишіть договір на місці — співробітник допоможе обрати відповідний тип рахунку й оформити картку.",
+          ],
+          aiQuestion: "Як відкрити рахунок у PKO BP?",
+        },
+        mbank: {
+          heading: "Як відкрити рахунок у mBank",
+          steps: [
+            "Завантажте застосунок mBank або зайдіть на сайт — весь процес можна пройти онлайн, без візиту до відділення.",
+            "Заповніть заявку та підтвердьте особу через відеодзвінок або кур'єра з перевіркою паспорта.",
+            "Вкажіть PESEL, якщо він у вас уже є — це пришвидшить відкриття рахунку, але не обов'язково на старті.",
+            "Дочекайтеся схвалення — зазвичай рахунок відкривається протягом одного дня, застосунок повністю англійською.",
+          ],
+          aiQuestion: "Як відкрити рахунок у mBank?",
+        },
+        santander: {
+          heading: "Як відкрити рахунок у Santander",
+          steps: [
+            "Оберіть тип рахунку — Santander пропонує мультивалютні рахунки, зручні для міжнародних переказів.",
+            "Підготуйте паспорт, PESEL і підтвердження адреси.",
+            "Запишіться на прийом до відділення або подайте заявку онлайн, якщо це доступно для вашого статусу.",
+            "Активуйте картку та підключіть мобільний банкінг — карткою можна безкоштовно користуватися за кордоном.",
+          ],
+          aiQuestion: "Як відкрити рахунок у Santander?",
+        },
+        revolut: {
+          heading: "Як відкрити рахунок у Revolut",
+          steps: [
+            "Завантажте застосунок Revolut і зареєструйтеся за номером телефону — відвідувати відділення не потрібно.",
+            "Підтвердьте особу через селфі та скан паспорта прямо в застосунку.",
+            "PESEL не потрібен для відкриття рахунку — це найшвидший спосіб для тих, хто щойно приїхав.",
+            "Поповніть рахунок і почніть користуватися мультивалютним гаманцем і карткою.",
+          ],
+          aiQuestion: "Як відкрити рахунок у Revolut?",
+        },
+      },
+      howToOpenLabel: "Як відкрити рахунок?",
     },
     medicine: {
       title: "Медицина в Польщі",
