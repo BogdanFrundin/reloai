@@ -1051,8 +1051,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Poland, Germany, and Spain are currently supported. The list of countries keeps growing — on the Pro plan you get early access to new destinations.",
         },
         {
-          question: "Does ReloAI replace a lawyer or immigration consultant?",
-          answer: "No. ReloAI gives you a structured plan and general guidance based on your situation, but it is not legal advice. For complex cases (refusals, special visa categories) we recommend consulting a licensed lawyer.",
+          question: "What documents do I need for the move, and how does ReloAI help me collect them?",
+          answer: "ReloAI builds a personal list of the documents you need — passport, PESEL, work permit, insurance, banking paperwork, and more — based on your goal and destination country. It tracks which documents are already done, which are under review, and which are still missing, and tells you where and how to get them.",
+        },
+        {
+          question: "How is the status of my documents tracked?",
+          answer: "On the Documents page, each document has a status: Done, Under review, or Missing. As soon as you upload the required file, the status updates automatically and your relocation plan progress syncs without manual check-offs.",
         },
         {
           question: "Is it paid?",
@@ -2172,8 +2176,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Сейчас поддерживаются Польша, Германия и Испания. Список стран постоянно расширяется — на плане Pro у вас будет ранний доступ к новым направлениям.",
         },
         {
-          question: "Заменяет ли ReloAI юриста или иммиграционного консультанта?",
-          answer: "Нет. ReloAI даёт структурированный план и общие ориентиры на основе вашей ситуации, но не является юридической консультацией. В сложных случаях (отказы, особые визовые категории) рекомендуем обратиться к лицензированному юристу.",
+          question: "Какие документы нужны для переезда и как ReloAI помогает их собрать?",
+          answer: "ReloAI формирует персональный список нужных документов — паспорт, PESEL, разрешение на работу, страховка, банковские бумаги и другие — на основе вашей цели и страны переезда. Сервис отслеживает, какие документы уже готовы, какие на проверке, а какие ещё отсутствуют, и подсказывает, где и как их получить.",
+        },
+        {
+          question: "Как отслеживается статус моих документов?",
+          answer: "На странице «Документы» у каждого документа есть статус: Готово, На проверке или Отсутствует. Как только вы загружаете нужный файл, статус обновляется автоматически, а прогресс в вашем плане переезда синхронизируется без ручных отметок.",
         },
         {
           question: "Это платно?",
@@ -3293,8 +3301,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Hozircha Polsha, Germaniya va Ispaniya qo'llab-quvvatlanadi. Mamlakatlar ro'yxati doimiy kengaymoqda — Pro tarifida yangi yo'nalishlarga erta kirish imkoniyati bo'ladi.",
         },
         {
-          question: "ReloAI advokat yoki immigratsiya konsultantini almashtiradimi?",
-          answer: "Yo'q. ReloAI sizning vaziyatingiz asosida tizimlashtirilgan reja va umumiy yo'nalish beradi, lekin bu yuridik maslahat emas. Murakkab holatlarda (rad javoblari, maxsus viza turlari) litsenziyalangan advokatga murojaat qilishni tavsiya qilamiz.",
+          question: "Ko'chish uchun qanday hujjatlar kerak va ReloAI ularni yig'ishga qanday yordam beradi?",
+          answer: "ReloAI sizning maqsadingiz va ko'chib boradigan mamlakatingiz asosida kerakli hujjatlarning shaxsiy ro'yxatini tuzadi — pasport, PESEL, ish ruxsatnomasi, sug'urta, bank hujjatlari va boshqalar. Xizmat qaysi hujjatlar tayyor, qaysilari tekshiruvda va qaysilari hali yo'qligini kuzatib boradi hamda ularni qayerdan va qanday olishni maslahat beradi.",
+        },
+        {
+          question: "Hujjatlarimning holati qanday kuzatiladi?",
+          answer: "«Hujjatlar» sahifasida har bir hujjatning holati bor: Tayyor, Tekshiruvda yoki Yo'q. Kerakli faylni yuklashingiz bilanoq holat avtomatik yangilanadi, ko'chish rejangizdagi progress esa qo'lda belgilashsiz sinxronlashadi.",
         },
         {
           question: "Bu pullikmi?",
@@ -4411,8 +4423,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Şu anda Polonya, Almanya ve İspanya destekleniyor. Ülke listesi sürekli genişliyor — Pro planında yeni destinasyonlara erken erişim elde edersiniz.",
         },
         {
-          question: "ReloAI bir avukatın veya göçmenlik danışmanının yerini tutar mı?",
-          answer: "Hayır. ReloAI durumunuza göre yapılandırılmış bir plan ve genel yönlendirme sunar, ancak hukuki tavsiye niteliğinde değildir. Karmaşık durumlarda (reddedilmeler, özel vize kategorileri) lisanslı bir avukata danışmanızı öneririz.",
+          question: "Taşınma için hangi belgeler gerekli ve ReloAI bunları toplamama nasıl yardımcı olur?",
+          answer: "ReloAI, hedefiniz ve gideceğiniz ülkeye göre ihtiyacınız olan belgelerin kişisel bir listesini oluşturur — pasaport, PESEL, çalışma izni, sigorta, banka evrakları ve daha fazlası. Hangi belgelerin tamamlandığını, hangilerinin incelemede olduğunu ve hangilerinin hâlâ eksik olduğunu takip eder ve bunları nereden ve nasıl alacağınızı söyler.",
+        },
+        {
+          question: "Belgelerimin durumu nasıl takip ediliyor?",
+          answer: "Belgeler sayfasında her belgenin bir durumu vardır: Tamamlandı, İncelemede veya Eksik. Gerekli dosyayı yükler yüklemez durum otomatik olarak güncellenir ve taşınma planınızdaki ilerleme, manuel işaretleme yapmadan senkronize olur.",
         },
         {
           question: "Ücretli mi?",
@@ -5529,8 +5545,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Ҳозир Полша, Олмон ва Испания дастгирӣ мешаванд. Рӯйхати кишварҳо доимо васеъ мешавад — дар нақшаи Pro шумо дастрасии барвақт ба самтҳои нав хоҳед дошт.",
         },
         {
-          question: "Оё ReloAI ҷои ҳуқуқшинос ё мушовири муҳоҷиратро мегирад?",
-          answer: "Не. ReloAI нақшаи сохторёфта ва роҳнамоии умумӣ дар асоси вазъияти шумо медиҳад, аммо машварати ҳуқуқӣ нест. Дар ҳолатҳои мураккаб (рад кардан, категорияҳои махсуси виза) муроҷиат ба ҳуқуқшиноси литсензиядор тавсия дода мешавад.",
+          question: "Барои кӯчиш кадом ҳуҷҷатҳо лозиманд ва ReloAI дар ҷамъ кардани онҳо чӣ гуна кӯмак мекунад?",
+          answer: "ReloAI дар асоси мақсад ва кишвари кӯчиши шумо рӯйхати шахсии ҳуҷҷатҳои лозимаро месозад — шиноснома, PESEL, иҷозати кор, суғурта, ҳуҷҷатҳои бонкӣ ва дигарон. Хидмат пайгирӣ мекунад, ки кадом ҳуҷҷатҳо аллакай тайёранд, кадомҳо дар тафтиш ва кадомҳо ҳанӯз мавҷуд нестанд, ва мефаҳмонад, ки онҳоро аз куҷо ва чӣ гуна гирифтан мумкин аст.",
+        },
+        {
+          question: "Вазъи ҳуҷҷатҳои ман чӣ гуна пайгирӣ мешавад?",
+          answer: "Дар саҳифаи «Ҳуҷҷатҳо» ҳар як ҳуҷҷат вазъият дорад: Тайёр, Дар тафтиш ё Мавҷуд нест. Ҳамин ки шумо файли лозимаро бор мекунед, вазъият ба таври худкор навсозӣ мешавад ва пешрафти нақшаи кӯчиши шумо бе қайдҳои дастӣ ҳамоҳанг мешавад.",
         },
         {
           question: "Оё ин пулакист?",
@@ -6648,8 +6668,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           answer: "Зараз підтримуються Польща, Німеччина та Іспанія. Список країн постійно розширюється — на плані Pro у вас буде ранній доступ до нових напрямків.",
         },
         {
-          question: "Чи замінює ReloAI юриста або імміграційного консультанта?",
-          answer: "Ні. ReloAI дає структурований план і загальні орієнтири на основі вашої ситуації, але не є юридичною консультацією. У складних випадках (відмови, особливі візові категорії) рекомендуємо звернутися до ліцензованого юриста.",
+          question: "Які документи потрібні для переїзду і як ReloAI допомагає їх зібрати?",
+          answer: "ReloAI формує персональний список потрібних документів — паспорт, PESEL, дозвіл на роботу, страховка, банківські папери та інші — на основі вашої мети та країни переїзду. Сервіс відстежує, які документи вже готові, які на перевірці, а яких ще бракує, і підказує, де і як їх отримати.",
+        },
+        {
+          question: "Як відстежується статус моїх документів?",
+          answer: "На сторінці «Документи» кожен документ має статус: Готово, На перевірці або Відсутній. Щойно ви завантажуєте потрібний файл, статус оновлюється автоматично, а прогрес у вашому плані переїзду синхронізується без ручних позначок.",
         },
         {
           question: "Це платно?",

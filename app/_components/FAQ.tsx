@@ -42,7 +42,16 @@ export default function FAQ() {
                     </span>
                   </button>
                   {isOpen && (
-                    <p className="px-6 pb-5 text-sm leading-relaxed text-text-secondary">{item.answer}</p>
+                    <div className="border-t border-border-subtle bg-surface-2 px-6 py-5 transition-[opacity] duration-200 ease-[var(--ease-out-strong)] starting:opacity-0">
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                          </svg>
+                        </span>
+                        <p className="text-sm leading-relaxed text-text-secondary">{item.answer}</p>
+                      </div>
+                    </div>
                   )}
                 </div>
               </Reveal>
