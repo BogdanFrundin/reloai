@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Reveal from "./Reveal";
 import WelcomeToast from "./WelcomeToast";
 import RegisterPromptModal from "./RegisterPromptModal";
@@ -10,6 +11,7 @@ import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
 import { getCountryName } from "../_lib/countries";
+import { getFlagUrl } from "../_lib/flags";
 
 const COUNTRY_INDEX: Record<string, number> = { Poland: 0, Germany: 1, Spain: 2 };
 
@@ -75,8 +77,11 @@ export default function DashboardContent() {
       <WelcomeToast />
 
       <Reveal>
-        <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
           {t.dashboard.relocation.replace("{country}", countryEntry?.nameDeclined ?? countryEntry?.name ?? country)}
+          {countryEntry?.flag && (
+            <Image src={getFlagUrl(countryEntry.flag, "md")} alt={countryEntry.name} width={32} height={24} className="rounded-sm" unoptimized />
+          )}
         </h1>
         <p className="mt-2 text-text-muted">{subtitle}</p>
       </Reveal>
