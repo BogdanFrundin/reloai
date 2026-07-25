@@ -107,6 +107,7 @@ export default function Navbar() {
     { href: "#countries", label: t.nav.countries },
     { href: "#pricing", label: t.nav.pricing },
     { href: "#reviews", label: t.nav.reviews },
+    { href: "#faq", label: t.nav.faq },
   ];
 
   return (

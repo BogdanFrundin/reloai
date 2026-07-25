@@ -6,6 +6,7 @@ import Features from "./_components/Features";
 import Countries from "./_components/Countries";
 import Pricing from "./_components/Pricing";
 import Reviews from "./_components/Reviews";
+import FAQ from "./_components/FAQ";
 import Footer from "./_components/Footer";
 import PageTransition from "./_components/PageTransition";
 
@@ -22,6 +23,7 @@ export default function Home() {
           <Features />
           <Pricing />
           <Reviews />
+          <FAQ />
         </main>
         <Footer />
       </div>

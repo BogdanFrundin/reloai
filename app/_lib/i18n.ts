@@ -18,6 +18,7 @@ export type Dictionary = {
     countries: string;
     pricing: string;
     reviews: string;
+    faq: string;
     login: string;
     getStarted: string;
     goToDashboard: string;
@@ -104,6 +105,11 @@ export type Dictionary = {
       initials: string;
       documentBadge?: string;
     }[];
+  };
+  faq: {
+    heading: string;
+    subheading: string;
+    items: { question: string; answer: string }[];
   };
   contact: {
     heading: string;
@@ -636,6 +642,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Countries",
       pricing: "Pricing",
       reviews: "Reviews",
+      faq: "FAQ",
       login: "Log in",
       getStarted: "Get Started",
       goToDashboard: "Go to dashboard →",
@@ -1028,6 +1035,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Found a remote job and got my NIE in a month, all according to the guide.",
           initials: "YN",
+        },
+      ],
+    },
+    faq: {
+      heading: "Frequently asked questions",
+      subheading: "Everything you need to know before you start moving.",
+      items: [
+        {
+          question: "What is ReloAI and how does it work?",
+          answer: "ReloAI is an AI relocation assistant that builds a personal step-by-step legalization plan for you: it tells you which documents you need, where to go, and in what order, and answers your questions in your language.",
+        },
+        {
+          question: "Which countries can I move to with ReloAI?",
+          answer: "Poland, Germany, and Spain are currently supported. The list of countries keeps growing — on the Pro plan you get early access to new destinations.",
+        },
+        {
+          question: "Does ReloAI replace a lawyer or immigration consultant?",
+          answer: "No. ReloAI gives you a structured plan and general guidance based on your situation, but it is not legal advice. For complex cases (refusals, special visa categories) we recommend consulting a licensed lawyer.",
+        },
+        {
+          question: "Is it paid?",
+          answer: "There's a free plan with a basic checklist and access to Poland. Premium (€29/mo) unlocks all 3 countries and the full checklist, Pro (€49/mo) adds unlimited AI messages and priority support.",
+        },
+        {
+          question: "What languages does the service support?",
+          answer: "Russian, English, Uzbek, Turkish, Tajik, and Ukrainian — the interface and AI assistant respond in your chosen language.",
+        },
+        {
+          question: "How safe are my documents?",
+          answer: "Uploaded documents are stored encrypted and are only accessible to you. We don't share them with third parties without your consent.",
+        },
+        {
+          question: "Can I cancel my subscription anytime?",
+          answer: "Yes, you can cancel your subscription anytime in settings — access to your paid plan continues until the end of the period you already paid for.",
+        },
+        {
+          question: "How long does a move with the ReloAI plan take?",
+          answer: "It depends on the route and country — from 1–3 months for a fast route with a ready job offer, up to 6–12 months for full legalization with a residence permit.",
         },
       ],
     },
@@ -1718,6 +1763,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Страны",
       pricing: "Цены",
       reviews: "Отзывы",
+      faq: "Вопросы",
       login: "Войти",
       getStarted: "Начать",
       goToDashboard: "Мой план →",
@@ -2110,6 +2156,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Нашла удалённую работу и оформила NIE за месяц, всё по инструкции.",
           initials: "ЮН",
+        },
+      ],
+    },
+    faq: {
+      heading: "Частые вопросы",
+      subheading: "Всё, что нужно знать перед началом переезда.",
+      items: [
+        {
+          question: "Что такое ReloAI и как это работает?",
+          answer: "ReloAI — это AI-ассистент по переезду, который составляет для вас персональный пошаговый план легализации: подсказывает, какие документы нужны, куда обращаться и в каком порядке действовать, и отвечает на вопросы на вашем языке.",
+        },
+        {
+          question: "В какие страны можно переехать с ReloAI?",
+          answer: "Сейчас поддерживаются Польша, Германия и Испания. Список стран постоянно расширяется — на плане Pro у вас будет ранний доступ к новым направлениям.",
+        },
+        {
+          question: "Заменяет ли ReloAI юриста или иммиграционного консультанта?",
+          answer: "Нет. ReloAI даёт структурированный план и общие ориентиры на основе вашей ситуации, но не является юридической консультацией. В сложных случаях (отказы, особые визовые категории) рекомендуем обратиться к лицензированному юристу.",
+        },
+        {
+          question: "Это платно?",
+          answer: "Есть бесплатный тариф с базовым чек-листом и доступом к Польше. Premium (€29/мес) открывает все 3 страны и полный чек-лист, Pro (€49/мес) добавляет безлимитные AI-сообщения и приоритетную поддержку.",
+        },
+        {
+          question: "На каких языках работает сервис?",
+          answer: "Русский, английский, узбекский, турецкий, таджикский и украинский — интерфейс и AI-ассистент отвечают на выбранном вами языке.",
+        },
+        {
+          question: "Насколько безопасны мои документы?",
+          answer: "Загруженные документы хранятся в зашифрованном виде и доступны только вам. Мы не передаём их третьим лицам без вашего согласия.",
+        },
+        {
+          question: "Можно ли отменить подписку в любой момент?",
+          answer: "Да, подписку можно отменить в любой момент в настройках — доступ к оплаченному тарифу сохранится до конца оплаченного периода.",
+        },
+        {
+          question: "Сколько времени занимает переезд по плану ReloAI?",
+          answer: "Зависит от маршрута и страны — от 1–3 месяцев для быстрого маршрута с готовым предложением о работе, до 6–12 месяцев для полной легализации с видом на жительство.",
         },
       ],
     },
@@ -2800,6 +2884,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Davlatlar",
       pricing: "Narxlar",
       reviews: "Sharhlar",
+      faq: "Savollar",
       login: "Kirish",
       getStarted: "Boshlash",
       goToDashboard: "Rejamga o'tish →",
@@ -3192,6 +3277,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Masofaviy ish topdim va bir oyda NIE oldim, hammasi qo'llanma bo'yicha.",
           initials: "YN",
+        },
+      ],
+    },
+    faq: {
+      heading: "Ko'p beriladigan savollar",
+      subheading: "Ko'chib o'tishni boshlashdan oldin bilishingiz kerak bo'lgan hamma narsa.",
+      items: [
+        {
+          question: "ReloAI nima va u qanday ishlaydi?",
+          answer: "ReloAI — bu sizga shaxsiy bosqichma-bosqich legallashtirish rejasini tuzadigan AI ko'chirish yordamchisi: qanday hujjatlar kerakligini, qayerga murojaat qilish kerakligini va qaysi tartibda harakat qilish kerakligini aytadi hamda savollaringizga o'z tilingizda javob beradi.",
+        },
+        {
+          question: "ReloAI bilan qaysi mamlakatlarga ko'chib o'tish mumkin?",
+          answer: "Hozircha Polsha, Germaniya va Ispaniya qo'llab-quvvatlanadi. Mamlakatlar ro'yxati doimiy kengaymoqda — Pro tarifida yangi yo'nalishlarga erta kirish imkoniyati bo'ladi.",
+        },
+        {
+          question: "ReloAI advokat yoki immigratsiya konsultantini almashtiradimi?",
+          answer: "Yo'q. ReloAI sizning vaziyatingiz asosida tizimlashtirilgan reja va umumiy yo'nalish beradi, lekin bu yuridik maslahat emas. Murakkab holatlarda (rad javoblari, maxsus viza turlari) litsenziyalangan advokatga murojaat qilishni tavsiya qilamiz.",
+        },
+        {
+          question: "Bu pullikmi?",
+          answer: "Asosiy chek-list va Polshaga kirish imkoniyati bo'lgan bepul tarif mavjud. Premium (€29/oy) barcha 3 mamlakatni va to'liq chek-listni ochadi, Pro (€49/oy) cheksiz AI xabarlar va ustuvor qo'llab-quvvatlashni qo'shadi.",
+        },
+        {
+          question: "Servis qaysi tillarda ishlaydi?",
+          answer: "Rus, ingliz, o'zbek, turk, tojik va ukrain tillari — interfeys va AI yordamchi siz tanlagan tilda javob beradi.",
+        },
+        {
+          question: "Hujjatlarim qanchalik xavfsiz?",
+          answer: "Yuklangan hujjatlar shifrlangan holda saqlanadi va faqat sizga ochiq. Biz ularni sizning roziligingizsiz uchinchi shaxslarga bermaymiz.",
+        },
+        {
+          question: "Obunani istalgan vaqtda bekor qilish mumkinmi?",
+          answer: "Ha, obunani sozlamalarda istalgan vaqtda bekor qilishingiz mumkin — to'langan tarifga kirish imkoniyati to'langan davr oxirigacha saqlanadi.",
+        },
+        {
+          question: "ReloAI rejasi bo'yicha ko'chish qancha vaqt oladi?",
+          answer: "Bu yo'nalish va mamlakatga bog'liq — tayyor ish taklifi bilan tezkor yo'nalish uchun 1–3 oydan, yashash ruxsatnomasi bilan to'liq legallashtirish uchun 6–12 oygacha.",
         },
       ],
     },
@@ -3880,6 +4003,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Ülkeler",
       pricing: "Fiyatlandırma",
       reviews: "Yorumlar",
+      faq: "SSS",
       login: "Giriş yap",
       getStarted: "Başla",
       goToDashboard: "Panele git →",
@@ -4271,6 +4395,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Uzaktan iş buldum ve bir ayda NIE aldım, her şey rehbere göre.",
           initials: "YN",
+        },
+      ],
+    },
+    faq: {
+      heading: "Sıkça Sorulan Sorular",
+      subheading: "Taşınmaya başlamadan önce bilmeniz gereken her şey.",
+      items: [
+        {
+          question: "ReloAI nedir ve nasıl çalışır?",
+          answer: "ReloAI, sizin için kişisel, adım adım bir yasallaştırma planı oluşturan bir AI taşınma asistanıdır: hangi belgelere ihtiyacınız olduğunu, nereye başvurmanız gerektiğini ve hangi sırayla ilerlemeniz gerektiğini söyler ve sorularınızı kendi dilinizde yanıtlar.",
+        },
+        {
+          question: "ReloAI ile hangi ülkelere taşınabilirim?",
+          answer: "Şu anda Polonya, Almanya ve İspanya destekleniyor. Ülke listesi sürekli genişliyor — Pro planında yeni destinasyonlara erken erişim elde edersiniz.",
+        },
+        {
+          question: "ReloAI bir avukatın veya göçmenlik danışmanının yerini tutar mı?",
+          answer: "Hayır. ReloAI durumunuza göre yapılandırılmış bir plan ve genel yönlendirme sunar, ancak hukuki tavsiye niteliğinde değildir. Karmaşık durumlarda (reddedilmeler, özel vize kategorileri) lisanslı bir avukata danışmanızı öneririz.",
+        },
+        {
+          question: "Ücretli mi?",
+          answer: "Temel kontrol listesi ve Polonya erişimi olan ücretsiz bir plan mevcut. Premium (€29/ay) 3 ülkenin tamamını ve tam kontrol listesini açar, Pro (€49/ay) sınırsız AI mesajları ve öncelikli destek ekler.",
+        },
+        {
+          question: "Hizmet hangi dillerde çalışıyor?",
+          answer: "Rusça, İngilizce, Özbekçe, Türkçe, Tacikçe ve Ukraynaca — arayüz ve AI asistanı seçtiğiniz dilde yanıt verir.",
+        },
+        {
+          question: "Belgelerim ne kadar güvenli?",
+          answer: "Yüklenen belgeler şifrelenmiş olarak saklanır ve yalnızca size açıktır. Onayınız olmadan üçüncü taraflarla paylaşmayız.",
+        },
+        {
+          question: "Aboneliğimi istediğim zaman iptal edebilir miyim?",
+          answer: "Evet, aboneliğinizi ayarlardan istediğiniz zaman iptal edebilirsiniz — ücretli planınıza erişim, ödediğiniz dönemin sonuna kadar devam eder.",
+        },
+        {
+          question: "ReloAI planıyla taşınma ne kadar sürer?",
+          answer: "Güzergaha ve ülkeye bağlıdır — hazır bir iş teklifiyle hızlı bir güzergah için 1–3 aydan, oturma izniyle tam yasallaştırma için 6–12 aya kadar sürebilir.",
         },
       ],
     },
@@ -4959,6 +5121,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Кишварҳо",
       pricing: "Нархгузорӣ",
       reviews: "Шарҳҳо",
+      faq: "Саволҳо",
       login: "Воридшавӣ",
       getStarted: "Сар кардан",
       goToDashboard: "Нақшаи ман →",
@@ -5350,6 +5513,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Кори дурдастӣ ёфтам ва NIE-ро дар як моҳ гирифтам, ҳама тибқи дастур.",
           initials: "ЮН",
+        },
+      ],
+    },
+    faq: {
+      heading: "Саволҳои маъмул",
+      subheading: "Ҳама чизе, ки пеш аз оғози кӯчиш бояд донед.",
+      items: [
+        {
+          question: "ReloAI чист ва он чӣ гуна кор мекунад?",
+          answer: "ReloAI ёрдамчии кӯчиши AI аст, ки барои шумо нақшаи шахсии қадам ба қадами легализатсия месозад: кадом ҳуҷҷатҳо лозиманд, ба куҷо муроҷиат кардан лозим аст ва бо кадом тартиб амал кардан лозим аст, инро мегӯяд ва ба саволҳои шумо бо забони худатон ҷавоб медиҳад.",
+        },
+        {
+          question: "Бо ReloAI ба кадом кишварҳо кӯчидан мумкин аст?",
+          answer: "Ҳозир Полша, Олмон ва Испания дастгирӣ мешаванд. Рӯйхати кишварҳо доимо васеъ мешавад — дар нақшаи Pro шумо дастрасии барвақт ба самтҳои нав хоҳед дошт.",
+        },
+        {
+          question: "Оё ReloAI ҷои ҳуқуқшинос ё мушовири муҳоҷиратро мегирад?",
+          answer: "Не. ReloAI нақшаи сохторёфта ва роҳнамоии умумӣ дар асоси вазъияти шумо медиҳад, аммо машварати ҳуқуқӣ нест. Дар ҳолатҳои мураккаб (рад кардан, категорияҳои махсуси виза) муроҷиат ба ҳуқуқшиноси литсензиядор тавсия дода мешавад.",
+        },
+        {
+          question: "Оё ин пулакист?",
+          answer: "Тарифи ройгон бо чек-листи асосӣ ва дастрасӣ ба Полша мавҷуд аст. Premium (€29/моҳ) ҳар 3 кишварро ва чек-листи пурраро мекушояд, Pro (€49/моҳ) паёмҳои беохири AI ва дастгирии афзалиятнокро илова мекунад.",
+        },
+        {
+          question: "Хидмат бо кадом забонҳо кор мекунад?",
+          answer: "Русӣ, англисӣ, ӯзбекӣ, туркӣ, тоҷикӣ ва украинӣ — интерфейс ва ёрдамчии AI бо забони интихобкардаи шумо ҷавоб медиҳанд.",
+        },
+        {
+          question: "Ҳуҷҷатҳои ман то чӣ андоза бехатаранд?",
+          answer: "Ҳуҷҷатҳои боркардашуда рамзгузорӣ шуда нигоҳ дошта мешаванд ва танҳо ба шумо дастрасанд. Мо онҳоро бе розигии шумо ба шахсони сеюм намедиҳем.",
+        },
+        {
+          question: "Оё обунаро дар лаҳзаи дилхоҳ бекор кардан мумкин аст?",
+          answer: "Бале, обунаро дар танзимот дар лаҳзаи дилхоҳ бекор кардан мумкин аст — дастрасӣ ба тарифи пулакӣ то охири давраи пардохтшуда нигоҳ дошта мешавад.",
+        },
+        {
+          question: "Кӯчиш аз рӯи нақшаи ReloAI чӣ қадар вақт мегирад?",
+          answer: "Ин ба масир ва кишвар вобаста аст — аз 1–3 моҳ барои масири зуд бо пешниҳоди тайёри корӣ, то 6–12 моҳ барои легализатсияи пурра бо иҷозати истиқомат.",
         },
       ],
     },
@@ -6038,6 +6239,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       countries: "Країни",
       pricing: "Ціни",
       reviews: "Відгуки",
+      faq: "Питання",
       login: "Увійти",
       getStarted: "Почати",
       goToDashboard: "Мій план →",
@@ -6430,6 +6632,44 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Знайшла віддалену роботу й оформила NIE за місяць, усе за інструкцією.",
           initials: "ЮН",
+        },
+      ],
+    },
+    faq: {
+      heading: "Часті запитання",
+      subheading: "Все, що потрібно знати перед початком переїзду.",
+      items: [
+        {
+          question: "Що таке ReloAI і як це працює?",
+          answer: "ReloAI — це AI-асистент з переїзду, який складає для вас персональний покроковий план легалізації: підказує, які документи потрібні, куди звертатися і в якому порядку діяти, а також відповідає на запитання вашою мовою.",
+        },
+        {
+          question: "До яких країн можна переїхати з ReloAI?",
+          answer: "Зараз підтримуються Польща, Німеччина та Іспанія. Список країн постійно розширюється — на плані Pro у вас буде ранній доступ до нових напрямків.",
+        },
+        {
+          question: "Чи замінює ReloAI юриста або імміграційного консультанта?",
+          answer: "Ні. ReloAI дає структурований план і загальні орієнтири на основі вашої ситуації, але не є юридичною консультацією. У складних випадках (відмови, особливі візові категорії) рекомендуємо звернутися до ліцензованого юриста.",
+        },
+        {
+          question: "Це платно?",
+          answer: "Є безкоштовний тариф із базовим чек-листом і доступом до Польщі. Premium (€29/міс) відкриває всі 3 країни і повний чек-лист, Pro (€49/міс) додає необмежені AI-повідомлення та пріоритетну підтримку.",
+        },
+        {
+          question: "Якими мовами працює сервіс?",
+          answer: "Російська, англійська, узбецька, турецька, таджицька та українська — інтерфейс і AI-асистент відповідають обраною вами мовою.",
+        },
+        {
+          question: "Наскільки безпечні мої документи?",
+          answer: "Завантажені документи зберігаються в зашифрованому вигляді і доступні тільки вам. Ми не передаємо їх третім особам без вашої згоди.",
+        },
+        {
+          question: "Чи можна скасувати підписку в будь-який момент?",
+          answer: "Так, підписку можна скасувати в будь-який момент у налаштуваннях — доступ до оплаченого тарифу збережеться до кінця оплаченого періоду.",
+        },
+        {
+          question: "Скільки часу займає переїзд за планом ReloAI?",
+          answer: "Залежить від маршруту і країни — від 1–3 місяців для швидкого маршруту з готовою пропозицією роботи, до 6–12 місяців для повної легалізації з посвідкою на проживання.",
         },
       ],
     },
