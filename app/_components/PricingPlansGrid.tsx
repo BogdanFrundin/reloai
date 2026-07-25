@@ -20,6 +20,7 @@ interface PlanDef {
   key: PlanKey;
   name: string;
   price: string;
+  originalPrice?: string;
   period: string;
   description: string;
   badge: string | null;
@@ -47,6 +48,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       key: "premium",
       name: ap.premiumName,
       price: "€29",
+      originalPrice: "€99",
       period: ap.perMonth,
       description: ap.premiumDesc,
       badge: ap.mostPopular,
@@ -58,6 +60,7 @@ function buildPlans(ap: Dictionary["appPricing"]): PlanDef[] {
       key: "pro",
       name: ap.proName,
       price: "€49",
+      originalPrice: "€149",
       period: ap.perMonth,
       description: ap.proDesc,
       badge: null,
@@ -162,6 +165,9 @@ export default function PricingPlansGrid({ onPlanSelected }: { onPlanSelected?: 
             <p className="text-lg font-semibold text-text-primary">{plan.name}</p>
             <p className="mt-1 text-sm text-text-muted">{plan.description}</p>
             <p className="mt-5">
+              {plan.originalPrice && (
+                <span className="mr-2 text-lg font-medium text-text-muted line-through">{plan.originalPrice}</span>
+              )}
               <span className="text-4xl font-bold text-text-primary">{plan.price}</span>
               <span className="text-sm text-text-muted"> {plan.period}</span>
             </p>

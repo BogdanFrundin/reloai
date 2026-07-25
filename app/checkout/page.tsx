@@ -12,10 +12,10 @@ import { supabase } from "../../lib/supabase";
 
 function buildPlanMeta(
   t: Dictionary,
-): Record<string, { name: string; price: string; priceNum: string; features: string[] }> {
+): Record<string, { name: string; price: string; originalPrice?: string; priceNum: string; features: string[] }> {
   return {
-    premium: { name: "Premium", price: "€29", priceNum: "€29.00", features: t.checkout.premiumFeatures },
-    pro: { name: "Pro", price: "€49", priceNum: "€49.00", features: t.checkout.proFeatures },
+    premium: { name: "Premium", price: "€29", originalPrice: "€99", priceNum: "€29.00", features: t.checkout.premiumFeatures },
+    pro: { name: "Pro", price: "€49", originalPrice: "€149", priceNum: "€49.00", features: t.checkout.proFeatures },
   };
 }
 
@@ -137,7 +137,12 @@ function CheckoutContent() {
                 <p className="mt-0.5 text-sm text-text-muted">{t.checkout.subscription}</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-text-primary">{meta.price}</p>
+                <p className="text-2xl font-bold text-text-primary">
+                  {meta.originalPrice && (
+                    <span className="mr-2 text-lg font-medium text-text-muted line-through">{meta.originalPrice}</span>
+                  )}
+                  {meta.price}
+                </p>
                 <p className="text-xs text-text-muted">{t.checkout.perMonth}</p>
               </div>
             </div>
