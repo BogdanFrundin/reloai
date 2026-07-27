@@ -11,6 +11,7 @@ import { useLanguage } from "../_components/LanguageProvider";
 import { dictionaries, LANGUAGES, type Lang } from "../_lib/i18n";
 import { pressScale } from "../_lib/motion";
 import { createNotification } from "../_lib/notifications";
+import { fireConfetti } from "../_lib/confetti";
 import { supabase } from "../../lib/supabase";
 
 const inputClasses =
@@ -67,6 +68,7 @@ export default function RegisterPage() {
     if (!data.session) {
       setConfirmEmailSent(true);
       setLoading(false);
+      fireConfetti();
       return;
     }
 
@@ -75,6 +77,7 @@ export default function RegisterPage() {
       message: "Поздравляем, вы успешно зарегистрировались в ReloAI.",
       type: "registration",
     });
+    fireConfetti();
 
     router.push("/onboarding");
   }

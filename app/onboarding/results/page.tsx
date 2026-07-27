@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import PageTransition from "../../_components/PageTransition";
 import Reveal from "../../_components/Reveal";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
 import { supabase } from "../../../lib/supabase";
+import { fireConfetti } from "../../_lib/confetti";
 import type { Dictionary } from "../../_lib/i18n";
 import type { Route, RouteEngineResult } from "../../api/route/route";
 
@@ -187,6 +188,13 @@ export default function OnboardingResultsPage() {
   const [loading, setLoading] = useState(true);
   const [selectingId, setSelectingId] = useState<string | null>(null);
   const [selectError, setSelectError] = useState(false);
+  const hasFiredConfettiRef = useRef(false);
+
+  useEffect(() => {
+    if (loading || !result || hasFiredConfettiRef.current) return;
+    hasFiredConfettiRef.current = true;
+    fireConfetti();
+  }, [loading, result]);
 
   useEffect(() => {
     if (!user || !profile) return;
