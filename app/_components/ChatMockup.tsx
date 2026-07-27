@@ -1,10 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useLanguage } from "./LanguageProvider";
-import { getFlagUrl } from "../_lib/flags";
 
 type MessageFrom = "ai" | "user";
+
+const DOC_CARDS = [
+  { title: "Скан паспорта", subtitle: "Нужен почти для всех шагов", status: "Готово", statusColor: "emerald" as const },
+  { title: "Заявление на PESEL", subtitle: "Первый шаг легализации", status: "На проверке", statusColor: "amber" as const },
+];
 
 export default function ChatMockup() {
   const { t } = useLanguage();
@@ -13,12 +16,8 @@ export default function ChatMockup() {
     { from: "ai", text: t.heroDemo.question },
     { from: "user", text: t.heroDemo.userReply },
     { from: "ai", text: t.heroDemo.response },
-  ];
-
-  const countries = [
-    { code: "pl", name: t.countries.list[0].name },
-    { code: "de", name: t.countries.list[1].name },
-    { code: "es", name: t.countries.list[2].name },
+    { from: "user", text: t.heroDemo.docQuestion },
+    { from: "ai", text: t.heroDemo.docResponse },
   ];
 
   return (
@@ -39,7 +38,7 @@ export default function ChatMockup() {
         </div>
       </div>
 
-      <div className="flex min-h-[240px] flex-col gap-3">
+      <div className="flex min-h-[320px] flex-col gap-3">
         {conversation.map((message, index) => (
           <div key={index} className={`flex ${message.from === "user" ? "justify-end" : "justify-start"}`}>
             <p
@@ -54,22 +53,36 @@ export default function ChatMockup() {
           </div>
         ))}
 
-        <div className="flex flex-wrap gap-2 pt-1">
-          {countries.map((country) => (
-            <span
-              key={country.name}
-              className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent-bright"
-            >
-              <Image
-                src={getFlagUrl(country.code, "sm")}
-                alt={country.name}
-                width={24}
-                height={18}
-                className="rounded-sm"
-                unoptimized
-              />
-              {country.name}
-            </span>
+        <div className="grid grid-cols-2 gap-3 pt-1">
+          {DOC_CARDS.map((doc) => (
+            <div key={doc.title} className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
+              <div
+                className={`flex h-16 items-center justify-center ${
+                  doc.statusColor === "emerald" ? "bg-gradient-to-br from-emerald-500/20 to-emerald-500/5" : "bg-gradient-to-br from-amber-500/20 to-amber-500/5"
+                }`}
+              >
+                <svg
+                  className={`h-7 w-7 ${doc.statusColor === "emerald" ? "text-emerald-400" : "text-amber-400"}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="p-3">
+                <p className="truncate text-sm font-semibold text-text-primary">{doc.title}</p>
+                <p className="mt-0.5 truncate text-xs text-text-muted">{doc.subtitle}</p>
+                <span
+                  className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                    doc.statusColor === "emerald" ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"
+                  }`}
+                >
+                  {doc.status}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       </div>

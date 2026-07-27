@@ -49,6 +49,8 @@ export type Dictionary = {
     question: string;
     userReply: string;
     response: string;
+    docQuestion: string;
+    docResponse: string;
     inputPlaceholder: string;
   };
   stats: {
@@ -748,6 +750,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Where would you like to move?",
       userReply: "Poland, I want to work",
       response: "Great! Let me build you a step-by-step relocation roadmap for Poland.",
+      docQuestion: "And which documents do I need first?",
+      docResponse: "Here are 2 documents to start with:",
       inputPlaceholder: "Ask about living in Poland...",
     },
     stats: {
@@ -2161,6 +2165,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Куда вы хотите переехать?",
       userReply: "Польша, хочу работать",
       response: "Отлично! Сейчас составлю для вас пошаговый план переезда в Польшу.",
+      docQuestion: "А какие документы нужны в первую очередь?",
+      docResponse: "Вот 2 документа, с которых стоит начать:",
       inputPlaceholder: "Спросите о жизни в Польше...",
     },
     stats: {
@@ -3577,6 +3583,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Qayerga ko'chib o'tmoqchisiz?",
       userReply: "Polsha, ishlamoqchiman",
       response: "Ajoyib! Hozir sizga Polshaga ko'chish uchun bosqichma-bosqich reja tuzib beraman.",
+      docQuestion: "Birinchi navbatda qanday hujjatlar kerak?",
+      docResponse: "Mana boshlash uchun 2 ta hujjat:",
       inputPlaceholder: "Polshada yashash haqida so'rang...",
     },
     stats: {
@@ -4988,6 +4996,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Nereye taşınmak istersiniz?",
       userReply: "Polonya, çalışmak istiyorum",
       response: "Harika! Sizin için Polonya'ya taşınma konusunda adım adım bir yol haritası hazırlıyorum.",
+      docQuestion: "Peki öncelikle hangi belgeler gerekiyor?",
+      docResponse: "İşte başlamanız gereken 2 belge:",
       inputPlaceholder: "Polonya'da yaşam hakkında sorun...",
     },
     stats: {
@@ -6398,6 +6408,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Ба куҷо мехоҳед кӯчед?",
       userReply: "Полша, мехоҳам кор кунам",
       response: "Аъло! Ҳозир барои шумо нақшаи қадам ба қадами кӯчидан ба Полша тартиб медиҳам.",
+      docQuestion: "Пас, дар навбати аввал кадом ҳуҷҷатҳо лозиманд?",
+      docResponse: "Инак 2 ҳуҷҷате, ки бо онҳо оғоз кардан лозим аст:",
       inputPlaceholder: "Дар бораи зиндагӣ дар Полша бипурсед...",
     },
     stats: {
@@ -7808,6 +7820,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       question: "Куди ви хочете переїхати?",
       userReply: "Польща, хочу працювати",
       response: "Чудово! Зараз складу для вас покроковий план переїзду до Польщі.",
+      docQuestion: "А які документи потрібні в першу чергу?",
+      docResponse: "Ось 2 документи, з яких варто почати:",
       inputPlaceholder: "Запитайте про життя в Польщі...",
     },
     stats: {
