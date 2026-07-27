@@ -122,9 +122,13 @@ export default function DashboardSidebar({
         <nav className="scrollbar-hide flex-1 space-y-3 overflow-y-auto px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1.5">
             <Link
-              href="/"
+              href="/home"
               onClick={onClose}
-              className="flex items-center gap-3 rounded-xl px-3 py-1.5 text-[13px] font-medium text-text-muted transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+              className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
+                pathname === "/home"
+                  ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
+                  : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+              }`}
             >
               {HOME_ICON}
               <span>{d.home}</span>

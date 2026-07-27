@@ -547,6 +547,23 @@ export type Dictionary = {
     };
     stepGuides: Record<string, { heading: string; steps: string[] }>;
     howToGetQuestion: string;
+    home: {
+      flightHeading: string;
+      flightSub: string;
+      greeting: string;
+      guestGreeting: string;
+      greetingSubtitle: string;
+      stepsLabel: string;
+      phaseLabel: string;
+      daysLabel: string;
+      quickActionsHeading: string;
+      quickActionRoadmapDesc: string;
+      quickActionDocumentsDesc: string;
+      quickActionAiDesc: string;
+      quickActionBanksDesc: string;
+      quickActionWorkDesc: string;
+      currentStepCta: string;
+    };
   };
   helpButton: {
     label: string;
@@ -1927,6 +1944,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "How do I get: {title}?",
+      home: {
+        flightHeading: "Your journey",
+        flightSub: "The more steps you complete, the closer the plane gets to your destination.",
+        greeting: "Hi, {name}! 👋",
+        guestGreeting: "Hi there! 👋",
+        greetingSubtitle: "Here's how your move to {country} is progressing.",
+        stepsLabel: "Steps completed",
+        phaseLabel: "Current phase",
+        daysLabel: "Days since joining",
+        quickActionsHeading: "Quick actions",
+        quickActionRoadmapDesc: "Check your step-by-step progress",
+        quickActionDocumentsDesc: "Upload and track your documents",
+        quickActionAiDesc: "Ask the AI assistant a question",
+        quickActionBanksDesc: "Find a bank for newcomers",
+        quickActionWorkDesc: "Search jobs and check salaries",
+        currentStepCta: "Go to step →",
+      },
     },
     helpButton: {
       label: "How to get this?",
@@ -3188,7 +3222,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       sidebar: {
         tagline: "Ваш план переезда",
-        home: "Домой",
+        home: "Главная",
         myPlanSection: "МОЙ ПЛАН",
         roadmap: "Дорожная карта",
         checklist: "Чеклист",
@@ -3345,6 +3379,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "Как получить: {title}?",
+      home: {
+        flightHeading: "Ваш путь",
+        flightSub: "Чем больше шагов выполнено — тем ближе самолёт к цели.",
+        greeting: "Привет, {name}! 👋",
+        guestGreeting: "Привет! 👋",
+        greetingSubtitle: "Вот как продвигается ваш переезд в {country}.",
+        stepsLabel: "Шаги выполнено",
+        phaseLabel: "Текущий этап",
+        daysLabel: "Дней с регистрации",
+        quickActionsHeading: "Быстрые действия",
+        quickActionRoadmapDesc: "Проверьте прогресс по шагам",
+        quickActionDocumentsDesc: "Загрузите и отслеживайте документы",
+        quickActionAiDesc: "Задайте вопрос ИИ-ассистенту",
+        quickActionBanksDesc: "Найдите банк для эмигрантов",
+        quickActionWorkDesc: "Ищите работу и узнайте зарплаты",
+        currentStepCta: "Перейти к шагу →",
+      },
     },
     helpButton: {
       label: "Как это получить?",
@@ -4760,6 +4811,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "Qanday olish mumkin: {title}?",
+      home: {
+        flightHeading: "Sizning yo'lingiz",
+        flightSub: "Qancha ko'p qadam bajarilsa, samolyot manzilingizga shuncha yaqinlashadi.",
+        greeting: "Salom, {name}! 👋",
+        guestGreeting: "Salom! 👋",
+        greetingSubtitle: "{country}ga ko'chishingiz qanday davom etayotgani mana bunday.",
+        stepsLabel: "Bajarilgan qadamlar",
+        phaseLabel: "Joriy bosqich",
+        daysLabel: "Ro'yxatdan o'tgandan beri kunlar",
+        quickActionsHeading: "Tezkor amallar",
+        quickActionRoadmapDesc: "Qadamlar bo'yicha progressni tekshiring",
+        quickActionDocumentsDesc: "Hujjatlarni yuklang va kuzating",
+        quickActionAiDesc: "AI yordamchisiga savol bering",
+        quickActionBanksDesc: "Yangi kelganlar uchun bank toping",
+        quickActionWorkDesc: "Ish qidiring va maoshlarni bilib oling",
+        currentStepCta: "Qadamga o'tish →",
+      },
     },
     helpButton: {
       label: "Buni qanday olish mumkin?",
@@ -6172,6 +6240,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "Nasıl alınır: {title}?",
+      home: {
+        flightHeading: "Yolculuğunuz",
+        flightSub: "Ne kadar çok adım tamamlarsanız, uçak hedefinize o kadar yaklaşır.",
+        greeting: "Merhaba, {name}! 👋",
+        guestGreeting: "Merhaba! 👋",
+        greetingSubtitle: "{country}'a taşınmanız böyle ilerliyor.",
+        stepsLabel: "Tamamlanan adımlar",
+        phaseLabel: "Mevcut aşama",
+        daysLabel: "Katılımdan bu yana geçen gün",
+        quickActionsHeading: "Hızlı işlemler",
+        quickActionRoadmapDesc: "Adım adım ilerlemenizi kontrol edin",
+        quickActionDocumentsDesc: "Belgelerinizi yükleyin ve takip edin",
+        quickActionAiDesc: "Yapay zeka asistanına soru sorun",
+        quickActionBanksDesc: "Yeni gelenler için banka bulun",
+        quickActionWorkDesc: "İş arayın ve maaşları öğrenin",
+        currentStepCta: "Adıma git →",
+      },
     },
     helpButton: {
       label: "Bu nasıl alınır?",
@@ -7584,6 +7669,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "Чӣ тавр гирем: {title}?",
+      home: {
+        flightHeading: "Роҳи шумо",
+        flightSub: "Ҳар қадаре ки иҷро шавад, ҳавопаймо ба ҳадафи шумо ҳамон қадар наздик мешавад.",
+        greeting: "Салом, {name}! 👋",
+        guestGreeting: "Салом! 👋",
+        greetingSubtitle: "Кӯчиши шумо ба {country} чунин пеш меравад.",
+        stepsLabel: "Қадамҳои иҷрошуда",
+        phaseLabel: "Марҳилаи ҷорӣ",
+        daysLabel: "Рӯзҳо аз рӯзи бақайдгирӣ",
+        quickActionsHeading: "Амалҳои зуд",
+        quickActionRoadmapDesc: "Пешрафти қадам ба қадамро тафтиш кунед",
+        quickActionDocumentsDesc: "Ҳуҷҷатҳоро бор кунед ва пайгирӣ кунед",
+        quickActionAiDesc: "Ба ёрдамчии AI савол диҳед",
+        quickActionBanksDesc: "Барои навакак омадагон бонк ёбед",
+        quickActionWorkDesc: "Кор ҷустуҷӯ кунед ва маошро фаҳмед",
+        currentStepCta: "Ба қадам гузаред →",
+      },
     },
     helpButton: {
       label: "Инро чӣ тавр гирем?",
@@ -9000,6 +9102,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToGetQuestion: "Як отримати: {title}?",
+      home: {
+        flightHeading: "Ваш шлях",
+        flightSub: "Що більше кроків виконано, то ближче літак до вашого пункту призначення.",
+        greeting: "Привіт, {name}! 👋",
+        guestGreeting: "Привіт! 👋",
+        greetingSubtitle: "Ось як просувається ваш переїзд до {country}.",
+        stepsLabel: "Кроків виконано",
+        phaseLabel: "Поточний етап",
+        daysLabel: "Днів з реєстрації",
+        quickActionsHeading: "Швидкі дії",
+        quickActionRoadmapDesc: "Перевірте прогрес по кроках",
+        quickActionDocumentsDesc: "Завантажуйте та відстежуйте документи",
+        quickActionAiDesc: "Поставте запитання AI-асистенту",
+        quickActionBanksDesc: "Знайдіть банк для новоприбулих",
+        quickActionWorkDesc: "Шукайте роботу та дізнавайтеся зарплати",
+        currentStepCta: "Перейти до кроку →",
+      },
     },
     helpButton: {
       label: "Як це отримати?",
