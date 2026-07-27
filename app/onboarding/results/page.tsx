@@ -188,12 +188,13 @@ export default function OnboardingResultsPage() {
   const [loading, setLoading] = useState(true);
   const [selectingId, setSelectingId] = useState<string | null>(null);
   const [selectError, setSelectError] = useState(false);
-  const hasFiredConfettiRef = useRef(false);
+  const confettiFiredRef = useRef(false);
 
   useEffect(() => {
-    if (loading || !result || hasFiredConfettiRef.current) return;
-    hasFiredConfettiRef.current = true;
-    fireConfetti();
+    if (!loading && result?.routes && !confettiFiredRef.current) {
+      confettiFiredRef.current = true;
+      fireConfetti();
+    }
   }, [loading, result]);
 
   useEffect(() => {

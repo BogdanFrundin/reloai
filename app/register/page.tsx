@@ -78,8 +78,7 @@ export default function RegisterPage() {
       type: "registration",
     });
     fireConfetti();
-
-    router.push("/onboarding");
+    setTimeout(() => router.push("/onboarding"), 900);
   }
 
   async function handleGoogleSignUp() {
