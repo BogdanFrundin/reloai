@@ -10,6 +10,7 @@ import MiniLangSwitcher from "../_components/MiniLangSwitcher";
 import { useLanguage } from "../_components/LanguageProvider";
 import { dictionaries, LANGUAGES, type Lang } from "../_lib/i18n";
 import { pressScale } from "../_lib/motion";
+import { createNotification } from "../_lib/notifications";
 import { supabase } from "../../lib/supabase";
 
 const inputClasses =
@@ -68,6 +69,12 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
+
+    createNotification({
+      title: "Спасибо за регистрацию",
+      message: "Добро пожаловать в ReloAI! Начнём строить ваш план переезда.",
+      type: "registration",
+    });
 
     router.push("/onboarding");
   }

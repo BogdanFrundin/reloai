@@ -1,6 +1,6 @@
 import { supabase } from "../../lib/supabase";
 
-export type NotificationType = "welcome" | "checklist" | "document" | "inactivity";
+export type NotificationType = "welcome" | "checklist" | "document" | "inactivity" | "registration";
 
 export type NotificationRow = {
   id: string;
@@ -18,6 +18,7 @@ const NOTIFICATION_ROUTES: Record<NotificationType, string> = {
   checklist: "/dashboard",
   document: "/documents",
   inactivity: "/dashboard",
+  registration: "/dashboard",
 };
 
 export function routeForNotification(type: string): string {

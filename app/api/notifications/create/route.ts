@@ -5,7 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://fumsrsguido
 const supabaseAnonKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_vhiLfwZUOEEdprJc9Al5wA_ujzqi5---9Q94ckMBmU";
 
-const ALLOWED_TYPES = ["welcome", "checklist", "document", "inactivity"] as const;
+const ALLOWED_TYPES = ["welcome", "checklist", "document", "inactivity", "registration"] as const;
 
 type CreateNotificationBody = {
   title?: string;

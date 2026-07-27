@@ -43,6 +43,7 @@ const NOTIFICATION_ICONS: Record<string, ReactNode> = {
   checklist: CHECKLIST_ICON,
   document: NAV_ICONS.documents,
   inactivity: INACTIVITY_ICON,
+  registration: WELCOME_ICON,
 };
 
 export default function NotificationBell() {
