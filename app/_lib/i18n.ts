@@ -271,7 +271,20 @@ export type Dictionary = {
   documents: {
     title: string;
     subtitle: string;
-    tabs: { all: string; passport: string; pesel: string; workPermit: string; insurance: string; bank: string };
+    tabs: {
+      all: string;
+      passport: string;
+      pesel: string;
+      workPermit: string;
+      insurance: string;
+      bank: string;
+      biometric: string;
+      address: string;
+      residencePermit: string;
+      taxId: string;
+      employment: string;
+      business: string;
+    };
     status: { verified: string; pending: string; missing: string; locked: string };
     upload: string;
     uploadBtn: string;
@@ -279,8 +292,46 @@ export type Dictionary = {
     viewBtn: string;
     deleteBtn: string;
     unlockBtn: string;
-    docNames: { passportScan: string; passportPhoto: string; peselForm: string; peselLetter: string; workPermitApp: string; sponsorshipLetter: string; healthInsurance: string; travelInsurance: string; bankConfirmation: string; proofOfFunds: string; relocationLetter: string; taxResidency: string };
-    docHints: { passportScan: string; passportPhoto: string; peselForm: string; peselLetter: string; workPermitApp: string; sponsorshipLetter: string; healthInsurance: string; travelInsurance: string; bankConfirmation: string; proofOfFunds: string; relocationLetter: string; taxResidency: string };
+    docNames: {
+      passportScan: string;
+      passportPhoto: string;
+      peselForm: string;
+      peselLetter: string;
+      workPermitApp: string;
+      sponsorshipLetter: string;
+      healthInsurance: string;
+      travelInsurance: string;
+      bankConfirmation: string;
+      proofOfFunds: string;
+      relocationLetter: string;
+      taxResidency: string;
+      biometricConfirmation: string;
+      addressConfirmation: string;
+      residencePermitScan: string;
+      taxIdConfirmation: string;
+      employmentContract: string;
+      businessRegistrationConfirmation: string;
+    };
+    docHints: {
+      passportScan: string;
+      passportPhoto: string;
+      peselForm: string;
+      peselLetter: string;
+      workPermitApp: string;
+      sponsorshipLetter: string;
+      healthInsurance: string;
+      travelInsurance: string;
+      bankConfirmation: string;
+      proofOfFunds: string;
+      relocationLetter: string;
+      taxResidency: string;
+      biometricConfirmation: string;
+      addressConfirmation: string;
+      residencePermitScan: string;
+      taxIdConfirmation: string;
+      employmentContract: string;
+      businessRegistrationConfirmation: string;
+    };
     progressSummary: string;
     autoCompleteToast: string;
     sectionCompleteHeading: string;
@@ -1265,7 +1316,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Documents",
       subtitle: "Everything you need for your relocation, in one place.",
-      tabs: { all: "All", passport: "Passport", pesel: "PESEL", workPermit: "Work Permit", insurance: "Insurance", bank: "Bank" },
+      tabs: {
+        all: "All",
+        passport: "Passport",
+        pesel: "PESEL",
+        workPermit: "Work Permit",
+        insurance: "Insurance",
+        bank: "Bank",
+        biometric: "Biometrics",
+        address: "Address",
+        residencePermit: "Residence Card",
+        taxId: "Tax ID",
+        employment: "Employment",
+        business: "Business",
+      },
       status: { verified: "Verified", pending: "Pending review", missing: "Missing", locked: "Premium" },
       upload: "Drag & drop or click to upload",
       uploadBtn: "Upload",
@@ -1286,6 +1350,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Proof of funds statement",
         relocationLetter: "Employer relocation letter",
         taxResidency: "Tax residency certificate",
+        biometricConfirmation: "Biometric confirmation",
+        addressConfirmation: "Address registration confirmation",
+        residencePermitScan: "Residence card scan",
+        taxIdConfirmation: "NIP confirmation",
+        employmentContract: "Employment contract",
+        businessRegistrationConfirmation: "Business registration confirmation",
       },
       docHints: {
         passportScan: "Needed for most official procedures",
@@ -1300,6 +1370,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Confirms you have enough funds to live on",
         relocationLetter: "Available with Premium",
         taxResidency: "Available with Premium",
+        biometricConfirmation: "Upload after your biometric appointment at Urząd do Spraw Cudzoziemców",
+        addressConfirmation: "Zaświadczenie confirming your address registration (zameldowanie)",
+        residencePermitScan: "Scan of your received residence card (kartę pobytu)",
+        taxIdConfirmation: "Confirmation of your NIP assignment from the tax office",
+        employmentContract: "Signed employment contract (umowa o pracę)",
+        businessRegistrationConfirmation: "CEIDG registration confirmation",
       },
       progressSummary: "Done: {completed} of {total} documents",
       autoCompleteToast: "✓ Step completed automatically",
@@ -2654,7 +2730,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Документы",
       subtitle: "Всё необходимое для переезда — в одном месте.",
-      tabs: { all: "Все", passport: "Паспорт", pesel: "PESEL", workPermit: "Разрешение на работу", insurance: "Страховка", bank: "Банк" },
+      tabs: {
+        all: "Все",
+        passport: "Паспорт",
+        pesel: "PESEL",
+        workPermit: "Разрешение на работу",
+        insurance: "Страховка",
+        bank: "Банк",
+        biometric: "Биометрия",
+        address: "Адрес",
+        residencePermit: "Карта побыту",
+        taxId: "NIP",
+        employment: "Трудоустройство",
+        business: "Бизнес",
+      },
       status: { verified: "Готово", pending: "На проверке", missing: "Отсутствует", locked: "Premium" },
       upload: "Перетащите файл или нажмите, чтобы загрузить",
       uploadBtn: "Загрузить",
@@ -2675,6 +2764,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Подтверждение наличия средств",
         relocationLetter: "Письмо о переезде от работодателя",
         taxResidency: "Справка о налоговом резидентстве",
+        biometricConfirmation: "Подтверждение биометрии",
+        addressConfirmation: "Подтверждение регистрации адреса",
+        residencePermitScan: "Скан карты побыту",
+        taxIdConfirmation: "Подтверждение NIP",
+        employmentContract: "Трудовой договор",
+        businessRegistrationConfirmation: "Подтверждение регистрации бизнеса",
       },
       docHints: {
         passportScan: "Нужен для большинства официальных процедур",
@@ -2689,6 +2784,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Подтверждает наличие средств для проживания",
         relocationLetter: "Доступно с Premium-подпиской",
         taxResidency: "Доступно с Premium-подпиской",
+        biometricConfirmation: "Загрузите после сдачи биометрии в Urząd do Spraw Cudzoziemców",
+        addressConfirmation: "Zaświadczenie о регистрации адреса (zameldowanie)",
+        residencePermitScan: "Скан полученной карты побыту (kartę pobytu)",
+        taxIdConfirmation: "Подтверждение присвоения NIP из налоговой",
+        employmentContract: "Подписанный трудовой договор (umowa o pracę)",
+        businessRegistrationConfirmation: "Подтверждение регистрации CEIDG",
       },
       progressSummary: "Готово: {completed} из {total} документов",
       autoCompleteToast: "✓ Шаг выполнен автоматически",
@@ -4040,7 +4141,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Hujjatlar",
       subtitle: "Ko'chib o'tishingiz uchun kerak bo'lgan hamma narsa bir joyda.",
-      tabs: { all: "Barchasi", passport: "Pasport", pesel: "PESEL", workPermit: "Ish ruxsatnomasi", insurance: "Sug'urta", bank: "Bank" },
+      tabs: {
+        all: "Barchasi",
+        passport: "Pasport",
+        pesel: "PESEL",
+        workPermit: "Ish ruxsatnomasi",
+        insurance: "Sug'urta",
+        bank: "Bank",
+        biometric: "Biometriya",
+        address: "Manzil",
+        residencePermit: "Turar joy kartasi",
+        taxId: "Soliq raqami",
+        employment: "Ishga joylashish",
+        business: "Biznes",
+      },
       status: { verified: "Tasdiqlangan", pending: "Ko'rib chiqilmoqda", missing: "Yo'q", locked: "Premium" },
       upload: "Yuklash uchun sudrab tashlang yoki bosing",
       uploadBtn: "Yuklash",
@@ -4061,6 +4175,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Mablag' mavjudligi haqida ma'lumotnoma",
         relocationLetter: "Ish beruvchining ko'chirish xati",
         taxResidency: "Soliq rezidentligi sertifikati",
+        biometricConfirmation: "Biometriya tasdiqnomasi",
+        addressConfirmation: "Manzil ro'yxatga olinganligi tasdiqnomasi",
+        residencePermitScan: "Turar joy kartasi skani",
+        taxIdConfirmation: "NIP tasdiqnomasi",
+        employmentContract: "Mehnat shartnomasi",
+        businessRegistrationConfirmation: "Biznes ro'yxatga olinganligi tasdiqnomasi",
       },
       docHints: {
         passportScan: "Aksariyat rasmiy tartib-qoidalar uchun kerak",
@@ -4075,6 +4195,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Yashash uchun yetarli mablag' borligini tasdiqlaydi",
         relocationLetter: "Premium bilan mavjud",
         taxResidency: "Premium bilan mavjud",
+        biometricConfirmation: "Urząd do Spraw Cudzoziemców'da biometriya topshirgandan keyin yuklang",
+        addressConfirmation: "Manzil ro'yxatga olinganligini (zameldowanie) tasdiqlovchi zaświadczenie",
+        residencePermitScan: "Olingan turar joy kartasi (karta pobytu) skani",
+        taxIdConfirmation: "Soliq idorasidan NIP berilganligi tasdiqnomasi",
+        employmentContract: "Imzolangan mehnat shartnomasi (umowa o pracę)",
+        businessRegistrationConfirmation: "CEIDG ro'yxatga olinganligi tasdiqnomasi",
       },
       progressSummary: "Bajarildi: {total} tadan {completed} tasi",
       autoCompleteToast: "✓ Qadam avtomatik bajarildi",
@@ -5423,7 +5549,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Belgeler",
       subtitle: "Taşınmanız için ihtiyacınız olan her şey tek bir yerde.",
-      tabs: { all: "Tümü", passport: "Pasaport", pesel: "PESEL", workPermit: "Çalışma İzni", insurance: "Sigorta", bank: "Banka" },
+      tabs: {
+        all: "Tümü",
+        passport: "Pasaport",
+        pesel: "PESEL",
+        workPermit: "Çalışma İzni",
+        insurance: "Sigorta",
+        bank: "Banka",
+        biometric: "Biyometri",
+        address: "Adres",
+        residencePermit: "İkamet Kartı",
+        taxId: "Vergi No",
+        employment: "İstihdam",
+        business: "İşletme",
+      },
       status: { verified: "Onaylandı", pending: "İnceleniyor", missing: "Eksik", locked: "Premium" },
       upload: "Yüklemek için sürükleyin veya tıklayın",
       uploadBtn: "Yükle",
@@ -5444,6 +5583,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Maddi yeterlilik belgesi",
         relocationLetter: "İşveren taşınma mektubu",
         taxResidency: "Vergi mukimliği belgesi",
+        biometricConfirmation: "Biyometri onayı",
+        addressConfirmation: "Adres kaydı onayı",
+        residencePermitScan: "İkamet kartı taraması",
+        taxIdConfirmation: "NIP onayı",
+        employmentContract: "İş sözleşmesi",
+        businessRegistrationConfirmation: "İşletme kaydı onayı",
       },
       docHints: {
         passportScan: "Çoğu resmi işlem için gereklidir",
@@ -5458,6 +5603,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Yaşamak için yeterli maddi kaynağınız olduğunu kanıtlar",
         relocationLetter: "Premium ile kullanılabilir",
         taxResidency: "Premium ile kullanılabilir",
+        biometricConfirmation: "Urząd do Spraw Cudzoziemców'da biyometri verdikten sonra yükleyin",
+        addressConfirmation: "Adres kaydınızı (zameldowanie) onaylayan zaświadczenie",
+        residencePermitScan: "Aldığınız ikamet kartının (karta pobytu) taraması",
+        taxIdConfirmation: "Vergi dairesinden NIP verildiğine dair onay",
+        employmentContract: "İmzalanmış iş sözleşmesi (umowa o pracę)",
+        businessRegistrationConfirmation: "CEIDG kayıt onayı",
       },
       progressSummary: "Tamamlandı: {total} belgeden {completed}'i",
       autoCompleteToast: "✓ Adım otomatik olarak tamamlandı",
@@ -6806,7 +6957,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Ҳуҷҷатҳо",
       subtitle: "Барои кӯчиданатон лозим будаи ҳама чиз дар як ҷо.",
-      tabs: { all: "Ҳама", passport: "Шиноснома", pesel: "PESEL", workPermit: "Иҷозати кор", insurance: "Бима", bank: "Бонк" },
+      tabs: {
+        all: "Ҳама",
+        passport: "Шиноснома",
+        pesel: "PESEL",
+        workPermit: "Иҷозати кор",
+        insurance: "Бима",
+        bank: "Бонк",
+        biometric: "Биометрия",
+        address: "Суроға",
+        residencePermit: "Корти иқомат",
+        taxId: "NIP",
+        employment: "Шуғл",
+        business: "Бизнес",
+      },
       status: { verified: "Тасдиқшуда", pending: "Дар баррасӣ", missing: "Мавҷуд нест", locked: "Премиум" },
       upload: "Барои боркунӣ кашида гузоред ё зер кунед",
       uploadBtn: "Бор кардан",
@@ -6827,6 +6991,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Маълумотнома дар бораи мавҷудияти маблағ",
         relocationLetter: "Мактуби кӯчонидани корфармо",
         taxResidency: "Шаҳодатномаи резиденти андоз",
+        biometricConfirmation: "Тасдиқи биометрия",
+        addressConfirmation: "Тасдиқи бақайдгирии суроға",
+        residencePermitScan: "Скани корти иқомат",
+        taxIdConfirmation: "Тасдиқи NIP",
+        employmentContract: "Шартномаи меҳнатӣ",
+        businessRegistrationConfirmation: "Тасдиқи бақайдгирии бизнес",
       },
       docHints: {
         passportScan: "Барои аксари расмиёти расмӣ лозим аст",
@@ -6841,6 +7011,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Мавҷудияти маблағи кофӣ барои зиндагиро тасдиқ мекунад",
         relocationLetter: "Бо Премиум дастрас аст",
         taxResidency: "Бо Премиум дастрас аст",
+        biometricConfirmation: "Пас аз супоридани биометрия дар Urząd do Spraw Cudzoziemców бор кунед",
+        addressConfirmation: "Zaświadczenie дар бораи бақайдгирии суроға (zameldowanie)",
+        residencePermitScan: "Скани корти иқомати гирифташуда (karta pobytu)",
+        taxIdConfirmation: "Тасдиқи додашудани NIP аз идораи андоз",
+        employmentContract: "Шартномаи меҳнатии имзошуда (umowa o pracę)",
+        businessRegistrationConfirmation: "Тасдиқи бақайдгирии CEIDG",
       },
       progressSummary: "Иҷро шуд: {completed} аз {total} ҳуҷҷат",
       autoCompleteToast: "✓ Қадам ба таври худкор иҷро шуд",
@@ -8193,7 +8369,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
     documents: {
       title: "Документи",
       subtitle: "Все необхідне для переїзду — в одному місці.",
-      tabs: { all: "Усі", passport: "Паспорт", pesel: "PESEL", workPermit: "Дозвіл на роботу", insurance: "Страховка", bank: "Банк" },
+      tabs: {
+        all: "Усі",
+        passport: "Паспорт",
+        pesel: "PESEL",
+        workPermit: "Дозвіл на роботу",
+        insurance: "Страховка",
+        bank: "Банк",
+        biometric: "Біометрія",
+        address: "Адреса",
+        residencePermit: "Карта побиту",
+        taxId: "NIP",
+        employment: "Працевлаштування",
+        business: "Бізнес",
+      },
       status: { verified: "Готово", pending: "На перевірці", missing: "Відсутній", locked: "Premium" },
       upload: "Перетягніть файл або натисніть, щоб завантажити",
       uploadBtn: "Завантажити",
@@ -8214,6 +8403,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Підтвердження наявності коштів",
         relocationLetter: "Лист про переїзд від роботодавця",
         taxResidency: "Довідка про податкове резидентство",
+        biometricConfirmation: "Підтвердження біометрії",
+        addressConfirmation: "Підтвердження реєстрації адреси",
+        residencePermitScan: "Скан карти побиту",
+        taxIdConfirmation: "Підтвердження NIP",
+        employmentContract: "Трудовий договір",
+        businessRegistrationConfirmation: "Підтвердження реєстрації бізнесу",
       },
       docHints: {
         passportScan: "Потрібен для більшості офіційних процедур",
@@ -8228,6 +8423,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         proofOfFunds: "Підтверджує наявність коштів для проживання",
         relocationLetter: "Доступно з Premium",
         taxResidency: "Доступно з Premium",
+        biometricConfirmation: "Завантажте після складання біометрії в Urząd do Spraw Cudzoziemców",
+        addressConfirmation: "Zaświadczenie про реєстрацію адреси (zameldowanie)",
+        residencePermitScan: "Скан отриманої карти побиту (kartę pobytu)",
+        taxIdConfirmation: "Підтвердження присвоєння NIP з податкової",
+        employmentContract: "Підписаний трудовий договір (umowa o pracę)",
+        businessRegistrationConfirmation: "Підтвердження реєстрації CEIDG",
       },
       progressSummary: "Готово: {completed} з {total} документів",
       autoCompleteToast: "✓ Крок виконано автоматично",

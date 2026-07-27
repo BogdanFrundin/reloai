@@ -16,8 +16,33 @@ import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus
 type Category = "all" | DocumentItem["category"];
 type Status = DocStatus;
 
-const TABS: Category[] = ["all", "passport", "pesel", "workPermit", "insurance", "bank"];
-const CATEGORIES: DocumentItem["category"][] = ["passport", "pesel", "workPermit", "insurance", "bank"];
+const TABS: Category[] = [
+  "all",
+  "passport",
+  "pesel",
+  "workPermit",
+  "insurance",
+  "bank",
+  "biometric",
+  "address",
+  "residencePermit",
+  "taxId",
+  "employment",
+  "business",
+];
+const CATEGORIES: DocumentItem["category"][] = [
+  "passport",
+  "pesel",
+  "workPermit",
+  "insurance",
+  "bank",
+  "biometric",
+  "address",
+  "residencePermit",
+  "taxId",
+  "employment",
+  "business",
+];
 
 const CATEGORY_EMOJI: Record<DocumentItem["category"], string> = {
   passport: "🪪",
@@ -25,6 +50,12 @@ const CATEGORY_EMOJI: Record<DocumentItem["category"], string> = {
   workPermit: "💼",
   insurance: "🛡️",
   bank: "🏦",
+  biometric: "🧬",
+  address: "🏠",
+  residencePermit: "🪪",
+  taxId: "🧾",
+  employment: "📝",
+  business: "🏢",
 };
 
 const STATUS_BORDER_CLASS: Record<Status, string> = {
@@ -69,6 +100,15 @@ const PLUS_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
   </svg>
 );
+
+const CATEGORY_TO_STEP: Record<string, string> = {
+  biometric: "biometric",
+  address: "address_registration",
+  residencePermit: "residence_permit",
+  taxId: "tax_id",
+  employment: "employment_registration",
+  business: "business_registration",
+};
 
 function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
   const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
@@ -296,6 +336,22 @@ export default function DocumentsPage() {
       },
       { onConflict: "user_id,document_type" },
     );
+
+    for (const [category, stepKey] of Object.entries(CATEGORY_TO_STEP)) {
+      const docsInCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
+      if (docsInCategory.length === 0) continue;
+      const categoryCompletedCount = docsInCategory.filter((doc) => doc.status !== "missing").length;
+      await supabase.from("progress").upsert(
+        {
+          user_id: user.id,
+          country: profile?.country ?? null,
+          document_type: stepKey,
+          steps_completed: categoryCompletedCount,
+          total_steps: docsInCategory.length,
+        },
+        { onConflict: "user_id,document_type" },
+      );
+    }
   }
 
   function handleUpload(id: string, file: File) {

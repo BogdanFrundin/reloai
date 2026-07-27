@@ -1,6 +1,17 @@
 import type { Dictionary } from "./i18n";
 
-export type DocCategory = "passport" | "pesel" | "workPermit" | "insurance" | "bank";
+export type DocCategory =
+  | "passport"
+  | "pesel"
+  | "workPermit"
+  | "insurance"
+  | "bank"
+  | "biometric"
+  | "address"
+  | "residencePermit"
+  | "taxId"
+  | "employment"
+  | "business";
 export type DocStatus = "verified" | "pending" | "missing" | "locked";
 export type DocNameKey = keyof Dictionary["documents"]["docNames"];
 
@@ -25,6 +36,12 @@ export const DOCUMENT_CATALOG: DocumentItem[] = [
   { id: "proof-of-funds", nameKey: "proofOfFunds", category: "bank", status: "missing" },
   { id: "relocation-letter", nameKey: "relocationLetter", category: "workPermit", status: "locked" },
   { id: "tax-residency", nameKey: "taxResidency", category: "bank", status: "locked" },
+  { id: "biometric-confirmation", nameKey: "biometricConfirmation", category: "biometric", status: "missing" },
+  { id: "address-confirmation", nameKey: "addressConfirmation", category: "address", status: "missing" },
+  { id: "residence-permit-scan", nameKey: "residencePermitScan", category: "residencePermit", status: "missing" },
+  { id: "tax-id-confirmation", nameKey: "taxIdConfirmation", category: "taxId", status: "missing" },
+  { id: "employment-contract", nameKey: "employmentContract", category: "employment", status: "missing" },
+  { id: "business-registration-confirmation", nameKey: "businessRegistrationConfirmation", category: "business", status: "missing" },
 ];
 
 export const STATUS_BADGE_CLASS: Record<DocStatus, string> = {
