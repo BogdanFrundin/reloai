@@ -71,8 +71,8 @@ export default function RegisterPage() {
     }
 
     createNotification({
-      title: "Спасибо за регистрацию",
-      message: "Добро пожаловать в ReloAI! Начнём строить ваш план переезда.",
+      title: "Спасибо за регистрацию! 🎉",
+      message: "Поздравляем, вы успешно зарегистрировались в ReloAI.",
       type: "registration",
     });
 
