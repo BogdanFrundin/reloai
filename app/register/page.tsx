@@ -33,6 +33,7 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -41,6 +42,12 @@ export default function RegisterPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError(a.passwordMismatch);
+      return;
+    }
+
     setError(null);
     setLoading(true);
 
@@ -103,7 +110,8 @@ export default function RegisterPage() {
     );
   }
 
-  const submitDisabled = loading || !passwordValid;
+  const passwordsMatch = confirmPassword.length === 0 || confirmPassword === password;
+  const submitDisabled = loading || !passwordValid || confirmPassword !== password;
 
   return (
     <PageTransition>
@@ -182,6 +190,25 @@ export default function RegisterPage() {
             label={a.passwordLabel}
             t={dictionaries[lang].password}
           />
+
+          <div>
+            <label htmlFor="confirmPassword" className="text-sm font-medium text-text-secondary">
+              {a.confirmPasswordLabel}
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              placeholder="••••••••"
+              className={inputClasses}
+            />
+            {!passwordsMatch && (
+              <p className="mt-1.5 text-xs text-red-400">{a.passwordMismatch}</p>
+            )}
+          </div>
 
           {/* Tooltip wrapper — disabled buttons don't fire mouse events, so hover lives on the div */}
           <div className="group/submit relative">

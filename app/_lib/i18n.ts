@@ -161,6 +161,8 @@ export type Dictionary = {
       email: string;
       passwordLabel: string;
       passwordTooltip: string;
+      confirmPasswordLabel: string;
+      passwordMismatch: string;
       submit: string;
       hasAccount: string;
       login: string;
@@ -1202,6 +1204,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "Email",
         passwordLabel: "Password",
         passwordTooltip: "Password doesn't meet requirements",
+        confirmPasswordLabel: "Confirm password",
+        passwordMismatch: "Passwords don't match",
         submit: "Register",
         hasAccount: "Already have an account?",
         login: "Log in",
@@ -2616,6 +2620,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "Email",
         passwordLabel: "Пароль",
         passwordTooltip: "Пароль не соответствует требованиям",
+        confirmPasswordLabel: "Подтвердите пароль",
+        passwordMismatch: "Пароли не совпадают",
         submit: "Зарегистрироваться",
         hasAccount: "Уже есть аккаунт?",
         login: "Войти",
@@ -4027,6 +4033,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "Email",
         passwordLabel: "Parol",
         passwordTooltip: "Parol talablarga javob bermaydi",
+        confirmPasswordLabel: "Parolni tasdiqlang",
+        passwordMismatch: "Parollar mos kelmadi",
         submit: "Ro'yxatdan o'tish",
         hasAccount: "Allaqachon hisobingiz bormi?",
         login: "Kirish",
@@ -5435,6 +5443,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "E-posta",
         passwordLabel: "Şifre",
         passwordTooltip: "Şifre gereksinimleri karşılamıyor",
+        confirmPasswordLabel: "Şifreyi onaylayın",
+        passwordMismatch: "Şifreler eşleşmiyor",
         submit: "Kayıt ol",
         hasAccount: "Zaten hesabınız var mı?",
         login: "Giriş yap",
@@ -6843,6 +6853,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "Email",
         passwordLabel: "Парол",
         passwordTooltip: "Парол ба талабот ҷавобгӯ нест",
+        confirmPasswordLabel: "Пароли худро тасдиқ кунед",
+        passwordMismatch: "Паролҳо мувофиқат намекунанд",
         submit: "Бақайдгирӣ",
         hasAccount: "Аллакай аккаунт доред?",
         login: "Ворид шавед",
@@ -8255,6 +8267,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         email: "Email",
         passwordLabel: "Пароль",
         passwordTooltip: "Пароль не відповідає вимогам",
+        confirmPasswordLabel: "Підтвердіть пароль",
+        passwordMismatch: "Паролі не збігаються",
         submit: "Зареєструватися",
         hasAccount: "Вже є акаунт?",
         login: "Увійти",
