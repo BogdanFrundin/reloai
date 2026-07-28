@@ -39,6 +39,7 @@ export type Dictionary = {
     trustCountries: string;
     trustLanguages: string;
     trustFree: string;
+    trustSocialProof: string;
   };
   chat: {
     assistantName: string;
@@ -752,6 +753,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 countries",
       trustLanguages: "6 languages",
       trustFree: "Free to start",
+      trustSocialProof: "Over 1,000 people have already relocated successfully with ReloAI",
     },
     chat: {
       assistantName: "ReloAI Assistant",
@@ -2184,6 +2186,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 страны",
       trustLanguages: "6 языков",
       trustFree: "Бесплатно для старта",
+      trustSocialProof: "Более 1000 человек уже успешно переехали с ReloAI",
     },
     chat: {
       assistantName: "Ассистент ReloAI",
@@ -3619,6 +3622,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 mamlakat",
       trustLanguages: "6 til",
       trustFree: "Bepul boshlash",
+      trustSocialProof: "1000 dan ortiq odam ReloAI yordamida allaqachon muvaffaqiyatli ko'chib o'tdi",
     },
     chat: {
       assistantName: "ReloAI Yordamchisi",
@@ -5049,6 +5053,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 ülke",
       trustLanguages: "6 dil",
       trustFree: "Ücretsiz başlangıç",
+      trustSocialProof: "1000'den fazla kişi ReloAI ile başarıyla taşındı bile",
     },
     chat: {
       assistantName: "ReloAI Asistanı",
@@ -6478,6 +6483,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 кишвар",
       trustLanguages: "6 забон",
       trustFree: "Оғози ройгон",
+      trustSocialProof: "Зиёда аз 1000 нафар аллакай бо ёрии ReloAI бомуваффақият кӯчиданд",
     },
     chat: {
       assistantName: "Ёрирасони ReloAI",
@@ -7907,6 +7913,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       trustCountries: "3 країни",
       trustLanguages: "6 мов",
       trustFree: "Безкоштовний старт",
+      trustSocialProof: "Понад 1000 людей уже успішно переїхали за допомогою ReloAI",
     },
     chat: {
       assistantName: "Асистент ReloAI",

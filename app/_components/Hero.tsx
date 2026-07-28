@@ -91,6 +91,16 @@ export default function Hero() {
               </span>
             </div>
           </Reveal>
+
+          <Reveal delay={280}>
+            <div className="mt-4 flex items-center gap-2 text-sm text-text-muted">
+              <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+                <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 motion-reduce:animate-none" />
+                <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              </span>
+              {t.hero.trustSocialProof}
+            </div>
+          </Reveal>
         </div>
 
         <Reveal delay={120} className="flex justify-center lg:justify-end">
