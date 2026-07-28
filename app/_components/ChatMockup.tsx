@@ -21,7 +21,7 @@ export default function ChatMockup() {
   ];
 
   return (
-    <div className="w-full max-w-md rounded-3xl border border-border-subtle bg-surface-1 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-6">
+    <div className="w-full max-w-sm rounded-3xl border border-border-subtle bg-surface-1 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-5">
       <div className="mb-4 flex items-center gap-3 border-b border-border-subtle pb-4">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
           AI
@@ -38,11 +38,11 @@ export default function ChatMockup() {
         </div>
       </div>
 
-      <div className="flex min-h-[320px] flex-col gap-3">
+      <div className="flex min-h-[260px] flex-col gap-2.5">
         {conversation.map((message, index) => (
           <div key={index} className={`flex ${message.from === "user" ? "justify-end" : "justify-start"}`}>
             <p
-              className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+              className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${
                 message.from === "user"
                   ? "rounded-br-md bg-accent text-white"
                   : "rounded-bl-md border border-border-subtle bg-surface-2 text-text-secondary"
@@ -56,34 +56,34 @@ export default function ChatMockup() {
         <div className="grid grid-cols-2 gap-3 pt-1">
           {DOC_CARDS.map((doc) => (
             <div key={doc.title} className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-              <div className="relative flex h-20 items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2b4a] to-[#0b1220]">
+              <div className="relative flex h-16 items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2b4a] to-[#0b1220]">
                 <div
                   aria-hidden
                   className="absolute inset-0 opacity-40"
                   style={{ backgroundImage: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 60%)" }}
                 />
-                <div className="relative h-14 w-11 -rotate-3 rounded-md bg-gradient-to-br from-[#2c4270] to-[#18294a] shadow-lg ring-1 ring-white/15">
-                  <div className="absolute inset-x-0 top-2 flex justify-center">
-                    <span className="flex h-4 w-4 items-center justify-center rounded-full border-[1.5px] border-amber-400/80">
-                      <span className="h-1 w-1 rounded-full bg-amber-400/80" />
+                <div className="relative h-11 w-9 -rotate-3 rounded-md bg-gradient-to-br from-[#2c4270] to-[#18294a] shadow-lg ring-1 ring-white/15">
+                  <div className="absolute inset-x-0 top-1.5 flex justify-center">
+                    <span className="flex h-3 w-3 items-center justify-center rounded-full border-[1.5px] border-amber-400/80">
+                      <span className="h-0.5 w-0.5 rounded-full bg-amber-400/80" />
                     </span>
                   </div>
-                  <div className="absolute inset-x-1.5 bottom-2 space-y-0.5">
+                  <div className="absolute inset-x-1 bottom-1.5 space-y-0.5">
                     <div className="h-0.5 rounded-full bg-white/25" />
                     <div className="h-0.5 w-3/4 rounded-full bg-white/25" />
                   </div>
                   {doc.kind === "visa" && (
-                    <span className="absolute -right-2 -top-1 flex h-6 w-6 rotate-12 items-center justify-center rounded-full border-2 border-red-400/70 text-[7px] font-bold text-red-400/90">
+                    <span className="absolute -right-1.5 -top-1 flex h-5 w-5 rotate-12 items-center justify-center rounded-full border-2 border-red-400/70 text-[6px] font-bold text-red-400/90">
                       OK
                     </span>
                   )}
                 </div>
               </div>
-              <div className="p-3">
-                <p className="truncate text-sm font-semibold text-text-primary">{doc.title}</p>
-                <p className="mt-0.5 truncate text-xs text-text-muted">{doc.subtitle}</p>
+              <div className="p-2.5">
+                <p className="truncate text-[13px] font-semibold text-text-primary">{doc.title}</p>
+                <p className="mt-0.5 truncate text-[11px] text-text-muted">{doc.subtitle}</p>
                 <span
-                  className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                  className={`mt-1.5 inline-block rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${
                     doc.statusColor === "emerald" ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"
                   }`}
                 >
