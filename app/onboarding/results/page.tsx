@@ -110,10 +110,10 @@ function RouteCard({
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl border p-6 backdrop-blur-sm transition-[border-color,box-shadow] duration-200 ${
+      className={`relative flex flex-col rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none ${
         isRecommended
-          ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]"
-          : "border-border-subtle bg-surface-1"
+          ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_60px_-8px_var(--accent)]"
+          : "border-border-subtle bg-surface-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)]"
       }`}
     >
       {isRecommended && (
