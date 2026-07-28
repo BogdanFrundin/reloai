@@ -5,8 +5,8 @@ import { useLanguage } from "./LanguageProvider";
 type MessageFrom = "ai" | "user";
 
 const DOC_CARDS = [
-  { title: "Скан паспорта", subtitle: "Нужен почти для всех шагов", status: "Готово", statusColor: "emerald" as const },
-  { title: "Заявление на PESEL", subtitle: "Первый шаг легализации", status: "На проверке", statusColor: "amber" as const },
+  { title: "Скан паспорта", subtitle: "Нужен почти для всех шагов", status: "Готово", statusColor: "emerald" as const, kind: "passport" as const },
+  { title: "Виза или ВНЖ", subtitle: "Основа для легализации", status: "На проверке", statusColor: "amber" as const, kind: "visa" as const },
 ];
 
 export default function ChatMockup() {
@@ -56,20 +56,28 @@ export default function ChatMockup() {
         <div className="grid grid-cols-2 gap-3 pt-1">
           {DOC_CARDS.map((doc) => (
             <div key={doc.title} className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-              <div
-                className={`flex h-16 items-center justify-center ${
-                  doc.statusColor === "emerald" ? "bg-gradient-to-br from-emerald-500/20 to-emerald-500/5" : "bg-gradient-to-br from-amber-500/20 to-amber-500/5"
-                }`}
-              >
-                <svg
-                  className={`h-7 w-7 ${doc.statusColor === "emerald" ? "text-emerald-400" : "text-amber-400"}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
-                </svg>
+              <div className="relative flex h-20 items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2b4a] to-[#0b1220]">
+                <div
+                  aria-hidden
+                  className="absolute inset-0 opacity-40"
+                  style={{ backgroundImage: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 60%)" }}
+                />
+                <div className="relative h-14 w-11 -rotate-3 rounded-md bg-gradient-to-br from-[#2c4270] to-[#18294a] shadow-lg ring-1 ring-white/15">
+                  <div className="absolute inset-x-0 top-2 flex justify-center">
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full border-[1.5px] border-amber-400/80">
+                      <span className="h-1 w-1 rounded-full bg-amber-400/80" />
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-1.5 bottom-2 space-y-0.5">
+                    <div className="h-0.5 rounded-full bg-white/25" />
+                    <div className="h-0.5 w-3/4 rounded-full bg-white/25" />
+                  </div>
+                  {doc.kind === "visa" && (
+                    <span className="absolute -right-2 -top-1 flex h-6 w-6 rotate-12 items-center justify-center rounded-full border-2 border-red-400/70 text-[7px] font-bold text-red-400/90">
+                      OK
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="p-3">
                 <p className="truncate text-sm font-semibold text-text-primary">{doc.title}</p>
