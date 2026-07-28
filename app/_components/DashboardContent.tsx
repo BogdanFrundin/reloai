@@ -105,7 +105,7 @@ export default function DashboardContent() {
           {t.dashboard.route.checklistHeading}
         </h2>
       )}
-      <div className="mt-4 flex flex-col">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {!loading &&
           phases.map((phase, index) => (
             <PhaseCard
@@ -114,7 +114,6 @@ export default function DashboardContent() {
               status={phaseStatuses[phase.key]}
               index={index}
               completed={completed}
-              isLast={index === phases.length - 1}
             />
           ))}
       </div>
