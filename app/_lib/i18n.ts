@@ -720,8 +720,6 @@ export type Dictionary = {
       steps: string;
       bestFor: string;
       selectError: string;
-      planReadyTitle: string;
-      planReadyMessage: string;
     };
   };
 };
@@ -2158,8 +2156,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Steps",
         bestFor: "Best for",
         selectError: "Couldn't save your selected route. Please try again.",
-        planReadyTitle: "Welcome! Your relocation plan is ready 🎉",
-        planReadyMessage: "We've selected {route} as your recommended route — explore your personalized roadmap.",
       },
     },
   },
@@ -3597,8 +3593,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Шаги",
         bestFor: "Подходит для",
         selectError: "Не удалось сохранить выбранный маршрут. Попробуйте снова.",
-        planReadyTitle: "Добро пожаловать! Ваш план переезда готов 🎉",
-        planReadyMessage: "Мы выбрали «{route}» в качестве вашего рекомендованного маршрута — изучите свою персональную дорожную карту.",
       },
     },
   },
@@ -5031,8 +5025,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Bosqichlar",
         bestFor: "Kimlarga mos",
         selectError: "Tanlangan yo'lni saqlab bo'lmadi. Qayta urinib ko'ring.",
-        planReadyTitle: "Xush kelibsiz! Sizning ko'chish rejangiz tayyor 🎉",
-        planReadyMessage: "Sizning tavsiya etilgan yo'lingiz sifatida {route} tanlandi — shaxsiy yo'l xaritangizni ko'rib chiqing.",
       },
     },
   },
@@ -6464,8 +6456,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Adımlar",
         bestFor: "Kimler için uygun",
         selectError: "Seçilen rota kaydedilemedi. Lütfen tekrar deneyin.",
-        planReadyTitle: "Hoş geldiniz! Taşınma planınız hazır 🎉",
-        planReadyMessage: "Önerilen rotanız olarak {route} seçildi — kişiselleştirilmiş yol haritanızı keşfedin.",
       },
     },
   },
@@ -7897,8 +7887,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Қадамҳо",
         bestFor: "Барои кӣ мувофиқ аст",
         selectError: "Роҳи интихобшуда захира нашуд. Лутфан аз нав кӯшиш кунед.",
-        planReadyTitle: "Хуш омадед! Нақшаи кӯчиши шумо омода аст 🎉",
-        planReadyMessage: "Мо {route}-ро ҳамчун роҳи тавсияшудаи шумо интихоб кардем — харитаи роҳи шахсии худро тамошо кунед.",
       },
     },
   },
@@ -9336,8 +9324,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Кроки",
         bestFor: "Підходить для",
         selectError: "Не вдалося зберегти обраний маршрут. Спробуйте ще раз.",
-        planReadyTitle: "Ласкаво просимо! Ваш план переїзду готовий 🎉",
-        planReadyMessage: "Ми обрали «{route}» як ваш рекомендований маршрут — перегляньте свою персональну дорожню карту.",
       },
     },
   },

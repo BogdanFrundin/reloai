@@ -274,8 +274,8 @@ export default function OnboardingResultsPage() {
       await refreshProfile();
 
       createNotification({
-        title: t.onboarding.results.planReadyTitle,
-        message: t.onboarding.results.planReadyMessage.replace("{route}", route.name),
+        title: "Спасибо за регистрацию! 🎉",
+        message: `Вы успешно заполнили данные анкеты и выбрали план релокации (${route.name}). Вы можете изменить эти данные в любой момент в настройках профиля.`,
         type: "welcome",
       });
 

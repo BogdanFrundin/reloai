@@ -14,7 +14,7 @@ export type NotificationRow = {
 
 // Where clicking a notification of this type should navigate to.
 const NOTIFICATION_ROUTES: Record<NotificationType, string> = {
-  welcome: "/dashboard",
+  welcome: "/profile",
   checklist: "/dashboard",
   document: "/documents",
   inactivity: "/dashboard",
