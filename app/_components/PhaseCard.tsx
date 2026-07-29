@@ -150,11 +150,10 @@ export default function PhaseCard({
         )}
         <button
           type="button"
-          onClick={() => !isWaiting && setExpanded((prev) => !prev)}
-          disabled={isWaiting}
+          onClick={() => setExpanded((prev) => !prev)}
           aria-expanded={expanded}
           aria-label={expanded ? d.collapseBtn : d.expandBtn}
-          className="flex w-full flex-col items-start gap-3 text-left disabled:cursor-not-allowed"
+          className="flex w-full flex-col items-start gap-3 text-left"
         >
           <div className="flex w-full items-center justify-between">
             <span
@@ -170,11 +169,9 @@ export default function PhaseCard({
             </span>
             <div className="flex items-center gap-2">
               <StatusIcon status={status} />
-              {!isWaiting && (
-                <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
-                  {CHEVRON_ICON}
-                </span>
-              )}
+              <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
+                {CHEVRON_ICON}
+              </span>
             </div>
           </div>
 
@@ -203,7 +200,7 @@ export default function PhaseCard({
           <StatusBadge status={status} label={statusLabel} />
         </button>
 
-        {expanded && !isWaiting && (
+        {expanded && (
           <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
             {phase.steps.map((step) => {
               const checked = completed.has(step.documentType);
