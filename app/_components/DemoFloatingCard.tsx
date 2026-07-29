@@ -12,7 +12,7 @@ export default function DemoFloatingCard() {
   if (dismissed) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-8rem)] rounded-2xl border border-border-subtle bg-panel/95 p-4 pr-8 shadow-xl shadow-black/40 backdrop-blur-xl sm:max-w-xs lg:left-72">
+    <div className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-2rem)] rounded-2xl border border-border-subtle bg-panel/95 p-4 pr-8 shadow-xl shadow-black/40 backdrop-blur-xl sm:max-w-xs">
       <button
         type="button"
         onClick={() => setDismissed(true)}
