@@ -669,6 +669,7 @@ export type Dictionary = {
     bannerText: string;
     registerNow: string;
     floatingGreeting: string;
+    dismissAria: string;
     promptHeading: string;
     promptBody: string;
     promptDismiss: string;
@@ -2104,6 +2105,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "You are in preview mode. Register to save your progress and access all features.",
       registerNow: "Register Now",
       floatingGreeting: "👋 You're exploring ReloAI — Register free to save progress",
+      dismissAria: "Dismiss",
       promptHeading: "Register to unlock this feature",
       promptBody: "Create a free account to save your progress and unlock every feature.",
       promptDismiss: "Maybe later",
@@ -3540,6 +3542,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "Вы находитесь в режиме предпросмотра. Зарегистрируйтесь, чтобы сохранить прогресс и получить доступ ко всем функциям.",
       registerNow: "Зарегистрироваться",
       floatingGreeting: "👋 Вы изучаете ReloAI — зарегистрируйтесь бесплатно, чтобы сохранить прогресс",
+      dismissAria: "Закрыть",
       promptHeading: "Зарегистрируйтесь, чтобы разблокировать эту функцию",
       promptBody: "Создайте бесплатный аккаунт, чтобы сохранить прогресс и открыть все функции.",
       promptDismiss: "Может быть позже",
@@ -4971,6 +4974,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "Siz ko'rib chiqish rejimidasiz. Jarayoningizni saqlash va barcha funksiyalardan foydalanish uchun ro'yxatdan o'ting.",
       registerNow: "Hozir ro'yxatdan o'ting",
       floatingGreeting: "👋 Siz ReloAI'ni ko'rib chiqyapsiz — jarayoningizni saqlash uchun bepul ro'yxatdan o'ting",
+      dismissAria: "Yopish",
       promptHeading: "Bu funksiyani ochish uchun ro'yxatdan o'ting",
       promptBody: "Jarayoningizni saqlash va barcha funksiyalarni ochish uchun bepul hisob yarating.",
       promptDismiss: "Keyinroq",
@@ -6401,6 +6405,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "Önizleme modundasınız. İlerlemenizi kaydetmek ve tüm özelliklere erişmek için kayıt olun.",
       registerNow: "Şimdi Kayıt Ol",
       floatingGreeting: "👋 ReloAI'yi keşfediyorsunuz — ilerlemenizi kaydetmek için ücretsiz kayıt olun",
+      dismissAria: "Kapat",
       promptHeading: "Bu özelliğin kilidini açmak için kayıt olun",
       promptBody: "İlerlemenizi kaydetmek ve tüm özelliklerin kilidini açmak için ücretsiz bir hesap oluşturun.",
       promptDismiss: "Daha sonra",
@@ -7831,6 +7836,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "Шумо дар реҷаи пешнамоиш ҳастед. Барои нигоҳ доштани пешрафт ва дастрасӣ ба ҳамаи хусусиятҳо бақайд гиред.",
       registerNow: "Ҳозир бақайд гиред",
       floatingGreeting: "👋 Шумо ReloAI-ро меомӯзед — барои нигоҳ доштани пешрафт ройгон бақайд гиред",
+      dismissAria: "Пӯшидан",
       promptHeading: "Барои кушодани ин хусусият бақайд гиред",
       promptBody: "Барои нигоҳ доштани пешрафт ва кушодани ҳамаи хусусиятҳо аккаунти ройгон созед.",
       promptDismiss: "Дертар",
@@ -9267,6 +9273,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       bannerText: "Ви перебуваєте в режимі попереднього перегляду. Зареєструйтеся, щоб зберегти прогрес і отримати доступ до всіх функцій.",
       registerNow: "Зареєструватися",
       floatingGreeting: "👋 Ви вивчаєте ReloAI — зареєструйтеся безкоштовно, щоб зберегти прогрес",
+      dismissAria: "Закрити",
       promptHeading: "Зареєструйтеся, щоб розблокувати цю функцію",
       promptBody: "Створіть безкоштовний акаунт, щоб зберегти прогрес і відкрити всі функції.",
       promptDismiss: "Можливо, пізніше",
