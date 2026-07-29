@@ -1,7 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import WelcomeToast from "./WelcomeToast";
@@ -31,7 +29,6 @@ function isGoalKey(value: string | null | undefined): value is GoalKey {
 }
 
 export default function DashboardContent() {
-  const searchParams = useSearchParams();
   const { profile } = useAuth();
   const { t, lang } = useLanguage();
   const {
@@ -44,16 +41,6 @@ export default function DashboardContent() {
     registerPromptOpen,
     setRegisterPromptOpen,
   } = useDashboardProgress();
-  const [showWelcome, setShowWelcome] = useState(false);
-
-  useEffect(() => {
-    if (searchParams.get("welcome") === "1") {
-      setShowWelcome(true);
-      const timer = setTimeout(() => setShowWelcome(false), 8000);
-      return () => clearTimeout(timer);
-    }
-  }, [searchParams]);
-
   const countryEntry = t.countries.list[COUNTRY_INDEX[country] ?? 0];
   const goalLabel = isGoalKey(profile?.goal) ? t.onboarding.goalOptions[profile.goal] : undefined;
   const fromLabel = profile?.current_country ? getCountryName(profile.current_country, lang) : undefined;
@@ -85,20 +72,6 @@ export default function DashboardContent() {
         </h1>
         <p className="mt-2 text-text-muted">{subtitle}</p>
       </Reveal>
-
-      {showWelcome && profile?.selected_route && (
-        <Reveal>
-          <div className="mt-8 rounded-2xl border border-accent/30 bg-accent/[0.06] p-6 shadow-[0_0_40px_-14px_var(--accent)]">
-            <p className="font-semibold text-accent-bright">✓ Welcome!</p>
-            <h2 className="mt-2 text-xl font-bold text-text-primary">Your relocation plan is ready</h2>
-            <p className="mt-2 text-sm text-text-secondary">
-              We&apos;ve selected <span className="font-semibold">{profile.selected_route.name}</span> as your
-              recommended route based on your profile.
-            </p>
-            <p className="mt-1 text-xs text-text-muted">{profile.selected_route.description}</p>
-          </div>
-        </Reveal>
-      )}
 
       {!loading && phases.length > 0 && (
         <h2 id="checklist" className="mt-8 scroll-mt-24 text-lg font-semibold text-text-primary">

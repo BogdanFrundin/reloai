@@ -8,6 +8,7 @@ import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
 import { supabase } from "../../../lib/supabase";
 import { fireConfetti } from "../../_lib/confetti";
+import { createNotification } from "../../_lib/notifications";
 import type { Dictionary } from "../../_lib/i18n";
 import type { Route, RouteEngineResult } from "../../api/route/route";
 
@@ -271,7 +272,14 @@ export default function OnboardingResultsPage() {
     try {
       await supabase.from("profiles").update({ selected_route: route }).eq("id", user.id);
       await refreshProfile();
-      router.push("/dashboard?welcome=1");
+
+      createNotification({
+        title: t.onboarding.results.planReadyTitle,
+        message: t.onboarding.results.planReadyMessage.replace("{route}", route.name),
+        type: "welcome",
+      });
+
+      router.push("/dashboard");
     } catch (err) {
       console.error("Failed to save selected route:", err);
       setSelectError(true);
