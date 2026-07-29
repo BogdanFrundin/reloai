@@ -84,7 +84,7 @@ const CHECK_ICON = (
 );
 
 const TRASH_ICON = (
-  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+  <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m2 0v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7h12z" />
   </svg>
 );
@@ -187,7 +187,7 @@ function DocumentRow({
               type="button"
               aria-label={deleteLabel}
               onClick={() => onDelete(doc.id)}
-              className="flex h-7 w-7 items-center justify-center rounded-full text-slate-600 transition-colors duration-150 hover:text-red-400"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors duration-150 hover:text-red-400"
             >
               {TRASH_ICON}
             </button>
