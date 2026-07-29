@@ -285,7 +285,7 @@ export default function Countries() {
                       ) : (
                         <Link
                           href={ctaHref}
-                          className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-[var(--cta-border)] bg-[var(--cta-bg)] text-sm font-semibold text-white shadow-[var(--cta-shadow)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:border-accent-bright hover:bg-accent-bright hover:shadow-[0_0_28px_-6px_var(--accent-bright)]"
+                          className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-[var(--cta-border)] bg-[var(--cta-bg)] text-sm font-semibold text-white shadow-[var(--cta-shadow)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:border-[var(--cta-border-hover)] hover:bg-[var(--cta-bg-hover)] hover:shadow-[var(--cta-shadow-hover)]"
                           style={
                             {
                               padding: "10px 22px",
@@ -293,6 +293,9 @@ export default function Countries() {
                               "--cta-bg": `rgba(${r},${g},${b},0.2)`,
                               "--cta-border": `rgba(${r},${g},${b},0.45)`,
                               "--cta-shadow": `0 0 24px rgba(${r},${g},${b},0.22)`,
+                              "--cta-bg-hover": `rgba(${r},${g},${b},0.85)`,
+                              "--cta-border-hover": `rgba(${r},${g},${b},0.95)`,
+                              "--cta-shadow-hover": `0 0 32px rgba(${r},${g},${b},0.55), 0 0 60px rgba(${r},${g},${b},0.25)`,
                             } as React.CSSProperties
                           }
                         >
