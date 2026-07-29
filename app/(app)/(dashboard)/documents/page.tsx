@@ -311,7 +311,7 @@ export default function DocumentsPage() {
 
   async function syncDocumentStatus(doc: DocumentItem) {
     if (!user) return;
-    await supabase.from("documents").upsert(
+    const { error } = await supabase.from("documents").upsert(
       {
         user_id: user.id,
         doc_id: doc.id,
@@ -320,13 +320,16 @@ export default function DocumentsPage() {
       },
       { onConflict: "user_id,doc_id" },
     );
+    if (error) {
+      console.error("Failed to sync document status:", error);
+    }
   }
 
   async function syncProgress(docs: DocumentItem[]) {
     if (!user) return;
     const relevant = docs.filter((doc) => doc.status !== "locked");
     const completedCount = relevant.filter((doc) => doc.status !== "missing").length;
-    await supabase.from("progress").upsert(
+    const { error } = await supabase.from("progress").upsert(
       {
         user_id: user.id,
         country: profile?.country ?? null,
@@ -336,12 +339,15 @@ export default function DocumentsPage() {
       },
       { onConflict: "user_id,document_type" },
     );
+    if (error) {
+      console.error("Failed to sync progress:", error);
+    }
 
     for (const [category, stepKey] of Object.entries(CATEGORY_TO_STEP)) {
       const docsInCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
       if (docsInCategory.length === 0) continue;
       const categoryCompletedCount = docsInCategory.filter((doc) => doc.status !== "missing").length;
-      await supabase.from("progress").upsert(
+      const { error: categoryError } = await supabase.from("progress").upsert(
         {
           user_id: user.id,
           country: profile?.country ?? null,
@@ -351,6 +357,9 @@ export default function DocumentsPage() {
         },
         { onConflict: "user_id,document_type" },
       );
+      if (categoryError) {
+        console.error("Failed to sync progress:", categoryError);
+      }
     }
   }
 
