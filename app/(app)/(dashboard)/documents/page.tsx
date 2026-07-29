@@ -124,6 +124,7 @@ function DocumentRow({
   uploadLabel,
   deleteLabel,
   onUpload,
+  onView,
   onDelete,
   demoMode,
   onDemoBlocked,
@@ -136,6 +137,7 @@ function DocumentRow({
   uploadLabel: string;
   deleteLabel: string;
   onUpload: (id: string, file: File) => void;
+  onView: (doc: DocumentItem) => void;
   onDelete: (id: string) => void;
   demoMode: boolean;
   onDemoBlocked: () => void;
@@ -179,7 +181,9 @@ function DocumentRow({
           <>
             <button
               type="button"
-              className={`rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+              onClick={() => onView(doc)}
+              disabled={!doc.storagePath}
+              className={`rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
             >
               {viewLabel}
             </button>
@@ -277,7 +281,7 @@ export default function DocumentsPage() {
 
     supabase
       .from("documents")
-      .select("doc_id, status, file_name")
+      .select("doc_id, status, file_name, storage_path")
       .eq("user_id", user.id)
       .then(({ data }) => {
         if (!active || !data || data.length === 0) return;
@@ -286,7 +290,12 @@ export default function DocumentsPage() {
           prev.map((doc) => {
             const saved = savedById.get(doc.id);
             if (!saved) return doc;
-            return { ...doc, status: saved.status as Status, fileName: saved.file_name ?? undefined };
+            return {
+              ...doc,
+              status: saved.status as Status,
+              fileName: saved.file_name ?? undefined,
+              storagePath: saved.storage_path ?? undefined,
+            };
           }),
         );
       });
@@ -317,6 +326,7 @@ export default function DocumentsPage() {
         doc_id: doc.id,
         status: doc.status,
         file_name: doc.fileName ?? null,
+        storage_path: doc.storagePath ?? null,
       },
       { onConflict: "user_id,doc_id" },
     );
@@ -363,11 +373,23 @@ export default function DocumentsPage() {
     }
   }
 
-  function handleUpload(id: string, file: File) {
+  async function handleUpload(id: string, file: File) {
     const doc = documents.find((d) => d.id === id);
-    if (!doc) return;
+    if (!doc || !user) return;
 
     const updated: DocumentItem = { ...doc, status: "verified", fileName: file.name };
+
+    const storagePath = `${user.id}/${doc.id}-${file.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from("documents")
+      .upload(storagePath, file, { upsert: true });
+
+    if (uploadError) {
+      console.error("Failed to upload document file:", uploadError);
+    } else {
+      updated.storagePath = storagePath;
+    }
+
     const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
 
@@ -384,11 +406,21 @@ export default function DocumentsPage() {
     });
   }
 
+  async function handleView(doc: DocumentItem) {
+    if (!doc.storagePath) return;
+    const { data, error } = await supabase.storage.from("documents").createSignedUrl(doc.storagePath, 60);
+    if (error || !data) {
+      console.error("Failed to create signed URL for document view:", error);
+      return;
+    }
+    window.open(data.signedUrl, "_blank");
+  }
+
   function handleDelete(id: string) {
     const doc = documents.find((d) => d.id === id);
     if (!doc) return;
 
-    const updated: DocumentItem = { ...doc, status: "missing", fileName: undefined };
+    const updated: DocumentItem = { ...doc, status: "missing", fileName: undefined, storagePath: undefined };
     const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
     syncDocumentStatus(updated);
@@ -542,6 +574,7 @@ export default function DocumentsPage() {
                         uploadLabel={t.documents.uploadBtn}
                         deleteLabel={t.documents.deleteBtn}
                         onUpload={handleUpload}
+                        onView={handleView}
                         onDelete={(id) => setDeleteTargetId(id)}
                         demoMode={demoMode}
                         onDemoBlocked={() => setPromptOpen(true)}

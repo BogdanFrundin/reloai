@@ -21,6 +21,7 @@ export type DocumentItem = {
   category: DocCategory;
   status: DocStatus;
   fileName?: string;
+  storagePath?: string;
 };
 
 export const DOCUMENT_CATALOG: DocumentItem[] = [

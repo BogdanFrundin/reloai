@@ -106,9 +106,16 @@ create table if not exists public.documents (
   doc_id text not null,
   status text not null,
   file_name text,
+  storage_path text,
   updated_at timestamptz default now(),
   unique (user_id, doc_id)
 );
+
+alter table public.documents add column if not exists storage_path text;
+
+-- storage_path is the Supabase Storage object path (in the "documents" bucket)
+-- for the uploaded file, e.g. "<user_id>/<doc_id>-<file_name>" — see
+-- app/(app)/(dashboard)/documents/page.tsx.
 
 alter table public.documents enable row level security;
 
