@@ -6,7 +6,6 @@ import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { supabase } from "../../lib/supabase";
 import {
-  STEPS_COMPLETED_ON_ONBOARDING,
   buildChecklistSteps,
   buildPhases,
   derivePhaseStatuses,
@@ -45,8 +44,8 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
 
   useEffect(() => {
     if (!user) {
-      // Demo/preview mode: seed believable sample progress instead of hitting Supabase.
-      setCompleted(new Set(STEPS_COMPLETED_ON_ONBOARDING));
+      // Demo/preview mode: nothing has actually been done yet, so don't fake progress.
+      setCompleted(new Set());
       setLoading(false);
       return;
     }
