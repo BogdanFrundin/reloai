@@ -11,6 +11,7 @@ import LogoutConfirmModal from "./LogoutConfirmModal";
 import { PROFILE_ICON, SETTINGS_ICON, LOGOUT_ICON } from "./AccountIcons";
 import { NAV_ICONS, type MainKey, type OtherKey } from "./NavIcons";
 import { getFlagUrl } from "../_lib/flags";
+import { pressScale } from "../_lib/motion";
 
 const ICON_PROPS = {
   className: "h-5 w-5",
@@ -96,12 +97,22 @@ export default function DashboardSidebar({
         }`}
       >
         <div className="px-5 py-4">
-          <Link href="/dashboard" onClick={onClose} className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
-              R
-            </span>
-            <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
-          </Link>
+          <div className="flex items-center justify-between gap-2">
+            <Link href="/dashboard" onClick={onClose} className="flex min-w-0 items-center gap-2">
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
+                R
+              </span>
+              <span className="truncate text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
+            </Link>
+            <Link
+              href="/"
+              onClick={onClose}
+              aria-label={d.landingLinkAria}
+              className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-1 text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary ${pressScale}`}
+            >
+              {HOME_ICON}
+            </Link>
+          </div>
           <p className="mt-1.5 text-xs text-text-muted">{d.tagline}</p>
 
           {countryEntry && (

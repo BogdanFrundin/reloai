@@ -505,6 +505,7 @@ export type Dictionary = {
       checklist: string;
       aiAssistant: string;
       servicesSection: string;
+      landingLinkAria: string;
     };
     route: {
       heading: string;
@@ -1798,6 +1799,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Checklist",
         aiAssistant: "AI Assistant",
         servicesSection: "SERVICES",
+        landingLinkAria: "Go to landing page",
       },
       route: {
         heading: "Your relocation options",
@@ -3236,6 +3238,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Чеклист",
         aiAssistant: "AI Ассистент",
         servicesSection: "СЕРВИСЫ",
+        landingLinkAria: "Перейти на главную страницу",
       },
       route: {
         heading: "Ваши варианты переезда",
@@ -4671,6 +4674,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Ro'yxat",
         aiAssistant: "AI Yordamchi",
         servicesSection: "XIZMATLAR",
+        landingLinkAria: "Bosh sahifaga o'tish",
       },
       route: {
         heading: "Sizning ko'chish variantlaringiz",
@@ -6103,6 +6107,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Kontrol listesi",
         aiAssistant: "AI Asistan",
         servicesSection: "HİZMETLER",
+        landingLinkAria: "Ana sayfaya git",
       },
       route: {
         heading: "Taşınma seçenekleriniz",
@@ -7535,6 +7540,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Рӯйхат",
         aiAssistant: "Ёрдамчии AI",
         servicesSection: "ХИЗМАТРАСОНӢ",
+        landingLinkAria: "Гузаштан ба саҳифаи асосӣ",
       },
       route: {
         heading: "Вариантҳои кӯчидани шумо",
@@ -8971,6 +8977,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         checklist: "Чекліст",
         aiAssistant: "AI Асистент",
         servicesSection: "СЕРВІСИ",
+        landingLinkAria: "Перейти на головну сторінку",
       },
       route: {
         heading: "Ваші варіанти переїзду",
