@@ -51,7 +51,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/home");
   }
 
   async function handleGoogleSignIn() {
@@ -59,7 +59,7 @@ export default function LoginPage() {
     setGoogleLoading(true);
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: `${window.location.origin}/home` },
     });
     if (oauthError) {
       setError(oauthError.message);
