@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import MiniLangSwitcher from "./MiniLangSwitcher";
@@ -10,7 +11,7 @@ import UpgradeModal from "./UpgradeModal";
 import { pressScale } from "../_lib/motion";
 
 export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
   const { t } = useLanguage();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
@@ -51,18 +52,37 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       <div className="flex items-center gap-3">
         <MiniLangSwitcher />
 
-        <button
-          type="button"
-          onClick={() => setUpgradeOpen(true)}
-          className="hidden items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 sm:flex"
-        >
-          {planLabel}
-          {isFree && <span className="text-text-muted">· {t.topbar.upgrade}</span>}
-        </button>
+        {user ? (
+          <>
+            <button
+              type="button"
+              onClick={() => setUpgradeOpen(true)}
+              className="hidden items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 sm:flex"
+            >
+              {planLabel}
+              {isFree && <span className="text-text-muted">· {t.topbar.upgrade}</span>}
+            </button>
 
-        <NotificationBell />
+            <NotificationBell />
 
-        <ProfileAvatar />
+            <ProfileAvatar />
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className={`flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover ${pressScale}`}
+            >
+              {t.nav.login}
+            </Link>
+            <Link
+              href="/register"
+              className={`flex-shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+            >
+              {t.auth.login.register}
+            </Link>
+          </>
+        )}
       </div>
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
