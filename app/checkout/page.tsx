@@ -158,7 +158,7 @@ function CheckoutContent() {
                   <div className="flex items-center justify-end gap-1.5">
                     <span className="text-xs font-medium text-text-muted/70 line-through">{meta.originalPrice}</span>
                     {meta.discountLabel && (
-                      <span className="rounded-full bg-red-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-red-600">
+                      <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent-bright">
                         {meta.discountLabel}
                       </span>
                     )}

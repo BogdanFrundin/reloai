@@ -172,7 +172,7 @@ export default function PricingPlansGrid({ onPlanSelected }: { onPlanSelected?: 
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-text-muted/70 line-through">{plan.originalPrice}</span>
                   {plan.discountLabel && (
-                    <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[11px] font-semibold text-red-600">
+                    <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-semibold text-accent-bright">
                       {plan.discountLabel}
                     </span>
                   )}
