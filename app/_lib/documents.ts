@@ -24,15 +24,15 @@ export type DocumentItem = {
 };
 
 export const DOCUMENT_CATALOG: DocumentItem[] = [
-  { id: "passport-scan", nameKey: "passportScan", category: "passport", status: "verified" },
-  { id: "passport-photo", nameKey: "passportPhoto", category: "passport", status: "verified" },
-  { id: "pesel-form", nameKey: "peselForm", category: "pesel", status: "pending" },
+  { id: "passport-scan", nameKey: "passportScan", category: "passport", status: "missing" },
+  { id: "passport-photo", nameKey: "passportPhoto", category: "passport", status: "missing" },
+  { id: "pesel-form", nameKey: "peselForm", category: "pesel", status: "missing" },
   { id: "pesel-letter", nameKey: "peselLetter", category: "pesel", status: "missing" },
-  { id: "work-permit-app", nameKey: "workPermitApp", category: "workPermit", status: "pending" },
+  { id: "work-permit-app", nameKey: "workPermitApp", category: "workPermit", status: "missing" },
   { id: "sponsorship-letter", nameKey: "sponsorshipLetter", category: "workPermit", status: "missing" },
-  { id: "health-insurance", nameKey: "healthInsurance", category: "insurance", status: "verified" },
+  { id: "health-insurance", nameKey: "healthInsurance", category: "insurance", status: "missing" },
   { id: "travel-insurance", nameKey: "travelInsurance", category: "insurance", status: "missing" },
-  { id: "bank-confirmation", nameKey: "bankConfirmation", category: "bank", status: "pending" },
+  { id: "bank-confirmation", nameKey: "bankConfirmation", category: "bank", status: "missing" },
   { id: "proof-of-funds", nameKey: "proofOfFunds", category: "bank", status: "missing" },
   { id: "relocation-letter", nameKey: "relocationLetter", category: "workPermit", status: "locked" },
   { id: "tax-residency", nameKey: "taxResidency", category: "bank", status: "locked" },
