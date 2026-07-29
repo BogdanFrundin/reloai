@@ -212,6 +212,7 @@ export type Dictionary = {
     documentsSection: string;
     viewAllDocuments: string;
     editBtn: string;
+    changeRouteBtn: string;
     editModalTitle: string;
     cityLabel: string;
     cityPlaceholder: string;
@@ -1280,6 +1281,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Documents Status",
       viewAllDocuments: "View all documents",
       editBtn: "Edit relocation info",
+      changeRouteBtn: "Change relocation plan",
       editModalTitle: "Edit relocation info",
       cityLabel: "City",
       cityPlaceholder: "e.g. Warsaw",
@@ -2717,6 +2719,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Статус документов",
       viewAllDocuments: "Все документы",
       editBtn: "Изменить данные о релокации",
+      changeRouteBtn: "Изменить план переезда",
       editModalTitle: "Изменить данные о релокации",
       cityLabel: "Город",
       cityPlaceholder: "например, Варшава",
@@ -4151,6 +4154,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Hujjatlar holati",
       viewAllDocuments: "Barcha hujjatlar",
       editBtn: "Ko'chish ma'lumotlarini tahrirlash",
+      changeRouteBtn: "Ko'chish rejasini o'zgartirish",
       editModalTitle: "Ko'chish ma'lumotlarini tahrirlash",
       cityLabel: "Shahar",
       cityPlaceholder: "masalan, Varshava",
@@ -5582,6 +5586,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Belge Durumu",
       viewAllDocuments: "Tüm belgeler",
       editBtn: "Taşınma bilgilerini düzenle",
+      changeRouteBtn: "Taşınma planını değiştir",
       editModalTitle: "Taşınma bilgilerini düzenle",
       cityLabel: "Şehir",
       cityPlaceholder: "örn. Varşova",
@@ -7013,6 +7018,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Ҳолати ҳуҷҷатҳо",
       viewAllDocuments: "Ҳамаи ҳуҷҷатҳо",
       editBtn: "Тағир додани маълумоти кӯчиш",
+      changeRouteBtn: "Тағир додани нақшаи кӯчиш",
       editModalTitle: "Тағир додани маълумоти кӯчиш",
       cityLabel: "Шаҳр",
       cityPlaceholder: "масалан, Варшава",
@@ -8448,6 +8454,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       documentsSection: "Статус документів",
       viewAllDocuments: "Усі документи",
       editBtn: "Редагувати дані про переїзд",
+      changeRouteBtn: "Змінити план переїзду",
       editModalTitle: "Редагувати дані про переїзд",
       cityLabel: "Місто",
       cityPlaceholder: "напр., Варшава",

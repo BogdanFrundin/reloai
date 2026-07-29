@@ -359,13 +359,21 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <button
-              type="button"
-              onClick={openEdit}
-              className={`mt-4 w-full rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-            >
-              {p.editBtn}
-            </button>
+            <div className="mt-4 flex gap-3">
+              <button
+                type="button"
+                onClick={openEdit}
+                className={`flex-1 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+              >
+                {p.editBtn}
+              </button>
+              <Link
+                href="/onboarding/results"
+                className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-center text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
+              >
+                {p.changeRouteBtn}
+              </Link>
+            </div>
           </div>
         </Reveal>
 
