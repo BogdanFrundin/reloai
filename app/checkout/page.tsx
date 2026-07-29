@@ -156,7 +156,7 @@ function CheckoutContent() {
               <div className="text-right">
                 {meta.originalPrice && (
                   <div className="flex items-center justify-end gap-1.5">
-                    <span className="text-sm font-semibold text-text-secondary line-through decoration-2">{meta.originalPrice}</span>
+                    <span className="text-sm font-medium text-text-secondary line-through decoration-text-muted decoration-1">{meta.originalPrice}</span>
                     {meta.discountLabel && (
                       <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent-bright">
                         {meta.discountLabel}
