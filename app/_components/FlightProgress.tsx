@@ -32,9 +32,9 @@ export default function FlightProgress() {
   const destName = t.countries.list[destIndex === -1 ? 0 : destIndex]?.name ?? country;
   const originName = originCode ? getCountryName(originCode, lang) : null;
 
-  const P0: [number, number] = [10, 72];
+  const P0: [number, number] = [15, 78];
   const P1: [number, number] = [50, 8];
-  const P2: [number, number] = [90, 28];
+  const P2: [number, number] = [85, 33];
 
   // Where the flags sit on the visible globe surface — independent of the
   // path/plane curve above, which keeps its own P0/P1/P2 untouched.
@@ -60,7 +60,7 @@ export default function FlightProgress() {
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[58%] h-[340px] w-[340px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
-            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.35), 0 0 90px 30px rgba(59,130,246,0.18)" }}
+            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.18), 0 0 90px 30px rgba(59,130,246,0.09)" }}
           >
             <Image
               src="/images/earth.jpg"
@@ -70,13 +70,13 @@ export default function FlightProgress() {
               className="object-cover"
               style={{ objectPosition: "center 35%" }}
             />
-            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.55 }} />
+            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.35 }} />
             <div
               aria-hidden
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 8%, rgba(0,0,0,0.05), rgba(4,8,20,0.6) 60%, rgba(2,4,12,0.88) 100%)",
+                  "radial-gradient(circle at 50% 20%, rgba(10,20,40,0.15), rgba(4,8,20,0.55) 55%, rgba(2,4,12,0.85) 100%)",
               }}
             />
           </div>
@@ -117,7 +117,7 @@ export default function FlightProgress() {
             style={{
               left: `${plane.x}%`,
               top: `${plane.y}%`,
-              transform: "translate(-50%, -50%) rotate(-90deg)",
+              transform: "translate(-50%, -50%)",
             }}
           >
             <svg
