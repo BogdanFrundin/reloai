@@ -111,22 +111,23 @@ export default function FlightProgress() {
           </div>
 
           <div
-            className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_24px_-4px_var(--accent)] transition-[left,top] duration-[2000ms] ease-[var(--ease-out-strong)]"
+            className="absolute transition-[left,top] duration-[2000ms] ease-[var(--ease-out-strong)]"
             style={{
               left: `${plane.x}%`,
               top: `${plane.y}%`,
-              transform: `translate(-50%, -50%) rotate(${plane.angle}deg)`,
-              perspective: "800px",
+              transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="animate-plane-barrel-roll motion-reduce:animate-none" style={{ transformStyle: "preserve-3d" }}>
-              <svg className="h-6 w-10" fill="currentColor" viewBox="0 0 120 60">
-                <path d="M8 24C8 18 14 15 26 15L75 15C85 15 92 18 97 24C92 30 85 33 75 33L26 33C14 33 8 30 8 24Z" />
-                <path d="M12 15L28 15L20 2Z" />
-                <path d="M45 33L85 33L66 44Z" />
-                <ellipse cx="60" cy="39" rx="5" ry="2.5" />
-              </svg>
-            </div>
+            <svg
+              className="h-8 w-14 text-accent-bright drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)]"
+              fill="currentColor"
+              viewBox="0 0 120 60"
+            >
+              <path d="M8 24C8 18 14 15 26 15L75 15C85 15 92 18 97 24C92 30 85 33 75 33L26 33C14 33 8 30 8 24Z" />
+              <path d="M12 15L28 15L20 2Z" />
+              <path d="M45 33L85 33L66 44Z" />
+              <ellipse cx="60" cy="39" rx="5" ry="2.5" />
+            </svg>
           </div>
         </div>
 

@@ -153,19 +153,6 @@ body {
   }
 }
 
-@keyframes plane-barrel-roll {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
-.animate-plane-barrel-roll {
-  animation: plane-barrel-roll 3.5s linear infinite;
-}
-
 @keyframes slide-up {
   from {
     opacity: 0;
