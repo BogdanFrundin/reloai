@@ -155,7 +155,7 @@ export default function PhaseCard({
   return (
     <Reveal delay={index * 60}>
       <div
-        className={`relative overflow-hidden rounded-2xl p-5 transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+        className={`relative flex h-full flex-col overflow-hidden rounded-2xl p-5 transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
           isActive
             ? "border border-accent/60 bg-accent/[0.05] shadow-[0_0_40px_-12px_var(--accent)]"
             : isDone
@@ -227,7 +227,7 @@ export default function PhaseCard({
           <button
             type="button"
             onClick={handleWhatNext}
-            className={`mt-4 w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+            className={`mt-auto w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
             {d.whatNextBtn}
           </button>
