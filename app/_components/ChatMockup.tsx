@@ -11,6 +11,27 @@ const DOC_CARDS = [
   { title: "Виза или ВНЖ", subtitle: "Основа для легализации", status: "На проверке", statusColor: "amber" as const, kind: "visa" as const },
 ];
 
+const DOC_ICON_TILE_CLASS: Record<"passport" | "visa", string> = {
+  passport: "bg-blue-500/15 text-blue-400",
+  visa: "bg-amber-500/15 text-amber-400",
+};
+
+const PASSPORT_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <rect x="4" y="3.5" width="16" height="17" rx="2" />
+    <circle cx="9" cy="10" r="1.75" />
+    <path strokeLinecap="round" d="M6.5 15.5h5M13.5 8h4M13.5 11h4" />
+  </svg>
+);
+
+const VISA_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3.5H7.5a2 2 0 00-2 2v13a2 2 0 002 2h9a2 2 0 002-2V8l-4.5-4.5z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3.5V8h4.5" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 13.5l2 2 4-4" />
+  </svg>
+);
+
 // Pacing for the simulated live-conversation reveal — AI "replies" get a
 // slightly longer pause (plus a typing indicator) than the visitor's turns.
 const DELAY_BEFORE_USER_MS = 900;
@@ -153,58 +174,10 @@ export default function ChatMockup() {
         >
           {DOC_CARDS.map((doc) => (
             <div key={doc.title} className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-              <div className="relative flex h-16 items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2b4a] to-[#0b1220]">
-                <div
-                  aria-hidden
-                  className="absolute inset-0 opacity-40"
-                  style={{ backgroundImage: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 60%)" }}
-                />
-                {doc.kind === "passport" ? (
-                  <div
-                    className="relative h-12 w-9 -rotate-3 rounded-[3px] bg-gradient-to-br from-[#2c4270] to-[#18294a] ring-1 ring-white/15"
-                    style={{
-                      boxShadow:
-                        "0 6px 12px -4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 1px rgba(255,255,255,0.12)",
-                      backgroundImage:
-                        "repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px)",
-                    }}
-                  >
-                    <div className="absolute inset-[2.5px] rounded-[2px] border border-white/10" />
-                    <div className="absolute inset-x-0 top-2 flex justify-center">
-                      <svg className="h-3.5 w-3.5 text-amber-400/90" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2.5l6.5 2.6v5.4c0 4.6-2.8 8.1-6.5 9.5-3.7-1.4-6.5-4.9-6.5-9.5V5.1L12 2.5z" />
-                        <path
-                          d="M12 6.6l1.5 3 3.3.4-2.4 2.3.6 3.3-2.9-1.6-2.9 1.6.6-3.3-2.4-2.3 3.3-.4 1.5-3z"
-                          fill="#18294a"
-                          opacity="0.6"
-                        />
-                      </svg>
-                    </div>
-                    <div className="absolute inset-x-1.5 bottom-1.5 space-y-[3px]">
-                      <div className="h-[2.5px] w-full rounded-full bg-white/30" />
-                      <div className="h-[2px] w-1/2 rounded-full bg-white/20" />
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className="relative h-9 w-14 rounded-md bg-gradient-to-br from-[#1f3a5f] to-[#0d1c30] ring-1 ring-white/15"
-                    style={{
-                      boxShadow:
-                        "0 6px 12px -4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 1px rgba(255,255,255,0.12)",
-                    }}
-                  >
-                    <div className="absolute left-1.5 top-1.5 h-2 w-2.5 rounded-[1.5px] bg-gradient-to-br from-amber-200 to-amber-500/90 ring-[0.5px] ring-black/20" />
-                    <div className="absolute bottom-1.5 left-1.5 h-3.5 w-2.5 rounded-[1px] bg-white/15 ring-1 ring-white/20" />
-                    <div className="absolute bottom-1.5 right-1.5 left-[26px] space-y-[2.5px]">
-                      <div className="h-[2px] w-full rounded-full bg-white/30" />
-                      <div className="h-[2px] w-2/3 rounded-full bg-white/20" />
-                      <div className="h-[2px] w-1/3 rounded-full bg-white/15" />
-                    </div>
-                    <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 rotate-6 items-center justify-center rounded-full border-2 border-red-400/80 bg-[#0d1c30] text-[6px] font-bold text-red-400/90 shadow-sm">
-                      OK
-                    </span>
-                  </div>
-                )}
+              <div className="flex h-16 items-center justify-center bg-surface-1">
+                <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${DOC_ICON_TILE_CLASS[doc.kind]}`}>
+                  {doc.kind === "passport" ? PASSPORT_ICON : VISA_ICON}
+                </span>
               </div>
               <div className="p-2.5">
                 <p className="truncate text-[13px] font-semibold text-text-primary">{doc.title}</p>
