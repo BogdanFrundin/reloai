@@ -11,27 +11,6 @@ const DOC_CARDS = [
   { title: "Виза или ВНЖ", subtitle: "Основа для легализации", status: "На проверке", statusColor: "amber" as const, kind: "visa" as const },
 ];
 
-const DOC_ICON_TILE_CLASS: Record<"passport" | "visa", string> = {
-  passport: "bg-blue-500/15 text-blue-400",
-  visa: "bg-amber-500/15 text-amber-400",
-};
-
-const PASSPORT_ICON = (
-  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <rect x="4" y="3.5" width="16" height="17" rx="2" />
-    <circle cx="9" cy="10" r="1.75" />
-    <path strokeLinecap="round" d="M6.5 15.5h5M13.5 8h4M13.5 11h4" />
-  </svg>
-);
-
-const VISA_ICON = (
-  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3.5H7.5a2 2 0 00-2 2v13a2 2 0 002 2h9a2 2 0 002-2V8l-4.5-4.5z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14 3.5V8h4.5" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 13.5l2 2 4-4" />
-  </svg>
-);
-
 // Pacing for the simulated live-conversation reveal — AI "replies" get a
 // slightly longer pause (plus a typing indicator) than the visitor's turns.
 const DELAY_BEFORE_USER_MS = 900;
@@ -174,10 +153,28 @@ export default function ChatMockup() {
         >
           {DOC_CARDS.map((doc) => (
             <div key={doc.title} className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-2">
-              <div className="flex h-16 items-center justify-center bg-surface-1">
-                <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${DOC_ICON_TILE_CLASS[doc.kind]}`}>
-                  {doc.kind === "passport" ? PASSPORT_ICON : VISA_ICON}
-                </span>
+              <div className="relative flex h-16 items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2b4a] to-[#0b1220]">
+                <div
+                  aria-hidden
+                  className="absolute inset-0 opacity-40"
+                  style={{ backgroundImage: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 60%)" }}
+                />
+                <div className="relative h-12 w-9 -rotate-3 rounded-md bg-gradient-to-br from-[#2c4270] to-[#18294a] shadow-lg ring-1 ring-white/15">
+                  <div className="absolute inset-x-0 top-1.5 flex justify-center">
+                    <span className="flex h-3 w-3 items-center justify-center rounded-full border-[1.5px] border-amber-400/80">
+                      <span className="h-0.5 w-0.5 rounded-full bg-amber-400/80" />
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-1 bottom-1.5 space-y-0.5">
+                    <div className="h-0.5 rounded-full bg-white/25" />
+                    <div className="h-0.5 w-3/4 rounded-full bg-white/25" />
+                  </div>
+                  {doc.kind === "visa" && (
+                    <span className="absolute -right-1.5 -top-1 flex h-5 w-5 rotate-12 items-center justify-center rounded-full border-2 border-red-400/70 text-[6px] font-bold text-red-400/90">
+                      OK
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="p-2.5">
                 <p className="truncate text-[13px] font-semibold text-text-primary">{doc.title}</p>
