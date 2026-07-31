@@ -279,6 +279,10 @@ export default function OnboardingPage() {
     setStep((s) => Math.max(0, s - 1));
   }
 
+  function handleCancel() {
+    router.push(user ? "/dashboard" : "/");
+  }
+
   if (authLoading || !user) {
     return (
       <PageTransition>
@@ -474,11 +478,10 @@ export default function OnboardingPage() {
           <div className="flex items-center justify-between">
             <button
               type="button"
-              onClick={handleBack}
-              disabled={step === 0}
-              className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-0 ${pressScale}`}
+              onClick={step === 0 ? handleCancel : handleBack}
+              className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover ${pressScale}`}
             >
-              {t.onboarding.back}
+              {step === 0 ? t.onboarding.cancel : t.onboarding.back}
             </button>
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}

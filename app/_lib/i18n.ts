@@ -679,6 +679,7 @@ export type Dictionary = {
   onboarding: {
     stepLabel: string;
     back: string;
+    cancel: string;
     continueBtn: string;
     finish: string;
     saving: string;
@@ -2117,6 +2118,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "Step {current} of {total}",
       back: "Back",
+      cancel: "Cancel",
       continueBtn: "Continue",
       finish: "Finish",
       saving: "Saving...",
@@ -3556,6 +3558,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "Шаг {current} из {total}",
       back: "Назад",
+      cancel: "Отмена",
       continueBtn: "Продолжить",
       finish: "Готово",
       saving: "Сохранение...",
@@ -4990,6 +4993,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "{total} dan {current}-qadam",
       back: "Orqaga",
+      cancel: "Bekor qilish",
       continueBtn: "Davom etish",
       finish: "Tayyor",
       saving: "Saqlanmoqda...",
@@ -6423,6 +6427,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "Adım {current} / {total}",
       back: "Geri",
+      cancel: "İptal",
       continueBtn: "Devam et",
       finish: "Bitir",
       saving: "Kaydediliyor...",
@@ -7856,6 +7861,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "Қадами {current} аз {total}",
       back: "Бозгашт",
+      cancel: "Бекор кардан",
       continueBtn: "Идома",
       finish: "Тамом",
       saving: "Захира мешавад...",
@@ -9295,6 +9301,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     onboarding: {
       stepLabel: "Крок {current} з {total}",
       back: "Назад",
+      cancel: "Скасувати",
       continueBtn: "Продовжити",
       finish: "Готово",
       saving: "Збереження...",
