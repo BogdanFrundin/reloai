@@ -36,6 +36,11 @@ export default function FlightProgress() {
   const P1: [number, number] = [50, 8];
   const P2: [number, number] = [90, 28];
 
+  // Where the flags sit on the visible globe surface — independent of the
+  // path/plane curve above, which keeps its own P0/P1/P2 untouched.
+  const FLAG_ORIGIN_POS: [number, number] = [15, 83];
+  const FLAG_DEST_POS: [number, number] = [85, 83];
+
   const t01 = Math.min(Math.max(progressPercent / 100, 0.04), 0.96);
   const plane = useMemo(() => pointOnCurve(t01, P0, P1, P2), [t01]);
 
@@ -51,33 +56,40 @@ export default function FlightProgress() {
         <p className="text-sm font-semibold text-text-primary">{t.dashboard.home.flightHeading}</p>
         <p className="mt-1 text-xs text-text-muted">{t.dashboard.home.flightSub}</p>
 
-        <div className="relative mt-6 h-[180px] w-full sm:h-[220px]">
+        <div className="relative mt-6 h-[180px] w-full overflow-hidden sm:h-[220px]">
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-60 sm:h-[300px] sm:w-[300px]"
+            className="pointer-events-none absolute left-1/2 top-[42%] h-[400px] w-[400px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[48%] sm:h-[760px] sm:w-[760px]"
             style={{
+              boxShadow: "0 0 40px 14px rgba(96,165,250,0.4), 0 0 90px 30px rgba(59,130,246,0.2)",
               background:
-                "radial-gradient(circle at 28% 22%, rgba(245,217,200,0.6), transparent 42%), " +
-                "radial-gradient(circle at 78% 82%, rgba(5,5,15,0.65), transparent 55%), " +
-                "conic-gradient(from 220deg at 50% 50%, #1e3a8a, #3b5bdb, #6d28d9, #3b5bdb, #1e3a8a)",
+                "radial-gradient(circle at 26% 4%, rgba(255,255,255,0.65), transparent 16%), " +
+                "radial-gradient(circle at 85% 96%, rgba(0,0,0,0.5), transparent 40%), " +
+                "radial-gradient(circle at 30% 6%, #3d5c3a 0%, transparent 7%), " +
+                "radial-gradient(circle at 56% 9%, #6b5b3e 0%, transparent 6%), " +
+                "radial-gradient(circle at 44% 12%, #3d5c3a 0%, transparent 6%), " +
+                "radial-gradient(circle at 18% 10%, #6b5b3e 0%, transparent 5%), " +
+                "radial-gradient(circle at 70% 5%, #3d5c3a 0%, transparent 6%), " +
+                "radial-gradient(circle at 50% 10%, #2f6ba3 0%, #0a3d62 40%)",
             }}
           >
             <div
               aria-hidden
-              className="absolute inset-0 blur-2xl"
+              className="absolute inset-0 opacity-40"
               style={{
                 background:
-                  "radial-gradient(circle at 35% 30%, rgba(245,217,200,0.5), transparent 45%), " +
-                  "radial-gradient(circle at 65% 60%, rgba(109,40,217,0.45), transparent 50%)",
-                mixBlendMode: "overlay",
+                  "radial-gradient(circle at 28% 4%, rgba(255,255,255,0.4), transparent 14%), " +
+                  "radial-gradient(circle at 60% 8%, rgba(255,255,255,0.25), transparent 15%), " +
+                  "radial-gradient(circle at 42% 12%, rgba(220,235,255,0.3), transparent 12%)",
               }}
             />
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="absolute inset-0 opacity-[0.18] mix-blend-overlay"
               style={{
-                background: "radial-gradient(circle at 25% 20%, rgba(255,255,255,0.55), transparent 35%)",
-                mixBlendMode: "screen",
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                backgroundSize: "300px 300px",
               }}
             />
           </div>
@@ -95,14 +107,20 @@ export default function FlightProgress() {
             />
           </svg>
 
-          <div className="absolute flex flex-col items-center gap-1" style={{ left: `${P0[0]}%`, top: `${P0[1]}%`, transform: "translate(-50%, -50%)" }}>
+          <div
+            className="absolute flex flex-col items-center gap-1"
+            style={{ left: `${FLAG_ORIGIN_POS[0]}%`, top: `${FLAG_ORIGIN_POS[1]}%`, transform: "translate(-50%, -50%)" }}
+          >
             {originCode && (
               <Image src={getFlagUrl(originCode, "md")} alt={originName ?? ""} width={36} height={27} className="rounded-md shadow-lg" unoptimized />
             )}
             <span className="whitespace-nowrap rounded-full bg-panel/90 px-2 py-0.5 text-[10px] font-medium text-text-muted">{originName}</span>
           </div>
 
-          <div className="absolute flex flex-col items-center gap-1" style={{ left: `${P2[0]}%`, top: `${P2[1]}%`, transform: "translate(-50%, -50%)" }}>
+          <div
+            className="absolute flex flex-col items-center gap-1"
+            style={{ left: `${FLAG_DEST_POS[0]}%`, top: `${FLAG_DEST_POS[1]}%`, transform: "translate(-50%, -50%)" }}
+          >
             <Image src={getFlagUrl(destCode, "md")} alt={destName} width={36} height={27} className="rounded-md shadow-lg" unoptimized />
             <span className="whitespace-nowrap rounded-full bg-panel/90 px-2 py-0.5 text-[10px] font-medium text-text-muted">{destName}</span>
           </div>
