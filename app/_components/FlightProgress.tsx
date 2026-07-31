@@ -120,8 +120,11 @@ export default function FlightProgress() {
             }}
           >
             <div className="animate-plane-barrel-roll motion-reduce:animate-none" style={{ transformStyle: "preserve-3d" }}>
-              <svg className="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+              <svg className="h-6 w-10" fill="currentColor" viewBox="0 0 120 60">
+                <path d="M8 24C8 18 14 15 26 15L75 15C85 15 92 18 97 24C92 30 85 33 75 33L26 33C14 33 8 30 8 24Z" />
+                <path d="M12 15L28 15L20 2Z" />
+                <path d="M45 33L85 33L66 44Z" />
+                <ellipse cx="60" cy="39" rx="5" ry="2.5" />
               </svg>
             </div>
           </div>
