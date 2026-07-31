@@ -60,36 +60,21 @@ export default function FlightProgress() {
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[42%] h-[400px] w-[400px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[48%] sm:h-[760px] sm:w-[760px]"
-            style={{
-              boxShadow: "0 0 40px 14px rgba(96,165,250,0.4), 0 0 90px 30px rgba(59,130,246,0.2)",
-              background:
-                "radial-gradient(circle at 26% 4%, rgba(255,255,255,0.65), transparent 16%), " +
-                "radial-gradient(circle at 85% 96%, rgba(0,0,0,0.5), transparent 40%), " +
-                "radial-gradient(circle at 30% 6%, #3d5c3a 0%, transparent 7%), " +
-                "radial-gradient(circle at 56% 9%, #6b5b3e 0%, transparent 6%), " +
-                "radial-gradient(circle at 44% 12%, #3d5c3a 0%, transparent 6%), " +
-                "radial-gradient(circle at 18% 10%, #6b5b3e 0%, transparent 5%), " +
-                "radial-gradient(circle at 70% 5%, #3d5c3a 0%, transparent 6%), " +
-                "radial-gradient(circle at 50% 10%, #2f6ba3 0%, #0a3d62 40%)",
-            }}
+            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.4), 0 0 90px 30px rgba(59,130,246,0.2)" }}
           >
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-40"
-              style={{
-                background:
-                  "radial-gradient(circle at 28% 4%, rgba(255,255,255,0.4), transparent 14%), " +
-                  "radial-gradient(circle at 60% 8%, rgba(255,255,255,0.25), transparent 15%), " +
-                  "radial-gradient(circle at 42% 12%, rgba(220,235,255,0.3), transparent 12%)",
-              }}
+            <Image
+              src="/images/earth.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 640px) 400px, 760px"
+              className="object-cover"
             />
             <div
               aria-hidden
-              className="absolute inset-0 opacity-[0.18] mix-blend-overlay"
+              className="absolute inset-0"
               style={{
-                backgroundImage:
-                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")",
-                backgroundSize: "300px 300px",
+                background:
+                  "radial-gradient(circle at 50% 12%, rgba(0,0,0,0.1), rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 100%)",
               }}
             />
           </div>
