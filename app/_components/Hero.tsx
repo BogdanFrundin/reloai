@@ -44,7 +44,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={140}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-muted">
+            <p className="mt-6 max-w-none text-lg leading-relaxed text-text-muted lg:max-w-2xl">
               {t.hero.subtext}
             </p>
           </Reveal>
