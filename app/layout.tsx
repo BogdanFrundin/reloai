@@ -4,7 +4,7 @@ import "./globals.css";
 import LanguageProvider from "./_components/LanguageProvider";
 import ThemeProvider from "./_components/ThemeProvider";
 import { AuthProvider } from "./_components/AuthProvider";
-import FloatingChatButton from "./_components/FloatingChatButton";
+import FloatingChatButtonGate from "./_components/FloatingChatButtonGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +43,7 @@ export default function RootLayout({
           <ThemeProvider>
             <LanguageProvider>
               {children}
-              <FloatingChatButton />
+              <FloatingChatButtonGate />
             </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>
