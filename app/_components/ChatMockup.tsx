@@ -62,22 +62,52 @@ export default function ChatMockup() {
                   className="absolute inset-0 opacity-40"
                   style={{ backgroundImage: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 60%)" }}
                 />
-                <div className="relative h-11 w-9 -rotate-3 rounded-md bg-gradient-to-br from-[#2c4270] to-[#18294a] shadow-lg ring-1 ring-white/15">
-                  <div className="absolute inset-x-0 top-1.5 flex justify-center">
-                    <span className="flex h-3 w-3 items-center justify-center rounded-full border-[1.5px] border-amber-400/80">
-                      <span className="h-0.5 w-0.5 rounded-full bg-amber-400/80" />
-                    </span>
+                {doc.kind === "passport" ? (
+                  <div
+                    className="relative h-12 w-9 -rotate-3 rounded-[3px] bg-gradient-to-br from-[#2c4270] to-[#18294a] ring-1 ring-white/15"
+                    style={{
+                      boxShadow:
+                        "0 6px 12px -4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 1px rgba(255,255,255,0.12)",
+                      backgroundImage:
+                        "repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px)",
+                    }}
+                  >
+                    <div className="absolute inset-[2.5px] rounded-[2px] border border-white/10" />
+                    <div className="absolute inset-x-0 top-2 flex justify-center">
+                      <svg className="h-3.5 w-3.5 text-amber-400/90" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.5l6.5 2.6v5.4c0 4.6-2.8 8.1-6.5 9.5-3.7-1.4-6.5-4.9-6.5-9.5V5.1L12 2.5z" />
+                        <path
+                          d="M12 6.6l1.5 3 3.3.4-2.4 2.3.6 3.3-2.9-1.6-2.9 1.6.6-3.3-2.4-2.3 3.3-.4 1.5-3z"
+                          fill="#18294a"
+                          opacity="0.6"
+                        />
+                      </svg>
+                    </div>
+                    <div className="absolute inset-x-1.5 bottom-1.5 space-y-[3px]">
+                      <div className="h-[2.5px] w-full rounded-full bg-white/30" />
+                      <div className="h-[2px] w-1/2 rounded-full bg-white/20" />
+                    </div>
                   </div>
-                  <div className="absolute inset-x-1 bottom-1.5 space-y-0.5">
-                    <div className="h-0.5 rounded-full bg-white/25" />
-                    <div className="h-0.5 w-3/4 rounded-full bg-white/25" />
-                  </div>
-                  {doc.kind === "visa" && (
-                    <span className="absolute -right-1.5 -top-1 flex h-5 w-5 rotate-12 items-center justify-center rounded-full border-2 border-red-400/70 text-[6px] font-bold text-red-400/90">
+                ) : (
+                  <div
+                    className="relative h-9 w-14 rounded-md bg-gradient-to-br from-[#1f3a5f] to-[#0d1c30] ring-1 ring-white/15"
+                    style={{
+                      boxShadow:
+                        "0 6px 12px -4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 1px rgba(255,255,255,0.12)",
+                    }}
+                  >
+                    <div className="absolute left-1.5 top-1.5 h-2 w-2.5 rounded-[1.5px] bg-gradient-to-br from-amber-200 to-amber-500/90 ring-[0.5px] ring-black/20" />
+                    <div className="absolute bottom-1.5 left-1.5 h-3.5 w-2.5 rounded-[1px] bg-white/15 ring-1 ring-white/20" />
+                    <div className="absolute bottom-1.5 right-1.5 left-[26px] space-y-[2.5px]">
+                      <div className="h-[2px] w-full rounded-full bg-white/30" />
+                      <div className="h-[2px] w-2/3 rounded-full bg-white/20" />
+                      <div className="h-[2px] w-1/3 rounded-full bg-white/15" />
+                    </div>
+                    <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 rotate-6 items-center justify-center rounded-full border-2 border-red-400/80 bg-[#0d1c30] text-[6px] font-bold text-red-400/90 shadow-sm">
                       OK
                     </span>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
               <div className="p-2.5">
                 <p className="truncate text-[13px] font-semibold text-text-primary">{doc.title}</p>
