@@ -17,7 +17,6 @@ const DELAY_BEFORE_USER_MS = 900;
 const DELAY_BEFORE_AI_MS = 1300;
 const TYPING_DURATION_MS = 750;
 const DOCS_REVEAL_DELAY_MS = 900;
-const LOOP_PAUSE_MS = 4500;
 
 function TypingIndicator() {
   return (
@@ -72,14 +71,6 @@ export default function ChatMockup() {
         timeoutId = setTimeout(() => {
           if (cancelled) return;
           setDocsVisible(true);
-
-          timeoutId = setTimeout(() => {
-            if (cancelled) return;
-            setRevealedCount(0);
-            setTypingIndex(null);
-            setDocsVisible(false);
-            scheduleMessage(0);
-          }, LOOP_PAUSE_MS);
         }, DOCS_REVEAL_DELAY_MS);
         return;
       }
@@ -133,7 +124,7 @@ export default function ChatMockup() {
         </div>
       </div>
 
-      <div className="flex min-h-[260px] flex-col gap-2.5">
+      <div className="flex min-h-[440px] flex-col gap-2.5">
         {conversation.slice(0, revealedCount).map((message, index) => (
           <div
             key={index}
