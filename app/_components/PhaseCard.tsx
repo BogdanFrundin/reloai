@@ -5,6 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
 import HelpButton from "./HelpButton";
+import { pressScale } from "../_lib/motion";
 import type { Phase, PhaseStatus } from "../_lib/checklist";
 
 const PHASE_ICONS: Record<string, ReactNode> = {
@@ -29,6 +30,14 @@ const PHASE_ICONS: Record<string, ReactNode> = {
     </svg>
   ),
 };
+
+// Generic document/task icon shown next to each step in the expanded list —
+// reuses the same visual language as PHASE_ICONS above.
+const STEP_ICON = (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
+  </svg>
+);
 
 function Checkbox({ checked }: { checked: boolean }) {
   return (
@@ -109,6 +118,7 @@ export default function PhaseCard({
   const { t } = useLanguage();
   const d = t.dashboard;
   const [expanded, setExpanded] = useState(false);
+  const [targetStepId, setTargetStepId] = useState<string | null>(null);
   const isDone = status === "done";
   const isActive = status === "in_progress";
   const isWaiting = status === "waiting";
@@ -124,11 +134,19 @@ export default function PhaseCard({
   useEffect(() => {
     if (!expanded) return;
     const hash = window.location.hash.slice(1);
-    if (!hash) return;
+    const scrollId = targetStepId || hash;
+    if (!scrollId) return;
     // The step only exists in the DOM once expanded — the browser's automatic
     // hash-scroll already ran (and missed) during navigation, so scroll manually.
-    document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [expanded]);
+    document.getElementById(scrollId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (targetStepId) setTargetStepId(null);
+  }, [expanded, targetStepId]);
+
+  function handleWhatNext() {
+    const nextStep = phase.steps.find((step) => !completed.has(step.documentType));
+    if (nextStep) setTargetStepId(nextStep.documentType);
+    setExpanded(true);
+  }
 
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
 
@@ -137,16 +155,21 @@ export default function PhaseCard({
   return (
     <Reveal delay={index * 60}>
       <div
-        className={`relative overflow-hidden rounded-2xl p-5 transition-[border-color,opacity] duration-200 ease-[var(--ease-out-strong)] ${
+        className={`relative overflow-hidden rounded-2xl p-5 transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
           isActive
-            ? "border border-accent/40 bg-accent/[0.04] shadow-[0_0_30px_-14px_var(--accent)]"
-            : isWaiting
-              ? "border border-border-subtle bg-surface-1 opacity-60"
-              : "border border-border-subtle bg-surface-1"
+            ? "border border-accent/60 bg-accent/[0.05] shadow-[0_0_40px_-12px_var(--accent)]"
+            : isDone
+              ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03]"
+              : isWaiting
+                ? "border border-border-subtle bg-surface-1 opacity-[0.48]"
+                : "border border-border-subtle bg-surface-1"
         }`}
       >
         {isActive && (
-          <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent" />
+          <span
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent shadow-[0_0_12px_-1px_var(--accent-bright)]"
+          />
         )}
         <button
           type="button"
@@ -200,6 +223,16 @@ export default function PhaseCard({
           <StatusBadge status={status} label={statusLabel} />
         </button>
 
+        {isActive && (
+          <button
+            type="button"
+            onClick={handleWhatNext}
+            className={`mt-4 w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+          >
+            {d.whatNextBtn}
+          </button>
+        )}
+
         {expanded && (
           <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
             {phase.steps.map((step) => {
@@ -211,6 +244,9 @@ export default function PhaseCard({
                   id={step.documentType}
                   className="flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150"
                 >
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted" aria-hidden="true">
+                    {STEP_ICON}
+                  </span>
                   <span className="flex-shrink-0" aria-hidden="true">
                     <Checkbox checked={checked} />
                   </span>

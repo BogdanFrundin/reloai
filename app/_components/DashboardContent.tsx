@@ -74,6 +74,38 @@ export default function DashboardContent() {
       </Reveal>
 
       {!loading && phases.length > 0 && (
+        <Reveal delay={40}>
+          <div className="mt-8 rounded-2xl border border-border-subtle bg-surface-1 p-5">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-sm font-semibold text-text-primary">{t.dashboard.overallProgress}</p>
+              <span className="text-lg font-bold text-accent-bright">{progressPercent}%</span>
+            </div>
+            <div className="mt-4 flex items-center gap-2">
+              {phases.map((phase) => {
+                const status = phaseStatuses[phase.key];
+                return (
+                  <div key={phase.key} className="min-w-0 flex-1">
+                    <div
+                      className={`h-2 rounded-full transition-colors duration-300 ${
+                        status === "done"
+                          ? "bg-emerald-400"
+                          : status === "in_progress"
+                            ? "bg-accent-bright animate-glow-pulse motion-reduce:animate-none"
+                            : "bg-surface-2"
+                      }`}
+                    />
+                    <p className="mt-2 truncate text-center text-[11px] font-medium text-text-muted">
+                      {t.dashboard.phases[phase.key]}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </Reveal>
+      )}
+
+      {!loading && phases.length > 0 && (
         <h2 id="checklist" className="mt-8 scroll-mt-24 text-lg font-semibold text-text-primary">
           {t.dashboard.route.checklistHeading}
         </h2>

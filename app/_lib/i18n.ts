@@ -474,6 +474,7 @@ export type Dictionary = {
     openBtn: string;
     expandBtn: string;
     collapseBtn: string;
+    whatNextBtn: string;
     stepsCompletedTemplate: string;
     countdown: {
       heading: string;
@@ -1769,6 +1770,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Open",
       expandBtn: "Expand",
       collapseBtn: "Collapse",
+      whatNextBtn: "What to do next",
       stepsCompletedTemplate: "{done} of {total} steps completed",
       countdown: {
         heading: "You have 30 days of legal stay under the visa-free regime",
@@ -3209,6 +3211,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Открыть",
       expandBtn: "Развернуть",
       collapseBtn: "Свернуть",
+      whatNextBtn: "Что делать дальше",
       stepsCompletedTemplate: "{done} из {total} шагов выполнено",
       countdown: {
         heading: "У вас 30 дней легального пребывания по визовому режиму",
@@ -4646,6 +4649,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Ochish",
       expandBtn: "Yoyish",
       collapseBtn: "Yig'ish",
+      whatNextBtn: "Keyingi qadam",
       stepsCompletedTemplate: "{total} tadan {done} tasi bajarildi",
       countdown: {
         heading: "Sizda vizasiz rejim bo'yicha 30 kunlik qonuniy turish muddati bor",
@@ -6080,6 +6084,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Aç",
       expandBtn: "Genişlet",
       collapseBtn: "Daralt",
+      whatNextBtn: "Sırada ne var",
       stepsCompletedTemplate: "{total} adımdan {done} tamamlandı",
       countdown: {
         heading: "Vizesiz rejim kapsamında 30 günlük yasal kalış hakkınız var",
@@ -7514,6 +7519,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Кушодан",
       expandBtn: "Кушодан",
       collapseBtn: "Пӯшидан",
+      whatNextBtn: "Баъд чӣ бояд кард",
       stepsCompletedTemplate: "{done} аз {total} қадам иҷро шуд",
       countdown: {
         heading: "Шумо 30 рӯз иқомати қонунӣ дар низоми бидуни виза доред",
@@ -8952,6 +8958,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       openBtn: "Відкрити",
       expandBtn: "Розгорнути",
       collapseBtn: "Згорнути",
+      whatNextBtn: "Що робити далі",
       stepsCompletedTemplate: "{done} із {total} кроків виконано",
       countdown: {
         heading: "У вас 30 днів легального перебування за візовим режимом",
