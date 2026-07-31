@@ -11,6 +11,23 @@ import { getCountryName } from "../_lib/countries";
 const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 const COUNTRY_ORDER = ["Poland", "Germany", "Spain"];
 
+// Fixed (not random) so the sky doesn't reshuffle on every render or mismatch
+// between server and client hydration.
+const STARFIELD = [
+  { x: 6, y: 8, size: 2, opacity: 0.8 },
+  { x: 20, y: 4, size: 1.5, opacity: 0.55 },
+  { x: 33, y: 16, size: 2, opacity: 0.45 },
+  { x: 46, y: 6, size: 1.5, opacity: 0.65 },
+  { x: 58, y: 14, size: 2, opacity: 0.4 },
+  { x: 70, y: 5, size: 1.5, opacity: 0.6 },
+  { x: 86, y: 18, size: 2, opacity: 0.5 },
+  { x: 13, y: 27, size: 1.5, opacity: 0.4 },
+  { x: 53, y: 25, size: 1, opacity: 0.5 },
+  { x: 92, y: 8, size: 1.5, opacity: 0.6 },
+  { x: 3, y: 20, size: 1, opacity: 0.45 },
+  { x: 79, y: 30, size: 1, opacity: 0.35 },
+];
+
 // Quadratic Bezier point + tangent angle, in percentage coordinates (0-100).
 function pointOnCurve(t: number, p0: [number, number], p1: [number, number], p2: [number, number]) {
   const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
@@ -32,14 +49,15 @@ export default function FlightProgress() {
   const destName = t.countries.list[destIndex === -1 ? 0 : destIndex]?.name ?? country;
   const originName = originCode ? getCountryName(originCode, lang) : null;
 
-  const P0: [number, number] = [15, 78];
-  const P1: [number, number] = [50, 8];
-  const P2: [number, number] = [85, 33];
-
-  // Where the flags sit on the visible globe surface — independent of the
-  // path/plane curve above, which keeps its own P0/P1/P2 untouched.
   const FLAG_ORIGIN_POS: [number, number] = [15, 83];
   const FLAG_DEST_POS: [number, number] = [85, 83];
+
+  // P0/P2 are the flag positions themselves so the path always starts and
+  // ends exactly at each flag marker — both use the same 0-100 percentage
+  // coordinate space as the SVG's viewBox, so they can never drift apart.
+  const P0: [number, number] = FLAG_ORIGIN_POS;
+  const P1: [number, number] = [50, 12];
+  const P2: [number, number] = FLAG_DEST_POS;
 
   const t01 = Math.min(Math.max(progressPercent / 100, 0.04), 0.96);
   const plane = useMemo(() => pointOnCurve(t01, P0, P1, P2), [t01]);
@@ -57,10 +75,20 @@ export default function FlightProgress() {
         <p className="mt-1 text-xs text-text-muted">{t.dashboard.home.flightSub}</p>
 
         <div className="relative mt-6 h-[200px] w-full overflow-hidden sm:h-[260px]">
+          <div aria-hidden className="pointer-events-none absolute inset-0">
+            {STARFIELD.map((star, index) => (
+              <span
+                key={index}
+                className="absolute rounded-full bg-white"
+                style={{ left: `${star.x}%`, top: `${star.y}%`, width: `${star.size}px`, height: `${star.size}px`, opacity: star.opacity }}
+              />
+            ))}
+          </div>
+
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[58%] h-[340px] w-[340px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
-            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.18), 0 0 90px 30px rgba(59,130,246,0.09)" }}
+            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.28), 0 0 90px 30px rgba(59,130,246,0.14)" }}
           >
             <Image
               src="/images/earth.jpg"
@@ -81,7 +109,7 @@ export default function FlightProgress() {
             />
           </div>
 
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 80" preserveAspectRatio="none">
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d={pathD} fill="none" stroke="var(--border-strong)" strokeWidth="0.6" strokeDasharray="2 2" />
             <path
               d={pathD}
@@ -117,7 +145,7 @@ export default function FlightProgress() {
             style={{
               left: `${plane.x}%`,
               top: `${plane.y}%`,
-              transform: "translate(-50%, -50%)",
+              transform: `translate(-50%, -50%) rotate(${plane.angle + 90}deg)`,
             }}
           >
             <svg
