@@ -61,6 +61,7 @@ export default function FlightProgress() {
               strokeWidth="0.8"
               strokeDasharray={`${t01 * 130} 200`}
               strokeLinecap="round"
+              style={{ transition: "stroke-dasharray 2000ms var(--ease-out-strong)" }}
             />
           </svg>
 
@@ -77,7 +78,7 @@ export default function FlightProgress() {
           </div>
 
           <div
-            className="absolute flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_20px_-4px_var(--accent)] transition-[left,top] duration-700 ease-[var(--ease-out-strong)]"
+            className="absolute flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_20px_-4px_var(--accent)] transition-[left,top] duration-[2000ms] ease-[var(--ease-out-strong)]"
             style={{ left: `${plane.x}%`, top: `${plane.y}%`, transform: `translate(-50%, -50%) rotate(${plane.angle}deg)` }}
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
