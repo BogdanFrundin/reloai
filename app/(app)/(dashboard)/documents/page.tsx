@@ -95,12 +95,6 @@ const ARROW_ICON = (
   </svg>
 );
 
-const PLUS_ICON = (
-  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-  </svg>
-);
-
 const CATEGORY_TO_STEP: Record<string, string> = {
   biometric: "biometric",
   address: "address_registration",
@@ -270,7 +264,6 @@ export default function DocumentsPage() {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const addDocumentInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user) {
@@ -432,17 +425,6 @@ export default function DocumentsPage() {
     setDeleteTargetId(null);
   }
 
-  const firstMissingDoc = documents.find((doc) => doc.status === "missing");
-
-  function handleAddDocumentClick() {
-    if (demoMode) {
-      setPromptOpen(true);
-      return;
-    }
-    if (!firstMissingDoc) return;
-    addDocumentInputRef.current?.click();
-  }
-
   const relevantDocs = documents.filter((doc) => doc.status !== "locked");
   const totalCount = relevantDocs.length;
   const verifiedCount = relevantDocs.filter((doc) => doc.status === "verified").length;
@@ -460,24 +442,6 @@ export default function DocumentsPage() {
             <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{t.documents.title}</h1>
             <p className="mt-2 text-text-muted">{t.documents.subtitle}</p>
           </div>
-          <button
-            type="button"
-            onClick={handleAddDocumentClick}
-            disabled={!demoMode && !firstMissingDoc}
-            className={`flex flex-shrink-0 items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
-          >
-            {PLUS_ICON}
-            {t.documents.addDocumentBtn}
-          </button>
-          <input
-            ref={addDocumentInputRef}
-            type="file"
-            className="hidden"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file && firstMissingDoc) handleUpload(firstMissingDoc.id, file);
-            }}
-          />
         </div>
       </Reveal>
 
