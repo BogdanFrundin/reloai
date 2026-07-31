@@ -189,7 +189,7 @@ export default function ProfilePage() {
     <div className="px-6 py-8 lg:px-10 lg:py-10">
       <PageHeader title={p.title} subtitle={p.subtitle} />
 
-      <div className="mt-10 max-w-2xl space-y-6">
+      <div className="mt-10 max-w-4xl space-y-6">
         {/* Section 1 — Personal Info */}
         <Reveal>
           <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
