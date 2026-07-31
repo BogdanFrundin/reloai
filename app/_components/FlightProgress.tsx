@@ -56,25 +56,27 @@ export default function FlightProgress() {
         <p className="text-sm font-semibold text-text-primary">{t.dashboard.home.flightHeading}</p>
         <p className="mt-1 text-xs text-text-muted">{t.dashboard.home.flightSub}</p>
 
-        <div className="relative mt-6 h-[180px] w-full overflow-hidden sm:h-[220px]">
+        <div className="relative mt-6 h-[200px] w-full overflow-hidden sm:h-[260px]">
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[42%] h-[400px] w-[400px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[48%] sm:h-[760px] sm:w-[760px]"
-            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.4), 0 0 90px 30px rgba(59,130,246,0.2)" }}
+            className="pointer-events-none absolute left-1/2 top-[58%] h-[340px] w-[340px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
+            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.35), 0 0 90px 30px rgba(59,130,246,0.18)" }}
           >
             <Image
               src="/images/earth.jpg"
               alt=""
               fill
-              sizes="(max-width: 640px) 400px, 760px"
+              sizes="(max-width: 640px) 340px, 620px"
               className="object-cover"
+              style={{ objectPosition: "center 35%" }}
             />
+            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.55 }} />
             <div
               aria-hidden
               className="absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(circle at 50% 12%, rgba(0,0,0,0.1), rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.8) 100%)",
+                  "radial-gradient(circle at 50% 8%, rgba(0,0,0,0.05), rgba(4,8,20,0.6) 60%, rgba(2,4,12,0.88) 100%)",
               }}
             />
           </div>
@@ -115,18 +117,15 @@ export default function FlightProgress() {
             style={{
               left: `${plane.x}%`,
               top: `${plane.y}%`,
-              transform: "translate(-50%, -50%)",
+              transform: "translate(-50%, -50%) rotate(-90deg)",
             }}
           >
             <svg
-              className="h-8 w-14 text-accent-bright drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)]"
+              className="h-9 w-9 text-accent-bright drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)]"
               fill="currentColor"
-              viewBox="0 0 120 60"
+              viewBox="0 0 24 24"
             >
-              <path d="M8 24C8 18 14 15 26 15L75 15C85 15 92 18 97 24C92 30 85 33 75 33L26 33C14 33 8 30 8 24Z" />
-              <path d="M12 15L28 15L20 2Z" />
-              <path d="M45 33L85 33L66 44Z" />
-              <ellipse cx="60" cy="39" rx="5" ry="2.5" />
+              <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4-1 4 1v-1.5L13 19v-5.5l8 2.5z" />
             </svg>
           </div>
         </div>
