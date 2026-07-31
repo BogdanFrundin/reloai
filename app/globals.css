@@ -153,18 +153,17 @@ body {
   }
 }
 
-@keyframes plane-bob {
-  0%,
-  100% {
-    transform: translateY(0);
+@keyframes plane-barrel-roll {
+  from {
+    transform: rotateY(0deg);
   }
-  50% {
-    transform: translateY(-3px);
+  to {
+    transform: rotateY(360deg);
   }
 }
 
-.animate-plane-bob {
-  animation: plane-bob 2.4s ease-in-out infinite;
+.animate-plane-barrel-roll {
+  animation: plane-barrel-roll 3.5s linear infinite;
 }
 
 @keyframes slide-up {

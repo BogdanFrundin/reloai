@@ -52,21 +52,35 @@ export default function FlightProgress() {
         <p className="mt-1 text-xs text-text-muted">{t.dashboard.home.flightSub}</p>
 
         <div className="relative mt-6 h-[180px] w-full sm:h-[220px]">
-          <svg
+          <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 text-accent opacity-[0.14] sm:h-[220px] sm:w-[220px]"
-            viewBox="0 0 100 100"
-            fill="none"
-            stroke="currentColor"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full opacity-60 sm:h-[300px] sm:w-[300px]"
+            style={{
+              background:
+                "radial-gradient(circle at 28% 22%, rgba(245,217,200,0.6), transparent 42%), " +
+                "radial-gradient(circle at 78% 82%, rgba(5,5,15,0.65), transparent 55%), " +
+                "conic-gradient(from 220deg at 50% 50%, #1e3a8a, #3b5bdb, #6d28d9, #3b5bdb, #1e3a8a)",
+            }}
           >
-            <circle cx="50" cy="50" r="46" strokeWidth="1" />
-            <ellipse cx="50" cy="50" rx="46" ry="14" strokeWidth="0.7" />
-            <ellipse cx="50" cy="50" rx="46" ry="28" strokeWidth="0.7" />
-            <ellipse cx="50" cy="50" rx="14" ry="46" strokeWidth="0.7" />
-            <ellipse cx="50" cy="50" rx="28" ry="46" strokeWidth="0.7" />
-            <line x1="50" y1="4" x2="50" y2="96" strokeWidth="0.7" />
-            <line x1="4" y1="50" x2="96" y2="50" strokeWidth="0.7" />
-          </svg>
+            <div
+              aria-hidden
+              className="absolute inset-0 blur-2xl"
+              style={{
+                background:
+                  "radial-gradient(circle at 35% 30%, rgba(245,217,200,0.5), transparent 45%), " +
+                  "radial-gradient(circle at 65% 60%, rgba(109,40,217,0.45), transparent 50%)",
+                mixBlendMode: "overlay",
+              }}
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background: "radial-gradient(circle at 25% 20%, rgba(255,255,255,0.55), transparent 35%)",
+                mixBlendMode: "screen",
+              }}
+            />
+          </div>
 
           <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 80" preserveAspectRatio="none">
             <path d={pathD} fill="none" stroke="var(--border-strong)" strokeWidth="0.6" strokeDasharray="2 2" />
@@ -95,9 +109,14 @@ export default function FlightProgress() {
 
           <div
             className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_0_24px_-4px_var(--accent)] transition-[left,top] duration-[2000ms] ease-[var(--ease-out-strong)]"
-            style={{ left: `${plane.x}%`, top: `${plane.y}%`, transform: `translate(-50%, -50%) rotate(${plane.angle}deg)` }}
+            style={{
+              left: `${plane.x}%`,
+              top: `${plane.y}%`,
+              transform: `translate(-50%, -50%) rotate(${plane.angle}deg)`,
+              perspective: "800px",
+            }}
           >
-            <div className="animate-plane-bob motion-reduce:animate-none">
+            <div className="animate-plane-barrel-roll motion-reduce:animate-none" style={{ transformStyle: "preserve-3d" }}>
               <svg className="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
               </svg>
