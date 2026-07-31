@@ -27,6 +27,16 @@ const HOME_ICON = (
   </svg>
 );
 
+const EXTERNAL_LINK_ICON = (
+  <svg {...ICON_PROPS}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+    />
+  </svg>
+);
+
 const ROADMAP_ICON = (
   <svg {...ICON_PROPS}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -110,7 +120,7 @@ export default function DashboardSidebar({
               aria-label={d.landingLinkAria}
               className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-surface-1 text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary ${pressScale}`}
             >
-              {HOME_ICON}
+              {EXTERNAL_LINK_ICON}
             </Link>
           </div>
           <p className="mt-1.5 text-xs text-text-muted">{d.tagline}</p>
