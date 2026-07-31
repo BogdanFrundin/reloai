@@ -6,6 +6,7 @@ import RegisterPromptModal from "../../../_components/RegisterPromptModal";
 import SectionCompleteModal from "../../../_components/SectionCompleteModal";
 import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
 import UpgradeModal from "../../../_components/UpgradeModal";
+import DocumentUploadModal from "../../../_components/DocumentUploadModal";
 import { pressScale } from "../../../_lib/motion";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -113,6 +114,7 @@ function DocumentRow({
   doc,
   name,
   hint,
+  guideText,
   badge,
   viewLabel,
   uploadLabel,
@@ -126,6 +128,7 @@ function DocumentRow({
   doc: DocumentItem;
   name: string;
   hint: string;
+  guideText: string;
   badge: { label: string; className: string };
   viewLabel: string;
   uploadLabel: string;
@@ -136,14 +139,14 @@ function DocumentRow({
   demoMode: boolean;
   onDemoBlocked: () => void;
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   function handleUploadClick() {
     if (demoMode) {
       onDemoBlocked();
       return;
     }
-    inputRef.current?.click();
+    setUploadModalOpen(true);
   }
 
   return (
@@ -192,13 +195,14 @@ function DocumentRow({
           </>
         )}
       </div>
-      <input
-        ref={inputRef}
-        type="file"
-        className="hidden"
-        onChange={(event) => {
-          const file = event.target.files?.[0];
-          if (file) onUpload(doc.id, file);
+      <DocumentUploadModal
+        open={uploadModalOpen}
+        docName={name}
+        guideText={guideText}
+        onClose={() => setUploadModalOpen(false)}
+        onConfirm={(file) => {
+          onUpload(doc.id, file);
+          setUploadModalOpen(false);
         }}
       />
     </div>
@@ -512,6 +516,7 @@ export default function DocumentsPage() {
                   {docsInCategory.map((doc) => {
                     const name = t.documents.docNames[doc.nameKey];
                     const hint = t.documents.docHints[doc.nameKey];
+                    const guideText = t.documents.uploadGuides[doc.nameKey];
 
                     if (doc.status === "locked") {
                       return (
@@ -533,6 +538,7 @@ export default function DocumentsPage() {
                         doc={doc}
                         name={name}
                         hint={hint}
+                        guideText={guideText}
                         badge={STATUS_BADGE[doc.status]}
                         viewLabel={t.documents.viewBtn}
                         uploadLabel={t.documents.uploadBtn}

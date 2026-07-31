@@ -338,6 +338,26 @@ export type Dictionary = {
       employmentContract: string;
       businessRegistrationConfirmation: string;
     };
+    uploadGuides: {
+      passportScan: string;
+      passportPhoto: string;
+      peselForm: string;
+      peselLetter: string;
+      workPermitApp: string;
+      sponsorshipLetter: string;
+      healthInsurance: string;
+      travelInsurance: string;
+      bankConfirmation: string;
+      proofOfFunds: string;
+      relocationLetter: string;
+      taxResidency: string;
+      biometricConfirmation: string;
+      addressConfirmation: string;
+      residencePermitScan: string;
+      taxIdConfirmation: string;
+      employmentContract: string;
+      businessRegistrationConfirmation: string;
+    };
     progressSummary: string;
     autoCompleteToast: string;
     sectionCompleteHeading: string;
@@ -346,6 +366,11 @@ export type Dictionary = {
     deleteConfirmTitle: string;
     deleteConfirmBody: string;
     cancelBtn: string;
+    uploadModal: {
+      dropzoneLabel: string;
+      dropzoneHint: string;
+      confirmBtn: string;
+    };
   };
   housing: {
     title: string;
@@ -1410,6 +1435,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "Signed employment contract (umowa o pracę)",
         businessRegistrationConfirmation: "CEIDG registration confirmation",
       },
+      uploadGuides: {
+        passportScan:
+          "Photograph the passport page with your photo and personal details, plus the visa or stay-stamp page if you have one. The image should be sharp, with no glare and no cropped edges.",
+        passportPhoto: "Upload a passport-style photo: face forward, no headwear, plain light background, meeting biometric photo requirements.",
+        peselForm: "Upload the filled-in and signed PESEL number application form.",
+        peselLetter: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        workPermitApp: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        sponsorshipLetter: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        healthInsurance: "Upload your health insurance policy — the coverage dates and policy number must be visible.",
+        travelInsurance: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        bankConfirmation: "Upload a bank statement or certificate showing the account number and holder details.",
+        proofOfFunds: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        relocationLetter: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        taxResidency: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        biometricConfirmation: "Upload the confirmation or receipt from your biometrics appointment.",
+        addressConfirmation: "Upload your rental agreement or address registration confirmation (zameldowanie) with the address clearly visible.",
+        residencePermitScan: "Photograph your residence card on both sides — the front with your photo and the back with your details.",
+        taxIdConfirmation: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        employmentContract: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+        businessRegistrationConfirmation: "Take a clear photo or scan of the document — make sure all details are clearly visible.",
+      },
       progressSummary: "Done: {completed} of {total} documents",
       autoCompleteToast: "✓ Step completed automatically",
       sectionCompleteHeading: "🎉 Section complete!",
@@ -1418,6 +1464,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Delete document?",
       deleteConfirmBody: "This action cannot be undone. The document will be permanently deleted.",
       cancelBtn: "Cancel",
+      uploadModal: {
+        dropzoneLabel: "Choose a file",
+        dropzoneHint: "PDF, JPG or PNG",
+        confirmBtn: "Upload",
+      },
     },
     housing: {
       title: "Housing in Poland",
@@ -2851,6 +2902,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "Подписанный трудовой договор (umowa o pracę)",
         businessRegistrationConfirmation: "Подтверждение регистрации CEIDG",
       },
+      uploadGuides: {
+        passportScan:
+          "Сфотографируйте разворот паспорта с фото и личными данными, а также страницу с визой или отметкой о пребывании, если она есть. Снимок должен быть чётким, без бликов и обрезанных краёв.",
+        passportPhoto: "Загрузите фото на документы: анфас, без головного убора, на светлом однотонном фоне, соответствующее биометрическим требованиям.",
+        peselForm: "Загрузите заполненную и подписанную анкету на присвоение номера PESEL.",
+        peselLetter: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        workPermitApp: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        sponsorshipLetter: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        healthInsurance: "Загрузите полис медицинской страховки — должны быть видны срок действия и номер полиса.",
+        travelInsurance: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        bankConfirmation: "Загрузите выписку или справку из банка с указанием номера счёта и данных владельца.",
+        proofOfFunds: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        relocationLetter: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        taxResidency: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        biometricConfirmation: "Загрузите подтверждение или квитанцию о записи на сдачу биометрических данных.",
+        addressConfirmation: "Загрузите договор аренды или подтверждение регистрации адреса (zameldowanie) с чётко видимым адресом.",
+        residencePermitScan: "Сфотографируйте карту побыту с обеих сторон — лицевую сторону с фото и оборотную сторону с данными.",
+        taxIdConfirmation: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        employmentContract: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+        businessRegistrationConfirmation: "Сделайте чёткое фото или скан документа, все данные должны быть хорошо видны.",
+      },
       progressSummary: "Готово: {completed} из {total} документов",
       autoCompleteToast: "✓ Шаг выполнен автоматически",
       sectionCompleteHeading: "🎉 Раздел завершён!",
@@ -2859,6 +2931,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Удалить документ?",
       deleteConfirmBody: "Это действие нельзя отменить. Документ будет удалён безвозвратно.",
       cancelBtn: "Отмена",
+      uploadModal: {
+        dropzoneLabel: "Выбрать файл",
+        dropzoneHint: "PDF, JPG или PNG",
+        confirmBtn: "Загрузить",
+      },
     },
     housing: {
       title: "Жильё в Польше",
@@ -4289,6 +4366,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "Imzolangan mehnat shartnomasi (umowa o pracę)",
         businessRegistrationConfirmation: "CEIDG ro'yxatga olinganligi tasdiqnomasi",
       },
+      uploadGuides: {
+        passportScan:
+          "Pasportning surat va shaxsiy ma'lumotlar yozilgan sahifasini, shuningdek viza yoki turar joy shtampi bo'lgan sahifani suratga oling. Rasm aniq, yorug'lik aksisiz va chetlari kesilmagan bo'lishi kerak.",
+        passportPhoto: "Hujjatlar uchun fotosurat yuklang: to'g'ridan, bosh kiyimsiz, och rangli bir xil fonda, biometrik talablarga mos.",
+        peselForm: "To'ldirilgan va imzolangan PESEL raqami uchun arizani yuklang.",
+        peselLetter: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        workPermitApp: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        sponsorshipLetter: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        healthInsurance: "Tibbiy sug'urta polisini yuklang — amal qilish muddati va polis raqami ko'rinishi kerak.",
+        travelInsurance: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        bankConfirmation: "Hisob raqami va egasi ma'lumotlari ko'rsatilgan bank ma'lumotnomasini yuklang.",
+        proofOfFunds: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        relocationLetter: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        taxResidency: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        biometricConfirmation: "Biometrik ma'lumotlarni topshirish uchun uchrashuv tasdig'i yoki kvitansiyasini yuklang.",
+        addressConfirmation: "Ijara shartnomasi yoki manzil ro'yxatga olinganligi tasdig'ini (zameldowanie) manzil aniq ko'rinadigan holda yuklang.",
+        residencePermitScan: "Turar joy kartasini ikkala tomondan suratga oling — old tomonda surat, orqa tomonda ma'lumotlar.",
+        taxIdConfirmation: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        employmentContract: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+        businessRegistrationConfirmation: "Hujjatning aniq fotosurati yoki skanini oling — barcha ma'lumotlar yaxshi ko'rinishi kerak.",
+      },
       progressSummary: "Bajarildi: {total} tadan {completed} tasi",
       autoCompleteToast: "✓ Qadam avtomatik bajarildi",
       sectionCompleteHeading: "🎉 Bo'lim yakunlandi!",
@@ -4297,6 +4395,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Hujjatni o'chirasizmi?",
       deleteConfirmBody: "Bu amalni bekor qilib bo'lmaydi. Hujjat butunlay o'chiriladi.",
       cancelBtn: "Bekor qilish",
+      uploadModal: {
+        dropzoneLabel: "Fayl tanlash",
+        dropzoneHint: "PDF, JPG yoki PNG",
+        confirmBtn: "Yuklash",
+      },
     },
     housing: {
       title: "Polshada uy-joy",
@@ -5724,6 +5827,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "İmzalanmış iş sözleşmesi (umowa o pracę)",
         businessRegistrationConfirmation: "CEIDG kayıt onayı",
       },
+      uploadGuides: {
+        passportScan:
+          "Pasaportun fotoğraf ve kişisel bilgilerin bulunduğu sayfasını, varsa vize veya ikamet damgası sayfasını fotoğraflayın. Görüntü net, parlamasız ve kenarları kesilmemiş olmalı.",
+        passportPhoto: "Vesikalık fotoğraf yükleyin: cepheden, başlıksız, açık renkli düz zeminde, biyometrik fotoğraf şartlarına uygun.",
+        peselForm: "Doldurulmuş ve imzalanmış PESEL numarası başvuru formunu yükleyin.",
+        peselLetter: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        workPermitApp: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        sponsorshipLetter: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        healthInsurance: "Sağlık sigortası poliçenizi yükleyin — geçerlilik tarihleri ve poliçe numarası görünür olmalı.",
+        travelInsurance: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        bankConfirmation: "Hesap numarası ve hesap sahibi bilgilerini gösteren banka ekstresi veya belgesi yükleyin.",
+        proofOfFunds: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        relocationLetter: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        taxResidency: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        biometricConfirmation: "Biyometrik randevunuzdan aldığınız onay veya fişi yükleyin.",
+        addressConfirmation: "Kira sözleşmenizi veya adres kayıt onayınızı (zameldowanie) adres net görünecek şekilde yükleyin.",
+        residencePermitScan: "İkamet kartınızı her iki taraftan fotoğraflayın — ön yüzde fotoğraf, arka yüzde bilgiler.",
+        taxIdConfirmation: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        employmentContract: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+        businessRegistrationConfirmation: "Belgenin net bir fotoğrafını veya taramasını çekin — tüm bilgiler net görünmeli.",
+      },
       progressSummary: "Tamamlandı: {total} belgeden {completed}'i",
       autoCompleteToast: "✓ Adım otomatik olarak tamamlandı",
       sectionCompleteHeading: "🎉 Bölüm tamamlandı!",
@@ -5732,6 +5856,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Belge silinsin mi?",
       deleteConfirmBody: "Bu işlem geri alınamaz. Belge kalıcı olarak silinecektir.",
       cancelBtn: "İptal",
+      uploadModal: {
+        dropzoneLabel: "Dosya seç",
+        dropzoneHint: "PDF, JPG veya PNG",
+        confirmBtn: "Yükle",
+      },
     },
     housing: {
       title: "Polonya'da Konut",
@@ -7159,6 +7288,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "Шартномаи меҳнатии имзошуда (umowa o pracę)",
         businessRegistrationConfirmation: "Тасдиқи бақайдгирии CEIDG",
       },
+      uploadGuides: {
+        passportScan:
+          "Саҳифаи шиноснома бо акс ва маълумоти шахсиро аксбардорӣ кунед, инчунин саҳифаи виза ё муҳри истиқомат, агар мавҷуд бошад. Акс бояд возеҳ, бе дурахшиш ва бе буридани канорҳо бошад.",
+        passportPhoto: "Акси ҳуҷҷатиро бор кунед: рӯирост, бе сарпӯш, дар заминаи якранги равшан, мувофиқи талаботи биометрӣ.",
+        peselForm: "Анкетаи пуркардашуда ва имзошудаи дархости рақами PESEL-ро бор кунед.",
+        peselLetter: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        workPermitApp: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        sponsorshipLetter: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        healthInsurance: "Полиси суғуртаи тиббиро бор кунед — мӯҳлати амал ва рақами полис бояд намоён бошанд.",
+        travelInsurance: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        bankConfirmation: "Маълумотнома ё выпискаи бонкиро бо рақами ҳисоб ва маълумоти соҳиб бор кунед.",
+        proofOfFunds: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        relocationLetter: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        taxResidency: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        biometricConfirmation: "Тасдиқ ё квитансияи навбати супоридани маълумоти биометриро бор кунед.",
+        addressConfirmation: "Шартномаи иҷора ё тасдиқи қайди суроға (zameldowanie)-ро бо суроғаи возеҳ намоён бор кунед.",
+        residencePermitScan: "Корти иқоматро аз ду тараф аксбардорӣ кунед — рӯй бо акс, пушт бо маълумот.",
+        taxIdConfirmation: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        employmentContract: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+        businessRegistrationConfirmation: "Акс ё сканери возеҳи ҳуҷҷатро гиред — ҳамаи маълумот бояд возеҳ намоён бошад.",
+      },
       progressSummary: "Иҷро шуд: {completed} аз {total} ҳуҷҷат",
       autoCompleteToast: "✓ Қадам ба таври худкор иҷро шуд",
       sectionCompleteHeading: "🎉 Бахш ба анҷом расид!",
@@ -7167,6 +7317,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Ҳуҷҷат нест карда шавад?",
       deleteConfirmBody: "Ин амалро бекор кардан мумкин нест. Ҳуҷҷат абадӣ нест карда мешавад.",
       cancelBtn: "Бекор кардан",
+      uploadModal: {
+        dropzoneLabel: "Файл интихоб кунед",
+        dropzoneHint: "PDF, JPG ё PNG",
+        confirmBtn: "Бор кардан",
+      },
     },
     housing: {
       title: "Манзил дар Полша",
@@ -8598,6 +8753,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         employmentContract: "Підписаний трудовий договір (umowa o pracę)",
         businessRegistrationConfirmation: "Підтвердження реєстрації CEIDG",
       },
+      uploadGuides: {
+        passportScan:
+          "Сфотографуйте розворот паспорта з фото та особистими даними, а також сторінку з візою чи відміткою про перебування, якщо вона є. Знімок має бути чітким, без відблисків і обрізаних країв.",
+        passportPhoto: "Завантажте фото на документи: анфас, без головного убору, на світлому однотонному фоні, відповідно до біометричних вимог.",
+        peselForm: "Завантажте заповнену та підписану анкету на присвоєння номера PESEL.",
+        peselLetter: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        workPermitApp: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        sponsorshipLetter: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        healthInsurance: "Завантажте поліс медичного страхування — мають бути видні термін дії та номер поліса.",
+        travelInsurance: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        bankConfirmation: "Завантажте виписку або довідку з банку із зазначенням номера рахунку та даних власника.",
+        proofOfFunds: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        relocationLetter: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        taxResidency: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        biometricConfirmation: "Завантажте підтвердження або квитанцію про запис на здачу біометричних даних.",
+        addressConfirmation: "Завантажте договір оренди або підтвердження реєстрації адреси (zameldowanie) із чітко видимою адресою.",
+        residencePermitScan: "Сфотографуйте карту побиту з обох сторін — лицьову сторону з фото та зворотну з даними.",
+        taxIdConfirmation: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        employmentContract: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+        businessRegistrationConfirmation: "Зробіть чітке фото або скан документа, усі дані мають бути добре видимі.",
+      },
       progressSummary: "Готово: {completed} з {total} документів",
       autoCompleteToast: "✓ Крок виконано автоматично",
       sectionCompleteHeading: "🎉 Розділ завершено!",
@@ -8606,6 +8782,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       deleteConfirmTitle: "Видалити документ?",
       deleteConfirmBody: "Цю дію не можна скасувати. Документ буде видалено безповоротно.",
       cancelBtn: "Скасувати",
+      uploadModal: {
+        dropzoneLabel: "Обрати файл",
+        dropzoneHint: "PDF, JPG або PNG",
+        confirmBtn: "Завантажити",
+      },
     },
     housing: {
       title: "Житло в Польщі",
