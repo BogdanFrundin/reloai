@@ -579,6 +579,7 @@ export type Dictionary = {
     home: {
       flightHeading: string;
       flightSub: string;
+      flightOriginPlaceholder: string;
       greeting: string;
       guestGreeting: string;
       greetingSubtitle: string;
@@ -2008,6 +2009,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Your journey",
         flightSub: "The more steps you complete, the closer the plane gets to your destination.",
+        flightOriginPlaceholder: "Your country",
         greeting: "Hi, {name}! 👋",
         guestGreeting: "Hi there! 👋",
         greetingSubtitle: "Here's how your move to {country} is progressing.",
@@ -3475,6 +3477,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Ваш путь",
         flightSub: "Чем больше шагов выполнено — тем ближе самолёт к цели.",
+        flightOriginPlaceholder: "Ваша страна",
         greeting: "Привет, {name}! 👋",
         guestGreeting: "Привет! 👋",
         greetingSubtitle: "Вот как продвигается ваш переезд в {country}.",
@@ -4939,6 +4942,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Sizning yo'lingiz",
         flightSub: "Qancha ko'p qadam bajarilsa, samolyot manzilingizga shuncha yaqinlashadi.",
+        flightOriginPlaceholder: "Sizning davlatingiz",
         greeting: "Salom, {name}! 👋",
         guestGreeting: "Salom! 👋",
         greetingSubtitle: "{country}ga ko'chishingiz qanday davom etayotgani mana bunday.",
@@ -6400,6 +6404,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Yolculuğunuz",
         flightSub: "Ne kadar çok adım tamamlarsanız, uçak hedefinize o kadar yaklaşır.",
+        flightOriginPlaceholder: "Ülkeniz",
         greeting: "Merhaba, {name}! 👋",
         guestGreeting: "Merhaba! 👋",
         greetingSubtitle: "{country}'a taşınmanız böyle ilerliyor.",
@@ -7861,6 +7866,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Роҳи шумо",
         flightSub: "Ҳар қадаре ки иҷро шавад, ҳавопаймо ба ҳадафи шумо ҳамон қадар наздик мешавад.",
+        flightOriginPlaceholder: "Кишвари шумо",
         greeting: "Салом, {name}! 👋",
         guestGreeting: "Салом! 👋",
         greetingSubtitle: "Кӯчиши шумо ба {country} чунин пеш меравад.",
@@ -9326,6 +9332,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       home: {
         flightHeading: "Ваш шлях",
         flightSub: "Що більше кроків виконано, то ближче літак до вашого пункту призначення.",
+        flightOriginPlaceholder: "Ваша країна",
         greeting: "Привіт, {name}! 👋",
         guestGreeting: "Привіт! 👋",
         greetingSubtitle: "Ось як просувається ваш переїзд до {country}.",

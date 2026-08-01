@@ -7,6 +7,12 @@
       "skillPath": "skills/emil-design-eng/SKILL.md",
       "computedHash": "ac3fc5b4e206488ffc408a2806f829bb2e5eaf518fded09be34790685c2b3a0d"
     },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "1d4b2dbbdc97f58fd8a406ca5c7e80afe3ce563654cf0a3d9464eca6dda506af"
+    },
     "review-animations": {
       "source": "emilkowalski/skill",
       "sourceType": "github",

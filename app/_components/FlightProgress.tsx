@@ -74,7 +74,14 @@ export default function FlightProgress() {
         <p className="text-sm font-semibold text-text-primary">{t.dashboard.home.flightHeading}</p>
         <p className="mt-1 text-xs text-text-muted">{t.dashboard.home.flightSub}</p>
 
-        <div className="relative mt-6 h-[200px] w-full overflow-hidden sm:h-[260px]">
+        <div
+          className="relative mt-6 h-[200px] w-full overflow-hidden sm:h-[260px]"
+          role="progressbar"
+          aria-valuenow={progressPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={t.dashboard.home.flightHeading}
+        >
           <div aria-hidden className="pointer-events-none absolute inset-0">
             {STARFIELD.map((star, index) => (
               <span
@@ -88,7 +95,10 @@ export default function FlightProgress() {
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[58%] h-[340px] w-[340px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
-            style={{ boxShadow: "0 0 40px 14px rgba(96,165,250,0.28), 0 0 90px 30px rgba(59,130,246,0.14)" }}
+            style={{
+              boxShadow:
+                "0 24px 60px -20px rgba(2,6,20,0.65), 0 0 50px -12px rgba(59,130,246,0.3), inset 0 0 24px rgba(147,197,253,0.12)",
+            }}
           >
             <Image
               src="/images/earth.jpg"
@@ -96,16 +106,21 @@ export default function FlightProgress() {
               fill
               sizes="(max-width: 640px) 340px, 620px"
               className="object-cover"
-              style={{ objectPosition: "center 35%" }}
+              style={{ objectPosition: "54% 22%" }}
             />
-            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.35 }} />
+            {/* Brand tint — keeps the photo in the product's accent hue rather than raw satellite colors. */}
+            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.32 }} />
+            {/* Single key light, upper-left, echoing the origin side of the composition. */}
             <div
               aria-hidden
               className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 20%, rgba(10,20,40,0.15), rgba(4,8,20,0.55) 55%, rgba(2,4,12,0.85) 100%)",
-              }}
+              style={{ background: "radial-gradient(circle at 28% 12%, rgba(255,255,255,0.32), transparent 45%)", mixBlendMode: "screen" }}
+            />
+            {/* Terminator: one directional falloff toward the far corner instead of a flat vignette. */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ background: "linear-gradient(135deg, transparent 30%, rgba(2,4,12,0.5) 72%, rgba(2,4,12,0.82) 100%)" }}
             />
           </div>
 
@@ -126,10 +141,27 @@ export default function FlightProgress() {
             className="absolute flex flex-col items-center gap-1"
             style={{ left: `${FLAG_ORIGIN_POS[0]}%`, top: `${FLAG_ORIGIN_POS[1]}%`, transform: "translate(-50%, -50%)" }}
           >
-            {originCode && (
+            {originCode ? (
               <Image src={getFlagUrl(originCode, "md")} alt={originName ?? ""} width={36} height={27} className="rounded-md shadow-lg" unoptimized />
+            ) : (
+              <span
+                role="img"
+                aria-label={t.dashboard.home.flightOriginPlaceholder}
+                className="flex h-[27px] w-9 items-center justify-center rounded-md border border-dashed border-border-strong bg-surface-1/80 shadow-lg"
+              >
+                <svg className="h-3.5 w-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                  />
+                </svg>
+              </span>
             )}
-            <span className="whitespace-nowrap rounded-full bg-panel/90 px-2 py-0.5 text-[10px] font-medium text-text-muted">{originName}</span>
+            <span className="whitespace-nowrap rounded-full bg-panel/90 px-2 py-0.5 text-[10px] font-medium text-text-muted">
+              {originName ?? t.dashboard.home.flightOriginPlaceholder}
+            </span>
           </div>
 
           <div
