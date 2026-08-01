@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useId, useMemo } from "react";
 import Globe3D from "./Globe3D";
+import Starfield from "./Starfield";
 import { useAuth } from "./AuthProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
 import { useLanguage } from "./LanguageProvider";
@@ -12,63 +13,6 @@ import { COUNTRY_COORDS } from "../_lib/countryCoords";
 
 const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 const COUNTRY_ORDER = ["Poland", "Germany", "Spain"];
-
-// Fixed (not random) so the sky doesn't reshuffle on every render or mismatch
-// between server and client hydration. Three size/opacity tiers plus a
-// handful of "bright" stars that get a subtle twinkle animation.
-const STARFIELD = [
-  { x: 6, y: 8, size: 1.5, opacity: 0.55 },
-  { x: 20, y: 4, size: 1, opacity: 0.4 },
-  { x: 27, y: 21, size: 2.5, opacity: 0.9, bright: true },
-  { x: 33, y: 16, size: 1, opacity: 0.35 },
-  { x: 40, y: 9, size: 1.5, opacity: 0.5 },
-  { x: 46, y: 6, size: 1, opacity: 0.45 },
-  { x: 52, y: 20, size: 1.5, opacity: 0.4 },
-  { x: 58, y: 14, size: 1, opacity: 0.3 },
-  { x: 63, y: 26, size: 2.5, opacity: 0.85, bright: true },
-  { x: 70, y: 5, size: 1.5, opacity: 0.5 },
-  { x: 76, y: 17, size: 1, opacity: 0.35 },
-  { x: 86, y: 18, size: 2, opacity: 0.6 },
-  { x: 90, y: 9, size: 1, opacity: 0.4 },
-  { x: 13, y: 27, size: 1.5, opacity: 0.35 },
-  { x: 4, y: 15, size: 2.5, opacity: 0.9, bright: true },
-  { x: 53, y: 25, size: 1, opacity: 0.4 },
-  { x: 92, y: 24, size: 1.5, opacity: 0.45 },
-  { x: 3, y: 20, size: 1, opacity: 0.35 },
-  { x: 79, y: 30, size: 1, opacity: 0.3 },
-  { x: 24, y: 29, size: 1, opacity: 0.3 },
-  { x: 96, y: 4, size: 2.5, opacity: 0.85, bright: true },
-];
-
-// Small line-connected clusters, in the same 0-100 percentage space as the
-// starfield, giving the sky a couple of intentional focal points instead of
-// undifferentiated dust.
-const CONSTELLATIONS: Array<{ points: [number, number][] }> = [
-  {
-    points: [
-      [8, 5],
-      [13, 2.5],
-      [18, 6],
-      [15.5, 11],
-    ],
-  },
-  {
-    points: [
-      [66, 4],
-      [72, 8],
-      [79, 3.5],
-    ],
-  },
-];
-
-// Rare, staggered shooting stars. Different delay/duration per instance so
-// they never feel synchronized; each is mostly invisible and only streaks
-// for a beat once per loop.
-const SHOOTING_STARS = [
-  { x: 10, y: 9, angle: -28, delay: 0, duration: 7.5 },
-  { x: 58, y: 4, angle: -32, delay: 3.6, duration: 9 },
-  { x: 34, y: 17, angle: -22, delay: 6.4, duration: 8.2 },
-];
 
 // Quadratic Bezier point + tangent angle, in percentage coordinates (0-100).
 function pointOnCurve(t: number, p0: [number, number], p1: [number, number], p2: [number, number]) {
@@ -140,59 +84,8 @@ export default function FlightProgress() {
           aria-valuemax={100}
           aria-label={t.dashboard.home.flightHeading}
         >
-          {/* Sky: scattered stars, a couple of constellations, and rare shooting stars. */}
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            {STARFIELD.map((star, index) => (
-              <span
-                key={index}
-                className={`absolute rounded-full bg-white ${star.bright ? "animate-star-twinkle motion-reduce:animate-none" : ""}`}
-                style={{
-                  left: `${star.x}%`,
-                  top: `${star.y}%`,
-                  width: `${star.size}px`,
-                  height: `${star.size}px`,
-                  opacity: star.opacity,
-                  animationDelay: star.bright ? `${(star.x % 5) * 0.6}s` : undefined,
-                  boxShadow: star.bright ? "0 0 6px 1px rgba(255,255,255,0.55)" : undefined,
-                }}
-              />
-            ))}
-
-            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              {CONSTELLATIONS.map((constellation, ci) => (
-                <g key={ci}>
-                  <polyline
-                    points={constellation.points.map(([x, y]) => `${x},${y}`).join(" ")}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="0.15"
-                    strokeOpacity="0.28"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  {constellation.points.map(([x, y], pi) => (
-                    <circle key={pi} cx={x} cy={y} r="0.55" fill="white" opacity="0.75" />
-                  ))}
-                </g>
-              ))}
-            </svg>
-
-            {SHOOTING_STARS.map((star, index) => (
-              <div
-                key={index}
-                className="absolute motion-reduce:hidden"
-                style={{ left: `${star.x}%`, top: `${star.y}%`, transform: `rotate(${star.angle}deg)` }}
-              >
-                <span
-                  className="animate-shooting-star block h-px w-16 rounded-full bg-gradient-to-r from-transparent via-white/70 to-white"
-                  style={{
-                    animationDelay: `${star.delay}s`,
-                    animationDuration: `${star.duration}s`,
-                    boxShadow: "0 0 6px 1px rgba(255,255,255,0.7)",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+          {/* Sky: canvas-based depth starfield, drifting and twinkling behind the globe. */}
+          <Starfield className="pointer-events-none absolute inset-0" />
 
           <div
             aria-hidden
