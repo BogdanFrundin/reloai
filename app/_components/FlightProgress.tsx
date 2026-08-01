@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useMemo } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Globe3D from "./Globe3D";
 import Starfield from "./Starfield";
 import { useAuth } from "./AuthProvider";
@@ -13,16 +13,6 @@ import { COUNTRY_COORDS } from "../_lib/countryCoords";
 
 const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 const COUNTRY_ORDER = ["Poland", "Germany", "Spain"];
-
-// Quadratic Bezier point + tangent angle, in percentage coordinates (0-100).
-function pointOnCurve(t: number, p0: [number, number], p1: [number, number], p2: [number, number]) {
-  const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
-  const y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t ** 2 * p2[1];
-  const dx = 2 * (1 - t) * (p1[0] - p0[0]) + 2 * t * (p2[0] - p1[0]);
-  const dy = 2 * (1 - t) * (p1[1] - p0[1]) + 2 * t * (p2[1] - p1[1]);
-  const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-  return { x, y, angle };
-}
 
 export default function FlightProgress() {
   const { t, lang } = useLanguage();
@@ -59,12 +49,30 @@ export default function FlightProgress() {
   // origin flag marker at 0% progress (the most common state), 0.96 keeps
   // it clear of the destination marker at 100%.
   const t01 = Math.min(Math.max(progressPercent / 100, 0.08), 0.96);
-  const plane = useMemo(() => pointOnCurve(t01, P0, P1, P2), [t01]);
 
   const pathD = `M ${P0[0]} ${P0[1]} Q ${P1[0]} ${P1[1]} ${P2[0]} ${P2[1]}`;
-  // Floor keeps the traveled segment visibly distinct from the dashed
-  // remaining segment even right after departure, instead of a near-zero sliver.
-  const solidLength = Math.max(t01 * 130, 14);
+
+  // The plane's position and the solid progress line's dasharray must both be
+  // derived from the same actual rendered arc length (not the bezier t
+  // parameter, which isn't linear in arc length) so the plane always sits
+  // exactly at the line's tip instead of drifting apart from it.
+  const pathRef = useRef<SVGPathElement>(null);
+  const [pathLength, setPathLength] = useState(0);
+
+  useLayoutEffect(() => {
+    if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
+  }, [pathD]);
+
+  const solidLength = t01 * pathLength;
+
+  const plane = useMemo(() => {
+    if (!pathRef.current || pathLength === 0) return { x: P0[0], y: P0[1], angle: 0 };
+    const dist = solidLength;
+    const point = pathRef.current.getPointAtLength(dist);
+    const point2 = pathRef.current.getPointAtLength(Math.min(dist + 0.5, pathLength));
+    const angle = (Math.atan2(point2.y - point.y, point2.x - point.x) * 180) / Math.PI;
+    return { x: point.x, y: point.y, angle };
+  }, [solidLength, pathLength]);
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border-subtle bg-gradient-to-b from-accent/10 via-surface-1 to-surface-1 p-6 sm:p-8">
@@ -98,11 +106,12 @@ export default function FlightProgress() {
           <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d={pathD} fill="none" stroke="var(--border-strong)" strokeWidth="0.6" strokeDasharray="2 2" />
             <path
+              ref={pathRef}
               d={pathD}
               fill="none"
               stroke="var(--accent)"
               strokeWidth="0.8"
-              strokeDasharray={`${solidLength} 200`}
+              strokeDasharray={`${solidLength} ${pathLength}`}
               strokeLinecap="round"
               style={{ transition: "stroke-dasharray 2000ms var(--ease-out-strong)" }}
             />
@@ -154,16 +163,27 @@ export default function FlightProgress() {
           >
             <svg className="h-10 w-10 sm:h-11 sm:w-11" viewBox="0 0 24 24">
               <defs>
-                <linearGradient id={planeGradientId} x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id={planeGradientId} gradientUnits="userSpaceOnUse" x1="12" y1="0" x2="12" y2="24">
                   <stop offset="0%" stopColor="#f2f7ff" />
                   <stop offset="55%" stopColor="var(--accent-bright)" />
                   <stop offset="100%" stopColor="#2f56c4" />
                 </linearGradient>
               </defs>
-              <path
-                fill={`url(#${planeGradientId})`}
-                d="M12,0.8 12.9,5.2 12.9,12.3 23.3,17.3 13.3,16.3 13.3,19.8 18,22.6 12.6,22 12,23.4 11.4,22 6,22.6 10.7,19.8 10.7,16.3 0.7,17.3 11.1,12.3 11.1,5.2 Z"
-              />
+              <g fill={`url(#${planeGradientId})`}>
+                {/* Main wings, swept back, roughly two-thirds down the fuselage */}
+                <path d="M13.3,12.4 L22.6,17 L13.3,15.7 Z M10.7,12.4 L1.4,17 L10.7,15.7 Z" />
+                {/* Tail wings, smaller, near the back */}
+                <path d="M13,18.6 L17.6,21.1 L13,20.2 Z M11,18.6 L6.4,21.1 L11,20.2 Z" />
+                {/* Fuselage */}
+                <rect x="10.6" y="6" width="2.8" height="14.6" rx="1.4" />
+                {/* Nose cone */}
+                <path d="M12,1 L10.6,6.5 L13.4,6.5 Z" />
+                {/* Vertical tail fin */}
+                <path d="M12,18.9 L12.85,21.6 L12,22.6 L11.15,21.6 Z" />
+                {/* Engine pods */}
+                <ellipse cx="8.5" cy="15.3" rx="0.9" ry="1.9" />
+                <ellipse cx="15.5" cy="15.3" rx="0.9" ry="1.9" />
+              </g>
             </svg>
           </div>
         </div>
