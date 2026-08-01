@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useId, useMemo } from "react";
+import Globe3D from "./Globe3D";
 import { useAuth } from "./AuthProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
 import { useLanguage } from "./LanguageProvider";
 import { getFlagUrl } from "../_lib/flags";
 import { getCountryName } from "../_lib/countries";
+import { COUNTRY_COORDS } from "../_lib/countryCoords";
 
 const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 const COUNTRY_ORDER = ["Poland", "Germany", "Spain"];
@@ -89,6 +91,15 @@ export default function FlightProgress() {
   const destIndex = COUNTRY_ORDER.indexOf(country);
   const destName = t.countries.list[destIndex === -1 ? 0 : destIndex]?.name ?? country;
   const originName = originCode ? getCountryName(originCode, lang) : null;
+
+  const originCoords = originCode ? COUNTRY_COORDS[originCode] : null;
+  const destCoords = COUNTRY_COORDS[destCode] ?? COUNTRY_COORDS.PL;
+  const globeMarkers = useMemo(() => {
+    const markers: { location: [number, number]; size: number }[] = [];
+    if (originCoords) markers.push({ location: originCoords, size: 0.05 });
+    markers.push({ location: destCoords, size: 0.05 });
+    return markers;
+  }, [originCoords, destCoords]);
 
   const FLAG_ORIGIN_POS: [number, number] = [15, 83];
   const FLAG_DEST_POS: [number, number] = [85, 83];
@@ -185,36 +196,10 @@ export default function FlightProgress() {
 
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[56%] h-[360px] w-[360px] -translate-x-1/2 overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
-            style={{
-              boxShadow:
-                "0 24px 60px -20px rgba(2,6,20,0.65), 0 0 60px -8px rgba(120,170,255,0.5), inset 0 0 20px 2px rgba(180,210,255,0.35), inset 0 0 24px rgba(147,197,253,0.12)",
-            }}
+            className="pointer-events-none absolute left-1/2 top-[56%] flex h-[360px] w-[360px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full sm:top-[62%] sm:h-[620px] sm:w-[620px]"
+            style={{ boxShadow: "0 24px 60px -20px rgba(2,6,20,0.65), 0 0 60px -8px rgba(120,170,255,0.5)" }}
           >
-            <Image
-              src="/images/earth-globe.jpg"
-              alt=""
-              fill
-              sizes="(max-width: 640px) 360px, 620px"
-              className="object-cover"
-              style={{ objectPosition: "48% 40%" }}
-            />
-            {/* Brand tint — keeps the photo in the product's accent hue rather than raw satellite colors. */}
-            <div aria-hidden className="absolute inset-0" style={{ background: "var(--accent)", mixBlendMode: "color", opacity: 0.28 }} />
-            {/* Key light, upper-left, echoing the origin side of the composition. */}
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{ background: "radial-gradient(circle at 30% 22%, rgba(255,255,255,0.4), transparent 42%)", mixBlendMode: "screen" }}
-            />
-            {/* Terminator: a curved day/night falloff radiating from the lit corner, reading as a real sphere rather than a flat diagonal wash. */}
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background: "radial-gradient(circle at 26% 18%, transparent 38%, rgba(3,6,16,0.42) 62%, rgba(2,4,12,0.86) 88%)",
-              }}
-            />
+            <Globe3D size={620} markers={globeMarkers} />
           </div>
 
           <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
