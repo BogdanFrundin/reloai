@@ -168,6 +168,43 @@ body {
   animation: slide-up 0.4s var(--ease-out-strong) both;
 }
 
+@keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes shooting-star {
+  0%,
+  90% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  91% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+    transform: translateX(-120px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+.animate-shooting-star {
+  animation: shooting-star 8s linear infinite;
+}
+
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
