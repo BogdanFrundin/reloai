@@ -14,6 +14,40 @@ import { COUNTRY_COORDS } from "../_lib/countryCoords";
 const COUNTRY_FLAG_CODE: Record<string, string> = { Poland: "pl", Germany: "de", Spain: "es" };
 const COUNTRY_ORDER = ["Poland", "Germany", "Spain"];
 
+const FLAG_ORIGIN_POS: [number, number] = [15, 83];
+const FLAG_DEST_POS: [number, number] = [85, 83];
+
+// P0/P2 are the flag positions themselves so the path always starts and ends
+// exactly at each flag marker — both use the same 0-100 percentage
+// coordinate space as the SVG's viewBox, so they can never drift apart.
+const P0: [number, number] = FLAG_ORIGIN_POS;
+const P1: [number, number] = [50, 15];
+const P2: [number, number] = FLAG_DEST_POS;
+
+// Rough numeric estimate of the quadratic bezier's arc length, computable
+// synchronously with no DOM (same result on server and client). Used to seed
+// pathLength before the exact getTotalLength() measurement lands, so the
+// stroke-dasharray's gap value starts already close to correct instead of
+// near-zero — animating a dasharray's gap from small to large makes the
+// dash/gap pattern repeat along the path while it transitions, which renders
+// as multiple disconnected dash fragments until the CSS transition settles.
+function estimateQuadraticBezierLength(p0: [number, number], p1: [number, number], p2: [number, number], samples = 24) {
+  let length = 0;
+  let prevX = p0[0];
+  let prevY = p0[1];
+  for (let i = 1; i <= samples; i++) {
+    const t = i / samples;
+    const x = (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t ** 2 * p2[0];
+    const y = (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t ** 2 * p2[1];
+    length += Math.hypot(x - prevX, y - prevY);
+    prevX = x;
+    prevY = y;
+  }
+  return length;
+}
+
+const ESTIMATED_PATH_LENGTH = estimateQuadraticBezierLength(P0, P1, P2);
+
 export default function FlightProgress() {
   const { t, lang } = useLanguage();
   const { profile } = useAuth();
@@ -34,16 +68,6 @@ export default function FlightProgress() {
     markers.push({ location: destCoords, size: 0.05 });
     return markers;
   }, [originCoords, destCoords]);
-
-  const FLAG_ORIGIN_POS: [number, number] = [15, 83];
-  const FLAG_DEST_POS: [number, number] = [85, 83];
-
-  // P0/P2 are the flag positions themselves so the path always starts and
-  // ends exactly at each flag marker — both use the same 0-100 percentage
-  // coordinate space as the SVG's viewBox, so they can never drift apart.
-  const P0: [number, number] = FLAG_ORIGIN_POS;
-  const P1: [number, number] = [50, 15];
-  const P2: [number, number] = FLAG_DEST_POS;
 
   // Starts near the origin and is animated to the real value shortly after
   // mount (below) so the "flying in" transition reliably plays on every
@@ -71,16 +95,35 @@ export default function FlightProgress() {
   // parameter, which isn't linear in arc length) so the plane always sits
   // exactly at the line's tip instead of drifting apart from it.
   const pathRef = useRef<SVGPathElement>(null);
-  const [pathLength, setPathLength] = useState(0);
+  const [pathLength, setPathLength] = useState(ESTIMATED_PATH_LENGTH);
 
   useLayoutEffect(() => {
-    if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
+    // getTotalLength() is measured synchronously before the browser paints,
+    // so it always reflects real, laid-out path geometry (never 0-by-timing).
+    // The retry loop is a defensive fallback only, in case some browser ever
+    // hands back 0 for a path that hasn't fully settled yet.
+    const measure = () => {
+      if (!pathRef.current) return;
+      const len = pathRef.current.getTotalLength();
+      if (len > 0) {
+        setPathLength(len);
+      } else {
+        requestAnimationFrame(measure);
+      }
+    };
+    measure();
   }, [pathD]);
 
   const solidLength = animatedT01 * pathLength;
+  // Defensive fallback only — pathLength is never really 0 (it starts at the
+  // estimate above), but a dasharray of "0 0" would render as a fully solid
+  // stroke covering the whole path rather than "invisible" (per the SVG
+  // spec, all-zero values disable dashing entirely), so this avoids that
+  // degenerate case outright if it were ever hit.
+  const dashArrayValue = pathLength > 0 ? `${solidLength} ${pathLength}` : "0 1";
 
   const plane = useMemo(() => {
-    if (!pathRef.current || pathLength === 0) return { x: P0[0], y: P0[1], angle: 0 };
+    if (!pathRef.current) return { x: P0[0], y: P0[1], angle: 0 };
     const dist = solidLength;
     const point = pathRef.current.getPointAtLength(dist);
     const point2 = pathRef.current.getPointAtLength(Math.min(dist + 0.5, pathLength));
@@ -133,7 +176,7 @@ export default function FlightProgress() {
               fill="none"
               stroke="var(--accent)"
               strokeWidth="0.8"
-              strokeDasharray={`${solidLength} ${pathLength}`}
+              strokeDasharray={dashArrayValue}
               strokeLinecap="round"
               style={{ transition: "stroke-dasharray 2000ms var(--ease-out-strong)" }}
             />
