@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Globe3D from "./Globe3D";
 import Starfield from "./Starfield";
 import { useAuth } from "./AuthProvider";
@@ -45,10 +45,24 @@ export default function FlightProgress() {
   const P1: [number, number] = [50, 15];
   const P2: [number, number] = FLAG_DEST_POS;
 
-  // Clamped away from the very ends: 0.08 keeps the plane clear of the
-  // origin flag marker at 0% progress (the most common state), 0.96 keeps
-  // it clear of the destination marker at 100%.
-  const t01 = Math.min(Math.max(progressPercent / 100, 0.08), 0.96);
+  // Starts near the origin and is animated to the real value shortly after
+  // mount (below) so the "flying in" transition reliably plays on every
+  // visit to this page, instead of depending on incidental render timing.
+  const [animatedT01, setAnimatedT01] = useState(0.04);
+
+  useEffect(() => {
+    // Clamped away from the very ends: 0.08 keeps the plane clear of the
+    // origin flag marker at 0% progress (the most common state), 0.96 keeps
+    // it clear of the destination marker at 100%.
+    const targetT01 = Math.min(Math.max(progressPercent / 100, 0.08), 0.96);
+    // Defer to the next frame so the browser registers the initial (near-origin)
+    // position first, guaranteeing the transition to targetT01 is visible on
+    // every mount, regardless of which page the user navigated from.
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setAnimatedT01(targetT01));
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [progressPercent]);
 
   const pathD = `M ${P0[0]} ${P0[1]} Q ${P1[0]} ${P1[1]} ${P2[0]} ${P2[1]}`;
 
@@ -63,7 +77,7 @@ export default function FlightProgress() {
     if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
   }, [pathD]);
 
-  const solidLength = t01 * pathLength;
+  const solidLength = animatedT01 * pathLength;
 
   const plane = useMemo(() => {
     if (!pathRef.current || pathLength === 0) return { x: P0[0], y: P0[1], angle: 0 };
