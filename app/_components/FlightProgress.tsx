@@ -84,7 +84,15 @@ export default function FlightProgress() {
     const dist = solidLength;
     const point = pathRef.current.getPointAtLength(dist);
     const point2 = pathRef.current.getPointAtLength(Math.min(dist + 0.5, pathLength));
-    const angle = (Math.atan2(point2.y - point.y, point2.x - point.x) * 180) / Math.PI;
+    // The path's viewBox is stretched non-uniformly onto the actual card
+    // (preserveAspectRatio="none", wide-but-short container), so a tangent
+    // computed directly in viewBox units doesn't match what's visually on
+    // screen. Scale dx/dy by the path's screen CTM first so the angle
+    // reflects the true rendered slope of the line.
+    const ctm = pathRef.current.getScreenCTM();
+    const dx = (point2.x - point.x) * (ctm?.a ?? 1);
+    const dy = (point2.y - point.y) * (ctm?.d ?? 1);
+    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
     return { x: point.x, y: point.y, angle };
   }, [solidLength, pathLength]);
 
