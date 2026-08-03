@@ -12,12 +12,12 @@ export default function AuthShell({ children }: { children: ReactNode }) {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-16">
       <Link
         href="/"
-        aria-label={t.auth.backToLanding}
-        className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary"
+        className="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-border-subtle bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-accent/40 hover:bg-surface-hover hover:text-text-primary"
       >
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
         </svg>
+        {t.auth.backToLanding}
       </Link>
 
       <div
