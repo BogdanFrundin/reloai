@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
@@ -53,6 +53,23 @@ export default function NotificationBell() {
   const n = t.notifications;
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationRow[]>([]);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const bellButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      // The bell button isn't inside menuRef, so without excluding it here a
+      // click on it while open would both close the menu (this handler) and
+      // reopen it (the button's own toggle), netting no visible change.
+      if (menuRef.current && !menuRef.current.contains(target) && !bellButtonRef.current?.contains(target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   const loadNotifications = useCallback(async () => {
     if (!user) {
@@ -99,6 +116,7 @@ export default function NotificationBell() {
   return (
     <div className="relative">
       <button
+        ref={bellButtonRef}
         type="button"
         onClick={() => setMenuOpen((prev) => !prev)}
         aria-label={n.bellAria}
@@ -115,52 +133,62 @@ export default function NotificationBell() {
       </button>
 
       {menuOpen && (
-        <>
-          <div aria-hidden onClick={() => setMenuOpen(false)} className="fixed inset-0 z-40" />
-          <div
-            role="menu"
-            className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-border-subtle bg-panel p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
-          >
-            <p className="px-3 py-2 text-sm font-semibold text-text-primary">{n.title}</p>
-
-            {notifications.length === 0 ? (
-              <p className="px-3 py-6 text-center text-sm text-text-muted">{n.empty}</p>
-            ) : (
-              <div className="max-h-96 space-y-1 overflow-y-auto">
-                {notifications.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="menuitem"
-                    onClick={() => handleSelect(item)}
-                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover ${
-                      item.read ? "opacity-60" : "bg-accent/[0.05]"
-                    }`}
-                  >
-                    <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary">
-                      {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm leading-snug text-text-secondary">{item.title}</p>
-                      {item.message && <p className="mt-0.5 text-xs leading-snug text-text-muted">{item.message}</p>}
-                      <p className="mt-1 text-xs text-text-muted">{formatTimeAgo(item.created_at, lang)}</p>
-                    </div>
-                    {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
-                  </button>
-                ))}
-              </div>
-            )}
-
+        <div
+          ref={menuRef}
+          role="menu"
+          className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-border-subtle bg-panel p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
+        >
+          <div className="flex items-center justify-between px-3 py-2">
+            <p className="text-sm font-semibold text-text-primary">{n.title}</p>
             <button
               type="button"
-              onClick={markAllRead}
-              disabled={unreadCount === 0}
-              className="mt-1 flex w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-accent-bright transition-colors duration-150 hover:bg-surface-hover disabled:cursor-not-allowed disabled:text-slate-600 disabled:hover:bg-transparent"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close"
+              className="flex h-6 w-6 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
             >
-              {n.markAllRead}
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
-        </>
+
+          {notifications.length === 0 ? (
+            <p className="px-3 py-6 text-center text-sm text-text-muted">{n.empty}</p>
+          ) : (
+            <div className="max-h-96 space-y-1 overflow-y-auto">
+              {notifications.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="menuitem"
+                  onClick={() => handleSelect(item)}
+                  className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover ${
+                    item.read ? "opacity-60" : "bg-accent/[0.05]"
+                  }`}
+                >
+                  <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary">
+                    {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm leading-snug text-text-secondary">{item.title}</p>
+                    {item.message && <p className="mt-0.5 text-xs leading-snug text-text-muted">{item.message}</p>}
+                    <p className="mt-1 text-xs text-text-muted">{formatTimeAgo(item.created_at, lang)}</p>
+                  </div>
+                  {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={markAllRead}
+            disabled={unreadCount === 0}
+            className="mt-1 flex w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-accent-bright transition-colors duration-150 hover:bg-surface-hover disabled:cursor-not-allowed disabled:text-slate-600 disabled:hover:bg-transparent"
+          >
+            {n.markAllRead}
+          </button>
+        </div>
       )}
     </div>
   );
