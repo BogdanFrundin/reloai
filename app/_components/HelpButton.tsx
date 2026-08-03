@@ -36,8 +36,10 @@ export default function HelpButton({
   function toggleMenu() {
     if (!menuOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
+      const estimatedMenuHeight = 132;
       const spaceBelow = window.innerHeight - rect.bottom;
-      setMenuDirection(spaceBelow < 160 ? "up" : "down");
+      const spaceAbove = rect.top;
+      setMenuDirection(spaceBelow < estimatedMenuHeight && spaceAbove > spaceBelow ? "up" : "down");
     }
     setMenuOpen((p) => !p);
   }
@@ -65,13 +67,32 @@ export default function HelpButton({
         {menuOpen && (
           <div
             role="menu"
-            className={`absolute left-0 z-50 w-56 overflow-hidden rounded-xl border border-border-subtle bg-panel py-1 shadow-xl shadow-black/40 backdrop-blur-xl ${menuDirection === "up" ? "bottom-full mb-2" : "top-full mt-2"}`}
+            className={`absolute left-0 z-50 w-64 overflow-hidden rounded-2xl border border-border-subtle bg-panel p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 ${menuDirection === "up" ? "bottom-full mb-2" : "top-full mt-2"}`}
           >
-            <button type="button" onClick={(e) => { e.stopPropagation(); setMenuOpen(false); setGuideOpen(true); }} className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary">
-              {t.helpButton.openGuide}
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setMenuOpen(false); setGuideOpen(true); }}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            >
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-accent-bright">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              </span>
+              <span className="font-medium">{t.helpButton.openGuide}</span>
             </button>
-            <button type="button" onClick={(e) => { e.stopPropagation(); askAi(); }} className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary">
-              {t.helpButton.askAi}
+            <div className="my-1 h-px bg-border-subtle" />
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); askAi(); }}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            >
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-accent-bright">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z" />
+                </svg>
+              </span>
+              <span className="font-medium">{t.helpButton.askAi}</span>
             </button>
           </div>
         )}
