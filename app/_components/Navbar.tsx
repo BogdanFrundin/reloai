@@ -143,7 +143,7 @@ export default function Navbar() {
           {!loading &&
             (user ? (
               <Link
-                href="/dashboard"
+                href="/home"
                 className={`flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 py-1.5 pl-1.5 pr-4 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/50 ${pressScale}`}
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-xs font-bold text-white">
@@ -212,7 +212,7 @@ export default function Navbar() {
             {!loading &&
               (user ? (
                 <Link
-                  href="/dashboard"
+                  href="/home"
                   onClick={() => setOpen(false)}
                   className={`mt-2 flex items-center justify-center gap-2 rounded-full border border-border-strong bg-surface-1 py-2.5 text-center text-sm font-semibold text-text-primary hover:border-accent/50 ${pressScale}`}
                 >
