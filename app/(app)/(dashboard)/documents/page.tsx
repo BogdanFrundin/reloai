@@ -151,13 +151,13 @@ function DocumentRow({
 
   return (
     <div
-      className={`flex items-center gap-4 border-b border-l-4 border-border-subtle py-4 pl-4 last:border-b-0 ${STATUS_BORDER_CLASS[doc.status]}`}
+      className={`group flex items-center gap-4 border-b border-l-4 border-border-subtle py-4 pl-4 transition-colors duration-150 last:border-b-0 hover:bg-surface-hover ${STATUS_BORDER_CLASS[doc.status]}`}
     >
       <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-surface-1 text-base">
         {CATEGORY_EMOJI[doc.category]}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-text-primary">{name}</p>
+        <p className="truncate text-sm font-semibold text-text-primary transition-colors duration-150 group-hover:text-accent-bright">{name}</p>
         <p className="mt-0.5 truncate text-xs text-text-muted">{doc.fileName ?? hint}</p>
       </div>
       <span className={`flex-shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${badge.className}`}>
