@@ -1242,7 +1242,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI provides informational services. We are not a law firm and are not responsible for decisions made by immigration authorities. All information is for general guidance only. For legal assistance, please consult a licensed professional.",
     },
     auth: {
-      backToLanding: "Back to home",
+      backToLanding: "Back to site",
       or: "or",
       login: {
         heading: "Welcome back",
@@ -2715,7 +2715,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI предоставляет информационные услуги. Мы не являемся юридической фирмой и не несём ответственности за решения миграционных органов. Вся информация носит ознакомительный характер. Для юридической помощи обратитесь к лицензированному специалисту.",
     },
     auth: {
-      backToLanding: "На главную",
+      backToLanding: "На сайт",
       or: "или",
       login: {
         heading: "С возвращением",
@@ -4185,7 +4185,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI axborot xizmatlarini taqdim etadi. Biz yuridik firma emasmiz va migratsiya organlarining qarorlari uchun javobgar emasmiz. Barcha ma'lumotlar faqat tanishtirish maqsadida berilgan. Yuridik yordam uchun litsenziyalangan mutaxassisga murojaat qiling.",
     },
     auth: {
-      backToLanding: "Bosh sahifaga",
+      backToLanding: "Saytga qaytish",
       or: "yoki",
       login: {
         heading: "Xush kelibsiz",
@@ -5652,7 +5652,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI bilgilendirme hizmetleri sunar. Bir hukuk firması değiliz ve göçmenlik makamlarının kararlarından sorumlu değiliz. Tüm bilgiler yalnızca genel bilgilendirme amaçlıdır. Hukuki yardım için lisanslı bir uzmana danışın.",
     },
     auth: {
-      backToLanding: "Ana sayfaya",
+      backToLanding: "Siteye dön",
       or: "veya",
       login: {
         heading: "Tekrar hoş geldiniz",
@@ -7119,7 +7119,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI хидматҳои иттилоотӣ пешниҳод мекунад. Мо ширкати ҳуқуқӣ нестем ва барои қарорҳои мақомоти муҳоҷират масъулият надорем. Тамоми маълумот танҳо хусусияти шиносоӣ дорад. Барои кӯмаки ҳуқуқӣ ба мутахассиси литсензиядор муроҷиат кунед.",
     },
     auth: {
-      backToLanding: "Ба саҳифаи асосӣ",
+      backToLanding: "Ба сайт",
       or: "ё",
       login: {
         heading: "Хуш омадед",
@@ -8590,7 +8590,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       disclaimer: "ReloAI надає інформаційні послуги. Ми не є юридичною фірмою і не несемо відповідальності за рішення міграційних органів. Уся інформація має ознайомчий характер. Для юридичної допомоги зверніться до ліцензованого фахівця.",
     },
     auth: {
-      backToLanding: "На головну",
+      backToLanding: "На сайт",
       or: "або",
       login: {
         heading: "З поверненням",
