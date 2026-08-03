@@ -279,7 +279,7 @@ export default function OnboardingResultsPage() {
         type: "welcome",
       });
 
-      router.push("/dashboard");
+      router.push("/home");
     } catch (err) {
       console.error("Failed to save selected route:", err);
       setSelectError(true);
