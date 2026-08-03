@@ -3,10 +3,23 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import Reveal from "./Reveal";
+import { useLanguage } from "./LanguageProvider";
 
 export default function AuthShell({ children }: { children: ReactNode }) {
+  const { t } = useLanguage();
+
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-16">
+      <Link
+        href="/"
+        aria-label={t.auth.backToLanding}
+        className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary"
+      >
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+      </Link>
+
       <div
         aria-hidden
         className="animate-blob-drift absolute left-1/2 top-1/3 -z-10 h-[520px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 opacity-70 blur-[120px] motion-reduce:animate-none"
