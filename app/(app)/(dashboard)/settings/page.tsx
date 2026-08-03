@@ -100,7 +100,7 @@ export default function SettingsPage() {
     <div className="px-6 py-8 lg:px-10 lg:py-10">
       <PageHeader title={s.title} subtitle={s.subtitle} />
 
-      <div className="mt-10 max-w-4xl space-y-6">
+      <div className="mt-10 max-w-4xl space-y-6 mx-auto">
         {/* Account */}
         <Reveal>
           <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
