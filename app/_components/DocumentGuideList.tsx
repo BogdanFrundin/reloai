@@ -22,7 +22,17 @@ export type DocumentGuide = {
   type: string;
   pdf_url: string | null;
   online_url: string | null;
+  countries: Record<string, boolean> | null;
 };
+
+// Returns true if the guide is relevant for a given citizenship (ISO alpha-2 code).
+// Missing countries data, or no citizenship known yet, defaults to visible.
+export function guideAppliesTo(guide: Pick<DocumentGuide, "countries">, citizenship: string | null | undefined): boolean {
+  if (!citizenship) return true;
+  const countries = guide.countries;
+  if (!countries || !(citizenship in countries)) return true;
+  return countries[citizenship] !== false;
+}
 
 const CHEVRON_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

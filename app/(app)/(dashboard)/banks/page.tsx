@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import DocumentGuideList, { type DocumentGuide } from "../../../_components/DocumentGuideList";
+import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 
 const CHEVRON_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -17,9 +18,12 @@ const CHEVRON_ICON = (
 
 export default function BanksPage() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [guideOpen, setGuideOpen] = useState(true);
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const visibleBanks = banks.filter((g) => guideAppliesTo(g, profile?.citizenship));
 
   useEffect(() => {
     let active = true;
@@ -51,8 +55,11 @@ export default function BanksPage() {
       />
 
       <Reveal delay={60} className="mt-10">
+        {profile?.citizenship && (
+          <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+        )}
         <DocumentGuideList
-          guides={banks}
+          guides={visibleBanks}
           loading={loading}
           emptyText="Пока нет данных по банкам."
           searchPlaceholder="Поиск банка"
