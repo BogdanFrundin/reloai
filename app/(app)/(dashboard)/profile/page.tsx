@@ -15,6 +15,7 @@ import { getInitials } from "../../../_lib/initials";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { getCountryName } from "../../../_lib/countries";
+import { POLISH_CITIES } from "../../../_lib/polishCities";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 import { supabase } from "../../../../lib/supabase";
 
@@ -499,8 +500,15 @@ export default function ProfilePage() {
                   value={formCity}
                   onChange={(event) => setFormCity(event.target.value)}
                   placeholder={p.cityPlaceholder}
+                  list="pl-cities-suggestions"
+                  autoComplete="off"
                   className="mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors duration-150 focus:border-accent"
                 />
+                <datalist id="pl-cities-suggestions">
+                  {POLISH_CITIES.map((city) => (
+                    <option key={city} value={city} />
+                  ))}
+                </datalist>
               </label>
 
               <div>
