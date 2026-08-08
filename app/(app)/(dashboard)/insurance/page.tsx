@@ -5,9 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import DocumentGuideList, { type DocumentGuide } from "../../../_components/DocumentGuideList";
+import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 
 const INFO_ICON = (
   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -18,18 +19,23 @@ const INFO_ICON = (
 
 export default function InsurancePage() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [guides, setGuides] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<string>("all");
 
+  const visibleGuides = guides.filter((g) => guideAppliesTo(g, profile?.citizenship));
+
   useEffect(() => {
     let active = true;
-    // Insurance-related content lives in document_guides under everything that
-    // isn't the "финансы" (banking) category — see banks/page.tsx.
+    // Insurance/health-related content lives in document_guides under the
+    // "медицина" category (NFZ, EKUZ, POZ, private/travel insurance, medical
+    // certificates). Legalization/visas/business/etc. live on /documents —
+    // see documents/page.tsx.
     supabase
       .from("document_guides")
       .select("*")
-      .neq("category", "финансы")
+      .eq("category", "медицина")
       .order("name")
       .then(({ data }) => {
         if (!active) return;
@@ -44,16 +50,16 @@ export default function InsurancePage() {
   const categories = useMemo(() => {
     const seen = new Set<string>();
     const list: string[] = [];
-    for (const g of guides) {
+    for (const g of visibleGuides) {
       if (!seen.has(g.category)) {
         seen.add(g.category);
         list.push(g.category);
       }
     }
     return list;
-  }, [guides]);
+  }, [visibleGuides]);
 
-  const filtered = category === "all" ? guides : guides.filter((g) => g.category === category);
+  const filtered = category === "all" ? visibleGuides : visibleGuides.filter((g) => g.category === category);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -98,6 +104,9 @@ export default function InsurancePage() {
           </div>
         )}
 
+        {profile?.citizenship && (
+          <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+        )}
         <DocumentGuideList
           guides={filtered}
           loading={loading}

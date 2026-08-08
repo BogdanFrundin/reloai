@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../../../_components/Reveal";
 import RegisterPromptModal from "../../../_components/RegisterPromptModal";
 import SectionCompleteModal from "../../../_components/SectionCompleteModal";
@@ -13,6 +13,7 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
+import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 
 type Category = "all" | DocumentItem["category"];
 type Status = DocStatus;
@@ -268,6 +269,51 @@ export default function DocumentsPage() {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [guides, setGuides] = useState<DocumentGuide[]>([]);
+  const [guidesLoading, setGuidesLoading] = useState(true);
+  const [guideCategory, setGuideCategory] = useState<string>("all");
+
+  useEffect(() => {
+    let active = true;
+    // Legalization/visa/business/etc. guides live in document_guides under
+    // every category except "финансы" (banks) and "медицина" (insurance) —
+    // those have their own dedicated pages. See banks/page.tsx and insurance/page.tsx.
+    supabase
+      .from("document_guides")
+      .select("*")
+      .not("category", "in", "(финансы,медицина)")
+      .order("category")
+      .order("name")
+      .then(({ data }) => {
+        if (!active) return;
+        setGuides((data as DocumentGuide[]) ?? []);
+        setGuidesLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const visibleGuides = useMemo(
+    () => guides.filter((g) => guideAppliesTo(g, profile?.citizenship)),
+    [guides, profile?.citizenship],
+  );
+
+  const guideCategories = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const g of visibleGuides) {
+      if (!seen.has(g.category)) {
+        seen.add(g.category);
+        list.push(g.category);
+      }
+    }
+    return list;
+  }, [visibleGuides]);
+
+  const filteredGuides =
+    guideCategory === "all" ? visibleGuides : visibleGuides.filter((g) => g.category === guideCategory);
 
   useEffect(() => {
     if (!user) {
@@ -557,6 +603,58 @@ export default function DocumentsPage() {
           );
         })}
       </div>
+
+      <Reveal delay={160}>
+        <div className="mt-12">
+          <h2 className="text-xl font-bold tracking-tight text-text-primary">Гайды по легализации</h2>
+          <p className="mt-1 text-sm text-text-muted">
+            Визы, ПЕСЕЛЬ, карта побыту, работа, бизнес, образование, авто, жильё, переводы и другие документы —
+            пошаговые инструкции.
+          </p>
+          {profile?.citizenship && (
+            <p className="mt-2 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+          )}
+
+          {guideCategories.length > 1 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setGuideCategory("all")}
+                className={`rounded-full border px-4 py-1.5 text-xs font-semibold capitalize transition-colors duration-150 ${
+                  guideCategory === "all"
+                    ? "border-accent bg-accent/15 text-accent-bright"
+                    : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
+                }`}
+              >
+                Все
+              </button>
+              {guideCategories.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setGuideCategory(c)}
+                  className={`rounded-full border px-4 py-1.5 text-xs font-semibold capitalize transition-colors duration-150 ${
+                    guideCategory === c
+                      ? "border-accent bg-accent/15 text-accent-bright"
+                      : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-4">
+            <DocumentGuideList
+              guides={filteredGuides}
+              loading={guidesLoading}
+              emptyText="Пока нет гайдов в этой категории."
+              searchPlaceholder="Поиск гайда"
+            />
+          </div>
+        </div>
+      </Reveal>
 
       {toastVisible && (
         <div className="animate-slide-up fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 shadow-xl shadow-black/40 backdrop-blur-xl">
