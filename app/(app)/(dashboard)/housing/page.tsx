@@ -2,16 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
 import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import { DEFAULT_CITY, type CityName } from "../../../_lib/cities";
+import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
 
 const WEBSITES = [
   { key: "olx", name: "OLX", href: "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/" },
@@ -54,10 +55,19 @@ function DistrictCard({ d, bestValueBadge }: { d: District; bestValueBadge: stri
 
 export default function HousingPage() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const appliedProfileCity = useRef(false);
+
+  useEffect(() => {
+    if (!appliedProfileCity.current && isCityName(profile?.city)) {
+      setCity(profile.city);
+      appliedProfileCity.current = true;
+    }
+  }, [profile?.city]);
 
   useEffect(() => {
     let active = true;

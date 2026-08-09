@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import { DEFAULT_CITY, type CityName } from "../../../_lib/cities";
+import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
 
 type TabId = "courses" | "schools" | "kindergartens" | "universities";
 type FilterId = "all" | "государственный" | "частный";
@@ -143,11 +144,20 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 
 export default function EducationPage() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [rows, setRows] = useState<EduRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabId>("courses");
   const [filter, setFilter] = useState<FilterId>("all");
+  const appliedProfileCity = useRef(false);
+
+  useEffect(() => {
+    if (!appliedProfileCity.current && isCityName(profile?.city)) {
+      setCity(profile.city);
+      appliedProfileCity.current = true;
+    }
+  }, [profile?.city]);
 
   useEffect(() => {
     let active = true;

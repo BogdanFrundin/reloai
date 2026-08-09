@@ -1,16 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
 import HelpButton from "../../../_components/HelpButton";
 import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import { DEFAULT_CITY, type CityName } from "../../../_lib/cities";
+import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
 
 const PHONE_ICON = (
   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -128,11 +129,20 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
 
 export default function MedicinePage() {
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const appliedProfileCity = useRef(false);
+
+  useEffect(() => {
+    if (!appliedProfileCity.current && isCityName(profile?.city)) {
+      setCity(profile.city);
+      appliedProfileCity.current = true;
+    }
+  }, [profile?.city]);
 
   useEffect(() => {
     let active = true;
