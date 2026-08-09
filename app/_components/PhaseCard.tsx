@@ -104,6 +104,12 @@ const CHEVRON_ICON = (
   </svg>
 );
 
+const ARROW_RIGHT_ICON = (
+  <svg className="h-4 w-4 flex-shrink-0 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+  </svg>
+);
+
 export default function PhaseCard({
   phase,
   status,
@@ -121,7 +127,6 @@ export default function PhaseCard({
   const [targetStepId, setTargetStepId] = useState<string | null>(null);
   const isDone = status === "done";
   const isActive = status === "in_progress";
-  const isWaiting = status === "waiting";
 
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -151,133 +156,149 @@ export default function PhaseCard({
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
 
   const doneStepsCount = phase.steps.filter((s) => completed.has(s.documentType)).length;
+  const nextStepId = phase.steps.find((s) => !completed.has(s.documentType))?.documentType;
+  const showSteps = isActive || expanded;
 
-  return (
-    <Reveal delay={index * 60}>
-      <div
-        className={`relative flex h-full flex-col overflow-hidden rounded-2xl p-5 transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-          isActive
-            ? "border border-accent/60 bg-accent/[0.05] shadow-[0_0_40px_-12px_var(--accent)]"
-            : isDone
-              ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03]"
-              : isWaiting
-                ? "border border-border-subtle bg-surface-1 opacity-[0.48]"
-                : "border border-border-subtle bg-surface-1"
-        }`}
-      >
-        {isActive && (
+  function renderSteps() {
+    return (
+      <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
+        {phase.steps.map((step) => {
+          const checked = completed.has(step.documentType);
+          const guide = d.stepGuides[step.documentType];
+          const isNext = isActive && step.documentType === nextStepId;
+          return (
+            <div
+              key={step.documentType}
+              id={step.documentType}
+              className={`flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150 ${
+                isNext ? "bg-accent/10 ring-1 ring-inset ring-accent/30" : ""
+              }`}
+            >
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted" aria-hidden="true">
+                {STEP_ICON}
+              </span>
+              <span className="flex-shrink-0" aria-hidden="true">
+                <Checkbox checked={checked} />
+              </span>
+              <div className="flex-1">
+                <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
+                <p className="mt-0.5 text-xs text-text-muted">{step.description}</p>
+              </div>
+              {isNext && <span aria-hidden="true">{ARROW_RIGHT_ICON}</span>}
+              <div className="flex flex-shrink-0 items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                {guide && (
+                  <HelpButton
+                    guideHeading={guide.heading}
+                    guideSteps={guide.steps}
+                    aiQuestion={d.howToGetQuestion.replace("{title}", step.title)}
+                    label={t.helpButton.label}
+                  />
+                )}
+                {step.documentType === "documents" && (
+                  <Link
+                    href="/documents"
+                    onClick={(event) => event.stopPropagation()}
+                    className="flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
+                  >
+                    {d.openBtn}
+                  </Link>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  if (isActive) {
+    return (
+      <Reveal delay={index * 60}>
+        <div className="relative flex w-full flex-col overflow-hidden rounded-2xl border border-accent/60 bg-accent/[0.05] p-5 shadow-[0_0_40px_-12px_var(--accent)] transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)]">
           <span
             aria-hidden
             className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent shadow-[0_0_12px_-1px_var(--accent-bright)]"
           />
-        )}
-        <button
-          type="button"
-          onClick={() => setExpanded((prev) => !prev)}
-          aria-expanded={expanded}
-          aria-label={expanded ? d.collapseBtn : d.expandBtn}
-          className="flex w-full flex-col items-start gap-3 text-left"
-        >
           <div className="flex w-full items-center justify-between">
-            <span
-              className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${
-                isDone
-                  ? "bg-emerald-500/15 text-emerald-400"
-                  : isActive
-                    ? "bg-accent/15 text-accent-bright"
-                    : "bg-surface-2 text-text-muted"
-              }`}
-            >
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {PHASE_ICONS[phase.key]}
             </span>
-            <div className="flex items-center gap-2">
-              <StatusIcon status={status} />
-              <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
-                {CHEVRON_ICON}
-              </span>
-            </div>
+            <StatusIcon status={status} />
           </div>
 
-          <div>
+          <div className="mt-3">
             <span className="text-[10px] font-semibold tracking-wider text-text-muted">0{index + 1}</span>
             <p className="text-base font-semibold text-text-primary">{d.phases[phase.key]}</p>
             <p className="mt-1 text-sm text-text-muted">{d.phaseDescriptions[phase.key]}</p>
           </div>
 
-          {!isWaiting && (
-            <div className="mt-3 w-full">
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-                <div
-                  className={`h-full rounded-full transition-[width] duration-500 ease-[var(--ease-out-strong)] ${isDone ? "bg-emerald-400" : "bg-accent"}`}
-                  style={{ width: `${phase.steps.length > 0 ? Math.round((doneStepsCount / phase.steps.length) * 100) : 0}%` }}
-                />
-              </div>
-              <p className="mt-1.5 text-[11px] text-text-muted">
-                {d.stepsCompletedTemplate
-                  .replace("{done}", String(doneStepsCount))
-                  .replace("{total}", String(phase.steps.length))}
-              </p>
+          <div className="mt-3 w-full">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
+              <div
+                className="h-full rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out-strong)]"
+                style={{ width: `${phase.steps.length > 0 ? Math.round((doneStepsCount / phase.steps.length) * 100) : 0}%` }}
+              />
             </div>
-          )}
+            <p className="mt-1.5 text-[11px] text-text-muted">
+              {d.stepsCompletedTemplate
+                .replace("{done}", String(doneStepsCount))
+                .replace("{total}", String(phase.steps.length))}
+            </p>
+          </div>
 
-          <StatusBadge status={status} label={statusLabel} />
-        </button>
+          <div className="mt-3">
+            <StatusBadge status={status} label={statusLabel} />
+          </div>
 
-        {isActive && (
           <button
             type="button"
             onClick={handleWhatNext}
-            className={`mt-auto w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+            className={`mt-4 w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
             {d.whatNextBtn}
           </button>
-        )}
 
-        {expanded && (
-          <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
-            {phase.steps.map((step) => {
-              const checked = completed.has(step.documentType);
-              const guide = d.stepGuides[step.documentType];
-              return (
-                <div
-                  key={step.documentType}
-                  id={step.documentType}
-                  className="flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150"
-                >
-                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted" aria-hidden="true">
-                    {STEP_ICON}
-                  </span>
-                  <span className="flex-shrink-0" aria-hidden="true">
-                    <Checkbox checked={checked} />
-                  </span>
-                  <div className="flex-1">
-                    <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
-                    <p className="mt-0.5 text-xs text-text-muted">{step.description}</p>
-                  </div>
-                  <div className="flex flex-shrink-0 items-center gap-2" onClick={(event) => event.stopPropagation()}>
-                    {guide && (
-                      <HelpButton
-                        guideHeading={guide.heading}
-                        guideSteps={guide.steps}
-                        aiQuestion={d.howToGetQuestion.replace("{title}", step.title)}
-                        label={t.helpButton.label}
-                      />
-                    )}
-                    {step.documentType === "documents" && (
-                      <Link
-                        href="/documents"
-                        onClick={(event) => event.stopPropagation()}
-                        className="flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
-                      >
-                        {d.openBtn}
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+          {showSteps && renderSteps()}
+        </div>
+      </Reveal>
+    );
+  }
+
+  return (
+    <Reveal delay={index * 60}>
+      <div
+        className={`relative flex w-full flex-col overflow-hidden rounded-2xl transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+          isDone
+            ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03] p-4"
+            : "border border-border-subtle bg-surface-1 p-4 opacity-[0.48]"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
+          aria-label={expanded ? d.collapseBtn : d.expandBtn}
+          className="flex w-full items-center gap-3 text-left"
+        >
+          <span
+            className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl ${
+              isDone ? "bg-emerald-500/15 text-emerald-400" : "bg-surface-2 text-text-muted"
+            }`}
+          >
+            {PHASE_ICONS[phase.key]}
+          </span>
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-text-primary">{d.phases[phase.key]}</span>
+          <span className="flex-shrink-0 text-xs font-medium text-text-muted">
+            {d.stepsCompletedTemplate
+              .replace("{done}", String(doneStepsCount))
+              .replace("{total}", String(phase.steps.length))}
+          </span>
+          <span className={`flex-shrink-0 text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
+            {CHEVRON_ICON}
+          </span>
+        </button>
+
+        {showSteps && renderSteps()}
       </div>
     </Reveal>
   );

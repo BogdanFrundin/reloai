@@ -5,11 +5,50 @@ import Reveal from "./Reveal";
 import WelcomeToast from "./WelcomeToast";
 import RegisterPromptModal from "./RegisterPromptModal";
 import PhaseCard from "./PhaseCard";
+import PhaseStepper from "./PhaseStepper";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { useDashboardProgress } from "./DashboardProgressProvider";
 import { getCountryName } from "../_lib/countries";
 import { getFlagUrl } from "../_lib/flags";
+
+const RING_SIZE = 64;
+const RING_STROKE = 5;
+const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+function ProgressRing({ percent }: { percent: number }) {
+  const offset = RING_CIRCUMFERENCE * (1 - percent / 100);
+
+  return (
+    <div className="relative h-16 w-16 flex-shrink-0">
+      <svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="-rotate-90">
+        <circle
+          cx={RING_SIZE / 2}
+          cy={RING_SIZE / 2}
+          r={RING_RADIUS}
+          fill="none"
+          strokeWidth={RING_STROKE}
+          className="stroke-surface-2"
+        />
+        <circle
+          cx={RING_SIZE / 2}
+          cy={RING_SIZE / 2}
+          r={RING_RADIUS}
+          fill="none"
+          strokeWidth={RING_STROKE}
+          strokeLinecap="round"
+          strokeDasharray={RING_CIRCUMFERENCE}
+          strokeDashoffset={offset}
+          className="stroke-accent-bright transition-[stroke-dashoffset] duration-500 ease-[var(--ease-out-strong)]"
+        />
+      </svg>
+      <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-text-primary">
+        {percent}%
+      </span>
+    </div>
+  );
+}
 
 const COUNTRY_INDEX: Record<string, number> = { Poland: 0, Germany: 1, Spain: 2 };
 
@@ -64,43 +103,24 @@ export default function DashboardContent() {
       <WelcomeToast />
 
       <Reveal>
-        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-          {t.dashboard.relocation.replace("{country}", countryEntry?.nameDeclined ?? countryEntry?.name ?? country)}
-          {countryEntry?.flag && (
-            <Image src={getFlagUrl(countryEntry.flag, "md")} alt={countryEntry.name} width={32} height={24} className="rounded-sm" unoptimized />
-          )}
-        </h1>
-        <p className="mt-2 text-text-muted">{subtitle}</p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+              {t.dashboard.relocation.replace("{country}", countryEntry?.nameDeclined ?? countryEntry?.name ?? country)}
+              {countryEntry?.flag && (
+                <Image src={getFlagUrl(countryEntry.flag, "md")} alt={countryEntry.name} width={32} height={24} className="rounded-sm" unoptimized />
+              )}
+            </h1>
+            <p className="mt-2 text-text-muted">{subtitle}</p>
+          </div>
+          {!loading && phases.length > 0 && <ProgressRing percent={progressPercent} />}
+        </div>
       </Reveal>
 
       {!loading && phases.length > 0 && (
         <Reveal delay={40}>
-          <div className="mt-8 rounded-2xl border border-border-subtle bg-surface-1 p-5">
-            <div className="flex items-center justify-between gap-4">
-              <p className="text-sm font-semibold text-text-primary">{t.dashboard.overallProgress}</p>
-              <span className="text-lg font-bold text-accent-bright">{progressPercent}%</span>
-            </div>
-            <div className="mt-4 flex items-center gap-2">
-              {phases.map((phase) => {
-                const status = phaseStatuses[phase.key];
-                return (
-                  <div key={phase.key} className="min-w-0 flex-1">
-                    <div
-                      className={`h-2 rounded-full transition-colors duration-300 ${
-                        status === "done"
-                          ? "bg-emerald-400"
-                          : status === "in_progress"
-                            ? "bg-accent-bright animate-glow-pulse motion-reduce:animate-none"
-                            : "bg-surface-2"
-                      }`}
-                    />
-                    <p className="mt-2 truncate text-center text-[11px] font-medium text-text-muted">
-                      {t.dashboard.phases[phase.key]}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="mt-8">
+            <PhaseStepper phases={phases} phaseStatuses={phaseStatuses} />
           </div>
         </Reveal>
       )}
@@ -110,7 +130,7 @@ export default function DashboardContent() {
           {t.dashboard.route.checklistHeading}
         </h2>
       )}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 space-y-3">
         {!loading &&
           phases.map((phase, index) => (
             <PhaseCard
