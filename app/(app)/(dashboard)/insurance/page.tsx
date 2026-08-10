@@ -8,7 +8,8 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import GuideTopicGrid from "../../../_components/GuideTopicGrid";
 
 const INFO_ICON = (
   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -107,7 +108,7 @@ export default function InsurancePage() {
         {profile?.citizenship && (
           <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
         )}
-        <DocumentGuideList
+        <GuideTopicGrid
           guides={filtered}
           loading={loading}
           emptyText="Пока нет данных по страховкам."
