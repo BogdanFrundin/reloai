@@ -7,6 +7,7 @@ import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
 import HelpButton from "../../../_components/HelpButton";
 import CitySelect from "../../../_components/CitySelect";
+import Dropdown from "../../../_components/Dropdown";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
@@ -231,18 +232,11 @@ export default function MedicinePage() {
               className="w-64 rounded-full border border-border-strong bg-surface-1 py-2 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
             />
           </div>
-          <select
+          <Dropdown
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm font-medium text-text-primary focus:border-accent focus:outline-none"
-          >
-            <option value="all">Все категории</option>
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+            onChange={setCategory}
+            options={[{ value: "all", label: "Все категории" }, ...categories.map((c) => ({ value: c, label: c }))]}
+          />
           <span className="text-xs text-text-muted">{filtered.length} клиник</span>
         </div>
 
