@@ -64,7 +64,7 @@ export default function Dropdown<T extends string>({
         {open && (
           <ul
             role="listbox"
-            className="absolute right-0 z-20 mt-2 max-h-72 min-w-[10rem] overflow-y-auto rounded-xl border border-border-strong bg-surface-2 py-1.5 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.5)]"
+            className="absolute right-0 z-20 mt-2 max-h-72 min-w-[10rem] overflow-y-auto rounded-xl border border-border-strong bg-panel py-1.5 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.5)]"
           >
             {options.map((opt) => {
               const selected = opt.value === value;
