@@ -39,3 +39,9 @@ export function buildOtodomUrl(city: string): string {
   const slug = CITY_SLUGS[city] ?? "cala-polska";
   return `https://www.otodom.pl/pl/oferty/wynajem/mieszkanie/${slug}`;
 }
+
+// Gratka's URL scheme for city/district-level filtering isn't verified, so this
+// only links to the general rental listings page — same honesty tradeoff as Otodom.
+export function buildGratkaUrl(): string {
+  return "https://gratka.pl/nieruchomosci/do-wynajecia";
+}

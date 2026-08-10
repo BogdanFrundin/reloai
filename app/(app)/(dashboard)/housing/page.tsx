@@ -8,6 +8,7 @@ import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
 import CitySelect from "../../../_components/CitySelect";
 import Dropdown from "../../../_components/Dropdown";
+import HousingSiteChoiceModal from "../../../_components/HousingSiteChoiceModal";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { pressScale } from "../../../_lib/motion";
@@ -73,12 +74,12 @@ function DistrictCard({
   d,
   bestValueBadge,
   rooms,
-  city,
+  onOpenSearch,
 }: {
   d: District;
   bestValueBadge: string;
   rooms: RoomsFilter;
-  city: CityName;
+  onOpenSearch: (district: string) => void;
 }) {
   const priceLabel = districtPriceLabel(d, rooms);
 
@@ -100,15 +101,14 @@ function DistrictCard({
         </p>
       )}
       {d.description && <p className="mt-2 line-clamp-5 text-sm text-text-secondary">{d.description}</p>}
-      <Link
-        href={buildOlxUrl(city, d.district, rooms === "any" ? undefined : rooms)}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
+        onClick={() => onOpenSearch(d.district)}
         className="mt-4 inline-flex w-fit items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:hover:text-white motion-reduce:transition-none"
       >
         Искать с этими фильтрами
         <span aria-hidden>→</span>
-      </Link>
+      </button>
     </div>
   );
 }
@@ -121,6 +121,7 @@ export default function HousingPage() {
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const [searchModalDistrict, setSearchModalDistrict] = useState<string | null>(null);
   const appliedProfileCity = useRef(false);
 
   useEffect(() => {
@@ -213,7 +214,12 @@ export default function HousingPage() {
             <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {featuredDistricts.map((district, index) => (
                 <Reveal key={district.id} delay={index * 25}>
-                  <DistrictCard d={district} bestValueBadge={t.housing.bestValueBadge} rooms={rooms} city={city} />
+                  <DistrictCard
+                    d={district}
+                    bestValueBadge={t.housing.bestValueBadge}
+                    rooms={rooms}
+                    onOpenSearch={setSearchModalDistrict}
+                  />
                 </Reveal>
               ))}
             </div>
@@ -232,7 +238,12 @@ export default function HousingPage() {
                   <div className="mt-6 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {restDistricts.map((district, index) => (
                       <Reveal key={district.id} delay={index * 25}>
-                        <DistrictCard d={district} bestValueBadge={t.housing.bestValueBadge} rooms={rooms} city={city} />
+                        <DistrictCard
+                          d={district}
+                          bestValueBadge={t.housing.bestValueBadge}
+                          rooms={rooms}
+                          onOpenSearch={setSearchModalDistrict}
+                        />
                       </Reveal>
                     ))}
                   </div>
@@ -307,6 +318,14 @@ export default function HousingPage() {
           ))}
         </div>
       </Reveal>
+
+      <HousingSiteChoiceModal
+        open={searchModalDistrict !== null}
+        onClose={() => setSearchModalDistrict(null)}
+        city={city}
+        district={searchModalDistrict ?? ""}
+        rooms={rooms}
+      />
     </div>
   );
 }
