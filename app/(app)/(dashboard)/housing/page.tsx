@@ -17,6 +17,18 @@ import { supabase } from "../../../../lib/supabase";
 import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
 import { buildOlxUrl, buildOtodomUrl } from "../../../_lib/housingSearchLinks";
 
+const CITY_GENITIVE_RU: Record<string, string> = {
+  "Варшава": "Варшавы",
+  "Краков": "Кракова",
+  "Вроцлав": "Вроцлава",
+  "Гданьск": "Гданьска",
+  "Познань": "Познани",
+  "Щецин": "Щецина",
+  "Лодзь": "Лодзи",
+  "Люблин": "Люблина",
+  "Катовице": "Катовиц",
+};
+
 const WEBSITES = [
   { key: "olx", name: "OLX", href: "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/" },
   { key: "otodom", name: "Otodom", href: "https://www.otodom.pl/wynajem/mieszkanie" },
@@ -114,7 +126,7 @@ function DistrictCard({
 }
 
 export default function HousingPage() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { profile } = useAuth();
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [rooms, setRooms] = useState<RoomsFilter>("any");
@@ -167,6 +179,11 @@ export default function HousingPage() {
 
   const featuredDistricts = sortedDistricts.slice(0, 4);
   const restDistricts = sortedDistricts.slice(4);
+
+  const cityLabel = lang === "ru" ? (CITY_GENITIVE_RU[city] ?? city) : city;
+  const showAllLabel = t.housing.showAllDistricts
+    .replace("{count}", String(districts.length))
+    .replace("{city}", cityLabel);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -231,7 +248,7 @@ export default function HousingPage() {
                   onClick={() => setShowAll((prev) => !prev)}
                   className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
                 >
-                  {showAll ? t.housing.showFewerDistricts : t.housing.showAllDistricts}
+                  {showAll ? t.housing.showFewerDistricts : showAllLabel}
                 </button>
 
                 {showAll && (

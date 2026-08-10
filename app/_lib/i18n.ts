@@ -1517,7 +1517,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Best value",
       expatsChoiceBadge: "Релокантов' choice",
-      showAllDistricts: "Show all 18 Warsaw districts →",
+      showAllDistricts: "Show all {count} districts in {city} →",
       showFewerDistricts: "Show fewer districts",
       guides: {
         olx: {
@@ -2990,7 +2990,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Рекомендуем",
       expatsChoiceBadge: "Выбор релокантов",
-      showAllDistricts: "Показать все 18 районов Варшавы →",
+      showAllDistricts: "Показать все {count} районов {city} →",
       showFewerDistricts: "Свернуть список районов",
       guides: {
         olx: {
@@ -4460,7 +4460,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Eng foydali",
       expatsChoiceBadge: "Chet elliklar tanlovi",
-      showAllDistricts: "Varshavaning barcha 18 ta tumanini ko'rsatish →",
+      showAllDistricts: "{city} shahridagi barcha {count} ta tumanni ko'rsatish →",
       showFewerDistricts: "Ro'yxatni yig'ish",
       guides: {
         olx: {
@@ -5927,7 +5927,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "En iyi değer",
       expatsChoiceBadge: "Göçmenlerin tercihi",
-      showAllDistricts: "Varşova'nın 18 ilçesinin tümünü göster →",
+      showAllDistricts: "{city} şehrindeki tüm {count} ilçeyi göster →",
       showFewerDistricts: "Listeyi daralt",
       guides: {
         olx: {
@@ -7394,7 +7394,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Тавсия медиҳем",
       expatsChoiceBadge: "Интихоби муҳоҷирон",
-      showAllDistricts: "Ҳамаи 18 ноҳияи Варшаваро нишон диҳед →",
+      showAllDistricts: "Ҳамаи {count} ноҳияи шаҳри {city}-ро нишон диҳед →",
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
       guides: {
         olx: {
@@ -8865,7 +8865,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Рекомендуємо",
       expatsChoiceBadge: "Вибір експатів",
-      showAllDistricts: "Показати всі 18 районів Варшави →",
+      showAllDistricts: "Показати всі {count} районів міста {city} →",
       showFewerDistricts: "Згорнути список районів",
       guides: {
         olx: {
