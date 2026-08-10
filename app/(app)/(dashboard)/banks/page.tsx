@@ -8,7 +8,8 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import BankCardGrid from "../../../_components/BankCardGrid";
 
 const CHEVRON_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -58,7 +59,7 @@ export default function BanksPage() {
         {profile?.citizenship && (
           <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
         )}
-        <DocumentGuideList
+        <BankCardGrid
           guides={visibleBanks}
           loading={loading}
           emptyText="Пока нет данных по банкам."
