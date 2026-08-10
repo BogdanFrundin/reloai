@@ -34,9 +34,20 @@ function findLogoDomain(name: string): string | null {
   return null;
 }
 
+// Clearbit's free logo API gets silently blocked by common ad-blocker filter
+// lists (its domain is tagged as a tracker), which made every logo fall back
+// to initials regardless of whether we had a domain mapped. Google's favicon
+// service and DuckDuckGo's icon service are effectively never blocked, so we
+// try those in order before giving up to initials.
+function logoSrc(domain: string, stage: 0 | 1 | 2): string {
+  return stage === 0
+    ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+    : `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+}
+
 function BankAvatar({ name }: { name: string }) {
   const domain = findLogoDomain(name);
-  const [failed, setFailed] = useState(false);
+  const [stage, setStage] = useState<0 | 1 | 2>(0);
   const initials = name
     .replace(/^Bank\s+/i, "")
     .split(/\s+/)
@@ -45,15 +56,15 @@ function BankAvatar({ name }: { name: string }) {
     .slice(0, 2)
     .toUpperCase();
 
-  if (domain && !failed) {
+  if (domain && stage < 2) {
     return (
       <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white/95 p-1.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={`https://logo.clearbit.com/${domain}?size=80`}
+          src={logoSrc(domain, stage)}
           alt={name}
           className="h-full w-full object-contain"
-          onError={() => setFailed(true)}
+          onError={() => setStage((prev) => (prev === 0 ? 1 : 2))}
         />
       </div>
     );
