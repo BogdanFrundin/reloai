@@ -120,7 +120,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 pt-4 text-sm font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
+        className="mt-auto inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none"
       >
         Показать на карте
       </a>
