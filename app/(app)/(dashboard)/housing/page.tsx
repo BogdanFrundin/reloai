@@ -50,19 +50,6 @@ type District = {
   purchase_price_m2: number | null;
 };
 
-type CityOverview = {
-  city: string;
-  population: string | null;
-  districts_note: string | null;
-  transport: string | null;
-  summary: string | null;
-  rent_studio_avg: number | null;
-  rent_2room_avg: number | null;
-  rent_3room_avg: number | null;
-  rent_4plus_avg: number | null;
-  rent_city_avg: number | null;
-};
-
 function formatNumber(n: number): string {
   return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
@@ -132,7 +119,6 @@ export default function HousingPage() {
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [rooms, setRooms] = useState<RoomsFilter>("any");
   const [districts, setDistricts] = useState<District[]>([]);
-  const [overview, setOverview] = useState<CityOverview | null>(null);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
   const appliedProfileCity = useRef(false);
@@ -148,21 +134,18 @@ export default function HousingPage() {
     let active = true;
     setLoading(true);
     setShowAll(false);
-    Promise.all([
-      supabase
-        .from("housing_districts")
-        .select("*")
-        .eq("city", city)
-        .order("is_top", { ascending: false })
-        .order("rank", { ascending: true, nullsFirst: false })
-        .order("district", { ascending: true }),
-      supabase.from("housing_city_overview").select("*").eq("city", city).maybeSingle(),
-    ]).then(([districtsRes, overviewRes]) => {
-      if (!active) return;
-      setDistricts((districtsRes.data as District[]) ?? []);
-      setOverview((overviewRes.data as CityOverview | null) ?? null);
-      setLoading(false);
-    });
+    supabase
+      .from("housing_districts")
+      .select("*")
+      .eq("city", city)
+      .order("is_top", { ascending: false })
+      .order("rank", { ascending: true, nullsFirst: false })
+      .order("district", { ascending: true })
+      .then(({ data }) => {
+        if (!active) return;
+        setDistricts((data as District[]) ?? []);
+        setLoading(false);
+      });
     return () => {
       active = false;
     };
@@ -180,17 +163,6 @@ export default function HousingPage() {
       return av - bv;
     });
   }, [districts, rooms]);
-
-  const overviewPills = useMemo(() => {
-    if (!overview) return [];
-    return [
-      { label: "Студия", value: overview.rent_studio_avg },
-      { label: "2 комнаты", value: overview.rent_2room_avg },
-      { label: "3 комнаты", value: overview.rent_3room_avg },
-      { label: "4+ комнат", value: overview.rent_4plus_avg },
-      { label: "В среднем по городу", value: overview.rent_city_avg },
-    ].filter((p): p is { label: string; value: number } => p.value != null);
-  }, [overview]);
 
   const featuredDistricts = sortedDistricts.slice(0, 4);
   const restDistricts = sortedDistricts.slice(4);
@@ -231,33 +203,6 @@ export default function HousingPage() {
           </div>
         </div>
         <p className="mt-1.5 max-w-2xl text-sm text-text-muted">{t.housing.rentMarketSub}</p>
-
-        {!loading && overview && (
-          <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <p className="text-sm font-semibold text-text-primary">{city}</p>
-              {(overview.population || overview.districts_note) && (
-                <p className="text-xs text-text-muted">
-                  {[overview.population, overview.districts_note].filter(Boolean).join(" · ")}
-                </p>
-              )}
-            </div>
-            {overview.summary && <p className="mt-3 text-sm text-text-secondary">{overview.summary}</p>}
-            {overview.transport && <p className="mt-2 text-xs text-text-muted">{overview.transport}</p>}
-            {overviewPills.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {overviewPills.map((p) => (
-                  <span
-                    key={p.label}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-2 px-3 py-1.5 text-xs font-semibold text-text-primary"
-                  >
-                    <span className="font-normal text-text-muted">{p.label}:</span> {formatPrice(p.value)}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
 
         {loading ? (
           <p className="mt-6 text-sm text-text-muted">Загрузка…</p>
