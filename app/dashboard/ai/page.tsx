@@ -159,8 +159,11 @@ function DashboardAiContent() {
       .select("id, title, messages, created_at")
       .eq("user_id", user.id)
       .order("updated_at", { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
         if (!active) return;
+        if (error) {
+          console.error("chat_sessions: failed to load sessions", error);
+        }
         if (data) {
           setSessions(
             data.map((row) => ({
@@ -198,10 +201,14 @@ function DashboardAiContent() {
     if (!user) return null;
 
     if (sessionId) {
-      await supabase
+      const { error } = await supabase
         .from("chat_sessions")
         .update({ messages: allMessages, updated_at: new Date().toISOString() })
         .eq("id", sessionId);
+      if (error) {
+        console.error("chat_sessions: failed to update session", sessionId, error);
+        return sessionId;
+      }
       setSessions((prev) => prev.map((s) => (s.id === sessionId ? { ...s, messages: allMessages } : s)));
       return sessionId;
     }
@@ -209,11 +216,15 @@ function DashboardAiContent() {
     const firstUserMessage = allMessages.find((m) => m.from === "user");
     const title = firstUserMessage ? truncateTitle(firstUserMessage.text) : "Новый чат";
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("chat_sessions")
       .insert({ user_id: user.id, title, messages: allMessages })
       .select("id, created_at")
       .single();
+
+    if (error) {
+      console.error("chat_sessions: failed to create session", error);
+    }
 
     if (data) {
       setActiveSessionId(data.id as string);
