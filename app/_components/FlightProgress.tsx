@@ -218,7 +218,7 @@ export default function FlightProgress() {
           </div>
 
           <div
-            className="absolute transition-[left,top] duration-[2000ms] ease-[var(--ease-out-strong)]"
+            className="absolute transition-[left,top,transform] duration-[2000ms] ease-[var(--ease-out-strong)]"
             style={{
               left: `${plane.x}%`,
               top: `${plane.y}%`,
