@@ -175,6 +175,9 @@ create policy "chat_sessions insert own" on public.chat_sessions
 create policy "chat_sessions update own" on public.chat_sessions
   for update using (auth.uid() = user_id);
 
+create policy "chat_sessions delete own" on public.chat_sessions
+  for delete using (auth.uid() = user_id);
+
 create trigger chat_sessions_set_updated_at
 before update on public.chat_sessions
 for each row execute function public.set_updated_at();
