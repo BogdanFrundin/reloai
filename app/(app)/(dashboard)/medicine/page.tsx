@@ -183,10 +183,13 @@ export default function MedicinePage() {
     const seen = new Set<string>();
     const list: string[] = [];
     for (const c of clinics) {
-      if (c.district && !seen.has(c.district)) {
-        seen.add(c.district);
-        list.push(c.district);
-      }
+      const d = c.district?.trim();
+      // Some rows have junk in the district column (e.g. "Более 40 отделений
+      // по Варшаве") instead of an actual district name -- skip anything
+      // that isn't a plain place name.
+      if (!d || /\d/.test(d) || seen.has(d)) continue;
+      seen.add(d);
+      list.push(d);
     }
     return list.sort((a, b) => a.localeCompare(b, "ru"));
   }, [clinics]);
