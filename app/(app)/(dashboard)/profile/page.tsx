@@ -187,7 +187,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className="px-6 pt-4 pb-8 lg:px-10 lg:pt-6 lg:pb-10">
+    <div className="px-6 pb-8 lg:px-10 lg:pb-10">
       <PageHeader title={p.title} subtitle={p.subtitle} />
 
       <div className="mt-10 max-w-4xl space-y-6 mx-auto">
