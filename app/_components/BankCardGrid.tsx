@@ -23,10 +23,6 @@ const HEADLINE_PHRASES: Record<string, string> = {
   multicurrency: "Мультивалютный счёт",
 };
 
-function isRecommended(guide: DocumentGuide): boolean {
-  return !!guide.tags?.includes("no_pesel") && !!guide.tags?.includes("free");
-}
-
 // Headline replaces the old price display: the bank's single most useful
 // feature, in plain language, so the card leads with "what's in it for you"
 // instead of a number that was often just "0 zł" for most banks anyway.
@@ -153,16 +149,11 @@ function BankCard({
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
-  const recommended = isRecommended(guide);
   const isChosen = chosenBank === guide.name;
   const { headline, subtitle } = buildHeadline(guide);
 
   return (
-    <div
-      className={`relative flex h-full flex-col rounded-[28px] p-6 ${
-        recommended ? "bg-[#1a2340]" : "bg-[#1c1f26]"
-      }`}
-    >
+    <div className="relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6">
       <label
         className={`absolute right-5 top-5 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors duration-150 ${
           compareChecked ? "bg-white text-[#1c1f26]" : "bg-white/10 text-white/70 hover:bg-white/15"
@@ -193,15 +184,8 @@ function BankCard({
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <BankAvatar name={guide.name} />
-            <p className={`text-[13px] font-medium ${recommended ? "text-[#9fb0e8]" : "text-white/50"}`}>
-              {guide.name}
-            </p>
+            <p className="text-[13px] font-medium text-white/50">{guide.name}</p>
           </div>
-          {recommended && (
-            <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#c9d6ff]">
-              Рекомендуем
-            </span>
-          )}
         </div>
 
         <div>
@@ -216,11 +200,31 @@ function BankCard({
 
       <div className="mt-4" onClick={(event) => event.stopPropagation()}>
         {isChosen ? (
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
-            <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-            </svg>
-            Вы выбрали этот банк
+          <div className="space-y-2">
+            <p className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
+              <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+              </svg>
+              Ваш банк
+            </p>
+            {link && (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-accent py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent-bright"
+              >
+                Официальный сайт
+                <span aria-hidden>→</span>
+              </a>
+            )}
+            <button
+              type="button"
+              onClick={() => setOpen((prev) => !prev)}
+              className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-white/15"
+            >
+              {open ? "Скрыть информацию" : "Прочитать информацию"}
+            </button>
           </div>
         ) : (
           <button
@@ -229,11 +233,7 @@ function BankCard({
               setOpen(true);
               onChoose(guide.name);
             }}
-            className={`w-full rounded-2xl py-3 text-[13px] font-bold transition-colors duration-150 ${
-              recommended
-                ? "bg-white text-[#1a2340] hover:bg-white/90"
-                : "bg-white/10 text-white hover:bg-white/15"
-            }`}
+            className="w-full rounded-2xl bg-accent py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent-bright"
           >
             Выбрать банк →
           </button>
@@ -300,7 +300,7 @@ function BankCard({
             </div>
           )}
 
-          {link && (
+          {link && !isChosen && (
             <a
               href={link}
               target="_blank"
