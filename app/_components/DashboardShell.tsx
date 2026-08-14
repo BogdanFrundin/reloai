@@ -63,7 +63,7 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
           <Topbar onMenuClick={() => setMobileNavOpen(true)} />
           {isDemoMode && <DemoBanner />}
           <main
-            className={`flex flex-1 flex-col p-4 lg:p-6 bg-background ${
+            className={`flex flex-1 flex-col px-4 pb-4 pt-2 lg:px-6 lg:pb-6 lg:pt-3 bg-background ${
               pathname === "/dashboard/ai" ? "overflow-hidden" : "overflow-y-auto"
             }`}
           >

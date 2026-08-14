@@ -10,8 +10,8 @@ export default function PageHeader({
 }) {
   return (
     <Reveal>
-      <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{title}</h1>
-      {subtitle && <p className="mt-2 text-text-muted">{subtitle}</p>}
+      <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{title}</h1>
+      {subtitle && <p className="mt-1 text-sm text-text-muted">{subtitle}</p>}
     </Reveal>
   );
 }
