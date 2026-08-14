@@ -11,11 +11,13 @@ export default function HelpButton({
   guideSteps,
   aiQuestion,
   label,
+  compact = false,
 }: {
   guideHeading: string;
   guideSteps: string[];
   aiQuestion: string;
   label: string;
+  compact?: boolean;
 }) {
   const router = useRouter();
   const { t } = useLanguage();
@@ -65,17 +67,31 @@ export default function HelpButton({
   return (
     <>
       <div className="relative inline-block" ref={containerRef}>
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
-          className={`inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 ${pressScale}`}
-        >
-          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.5M12 17.5h.008v.008H12V17.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          {label}
-        </button>
+        {compact ? (
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
+            aria-label={label}
+            className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-border-strong text-text-muted transition-colors duration-150 hover:border-accent/60 hover:text-accent-bright ${pressScale}`}
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.5M12 17.5h.008v.008H12V17.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={(e) => { e.stopPropagation(); toggleMenu(); }}
+            className={`inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/60 ${pressScale}`}
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.5M12 17.5h.008v.008H12V17.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {label}
+          </button>
+        )}
       </div>
 
       {menuOpen && menuPos && createPortal(

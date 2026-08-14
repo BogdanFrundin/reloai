@@ -31,18 +31,10 @@ const PHASE_ICONS: Record<string, ReactNode> = {
   ),
 };
 
-// Generic document/task icon shown next to each step in the expanded list —
-// reuses the same visual language as PHASE_ICONS above.
-const STEP_ICON = (
-  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
-  </svg>
-);
-
 function Checkbox({ checked }: { checked: boolean }) {
   return (
     <span
-      className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg border transition-colors duration-150 ${
+      className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
         checked ? "border-accent bg-accent text-white" : "border-border-strong bg-surface-1"
       }`}
     >
@@ -104,12 +96,6 @@ const CHEVRON_ICON = (
   </svg>
 );
 
-const ARROW_RIGHT_ICON = (
-  <svg className="h-4 w-4 flex-shrink-0 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-  </svg>
-);
-
 export default function PhaseCard({
   phase,
   status,
@@ -124,9 +110,9 @@ export default function PhaseCard({
   const { t } = useLanguage();
   const d = t.dashboard;
   const [expanded, setExpanded] = useState(false);
-  const [targetStepId, setTargetStepId] = useState<string | null>(null);
   const isDone = status === "done";
   const isActive = status === "in_progress";
+  const showSteps = isActive || expanded;
 
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -137,71 +123,64 @@ export default function PhaseCard({
   }, []);
 
   useEffect(() => {
-    if (!expanded) return;
+    if (!showSteps) return;
     const hash = window.location.hash.slice(1);
-    const scrollId = targetStepId || hash;
-    if (!scrollId) return;
-    // The step only exists in the DOM once expanded — the browser's automatic
-    // hash-scroll already ran (and missed) during navigation, so scroll manually.
-    document.getElementById(scrollId)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    if (targetStepId) setTargetStepId(null);
-  }, [expanded, targetStepId]);
-
-  function handleWhatNext() {
-    const nextStep = phase.steps.find((step) => !completed.has(step.documentType));
-    if (nextStep) setTargetStepId(nextStep.documentType);
-    setExpanded(true);
-  }
+    if (!hash) return;
+    document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [showSteps]);
 
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
 
   const doneStepsCount = phase.steps.filter((s) => completed.has(s.documentType)).length;
   const nextStepId = phase.steps.find((s) => !completed.has(s.documentType))?.documentType;
-  const showSteps = isActive || expanded;
 
   function renderSteps() {
     return (
-      <div className="mt-4 space-y-2 border-t border-border-subtle pt-4">
+      <div className="mt-4 flex flex-col gap-1">
         {phase.steps.map((step) => {
           const checked = completed.has(step.documentType);
           const guide = d.stepGuides[step.documentType];
           const isNext = isActive && step.documentType === nextStepId;
+          const isFuture = !checked && !isNext;
           return (
             <div
               key={step.documentType}
               id={step.documentType}
-              className={`flex scroll-mt-24 items-center gap-3 rounded-xl p-2.5 transition-colors duration-150 ${
-                isNext ? "bg-accent/10 ring-1 ring-inset ring-accent/30" : ""
-              }`}
+              className={`flex scroll-mt-24 items-start gap-3 py-2.5 transition-colors duration-150 ${
+                isNext
+                  ? "-ml-px rounded-r-lg border-l-2 border-accent bg-accent/[0.06] pl-3 pr-2.5"
+                  : "px-2.5"
+              } ${isFuture ? "opacity-50" : ""}`}
             >
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted" aria-hidden="true">
-                {STEP_ICON}
-              </span>
-              <span className="flex-shrink-0" aria-hidden="true">
+              <span className="mt-0.5 flex-shrink-0" aria-hidden="true">
                 <Checkbox checked={checked} />
               </span>
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
                 <p className="mt-0.5 text-xs text-text-muted">{step.description}</p>
               </div>
-              {isNext && <span aria-hidden="true">{ARROW_RIGHT_ICON}</span>}
               <div className="flex flex-shrink-0 items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                {step.documentType === "documents" && (
+                  <Link
+                    href="/documents"
+                    onClick={(event) => event.stopPropagation()}
+                    className={
+                      isNext
+                        ? `flex-shrink-0 rounded-full bg-accent px-3.5 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`
+                        : "flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
+                    }
+                  >
+                    {d.openBtn}
+                  </Link>
+                )}
                 {guide && (
                   <HelpButton
+                    compact
                     guideHeading={guide.heading}
                     guideSteps={guide.steps}
                     aiQuestion={d.howToGetQuestion.replace("{title}", step.title)}
                     label={t.helpButton.label}
                   />
-                )}
-                {step.documentType === "documents" && (
-                  <Link
-                    href="/documents"
-                    onClick={(event) => event.stopPropagation()}
-                    className="flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
-                  >
-                    {d.openBtn}
-                  </Link>
                 )}
               </div>
             </div>
@@ -219,44 +198,29 @@ export default function PhaseCard({
             aria-hidden
             className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent shadow-[0_0_12px_-1px_var(--accent-bright)]"
           />
-          <div className="flex w-full items-center justify-between">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
-              {PHASE_ICONS[phase.key]}
-            </span>
-            <StatusIcon status={status} />
-          </div>
-
-          <div className="mt-3">
-            <span className="text-[10px] font-semibold tracking-wider text-text-muted">0{index + 1}</span>
-            <p className="text-base font-semibold text-text-primary">{d.phases[phase.key]}</p>
-            <p className="mt-1 text-sm text-text-muted">{d.phaseDescriptions[phase.key]}</p>
-          </div>
-
-          <div className="mt-3 w-full">
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-              <div
-                className="h-full rounded-full bg-accent transition-[width] duration-500 ease-[var(--ease-out-strong)]"
-                style={{ width: `${phase.steps.length > 0 ? Math.round((doneStepsCount / phase.steps.length) * 100) : 0}%` }}
-              />
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-semibold text-accent-bright">
+                0{index + 1}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-text-primary">{d.phases[phase.key]}</p>
+                <p className="mt-0.5 text-xs text-text-muted">
+                  {d.stepsCompletedTemplate.replace("{done}", String(doneStepsCount)).replace("{total}", String(phase.steps.length))}
+                </p>
+              </div>
             </div>
-            <p className="mt-1.5 text-[11px] text-text-muted">
-              {d.stepsCompletedTemplate
-                .replace("{done}", String(doneStepsCount))
-                .replace("{total}", String(phase.steps.length))}
-            </p>
-          </div>
-
-          <div className="mt-3">
             <StatusBadge status={status} label={statusLabel} />
           </div>
 
-          <button
-            type="button"
-            onClick={handleWhatNext}
-            className={`mt-4 w-full rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-          >
-            {d.whatNextBtn}
-          </button>
+          <div className="mt-4 flex gap-1">
+            {phase.steps.map((step, i) => (
+              <div
+                key={step.documentType}
+                className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i < doneStepsCount ? "bg-accent" : "bg-surface-2"}`}
+              />
+            ))}
+          </div>
 
           {showSteps && renderSteps()}
         </div>
