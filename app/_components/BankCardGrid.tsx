@@ -163,22 +163,23 @@ function BankCard({
           askAi();
         }}
         aria-label={`Спросить ИИ про ${guide.name}`}
-        className="absolute right-5 top-5 z-10 flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white/70 transition-colors duration-150 hover:bg-white/15 hover:text-white"
+        className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-white/15 hover:text-white"
       >
-        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z"
           />
         </svg>
+        Спросить ИИ
       </button>
 
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className="flex w-full flex-1 flex-col items-start gap-4 pr-8 text-left"
+        className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
