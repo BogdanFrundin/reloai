@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { Suspense, useEffect, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pressScale } from "../../_lib/motion";
 import { useAuth } from "../../_components/AuthProvider";
@@ -249,6 +249,23 @@ function DashboardAiContent() {
     setInput("");
   }
 
+  async function deleteSession(event: MouseEvent, sessionId: string) {
+    event.stopPropagation();
+    if (!user) return;
+    if (!window.confirm("Удалить этот чат?")) return;
+
+    const { error } = await supabase.from("chat_sessions").delete().eq("id", sessionId);
+    if (error) {
+      console.error("chat_sessions: failed to delete session", sessionId, error);
+      return;
+    }
+
+    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+    if (activeSessionId === sessionId) {
+      startNewChat();
+    }
+  }
+
   async function sendMessage(text: string) {
     if (!text || isTyping) return;
 
@@ -348,19 +365,34 @@ function DashboardAiContent() {
                   </p>
                   <div className="space-y-1">
                     {group.sessions.map((session) => (
-                      <button
-                        key={session.id}
-                        type="button"
-                        onClick={() => openSession(session)}
-                        className={`block w-full rounded-xl px-3 py-2.5 text-left transition-colors duration-150 ${
-                          session.id === activeSessionId
-                            ? "bg-accent/15 text-accent-bright"
-                            : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
-                        }`}
-                      >
-                        <p className="truncate text-sm font-medium">{session.title}</p>
-                        <p className="mt-0.5 text-xs text-text-muted">{formatSessionDate(session.created_at)}</p>
-                      </button>
+                      <div key={session.id} className="group relative">
+                        <button
+                          type="button"
+                          onClick={() => openSession(session)}
+                          className={`block w-full rounded-xl py-2.5 pl-3 pr-9 text-left transition-colors duration-150 ${
+                            session.id === activeSessionId
+                              ? "bg-accent/15 text-accent-bright"
+                              : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
+                          }`}
+                        >
+                          <p className="truncate text-sm font-medium">{session.title}</p>
+                          <p className="mt-0.5 text-xs text-text-muted">{formatSessionDate(session.created_at)}</p>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(event) => deleteSession(event, session.id)}
+                          aria-label="Удалить чат"
+                          className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted transition-colors duration-150 hover:bg-red-500/15 hover:text-red-400"
+                        >
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     ))}
                   </div>
                 </div>
