@@ -16,8 +16,29 @@ export const TAG_LABELS: Record<string, string> = {
 
 const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"];
 
+const HEADLINE_PHRASES: Record<string, string> = {
+  no_pesel: "Без PESEL",
+  fully_online: "Открыть счёт онлайн",
+  free: "Бесплатное обслуживание",
+  multicurrency: "Мультивалютный счёт",
+};
+
 function isRecommended(guide: DocumentGuide): boolean {
   return !!guide.tags?.includes("no_pesel") && !!guide.tags?.includes("free");
+}
+
+// Headline replaces the old price display: the bank's single most useful
+// feature, in plain language, so the card leads with "what's in it for you"
+// instead of a number that was often just "0 zł" for most banks anyway.
+function buildHeadline(guide: DocumentGuide): { headline: string; subtitle: string } {
+  const tags = TAG_ORDER.filter((t) => guide.tags?.includes(t));
+  if (tags.length === 0) {
+    return { headline: "Классический счёт", subtitle: guide.cost ?? "" };
+  }
+  const [first, ...rest] = tags;
+  const headline = HEADLINE_PHRASES[first] ?? TAG_LABELS[first];
+  const subtitle = rest.map((t) => TAG_LABELS[t]).join(" · ");
+  return { headline, subtitle };
 }
 
 const BANK_DOMAINS: Record<string, string> = {
@@ -134,58 +155,66 @@ function BankCard({
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const recommended = isRecommended(guide);
   const isChosen = chosenBank === guide.name;
+  const { headline, subtitle } = buildHeadline(guide);
 
   return (
     <div
-      className={`relative flex h-full flex-col rounded-3xl border backdrop-blur-sm ${
-        recommended ? "border-accent/60 bg-accent/[0.03]" : "border-border-subtle bg-surface-1"
+      className={`relative flex h-full flex-col rounded-[28px] p-6 ${
+        recommended ? "bg-[#1a2340]" : "bg-[#1c1f26]"
       }`}
     >
-      <label className="absolute right-4 top-4 z-10">
+      <label
+        className={`absolute right-5 top-5 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors duration-150 ${
+          compareChecked ? "bg-white text-[#1c1f26]" : "bg-white/10 text-white/70 hover:bg-white/15"
+        }`}
+      >
         <input
           type="checkbox"
           checked={compareChecked}
           onChange={() => onToggleCompare(guide.id)}
           aria-label="Добавить к сравнению"
-          className="h-[18px] w-[18px] rounded-md border-border-strong bg-surface-2 accent-accent"
+          className="sr-only"
         />
+        {compareChecked ? (
+          <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+          </svg>
+        ) : (
+          <span className="text-[13px] leading-none">⋯</span>
+        )}
       </label>
 
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className="flex w-full flex-col items-start gap-3.5 p-6 pr-10 text-left"
+        className="flex w-full flex-col items-start gap-4 pr-8 text-left"
       >
-        <div className="flex items-center gap-2.5">
-          <BankAvatar name={guide.name} />
-          <p className="text-[13px] font-medium text-text-secondary">{guide.name}</p>
+        <div className="flex w-full items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <BankAvatar name={guide.name} />
+            <p className={`text-[13px] font-medium ${recommended ? "text-[#9fb0e8]" : "text-white/50"}`}>
+              {guide.name}
+            </p>
+          </div>
+          {recommended && (
+            <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#c9d6ff]">
+              Рекомендуем
+            </span>
+          )}
         </div>
 
         <div>
-          <p className="text-[28px] font-medium leading-none text-text-primary">
-            {guide.price_label ?? "—"}
-            <span className="ml-1 text-[13px] font-normal text-text-muted">/мес</span>
-          </p>
-          <p className={`mt-1.5 text-xs font-medium ${recommended ? "text-emerald-400" : "text-text-muted"}`}>
-            {recommended
-              ? `Рекомендуем${guide.tags?.includes("no_pesel") ? " · без PESEL" : ""}`
-              : guide.price_label === "0 zł при условии"
-                ? "При выполнении условий"
-                : guide.tags && guide.tags.length > 0
-                  ? guide.tags.map((t) => TAG_LABELS[t] ?? t).join(" · ")
-                  : ""}
-          </p>
+          <p className="text-[22px] font-bold leading-tight text-white">{headline}</p>
+          {subtitle && <p className="mt-2 text-xs text-white/50">{subtitle}</p>}
         </div>
 
-        {guide.description && (
-          <p className={`min-h-[52px] text-xs leading-relaxed text-text-muted ${open ? "" : "line-clamp-3"}`}>
-            {guide.description}
-          </p>
+        {open && guide.description && (
+          <p className="text-xs leading-relaxed text-white/60">{guide.description}</p>
         )}
       </button>
 
-      <div className="px-5 pb-5" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4" onClick={(event) => event.stopPropagation()}>
         {isChosen ? (
           <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
             <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -200,15 +229,19 @@ function BankCard({
               setOpen(true);
               onChoose(guide.name);
             }}
-            className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+            className={`w-full rounded-2xl py-3 text-[13px] font-bold transition-colors duration-150 ${
+              recommended
+                ? "bg-white text-[#1a2340] hover:bg-white/90"
+                : "bg-white/10 text-white hover:bg-white/15"
+            }`}
           >
-            Выбрать этот банк
+            Выбрать банк →
           </button>
         )}
       </div>
 
       {open && (
-        <div className="space-y-4 border-t border-border-subtle px-5 py-4">
+        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
           {guide.important_2026 && (
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
               {guide.important_2026}
