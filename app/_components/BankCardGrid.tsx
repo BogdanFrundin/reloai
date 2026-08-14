@@ -143,7 +143,7 @@ function BankCard({
 
   return (
     <div
-      className={`relative flex h-full flex-col overflow-hidden rounded-2xl border backdrop-blur-sm ${
+      className={`relative flex h-full flex-col rounded-2xl border backdrop-blur-sm ${
         recommended ? "border-accent/60 bg-accent/[0.03]" : "border-border-subtle bg-surface-1"
       }`}
     >
@@ -202,7 +202,10 @@ function BankCard({
         ) : (
           <button
             type="button"
-            onClick={() => onChoose(guide.name)}
+            onClick={() => {
+              setOpen(true);
+              onChoose(guide.name);
+            }}
             className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
           >
             Выбрать этот банк
