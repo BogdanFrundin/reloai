@@ -7,10 +7,18 @@ export default function DeleteConfirmModal({
   open,
   onClose,
   onConfirm,
+  title,
+  body,
+  confirmLabel,
+  cancelLabel,
 }: {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  title?: string;
+  body?: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
 }) {
   const { t } = useLanguage();
 
@@ -36,22 +44,22 @@ export default function DeleteConfirmModal({
             />
           </svg>
         </span>
-        <h2 className="mt-4 text-lg font-bold text-text-primary">{t.documents.deleteConfirmTitle}</h2>
-        <p className="mt-2 text-sm text-text-muted">{t.documents.deleteConfirmBody}</p>
+        <h2 className="mt-4 text-lg font-bold text-text-primary">{title ?? t.documents.deleteConfirmTitle}</h2>
+        <p className="mt-2 text-sm text-text-muted">{body ?? t.documents.deleteConfirmBody}</p>
         <div className="mt-6 flex gap-3">
           <button
             type="button"
             onClick={onClose}
             className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
           >
-            {t.documents.cancelBtn}
+            {cancelLabel ?? t.documents.cancelBtn}
           </button>
           <button
             type="button"
             onClick={onConfirm}
             className={`flex-1 rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-red-500 ${pressScale}`}
           >
-            {t.documents.deleteBtn}
+            {confirmLabel ?? t.documents.deleteBtn}
           </button>
         </div>
       </div>

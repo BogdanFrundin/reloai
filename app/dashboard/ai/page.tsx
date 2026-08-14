@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { pressScale } from "../../_lib/motion";
 import { useAuth } from "../../_components/AuthProvider";
 import { useLanguage } from "../../_components/LanguageProvider";
+import DeleteConfirmModal from "../../_components/DeleteConfirmModal";
 import { supabase } from "../../../lib/supabase";
 
 type Message = { from: "user" | "ai"; text: string; time: number | null };
@@ -145,6 +146,7 @@ function DashboardAiContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [deleteTargetSessionId, setDeleteTargetSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -249,10 +251,15 @@ function DashboardAiContent() {
     setInput("");
   }
 
-  async function deleteSession(event: MouseEvent, sessionId: string) {
+  function requestDeleteSession(event: MouseEvent, sessionId: string) {
     event.stopPropagation();
-    if (!user) return;
-    if (!window.confirm("Удалить этот чат?")) return;
+    setDeleteTargetSessionId(sessionId);
+  }
+
+  async function confirmDeleteSession() {
+    const sessionId = deleteTargetSessionId;
+    setDeleteTargetSessionId(null);
+    if (!user || !sessionId) return;
 
     const { error } = await supabase.from("chat_sessions").delete().eq("id", sessionId);
     if (error) {
@@ -380,7 +387,7 @@ function DashboardAiContent() {
                         </button>
                         <button
                           type="button"
-                          onClick={(event) => deleteSession(event, session.id)}
+                          onClick={(event) => requestDeleteSession(event, session.id)}
                           aria-label="Удалить чат"
                           className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted transition-colors duration-150 hover:bg-red-500/15 hover:text-red-400"
                         >
@@ -519,6 +526,16 @@ function DashboardAiContent() {
           </form>
         </div>
       </div>
+
+      <DeleteConfirmModal
+        open={deleteTargetSessionId !== null}
+        onClose={() => setDeleteTargetSessionId(null)}
+        onConfirm={confirmDeleteSession}
+        title="Удалить этот чат?"
+        body="Это действие нельзя отменить. Переписка будет удалена безвозвратно."
+        confirmLabel="Удалить"
+        cancelLabel="Отмена"
+      />
     </div>
   );
 }
