@@ -136,7 +136,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-white/15"
+          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           {open ? "Скрыть" : "Подробнее"} →
         </button>
