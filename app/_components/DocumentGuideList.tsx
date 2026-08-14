@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText } from "../_lib/currency";
+import CurrencyHint from "./CurrencyHint";
 
 export type DocumentGuide = {
   id: string;
@@ -44,10 +45,13 @@ const CHEVRON_ICON = (
   </svg>
 );
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value, showCurrencyHint }: { label: string; value: string; showCurrencyHint?: boolean }) {
   return (
     <div className="text-xs">
-      <p className="text-text-muted">{label}</p>
+      <p className="flex items-center gap-1 text-text-muted">
+        {label}
+        {showCurrencyHint && <CurrencyHint />}
+      </p>
       <p className="mt-0.5 text-text-secondary">{value}</p>
     </div>
   );
@@ -109,7 +113,7 @@ function GuideCard({ guide }: { guide: DocumentGuide }) {
             {guide.where_to_submit && <InfoRow label="Куда подавать" value={guide.where_to_submit} />}
             {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-            {cost && <InfoRow label="Стоимость" value={cost} />}
+            {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
             {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
           </div>
 

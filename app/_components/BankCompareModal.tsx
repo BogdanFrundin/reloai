@@ -5,6 +5,7 @@ import type { DocumentGuide } from "./DocumentGuideList";
 import { TAG_LABELS } from "./BankCardGrid";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText, type CurrencyCode, type RatesMap } from "../_lib/currency";
+import CurrencyHint from "./CurrencyHint";
 
 const ROWS: {
   key: string;
@@ -79,7 +80,12 @@ export default function BankCompareModal({
             <tbody>
               {ROWS.map((row) => (
                 <tr key={row.key} className="border-b border-border-subtle">
-                  <td className="p-3 text-left text-xs font-semibold text-text-secondary">{row.label}</td>
+                  <td className="p-3 text-left text-xs font-semibold text-text-secondary">
+                    <span className="flex items-center gap-1">
+                      {row.label}
+                      {row.key === "cost" && <CurrencyHint />}
+                    </span>
+                  </td>
                   {guides.map((g) => (
                     <td key={g.id} className="p-3 text-left text-xs text-text-secondary">
                       {row.render(g, currency, rates)}

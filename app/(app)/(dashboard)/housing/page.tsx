@@ -13,6 +13,7 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useCurrency } from "../../../_components/CurrencyProvider";
 import { convertPlnText, formatMoneyRange } from "../../../_lib/currency";
+import CurrencyHint from "../../../_components/CurrencyHint";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
@@ -104,9 +105,12 @@ function DistrictCard({
       )}
       <p className="text-sm font-semibold text-text-primary">{d.district}</p>
       {priceLabel && (
-        <p className="mt-2 bg-gradient-to-br from-text-primary to-text-muted bg-clip-text text-lg font-bold text-transparent">
-          {priceLabel}
-        </p>
+        <div className="mt-2 flex items-center gap-1.5">
+          <p className="bg-gradient-to-br from-text-primary to-text-muted bg-clip-text text-lg font-bold text-transparent">
+            {priceLabel}
+          </p>
+          <CurrencyHint />
+        </div>
       )}
       {d.description && <p className="mt-2 line-clamp-5 text-sm text-text-secondary">{d.description}</p>}
       <button

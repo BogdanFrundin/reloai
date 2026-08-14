@@ -9,6 +9,7 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useCurrency } from "../../../_components/CurrencyProvider";
 import { convertPlnText } from "../../../_lib/currency";
+import CurrencyHint from "../../../_components/CurrencyHint";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
@@ -83,10 +84,13 @@ function OwnershipBadge({ ownership }: { ownership: string | null }) {
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value, showCurrencyHint }: { label: string; value: string; showCurrencyHint?: boolean }) {
   return (
     <div className="text-xs">
-      <p className="text-white/40">{label}</p>
+      <p className="flex items-center gap-1 text-white/40">
+        {label}
+        {showCurrencyHint && <CurrencyHint />}
+      </p>
       <p className="mt-0.5 text-white/70">{value}</p>
     </div>
   );
@@ -116,7 +120,10 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 
         <div>
           <p className="text-[13px] font-medium text-white/50">{row.name}</p>
-          <p className="mt-1 text-[22px] font-bold leading-tight text-white">{cost || "Уточняйте цену"}</p>
+          <div className="mt-1 flex items-center gap-1.5">
+            <p className="text-[22px] font-bold leading-tight text-white">{cost || "Уточняйте цену"}</p>
+            <CurrencyHint />
+          </div>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
         </div>
 
@@ -154,7 +161,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
             {row.audience && <InfoRow label="Для кого" value={row.audience} />}
             {row.languages && row.languages.length > 0 && <InfoRow label="Язык" value={row.languages.join(", ")} />}
             {row.schedule && <InfoRow label="График" value={row.schedule} />}
-            {cost && <InfoRow label="Стоимость" value={cost} />}
+            {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
           </div>
 
           {row.required_docs && row.required_docs.length > 0 && (
