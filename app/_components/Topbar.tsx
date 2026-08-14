@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import MiniLangSwitcher from "./MiniLangSwitcher";
-import MiniCurrencySwitcher from "./MiniCurrencySwitcher";
 import NotificationBell from "./NotificationBell";
 import ProfileAvatar from "./ProfileAvatar";
 import UpgradeModal from "./UpgradeModal";
@@ -51,7 +50,6 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex items-center gap-3">
-        <MiniCurrencySwitcher />
         <MiniLangSwitcher />
 
         {user ? (

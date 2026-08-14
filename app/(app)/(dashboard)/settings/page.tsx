@@ -10,7 +10,9 @@ import LogoutConfirmModal from "../../../_components/LogoutConfirmModal";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useTheme } from "../../../_components/ThemeProvider";
+import { useCurrency } from "../../../_components/CurrencyProvider";
 import { LANGUAGES, type Lang } from "../../../_lib/i18n";
+import { CURRENCIES } from "../../../_lib/currency";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
@@ -18,6 +20,7 @@ import { supabase } from "../../../../lib/supabase";
 export default function SettingsPage() {
   const { lang, setLang, t } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const { currency, setCurrency } = useCurrency();
   const { user, profile, signOut, refreshProfile } = useAuth();
   const router = useRouter();
   const s = t.settings;
@@ -174,6 +177,43 @@ export default function SettingsPage() {
                     unoptimized
                   />
                   {l.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Currency */}
+        <Reveal delay={75}>
+          <div id="currency-section" className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold text-text-primary">Валюта</p>
+            <p className="mt-1 text-xs text-text-muted">
+              В какой валюте показывать цены на сайте (курс к злотому обновляется автоматически).
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {CURRENCIES.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  onClick={() => setCurrency(c.code)}
+                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                    currency === c.code
+                      ? "border-accent/50 bg-accent/10 text-accent-bright"
+                      : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                  }`}
+                >
+                  <Image
+                    src={getFlagUrl(c.flag, "sm")}
+                    alt={c.name}
+                    width={24}
+                    height={18}
+                    className="rounded-sm"
+                    unoptimized
+                  />
+                  <span className="flex flex-col items-start leading-tight">
+                    <span>{c.name}</span>
+                    <span className="text-xs text-text-muted">{c.symbol}</span>
+                  </span>
                 </button>
               ))}
             </div>

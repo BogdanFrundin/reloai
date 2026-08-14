@@ -3,22 +3,26 @@
 // prices things in. All source data in the DB is in PLN -- everything here
 // converts *from* PLN using live rates fetched by CurrencyProvider.
 
-export type CurrencyCode = "PLN" | "RUB" | "UAH" | "GBP" | "TRY" | "UZS" | "TJS";
+export type CurrencyCode = "PLN" | "USD" | "EUR" | "RUB" | "UAH" | "GBP" | "TRY" | "UZS" | "TJS";
 
 export type Currency = {
   code: CurrencyCode;
   symbol: string;
   name: string;
+  // ISO country code for the flag icon (flagcdn.com), "eu" for the EU flag.
+  flag: string;
 };
 
 export const CURRENCIES: Currency[] = [
-  { code: "PLN", symbol: "zł", name: "Злотый · Польша" },
-  { code: "RUB", symbol: "₽", name: "Рубль · Россия" },
-  { code: "UAH", symbol: "₴", name: "Гривна · Украина" },
-  { code: "GBP", symbol: "£", name: "Фунт · Великобритания" },
-  { code: "TRY", symbol: "₺", name: "Лира · Турция" },
-  { code: "UZS", symbol: "so'm", name: "Сум · Узбекистан" },
-  { code: "TJS", symbol: "смн", name: "Сомони · Таджикистан" },
+  { code: "PLN", symbol: "zł", name: "Злотый · Польша", flag: "pl" },
+  { code: "USD", symbol: "$", name: "Доллар США", flag: "us" },
+  { code: "EUR", symbol: "€", name: "Евро", flag: "eu" },
+  { code: "RUB", symbol: "₽", name: "Рубль · Россия", flag: "ru" },
+  { code: "UAH", symbol: "₴", name: "Гривна · Украина", flag: "ua" },
+  { code: "GBP", symbol: "£", name: "Фунт · Великобритания", flag: "gb" },
+  { code: "TRY", symbol: "₺", name: "Лира · Турция", flag: "tr" },
+  { code: "UZS", symbol: "so'm", name: "Сум · Узбекистан", flag: "uz" },
+  { code: "TJS", symbol: "смн", name: "Сомони · Таджикистан", flag: "tj" },
 ];
 
 export const DEFAULT_CURRENCY: CurrencyCode = "PLN";
