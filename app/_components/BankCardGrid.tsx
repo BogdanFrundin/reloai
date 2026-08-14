@@ -181,22 +181,20 @@ function BankCard({
         aria-expanded={open}
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
-        <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex items-center gap-2.5">
-            <BankAvatar name={guide.name} />
-            <p className="text-[13px] font-medium text-white/50">{guide.name}</p>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <BankAvatar name={guide.name} />
+          <p className="text-[13px] font-medium text-white/50">{guide.name}</p>
+        </div>
+
+        <div>
           {isChosen && (
-            <span className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
+            <span className="mb-1.5 flex items-center gap-1 text-xs font-semibold text-emerald-400">
               <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
               </svg>
               Ваш банк
             </span>
           )}
-        </div>
-
-        <div>
           <p className="text-[22px] font-bold leading-tight text-white">{headline}</p>
           {subtitle && <p className="mt-2 text-xs text-white/50">{subtitle}</p>}
         </div>
