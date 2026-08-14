@@ -38,11 +38,8 @@ type EduRow = {
   features: string[] | null;
 };
 
-const cardHoverClass =
-  "group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none";
-
 const iconBadgeClass =
-  "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none";
+  "flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright";
 
 const TAB_ICONS: Record<TabId, ReactNode> = {
   courses: (
@@ -74,69 +71,101 @@ const TAB_ICONS: Record<TabId, ReactNode> = {
 function OwnershipBadge({ ownership }: { ownership: string | null }) {
   if (!ownership) return null;
   return ownership === "государственный" ? (
-    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold text-accent-bright">
-      Государственный
+    <span className="inline-flex flex-shrink-0 items-center rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#9fb0e8]">
+      Гос.
     </span>
   ) : (
-    <span className="inline-flex flex-shrink-0 items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-400">
+    <span className="inline-flex flex-shrink-0 items-center rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-semibold text-amber-300">
       Частный
     </span>
   );
 }
 
-function Row({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 text-xs">
-      <span className="flex-shrink-0 text-text-muted">{label}</span>
-      <span className={`text-right ${highlight ? "font-semibold text-text-primary" : "text-text-secondary"}`}>{value}</span>
+    <div className="text-xs">
+      <p className="text-white/40">{label}</p>
+      <p className="mt-0.5 text-white/70">{value}</p>
     </div>
   );
 }
 
 function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
+  const [open, setOpen] = useState(false);
   const notes = [...(row.highlights ?? []), ...(row.features ?? [])];
+  const subtitleParts = [row.audience, row.languages && row.languages.length > 0 ? row.languages.join(", ") : null].filter(
+    Boolean
+  );
+
   return (
-    <div className={cardHoverClass}>
-      <span className={iconBadgeClass}>{icon}</span>
-      <div className="mt-3 flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold leading-snug text-text-primary">{row.name}</p>
-        <OwnershipBadge ownership={row.ownership} />
-      </div>
-      {row.address && <p className="mt-1 text-xs text-text-muted">{row.address}</p>}
+    <div className="relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full flex-1 flex-col items-start gap-4 text-left"
+      >
+        <div className="flex w-full items-center justify-between gap-2">
+          <span className={iconBadgeClass}>{icon}</span>
+          <OwnershipBadge ownership={row.ownership} />
+        </div>
 
-      <div className="mt-4 space-y-2 border-t border-border-subtle pt-3">
-        {row.audience && <Row label="Для кого" value={row.audience} />}
-        {row.languages && row.languages.length > 0 && <Row label="Язык" value={row.languages.join(", ")} />}
-        {row.cost && <Row label="Стоимость" value={row.cost} highlight />}
-        {row.schedule && <Row label="График" value={row.schedule} />}
+        <div>
+          <p className="text-[13px] font-medium text-white/50">{row.name}</p>
+          <p className="mt-1 text-[22px] font-bold leading-tight text-white">{row.cost || "Уточняйте цену"}</p>
+          {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
+        </div>
+
+        {row.programs && row.programs.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {row.programs.slice(0, 3).map((p) => (
+              <span key={p} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                {p}
+              </span>
+            ))}
+            {row.programs.length > 3 && (
+              <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                +{row.programs.length - 3}
+              </span>
+            )}
+          </div>
+        )}
+      </button>
+
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-white/15"
+        >
+          {open ? "Скрыть" : "Подробнее"} →
+        </button>
       </div>
 
-      {row.programs && row.programs.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1">
-          {row.programs.slice(0, 3).map((p) => (
-            <span key={p} className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">
-              {p}
-            </span>
-          ))}
-          {row.programs.length > 3 && (
-            <span className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">
-              +{row.programs.length - 3}
-            </span>
+      {open && (
+        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
+          {row.address && <InfoRow label="Адрес" value={row.address} />}
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {row.audience && <InfoRow label="Для кого" value={row.audience} />}
+            {row.languages && row.languages.length > 0 && <InfoRow label="Язык" value={row.languages.join(", ")} />}
+            {row.schedule && <InfoRow label="График" value={row.schedule} />}
+            {row.cost && <InfoRow label="Стоимость" value={row.cost} />}
+          </div>
+
+          {row.required_docs && row.required_docs.length > 0 && (
+            <p className="text-xs leading-relaxed text-white/60">
+              <span className="font-semibold text-white/80">Документы: </span>
+              {row.required_docs.join("; ")}
+            </p>
+          )}
+
+          {notes.length > 0 && (
+            <p className="rounded-xl bg-white/[0.05] px-3 py-2 text-xs leading-relaxed text-white/60">
+              {notes.join(" · ")}
+            </p>
           )}
         </div>
-      )}
-
-      {row.required_docs && row.required_docs.length > 0 && (
-        <p className="mt-3 text-[11px] leading-relaxed text-text-muted">
-          <span className="font-semibold text-text-secondary">Документы: </span>
-          {row.required_docs.join("; ")}
-        </p>
-      )}
-
-      {notes.length > 0 && (
-        <p className="mt-2 rounded-xl bg-surface-1 px-3 py-2 text-[11px] leading-relaxed text-text-muted">
-          {notes.slice(0, 3).join(" · ")}
-        </p>
       )}
     </div>
   );
@@ -214,16 +243,14 @@ export default function EducationPage() {
       </div>
 
       {/* Tab bar */}
-      <div className="mt-4 flex gap-1 overflow-x-auto rounded-2xl border border-border-subtle bg-surface-1 p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="mt-4 flex flex-wrap gap-2">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => handleTabChange(tab.id)}
-            className={`flex-shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-150 ${
-              activeTab === tab.id
-                ? "bg-accent text-white shadow-[0_0_20px_-6px_var(--accent)]"
-                : "text-text-muted hover:text-text-primary"
+            className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ${
+              activeTab === tab.id ? "bg-accent text-white" : "bg-[#1c1f26] text-white/50 hover:text-white/80"
             }`}
           >
             {tab.label}
@@ -233,7 +260,7 @@ export default function EducationPage() {
 
       {/* Filter pills (hidden for courses, which have no ownership split) */}
       {activeTab !== "courses" && (
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {(
             [
               { id: "all", label: t.education.filterAll },
@@ -261,7 +288,7 @@ export default function EducationPage() {
         {loading ? (
           <p className="py-14 text-center text-sm text-text-muted">Загрузка…</p>
         ) : items.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((row, i) => (
               <Reveal key={row.id} delay={i * 40} className="h-full">
                 <EduCard row={row} icon={TAB_ICONS[activeTab]} />
