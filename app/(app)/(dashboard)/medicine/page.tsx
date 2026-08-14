@@ -135,6 +135,7 @@ export default function MedicinePage() {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<string>("all");
+  const [district, setDistrict] = useState<string>("all");
   const [search, setSearch] = useState("");
   const appliedProfileCity = useRef(false);
 
@@ -158,6 +159,7 @@ export default function MedicinePage() {
         if (!active) return;
         setClinics((data as Clinic[]) ?? []);
         setCategory("all");
+        setDistrict("all");
         setLoading(false);
       });
     return () => {
@@ -177,10 +179,23 @@ export default function MedicinePage() {
     return list;
   }, [clinics]);
 
+  const districts = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const c of clinics) {
+      if (c.district && !seen.has(c.district)) {
+        seen.add(c.district);
+        list.push(c.district);
+      }
+    }
+    return list.sort((a, b) => a.localeCompare(b, "ru"));
+  }, [clinics]);
+
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
     return clinics.filter((c) => {
       if (category !== "all" && c.category !== category) return false;
+      if (district !== "all" && c.district !== district) return false;
       if (!term) return true;
       return (
         c.name.toLowerCase().includes(term) ||
@@ -188,7 +203,7 @@ export default function MedicinePage() {
         (c.address ?? "").toLowerCase().includes(term)
       );
     });
-  }, [clinics, category, search]);
+  }, [clinics, category, district, search]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, Clinic[]>();
@@ -237,6 +252,13 @@ export default function MedicinePage() {
             onChange={setCategory}
             options={[{ value: "all", label: "Все категории" }, ...categories.map((c) => ({ value: c, label: c }))]}
           />
+          {districts.length > 0 && (
+            <Dropdown
+              value={district}
+              onChange={setDistrict}
+              options={[{ value: "all", label: "Все районы" }, ...districts.map((d) => ({ value: d, label: d }))]}
+            />
+          )}
           <span className="text-xs text-text-muted">{filtered.length} клиник</span>
         </div>
 
