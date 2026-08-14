@@ -3,6 +3,22 @@
 import { useState } from "react";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
+import { useAuth } from "./AuthProvider";
+import { supabase } from "../../lib/supabase";
+import BankCompareModal from "./BankCompareModal";
+
+export const TAG_LABELS: Record<string, string> = {
+  no_pesel: "Без PESEL",
+  fully_online: "Полностью онлайн",
+  free: "Бесплатно",
+  multicurrency: "Мультивалютный",
+};
+
+const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"];
+
+function isRecommended(guide: DocumentGuide): boolean {
+  return !!guide.tags?.includes("no_pesel") && !!guide.tags?.includes("free");
+}
 
 const BANK_DOMAINS: Record<string, string> = {
   "aion bank": "aionbank.pl",
@@ -106,13 +122,36 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
   );
 }
 
-function BankCard({ guide }: { guide: DocumentGuide }) {
+function BankCard({
+  guide,
+  compareChecked,
+  onToggleCompare,
+  chosenBank,
+  onChoose,
+}: {
+  guide: DocumentGuide;
+  compareChecked: boolean;
+  onToggleCompare: (id: string) => void;
+  chosenBank: string | null | undefined;
+  onChoose: (name: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
+  const recommended = isRecommended(guide);
+  const isChosen = chosenBank === guide.name;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
+    <div
+      className={`relative flex h-full flex-col overflow-hidden rounded-2xl border backdrop-blur-sm ${
+        recommended ? "border-accent/60 bg-accent/[0.03]" : "border-border-subtle bg-surface-1"
+      }`}
+    >
+      {recommended && (
+        <span className="absolute -top-3 left-5 z-10 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
+          Рекомендуем вам
+        </span>
+      )}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -121,6 +160,14 @@ function BankCard({ guide }: { guide: DocumentGuide }) {
       >
         <div className="flex w-full items-start justify-between gap-3">
           <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={compareChecked}
+              onChange={() => onToggleCompare(guide.id)}
+              onClick={(event) => event.stopPropagation()}
+              aria-label="Добавить к сравнению"
+              className="h-4 w-4 flex-shrink-0 rounded border-border-strong accent-accent"
+            />
             <BankAvatar name={guide.name} />
             <p className="text-sm font-semibold text-text-primary">{guide.name}</p>
           </div>
@@ -130,10 +177,38 @@ function BankCard({ guide }: { guide: DocumentGuide }) {
             {CHEVRON_ICON}
           </span>
         </div>
+        {guide.tags && guide.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {guide.tags.map((tag) => (
+              <span key={tag} className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px] text-text-muted">
+                {TAG_LABELS[tag] ?? tag}
+              </span>
+            ))}
+          </div>
+        )}
         {guide.description && (
           <p className={`text-xs text-text-muted ${open ? "" : "line-clamp-3"}`}>{guide.description}</p>
         )}
       </button>
+
+      <div className="px-5 pb-5" onClick={(event) => event.stopPropagation()}>
+        {isChosen ? (
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
+            <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+            </svg>
+            Вы выбрали этот банк
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onChoose(guide.name)}
+            className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+          >
+            Выбрать этот банк
+          </button>
+        )}
+      </div>
 
       {open && (
         <div className="space-y-4 border-t border-border-subtle px-5 py-4">
@@ -223,33 +298,99 @@ export default function BankCardGrid({
   emptyText: string;
   searchPlaceholder?: string;
 }) {
+  const { user, profile, refreshProfile } = useAuth();
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [compareIds, setCompareIds] = useState<Set<string>>(new Set());
+  const [compareOpen, setCompareOpen] = useState(false);
+
   const term = search.trim().toLowerCase();
+  const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
   const filtered = term
-    ? guides.filter(
+    ? tagFiltered.filter(
         (g) => g.name.toLowerCase().includes(term) || (g.description ?? "").toLowerCase().includes(term)
       )
-    : guides;
+    : tagFiltered;
 
   const featured = filtered.slice(0, 4);
   const rest = filtered.slice(4);
+  const compareGuides = guides.filter((g) => compareIds.has(g.id));
 
   function handleSearchChange(value: string) {
     setSearch(value);
     setShowAll(false);
   }
 
+  function toggleCompare(id: string) {
+    setCompareIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        if (next.size >= 3) return prev;
+        next.add(id);
+      }
+      return next;
+    });
+  }
+
+  async function chooseBank(name: string) {
+    if (!user) return;
+    await supabase.from("profiles").update({ chosen_bank: name }).eq("id", user.id);
+    await refreshProfile();
+  }
+
   return (
     <div>
-      <div className="mb-4 max-w-sm">
-        <input
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder={searchPlaceholder}
-          className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-        />
+      <div className="mb-4 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setActiveTag(null)}
+          className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+            activeTag === null
+              ? "border-accent bg-accent/15 text-accent-bright"
+              : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
+          }`}
+        >
+          Все
+        </button>
+        {TAG_ORDER.map((tag) => (
+          <button
+            key={tag}
+            type="button"
+            onClick={() => setActiveTag(tag)}
+            className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+              activeTag === tag
+                ? "border-accent bg-accent/15 text-accent-bright"
+                : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
+            }`}
+          >
+            {TAG_LABELS[tag]}
+          </button>
+        ))}
       </div>
+
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <div className="max-w-sm flex-1">
+          <input
+            value={search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder={searchPlaceholder}
+            className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+          />
+        </div>
+        {compareIds.size >= 2 && (
+          <button
+            type="button"
+            onClick={() => setCompareOpen(true)}
+            className="rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-xs font-semibold text-accent-bright"
+          >
+            Сравнить ({compareIds.size}) →
+          </button>
+        )}
+      </div>
+
       {loading ? (
         <p className="text-sm text-text-muted">Загрузка…</p>
       ) : filtered.length === 0 ? (
@@ -258,7 +399,14 @@ export default function BankCardGrid({
         <>
           <div className="grid items-stretch gap-4 sm:grid-cols-2">
             {featured.map((g) => (
-              <BankCard key={g.id} guide={g} />
+              <BankCard
+                key={g.id}
+                guide={g}
+                compareChecked={compareIds.has(g.id)}
+                onToggleCompare={toggleCompare}
+                chosenBank={profile?.chosen_bank}
+                onChoose={chooseBank}
+              />
             ))}
           </div>
 
@@ -275,7 +423,14 @@ export default function BankCardGrid({
               {showAll && (
                 <div className="mt-6 grid w-full items-stretch gap-4 sm:grid-cols-2">
                   {rest.map((g) => (
-                    <BankCard key={g.id} guide={g} />
+                    <BankCard
+                      key={g.id}
+                      guide={g}
+                      compareChecked={compareIds.has(g.id)}
+                      onToggleCompare={toggleCompare}
+                      chosenBank={profile?.chosen_bank}
+                      onChoose={chooseBank}
+                    />
                   ))}
                 </div>
               )}
@@ -283,6 +438,8 @@ export default function BankCardGrid({
           )}
         </>
       )}
+
+      <BankCompareModal open={compareOpen} onClose={() => setCompareOpen(false)} guides={compareGuides} />
     </div>
   );
 }

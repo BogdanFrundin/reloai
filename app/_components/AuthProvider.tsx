@@ -26,6 +26,7 @@ export type Profile = {
   email_newsletter: boolean | null;
   email_reminders: boolean | null;
   email_updates: boolean | null;
+  chosen_bank: string | null;
   created_at: string;
 };
 
