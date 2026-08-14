@@ -238,24 +238,23 @@ export default function EducationPage() {
         subtitle={t.education.subtitle}
       />
 
-      <div className="mt-6 flex justify-end">
+      {/* Tab bar + city selector, on the same row */}
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => handleTabChange(tab.id)}
+              className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ${
+                activeTab === tab.id ? "bg-accent text-white" : "bg-[#1c1f26] text-white/50 hover:text-white/80"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
         <CitySelect value={city} onChange={setCity} label="Город" />
-      </div>
-
-      {/* Tab bar */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => handleTabChange(tab.id)}
-            className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ${
-              activeTab === tab.id ? "bg-accent text-white" : "bg-[#1c1f26] text-white/50 hover:text-white/80"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
       </div>
 
       {/* Filter pills (hidden for courses, which have no ownership split) */}
