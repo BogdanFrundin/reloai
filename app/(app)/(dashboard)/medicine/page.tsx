@@ -232,10 +232,10 @@ export default function MedicinePage() {
             <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.clinicsTitle}</h2>
             <p className="mt-1 text-sm text-text-muted">{t.medicine.clinicsSub}</p>
           </div>
-          <CitySelect value={city} onChange={setCity} label="Город" />
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
+          <CitySelect value={city} onChange={setCity} label="Город" />
           <div className="relative">
             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
               {SEARCH_ICON}
