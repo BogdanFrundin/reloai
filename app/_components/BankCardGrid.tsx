@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { supabase } from "../../lib/supabase";
-import BankCompareModal from "./BankCompareModal";
 
 export const TAG_LABELS: Record<string, string> = {
   no_pesel: "Без PESEL",
@@ -135,45 +135,44 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 
 function BankCard({
   guide,
-  compareChecked,
-  onToggleCompare,
   chosenBank,
   onChoose,
 }: {
   guide: DocumentGuide;
-  compareChecked: boolean;
-  onToggleCompare: (id: string) => void;
   chosenBank: string | null | undefined;
   onChoose: (name: string) => void;
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
   const { headline, subtitle } = buildHeadline(guide);
 
+  function askAi() {
+    const question = `Расскажи подробнее про ${guide.name}: как открыть счёт, какие документы нужны и на что обратить внимание?`;
+    router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
+  }
+
   return (
     <div className="relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6">
-      <label
-        className={`absolute right-5 top-5 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors duration-150 ${
-          compareChecked ? "bg-white text-[#1c1f26]" : "bg-white/10 text-white/70 hover:bg-white/15"
-        }`}
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          askAi();
+        }}
+        aria-label={`Спросить ИИ про ${guide.name}`}
+        className="absolute right-5 top-5 z-10 flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white/70 transition-colors duration-150 hover:bg-white/15 hover:text-white"
       >
-        <input
-          type="checkbox"
-          checked={compareChecked}
-          onChange={() => onToggleCompare(guide.id)}
-          aria-label="Добавить к сравнению"
-          className="sr-only"
-        />
-        {compareChecked ? (
-          <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-          </svg>
-        ) : (
-          <span className="text-[13px] leading-none">⋯</span>
-        )}
-      </label>
+        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z"
+          />
+        </svg>
+      </button>
 
       <button
         type="button"
@@ -330,8 +329,6 @@ export default function BankCardGrid({
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [compareIds, setCompareIds] = useState<Set<string>>(new Set());
-  const [compareOpen, setCompareOpen] = useState(false);
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
@@ -343,24 +340,10 @@ export default function BankCardGrid({
 
   const featured = filtered.slice(0, 4);
   const rest = filtered.slice(4);
-  const compareGuides = guides.filter((g) => compareIds.has(g.id));
 
   function handleSearchChange(value: string) {
     setSearch(value);
     setShowAll(false);
-  }
-
-  function toggleCompare(id: string) {
-    setCompareIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        if (next.size >= 3) return prev;
-        next.add(id);
-      }
-      return next;
-    });
   }
 
   async function chooseBank(name: string) {
@@ -408,15 +391,6 @@ export default function BankCardGrid({
             className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
           />
         </div>
-        {compareIds.size >= 2 && (
-          <button
-            type="button"
-            onClick={() => setCompareOpen(true)}
-            className="rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-xs font-semibold text-accent-bright"
-          >
-            Сравнить ({compareIds.size}) →
-          </button>
-        )}
       </div>
 
       {loading ? (
@@ -430,8 +404,6 @@ export default function BankCardGrid({
               <BankCard
                 key={g.id}
                 guide={g}
-                compareChecked={compareIds.has(g.id)}
-                onToggleCompare={toggleCompare}
                 chosenBank={profile?.chosen_bank}
                 onChoose={chooseBank}
               />
@@ -454,8 +426,6 @@ export default function BankCardGrid({
                     <BankCard
                       key={g.id}
                       guide={g}
-                      compareChecked={compareIds.has(g.id)}
-                      onToggleCompare={toggleCompare}
                       chosenBank={profile?.chosen_bank}
                       onChoose={chooseBank}
                     />
@@ -466,8 +436,6 @@ export default function BankCardGrid({
           )}
         </>
       )}
-
-      <BankCompareModal open={compareOpen} onClose={() => setCompareOpen(false)} guides={compareGuides} />
     </div>
   );
 }
