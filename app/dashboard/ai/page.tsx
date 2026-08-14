@@ -410,7 +410,7 @@ function DashboardAiContent() {
             </div>
           ) : (
             <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-              <div className="mx-auto flex max-w-3xl flex-col gap-5">
+              <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">
                 {messages.map((message, index) =>
                   message.from === "user" ? (
                     <div
@@ -458,7 +458,7 @@ function DashboardAiContent() {
           )}
 
           <form onSubmit={handleSubmit} className="border-t border-border-subtle p-3 sm:p-4">
-            <div className="mx-auto flex max-w-3xl items-center gap-2 rounded-full border border-border-subtle bg-surface-1 py-1.5 pl-5 pr-1.5 transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30">
+            <div className="mx-auto flex w-full max-w-5xl items-center gap-2 rounded-full border border-border-subtle bg-surface-1 py-1.5 pl-5 pr-1.5 transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30">
               <input
                 type="text"
                 value={input}
