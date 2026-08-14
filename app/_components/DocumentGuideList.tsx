@@ -24,6 +24,7 @@ export type DocumentGuide = {
   online_url: string | null;
   countries: Record<string, boolean> | null;
   tags: string[] | null;
+  price_label: string | null;
 };
 
 // Returns true if the guide is relevant for a given citizenship (ISO alpha-2 code).
