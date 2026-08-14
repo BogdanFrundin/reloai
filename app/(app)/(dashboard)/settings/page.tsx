@@ -100,7 +100,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="px-6 py-8 lg:px-10 lg:py-10">
+    <div className="px-6 pt-4 pb-8 lg:px-10 lg:pt-6 lg:pb-10">
       <PageHeader title={s.title} subtitle={s.subtitle} />
 
       <div className="mt-10 max-w-4xl space-y-6 mx-auto">
