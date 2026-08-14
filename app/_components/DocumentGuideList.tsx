@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useCurrency } from "./CurrencyProvider";
+import { convertPlnText } from "../_lib/currency";
 
 export type DocumentGuide = {
   id: string;
@@ -67,9 +69,11 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 }
 
 function GuideCard({ guide }: { guide: DocumentGuide }) {
+  const { currency, rates } = useCurrency();
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
+  const cost = convertPlnText(guide.cost, currency, rates);
 
   return (
     <div className="rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
@@ -105,7 +109,7 @@ function GuideCard({ guide }: { guide: DocumentGuide }) {
             {guide.where_to_submit && <InfoRow label="Куда подавать" value={guide.where_to_submit} />}
             {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-            {guide.cost && <InfoRow label="Стоимость" value={guide.cost} />}
+            {cost && <InfoRow label="Стоимость" value={cost} />}
             {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
           </div>
 

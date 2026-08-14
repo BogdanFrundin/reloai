@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LanguageProvider from "./_components/LanguageProvider";
+import CurrencyProvider from "./_components/CurrencyProvider";
 import ThemeProvider from "./_components/ThemeProvider";
 import { AuthProvider } from "./_components/AuthProvider";
 import FloatingChatButtonGate from "./_components/FloatingChatButtonGate";
@@ -42,8 +43,10 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             <LanguageProvider>
-              {children}
-              <FloatingChatButtonGate />
+              <CurrencyProvider>
+                {children}
+                <FloatingChatButtonGate />
+              </CurrencyProvider>
             </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>

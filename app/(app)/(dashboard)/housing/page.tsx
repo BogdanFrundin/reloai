@@ -11,6 +11,8 @@ import Dropdown from "../../../_components/Dropdown";
 import HousingSiteChoiceModal from "../../../_components/HousingSiteChoiceModal";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
+import { useCurrency } from "../../../_components/CurrencyProvider";
+import { convertPlnText, formatMoneyRange } from "../../../_lib/currency";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
@@ -63,23 +65,16 @@ type District = {
   purchase_price_m2: number | null;
 };
 
-function formatNumber(n: number): string {
-  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-function formatPrice(n: number): string {
-  return `${formatNumber(n)} zł`;
-}
-
-function districtPriceLabel(d: District, rooms: RoomsFilter): string | null {
-  if (rooms === "any") return d.price_range;
+function districtPriceLabel(
+  d: District,
+  rooms: RoomsFilter,
+  currency: ReturnType<typeof useCurrency>["currency"],
+  rates: ReturnType<typeof useCurrency>["rates"]
+): string | null {
+  if (rooms === "any") return convertPlnText(d.price_range, currency, rates) || null;
   const minKey = `rent_${rooms}_min` as const;
   const maxKey = `rent_${rooms}_max` as const;
-  const min = d[minKey];
-  const max = d[maxKey];
-  if (min == null && max == null) return null;
-  if (min != null && max != null) return `${formatNumber(min)} – ${formatPrice(max)}`;
-  return formatPrice((min ?? max) as number);
+  return formatMoneyRange(d[minKey], d[maxKey], currency, rates);
 }
 
 function DistrictCard({
@@ -93,7 +88,8 @@ function DistrictCard({
   rooms: RoomsFilter;
   onOpenSearch: (district: string) => void;
 }) {
-  const priceLabel = districtPriceLabel(d, rooms);
+  const { currency, rates } = useCurrency();
+  const priceLabel = districtPriceLabel(d, rooms, currency, rates);
 
   return (
     <div

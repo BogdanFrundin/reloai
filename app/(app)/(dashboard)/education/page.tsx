@@ -7,6 +7,8 @@ import Reveal from "../../../_components/Reveal";
 import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
+import { useCurrency } from "../../../_components/CurrencyProvider";
+import { convertPlnText } from "../../../_lib/currency";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
@@ -91,14 +93,16 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
+  const { currency, rates } = useCurrency();
   const [open, setOpen] = useState(false);
+  const cost = convertPlnText(row.cost, currency, rates);
   const notes = [...(row.highlights ?? []), ...(row.features ?? [])];
   const subtitleParts = [row.audience, row.languages && row.languages.length > 0 ? row.languages.join(", ") : null].filter(
     Boolean
   );
 
   return (
-    <div className="relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6">
+    <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -112,7 +116,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 
         <div>
           <p className="text-[13px] font-medium text-white/50">{row.name}</p>
-          <p className="mt-1 text-[22px] font-bold leading-tight text-white">{row.cost || "Уточняйте цену"}</p>
+          <p className="mt-1 text-[22px] font-bold leading-tight text-white">{cost || "Уточняйте цену"}</p>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
         </div>
 
@@ -150,7 +154,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
             {row.audience && <InfoRow label="Для кого" value={row.audience} />}
             {row.languages && row.languages.length > 0 && <InfoRow label="Язык" value={row.languages.join(", ")} />}
             {row.schedule && <InfoRow label="График" value={row.schedule} />}
-            {row.cost && <InfoRow label="Стоимость" value={row.cost} />}
+            {cost && <InfoRow label="Стоимость" value={cost} />}
           </div>
 
           {row.required_docs && row.required_docs.length > 0 && (

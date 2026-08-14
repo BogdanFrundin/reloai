@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
+import { useCurrency } from "./CurrencyProvider";
+import { convertPlnText } from "../_lib/currency";
 import { supabase } from "../../lib/supabase";
 
 export const TAG_LABELS: Record<string, string> = {
@@ -26,10 +28,14 @@ const HEADLINE_PHRASES: Record<string, string> = {
 // Headline replaces the old price display: the bank's single most useful
 // feature, in plain language, so the card leads with "what's in it for you"
 // instead of a number that was often just "0 zł" for most banks anyway.
-function buildHeadline(guide: DocumentGuide): { headline: string; subtitle: string } {
+function buildHeadline(
+  guide: DocumentGuide,
+  currency: ReturnType<typeof useCurrency>["currency"],
+  rates: ReturnType<typeof useCurrency>["rates"]
+): { headline: string; subtitle: string } {
   const tags = TAG_ORDER.filter((t) => guide.tags?.includes(t));
   if (tags.length === 0) {
-    return { headline: "Классический счёт", subtitle: guide.cost ?? "" };
+    return { headline: "Классический счёт", subtitle: convertPlnText(guide.cost, currency, rates) };
   }
   const [first, ...rest] = tags;
   const headline = HEADLINE_PHRASES[first] ?? TAG_LABELS[first];
@@ -143,11 +149,13 @@ function BankCard({
   onChoose: (name: string) => void;
 }) {
   const router = useRouter();
+  const { currency, rates } = useCurrency();
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
-  const { headline, subtitle } = buildHeadline(guide);
+  const { headline, subtitle } = buildHeadline(guide, currency, rates);
+  const cost = convertPlnText(guide.cost, currency, rates);
 
   function askAi() {
     const question = `Расскажи подробнее про ${guide.name}: как открыть счёт, какие документы нужны и на что обратить внимание?`;
@@ -249,7 +257,7 @@ function BankCard({
             {guide.where_to_submit && <InfoRow label="Куда подавать" value={guide.where_to_submit} />}
             {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-            {guide.cost && <InfoRow label="Стоимость" value={guide.cost} />}
+            {cost && <InfoRow label="Стоимость" value={cost} />}
             {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
           </div>
 

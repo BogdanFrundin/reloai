@@ -3,9 +3,15 @@
 import { createPortal } from "react-dom";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { TAG_LABELS } from "./BankCardGrid";
+import { useCurrency } from "./CurrencyProvider";
+import { convertPlnText, type CurrencyCode, type RatesMap } from "../_lib/currency";
 
-const ROWS: { key: string; label: string; render: (g: DocumentGuide) => string }[] = [
-  { key: "cost", label: "Стоимость", render: (g) => g.cost ?? "—" },
+const ROWS: {
+  key: string;
+  label: string;
+  render: (g: DocumentGuide, currency: CurrencyCode, rates: RatesMap | null) => string;
+}[] = [
+  { key: "cost", label: "Стоимость", render: (g, currency, rates) => convertPlnText(g.cost, currency, rates) || "—" },
   { key: "where_to_submit", label: "Куда подавать", render: (g) => g.where_to_submit ?? "—" },
   {
     key: "required_docs",
@@ -28,6 +34,7 @@ export default function BankCompareModal({
   onClose: () => void;
   guides: DocumentGuide[];
 }) {
+  const { currency, rates } = useCurrency();
   // `open` only ever becomes true from a client-side click after hydration,
   // so document.body is always available here — no mount-detection needed.
   if (!open) return null;
@@ -75,7 +82,7 @@ export default function BankCompareModal({
                   <td className="p-3 text-left text-xs font-semibold text-text-secondary">{row.label}</td>
                   {guides.map((g) => (
                     <td key={g.id} className="p-3 text-left text-xs text-text-secondary">
-                      {row.render(g)}
+                      {row.render(g, currency, rates)}
                     </td>
                   ))}
                 </tr>
