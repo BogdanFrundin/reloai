@@ -104,7 +104,7 @@ export default function DashboardSidebar({
       >
         <div className="px-5 py-4">
           <div className="flex items-center justify-between gap-2">
-            <Link href="/dashboard" onClick={onClose} className="flex min-w-0 items-center gap-2">
+            <Link href="/home" onClick={onClose} className="flex min-w-0 items-center gap-2">
               <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
                 R
               </span>
