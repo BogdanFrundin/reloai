@@ -167,7 +167,7 @@ function BankCard({
   }
 
   return (
-    <div className="relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6">
+    <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
       <button
         type="button"
         onClick={(event) => {
@@ -175,7 +175,7 @@ function BankCard({
           askAi();
         }}
         aria-label={`Спросить ИИ про ${guide.name}`}
-        className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-white/15 hover:text-white"
+        className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-accent hover:text-white"
       >
         <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
           <path
@@ -223,7 +223,7 @@ function BankCard({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-accent py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent-bright"
+              className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
             >
               Официальный сайт
               <span aria-hidden>→</span>
@@ -233,7 +233,7 @@ function BankCard({
           <button
             type="button"
             onClick={() => onChoose(guide.name)}
-            className="w-full rounded-2xl bg-accent py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent-bright"
+            className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
           >
             Выбрать банк →
           </button>
@@ -242,7 +242,7 @@ function BankCard({
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-white/15"
+          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           Информация о банке
         </button>
