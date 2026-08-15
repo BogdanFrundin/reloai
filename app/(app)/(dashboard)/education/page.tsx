@@ -188,8 +188,9 @@ export default function EducationPage() {
   const [city, setCity] = useState<CityName>(DEFAULT_CITY);
   const [rows, setRows] = useState<EduRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<TabId>("courses");
+  const [activeTab, setActiveTab] = useState<TabId>("universities");
   const [filter, setFilter] = useState<FilterId>("all");
+  const [search, setSearch] = useState("");
   const appliedProfileCity = useRef(false);
 
   useEffect(() => {
@@ -223,18 +224,20 @@ export default function EducationPage() {
 
   const items = useMemo(() => {
     const wantedType = TYPE_BY_TAB[activeTab];
+    const term = search.trim().toLowerCase();
     return rows.filter((r) => {
       if (r.type !== wantedType) return false;
       if (filter !== "all" && r.ownership !== filter) return false;
+      if (term && !r.name.toLowerCase().includes(term)) return false;
       return true;
     });
-  }, [rows, activeTab, filter]);
+  }, [rows, activeTab, filter, search]);
 
   const TABS: { id: TabId; label: string }[] = [
-    { id: "courses", label: t.education.coursesTab },
+    { id: "universities", label: t.education.universitiesTab },
     { id: "schools", label: t.education.schoolsTab },
     { id: "kindergartens", label: t.education.kindergartensTab },
-    { id: "universities", label: t.education.universitiesTab },
+    { id: "courses", label: t.education.coursesTab },
   ];
 
   return (
@@ -266,6 +269,15 @@ export default function EducationPage() {
           ))}
         </div>
         <CitySelect value={city} onChange={setCity} label="Город" />
+      </div>
+
+      <div className="mt-3 max-w-sm">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Поиск по названию"
+          className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+        />
       </div>
 
       {/* Filter pills (hidden for courses, which have no ownership split) */}
