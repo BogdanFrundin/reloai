@@ -118,31 +118,34 @@ export default function InsurancePage() {
 
       <Reveal delay={200} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.insurance.compareTitle}</h2>
-        <div className="mt-4 overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
-          <div className="grid grid-cols-3 border-b border-border-subtle bg-surface-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
-            <div className="p-4"></div>
-            <div className="p-4 text-accent-bright">
-              <span className="inline-flex items-center gap-1.5 normal-case tracking-normal">
-                {t.insurance.nfzLabel}
-                <span title={t.insurance.nfzTooltip} className="cursor-help text-text-muted">
-                  {INFO_ICON}
-                </span>
+        <div className="mt-4 grid items-stretch gap-4 sm:grid-cols-2">
+          <div className="rounded-[28px] bg-[#1c1f26] p-6">
+            <p className="inline-flex items-center gap-1.5 text-[15px] font-bold text-accent-bright">
+              {t.insurance.nfzLabel}
+              <span title={t.insurance.nfzTooltip} className="cursor-help text-white/40">
+                {INFO_ICON}
               </span>
+            </p>
+            <div className="mt-4 space-y-3.5 border-t border-white/10 pt-4">
+              {t.insurance.rows.map((row) => (
+                <div key={row.label} className="text-xs">
+                  <p className="text-white/40">{row.label}</p>
+                  <p className="mt-0.5 text-white/70">{row.nfz}</p>
+                </div>
+              ))}
             </div>
-            <div className="p-4 text-accent-bright">{t.insurance.privateLabel}</div>
           </div>
-          {t.insurance.rows.map((row, index) => (
-            <div
-              key={row.label}
-              className={`grid grid-cols-3 text-sm ${
-                index !== t.insurance.rows.length - 1 ? "border-b border-border-subtle" : ""
-              }`}
-            >
-              <div className="p-4 font-medium text-text-primary">{row.label}</div>
-              <div className="p-4 text-text-muted">{row.nfz}</div>
-              <div className="p-4 text-text-muted">{row.pvt}</div>
+          <div className="rounded-[28px] bg-[#1c1f26] p-6">
+            <p className="text-[15px] font-bold text-accent-bright">{t.insurance.privateLabel}</p>
+            <div className="mt-4 space-y-3.5 border-t border-white/10 pt-4">
+              {t.insurance.rows.map((row) => (
+                <div key={row.label} className="text-xs">
+                  <p className="text-white/40">{row.label}</p>
+                  <p className="mt-0.5 text-white/70">{row.pvt}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </Reveal>
     </div>
