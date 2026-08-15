@@ -119,9 +119,9 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
         </div>
 
         <div>
-          <p className="text-[13px] font-medium text-white/50">{row.name}</p>
-          <div className="mt-1 flex items-center gap-1.5">
-            <p className="text-[22px] font-bold leading-tight text-white">{cost || "Уточняйте цену"}</p>
+          <p className="text-[19px] font-bold leading-tight text-white">{row.name}</p>
+          <div className="mt-1.5 flex items-center gap-1.5">
+            <p className="text-sm font-medium text-accent-bright/70">{cost || "Уточняйте цену"}</p>
             <CurrencyHint />
           </div>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
