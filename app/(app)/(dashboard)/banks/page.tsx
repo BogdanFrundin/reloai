@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
@@ -11,16 +12,27 @@ import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 import BankCardGrid from "../../../_components/BankCardGrid";
 
-const CHEVRON_ICON = (
-  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+const SPARKLE_ICON = (
+  <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+    />
   </svg>
 );
+
+const COMMON_QUESTIONS = [
+  "Как открыть счёт без PESEL?",
+  "Какие документы нужны?",
+  "Сколько дней занимает открытие?",
+  "Можно ли открыть онлайн?",
+];
 
 export default function BanksPage() {
   const { t } = useLanguage();
   const { profile } = useAuth();
-  const [guideOpen, setGuideOpen] = useState(true);
+  const router = useRouter();
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -68,47 +80,26 @@ export default function BanksPage() {
       </Reveal>
 
       <Reveal delay={200} className="mt-12">
-        <div className="rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
-          <button
-            type="button"
-            onClick={() => setGuideOpen((prev) => !prev)}
-            aria-expanded={guideOpen}
-            className="flex w-full items-center justify-between gap-3 px-6 py-5 text-left"
-          >
-            <h2 className="text-lg font-bold text-text-primary">{t.banks.guide.heading}</h2>
-            <span
-              className={`flex-shrink-0 text-text-muted transition-transform duration-150 ${guideOpen ? "rotate-180" : ""}`}
-            >
-              {CHEVRON_ICON}
+        <div className="rounded-[28px] bg-[#1c1f26] p-6">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {SPARKLE_ICON}
             </span>
-          </button>
-
-          {guideOpen && (
-            <div className="space-y-6 border-t border-border-subtle px-6 py-6">
-              <div className="space-y-4">
-                {t.banks.guide.steps.map((step, index) => (
-                  <div key={step} className="flex items-start gap-4">
-                    <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent-bright">
-                      {index + 1}
-                    </span>
-                    <p className="text-sm leading-relaxed text-text-secondary">{step}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="rounded-xl border border-accent/20 bg-accent/[0.04] p-5">
-                <p className="text-sm font-semibold text-text-primary">{t.banks.guide.tipsHeading}</p>
-                <ul className="mt-3 space-y-2">
-                  {t.banks.guide.tips.map((tip) => (
-                    <li key={tip} className="flex items-start gap-2 text-sm text-text-secondary">
-                      <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-accent-bright" />
-                      {tip}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
+            <p className="text-[15px] font-bold text-white">Частые вопросы про открытие счёта</p>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {COMMON_QUESTIONS.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
+                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
+              >
+                {q} →
+              </button>
+            ))}
+          </div>
+          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
         </div>
       </Reveal>
     </div>
