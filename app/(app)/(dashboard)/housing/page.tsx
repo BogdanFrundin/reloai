@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
@@ -17,7 +17,7 @@ import CurrencyHint from "../../../_components/CurrencyHint";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
-import { DEFAULT_CITY, isCityName, type CityName } from "../../../_lib/cities";
+import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildOlxUrl, buildOtodomUrl } from "../../../_lib/housingSearchLinks";
 
 const CITY_GENITIVE_RU: Record<string, string> = {
@@ -128,20 +128,12 @@ function DistrictCard({
 export default function HousingPage() {
   const { t, lang } = useLanguage();
   const { profile } = useAuth();
-  const [city, setCity] = useState<CityName>(DEFAULT_CITY);
+  const [city, setCity] = useSelectedCity(profile?.city);
   const [rooms, setRooms] = useState<RoomsFilter>("any");
   const [districts, setDistricts] = useState<District[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
   const [searchModalDistrict, setSearchModalDistrict] = useState<string | null>(null);
-  const appliedProfileCity = useRef(false);
-
-  useEffect(() => {
-    if (!appliedProfileCity.current && isCityName(profile?.city)) {
-      setCity(profile.city);
-      appliedProfileCity.current = true;
-    }
-  }, [profile?.city]);
 
   useEffect(() => {
     let active = true;
