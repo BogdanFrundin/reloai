@@ -410,7 +410,7 @@ export default function BankCardGrid({
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <>
-          <div className="grid items-stretch gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 sm:grid-cols-2">
             {featured.map((g) => (
               <BankCard
                 key={g.id}
@@ -432,7 +432,7 @@ export default function BankCardGrid({
               </button>
 
               {showAll && (
-                <div className="mt-6 grid w-full items-stretch gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2">
                   {rest.map((g) => (
                     <BankCard
                       key={g.id}
