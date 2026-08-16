@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import CitySelect from "../../../_components/CitySelect";
@@ -71,6 +72,39 @@ const TAB_ICONS: Record<TabId, ReactNode> = {
   ),
 };
 
+const SPARKLE_ICON = (
+  <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z"
+    />
+  </svg>
+);
+
+const TAB_QUESTIONS: Record<TabId, string[]> = {
+  universities: [
+    "Как подать документы в университет в Польше?",
+    "Нужна ли нострификация диплома?",
+    "Какие есть стипендии для иностранцев?",
+  ],
+  schools: [
+    "Чем отличаются частные и государственные школы?",
+    "Как записать ребёнка в школу без знания польского?",
+    "Какие документы нужны для зачисления?",
+  ],
+  kindergartens: [
+    "Нужен ли PESEL для детского сада?",
+    "Как устроена очередь в государственные сады?",
+    "Сколько стоит частный детский сад?",
+  ],
+  courses: [
+    "Как выбрать языковые курсы в Польше?",
+    "Есть ли бесплатные курсы польского для иностранцев?",
+    "Сколько времени нужно, чтобы выучить язык до B1?",
+  ],
+};
+
 function OwnershipBadge({ ownership }: { ownership: string | null }) {
   if (!ownership) return null;
   return ownership === "государственный" ? (
@@ -97,6 +131,7 @@ function InfoRow({ label, value, showCurrencyHint }: { label: string; value: str
 }
 
 function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
+  const router = useRouter();
   const { currency, rates } = useCurrency();
   const [open, setOpen] = useState(false);
   const cost = convertPlnText(row.cost, currency, rates);
@@ -104,6 +139,11 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
   const subtitleParts = [row.audience, row.languages && row.languages.length > 0 ? row.languages.join(", ") : null].filter(
     Boolean
   );
+
+  function askAi() {
+    const question = `Расскажи подробнее про "${row.name}" в городе ${row.city}: стоит ли выбрать это заведение, какие плюсы и минусы, на что обратить внимание?`;
+    router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
+  }
 
   return (
     <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
@@ -143,13 +183,22 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
         )}
       </button>
 
-      <div className="mt-4">
+      <div className="mt-4 flex gap-2">
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+          className="flex-1 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           {open ? "Скрыть" : "Подробнее"} →
+        </button>
+        <button
+          type="button"
+          onClick={askAi}
+          aria-label={`Спросить ИИ про ${row.name}`}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+        >
+          {SPARKLE_ICON}
+          Спросить ИИ
         </button>
       </div>
 
@@ -183,6 +232,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 }
 
 export default function EducationPage() {
+  const router = useRouter();
   const { t } = useLanguage();
   const { profile } = useAuth();
   const [city, setCity] = useSelectedCity(profile?.city);
@@ -313,6 +363,30 @@ export default function EducationPage() {
           <p className="py-14 text-center text-sm text-text-muted">{t.education.emptyState}</p>
         )}
       </div>
+
+      <Reveal delay={100} className="mt-10">
+        <div className="rounded-[28px] bg-[#1c1f26] p-6">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {SPARKLE_ICON}
+            </span>
+            <p className="text-[15px] font-bold text-white">Нужна помощь с выбором? Спросите ИИ</p>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {TAB_QUESTIONS[activeTab].map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
+                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
+              >
+                {q} →
+              </button>
+            ))}
+          </div>
+          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
+        </div>
+      </Reveal>
     </div>
   );
 }
