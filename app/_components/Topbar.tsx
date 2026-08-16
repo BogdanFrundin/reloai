@@ -11,6 +11,7 @@ import ProfileAvatar from "./ProfileAvatar";
 import UpgradeModal from "./UpgradeModal";
 import { pressScale } from "../_lib/motion";
 import { supabase } from "../../lib/supabase";
+import { DOCUMENT_CATALOG } from "../_lib/documents";
 
 const GUIDE_CATEGORY_HREF: Record<string, string> = {
   "финансы": "/banks",
@@ -48,6 +49,30 @@ function TopbarSearch() {
   const term = query.trim().toLowerCase();
   const navHits = term.length > 0 ? navItems.filter((item) => item.label.toLowerCase().includes(term)) : [];
 
+  // The personal document checklist (/documents) isn't in Supabase — it's a
+  // static, translated catalog — so it's matched client-side against both
+  // the document's title and its hint/upload-guide text (so e.g. searching
+  // "фото на документы" finds "Фото на паспорт", whose guide text uses that
+  // exact phrasing, not just the title).
+  const docHits =
+    term.length > 0
+      ? DOCUMENT_CATALOG.filter((doc) => {
+          const name = t.documents.docNames[doc.nameKey] ?? "";
+          const hint = t.documents.docHints[doc.nameKey] ?? "";
+          const guide = t.documents.uploadGuides[doc.nameKey] ?? "";
+          return (
+            name.toLowerCase().includes(term) ||
+            hint.toLowerCase().includes(term) ||
+            guide.toLowerCase().includes(term)
+          );
+        }).map((doc) => ({
+          id: `doc-${doc.id}`,
+          name: t.documents.docNames[doc.nameKey] ?? doc.id,
+          tag: "Документ",
+          href: "/documents",
+        }))
+      : [];
+
   useEffect(() => {
     if (term.length < 2) {
       setDataHits([]);
@@ -59,7 +84,8 @@ function TopbarSearch() {
         supabase.from("document_guides").select("id, name, category").ilike("name", `%${term}%`).limit(5),
         supabase.from("clinics").select("id, name, category").ilike("name", `%${term}%`).limit(5),
         supabase.from("education").select("id, name, type").ilike("name", `%${term}%`).limit(5),
-      ]).then(([guides, clinics, education]) => {
+        supabase.from("housing_districts").select("id, district, city").ilike("district", `%${term}%`).limit(5),
+      ]).then(([guides, clinics, education, housing]) => {
         if (!active) return;
         const guideHits: SearchHit[] = (guides.data ?? []).map((g: { id: string; name: string; category: string }) => ({
           id: `guide-${g.id}`,
@@ -79,7 +105,13 @@ function TopbarSearch() {
           tag: e.type,
           href: "/education",
         }));
-        setDataHits([...guideHits, ...clinicHits, ...educationHits]);
+        const housingHits: SearchHit[] = (housing.data ?? []).map((h: { id: string; district: string; city: string }) => ({
+          id: `housing-${h.id}`,
+          name: `${h.district}, ${h.city}`,
+          tag: "Район",
+          href: "/housing",
+        }));
+        setDataHits([...guideHits, ...clinicHits, ...educationHits, ...housingHits]);
       });
     }, 250);
     return () => {
@@ -104,7 +136,7 @@ function TopbarSearch() {
     router.push(href);
   }
 
-  const hasResults = navHits.length > 0 || dataHits.length > 0;
+  const hasResults = navHits.length > 0 || docHits.length > 0 || dataHits.length > 0;
 
   return (
     <div ref={containerRef} className="relative w-full max-w-sm">
@@ -147,6 +179,19 @@ function TopbarSearch() {
                 >
                   <span>{item.label}</span>
                   <span className="text-[10px] font-semibold uppercase tracking-wide text-text-muted">Раздел</span>
+                </button>
+              ))}
+              {docHits.map((hit) => (
+                <button
+                  key={hit.id}
+                  type="button"
+                  onClick={() => go(hit.href)}
+                  className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-text-primary transition-colors duration-100 hover:bg-surface-hover"
+                >
+                  <span className="truncate">{hit.name}</span>
+                  <span className="ml-2 flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
+                    {hit.tag}
+                  </span>
                 </button>
               ))}
               {dataHits.map((hit) => (
