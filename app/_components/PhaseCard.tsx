@@ -109,10 +109,10 @@ export default function PhaseCard({
 }) {
   const { t } = useLanguage();
   const d = t.dashboard;
-  const [expanded, setExpanded] = useState(false);
   const isDone = status === "done";
   const isActive = status === "in_progress";
-  const showSteps = isActive || expanded;
+  const [expanded, setExpanded] = useState(isActive);
+  const showSteps = expanded;
 
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -146,10 +146,8 @@ export default function PhaseCard({
             <div
               key={step.documentType}
               id={step.documentType}
-              className={`flex scroll-mt-24 items-start gap-3 py-2.5 transition-colors duration-150 ${
-                isNext
-                  ? "-ml-px rounded-r-lg border-l-2 border-accent bg-accent/[0.06] pl-3 pr-2.5"
-                  : "px-2.5"
+              className={`flex scroll-mt-24 items-start gap-3 rounded-xl border p-3 transition-colors duration-150 ${
+                isNext ? "border-accent/25 bg-accent/[0.08]" : "border-transparent"
               } ${isFuture ? "opacity-50" : ""}`}
             >
               <span className="mt-0.5 flex-shrink-0" aria-hidden="true">
@@ -198,7 +196,13 @@ export default function PhaseCard({
             aria-hidden
             className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent shadow-[0_0_12px_-1px_var(--accent-bright)]"
           />
-          <div className="flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setExpanded((prev) => !prev)}
+            aria-expanded={expanded}
+            aria-label={expanded ? d.collapseBtn : d.expandBtn}
+            className="flex w-full items-center justify-between gap-3 text-left"
+          >
             <div className="flex min-w-0 items-center gap-3">
               <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-semibold text-accent-bright">
                 0{index + 1}
@@ -210,8 +214,13 @@ export default function PhaseCard({
                 </p>
               </div>
             </div>
-            <StatusBadge status={status} label={statusLabel} />
-          </div>
+            <div className="flex flex-shrink-0 items-center gap-2">
+              <StatusBadge status={status} label={statusLabel} />
+              <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
+                {CHEVRON_ICON}
+              </span>
+            </div>
+          </button>
 
           <div className="mt-4 flex gap-1">
             {phase.steps.map((step, i) => (
@@ -233,8 +242,8 @@ export default function PhaseCard({
       <div
         className={`relative flex w-full flex-col overflow-hidden rounded-2xl transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
           isDone
-            ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03] p-4"
-            : "border border-border-subtle bg-surface-1 p-4 opacity-[0.48]"
+            ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03] p-5"
+            : "border border-border-subtle bg-surface-1 p-5 opacity-[0.48]"
         }`}
       >
         <button
