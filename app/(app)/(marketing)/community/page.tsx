@@ -91,7 +91,7 @@ export default function CommunityPage() {
               <button
                 type="button"
                 onClick={() => !user && setPromptOpen(true)}
-                className={`mt-4 self-start rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-xs font-semibold text-text-secondary opacity-80 transition-[background-color,border-color,color,opacity] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-white [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 motion-reduce:transition-none ${pressScale}`}
+                className={`mt-4 self-start rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-xs font-semibold text-text-secondary transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:hover:text-white motion-reduce:transition-none ${pressScale}`}
               >
                 {t.community.join}
               </button>
