@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
@@ -18,7 +19,18 @@ const INFO_ICON = (
   </svg>
 );
 
+const SPARKLE_ICON = (
+  <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+    />
+  </svg>
+);
+
 export default function InsurancePage() {
+  const router = useRouter();
   const { t } = useLanguage();
   const { profile } = useAuth();
   const [guides, setGuides] = useState<DocumentGuide[]>([]);
@@ -147,6 +159,29 @@ export default function InsurancePage() {
             </div>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            router.push(
+              `/dashboard/ai?q=${encodeURIComponent(
+                "Что мне выбрать — государственную страховку NFZ или частную? Учти мою ситуацию: работаю ли я официально, нужен ли быстрый доступ к врачам, важен ли бюджет."
+              )}`
+            )
+          }
+          className="mt-4 flex w-full items-center gap-3 rounded-2xl bg-[#1c1f26] p-5 text-left transition-colors duration-150 hover:bg-[#20242d]"
+        >
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+            {SPARKLE_ICON}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[14px] font-bold text-white">Не знаете, что выбрать?</span>
+            <span className="mt-0.5 block text-xs text-white/50">
+              Спросите ИИ — он учтёт вашу ситуацию и подскажет, что подойдёт именно вам
+            </span>
+          </span>
+          <span className="flex-shrink-0 text-sm font-semibold text-accent-bright">Спросить →</span>
+        </button>
       </Reveal>
     </div>
   );
