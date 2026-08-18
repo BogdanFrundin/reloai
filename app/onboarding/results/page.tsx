@@ -187,6 +187,7 @@ export default function OnboardingResultsPage() {
   const { t, lang } = useLanguage();
   const [result, setResult] = useState<RouteEngineResult | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [selectingId, setSelectingId] = useState<string | null>(null);
   const [selectError, setSelectError] = useState(false);
   const confettiFiredRef = useRef(false);
@@ -197,6 +198,22 @@ export default function OnboardingResultsPage() {
       fireConfetti();
     }
   }, [loading, result]);
+
+  // Drives the progress bar shown while routes are being generated. Caps at
+  // 96% so it never visually claims "done" before the real result lands —
+  // the last stretch snaps to 100% once loading actually flips to false.
+  useEffect(() => {
+    if (!loading) {
+      setLoadingProgress(0);
+      return;
+    }
+    const start = Date.now();
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - start;
+      setLoadingProgress(Math.min(96, Math.round((elapsed / FAKE_LOADING_MS) * 100)));
+    }, 100);
+    return () => clearInterval(timer);
+  }, [loading]);
 
   useEffect(() => {
     if (!user || !profile) return;
@@ -323,6 +340,18 @@ export default function OnboardingResultsPage() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                 </svg>
                 <p className="mt-4 text-text-muted">{t.onboarding.results.loading}</p>
+
+                <div className="mt-6 w-full max-w-xs">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
+                    <div
+                      className="h-full rounded-full bg-accent transition-[width] duration-150 ease-out"
+                      style={{ width: `${loadingProgress}%` }}
+                    />
+                  </div>
+                </div>
+                <p className="mt-3 text-center text-xs text-text-muted">
+                  Обычно это занимает несколько секунд. Подождите — не закрывайте и не обновляйте вкладку.
+                </p>
               </div>
             </Reveal>
           )}
