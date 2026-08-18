@@ -11,7 +11,12 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { useLanguage } from "../../../_components/LanguageProvider";
 
-const LAST_PROFESSION_KEY = "lastProfession";
+// Renamed (was "lastProfession") to invalidate everyone's already-stored
+// browser value in one deploy — redeploying code never touches data a user
+// already has sitting in their own browser's localStorage, so simply
+// shipping the "clear empties out storage too" fix couldn't retroactively
+// wipe values saved before that fix existed. Changing the key does.
+const LAST_PROFESSION_KEY = "work_last_profession_v2";
 
 const SALARY_DATA: { name: string; keywords: string[]; pln: number; eur: number }[] = [
   { name: "Программист", keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
