@@ -78,48 +78,46 @@ function districtPriceLabel(
   return formatMoneyRange(d[minKey], d[maxKey], currency, rates);
 }
 
+// District descriptions were authored with a leading "X–Y zł. " price recap
+// that duplicates the bold price line right above it — strip it so the card
+// doesn't show the same range twice.
+function stripPricePrefix(text: string): string {
+  return text.replace(/^[\d\s]+[–\-][\d\s]+\s*zł\.?\s*/i, "").trim();
+}
+
 function DistrictCard({
   d,
-  bestValueBadge,
   rooms,
   onOpenSearch,
 }: {
   d: District;
-  bestValueBadge: string;
   rooms: RoomsFilter;
   onOpenSearch: (district: string) => void;
 }) {
   const { currency, rates } = useCurrency();
   const priceLabel = districtPriceLabel(d, rooms, currency, rates);
+  const description = d.description ? stripPricePrefix(d.description) : null;
 
   return (
-    <div
-      className={`relative flex h-full flex-col rounded-2xl border p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/60 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
-        d.is_top ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)]" : "border-border-subtle bg-surface-1"
-      }`}
-    >
-      {d.is_top && (
-        <span className="absolute -top-3 left-5 z-10 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
-          {bestValueBadge}
-        </span>
-      )}
-      <p className="text-sm font-semibold text-text-primary">{d.district}</p>
-      {priceLabel && (
-        <div className="mt-2 flex items-center gap-1.5">
-          <p className="bg-gradient-to-br from-text-primary to-text-muted bg-clip-text text-lg font-bold text-transparent">
-            {priceLabel}
-          </p>
-          <CurrencyHint />
+    <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+      <div className="flex-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="text-[15px] font-bold text-white">{d.district}</p>
+          {priceLabel && (
+            <span className="flex flex-shrink-0 items-center gap-1 text-sm font-bold text-accent-bright">
+              {priceLabel}
+              <CurrencyHint />
+            </span>
+          )}
         </div>
-      )}
-      {d.description && <p className="mt-2 line-clamp-5 text-sm text-text-secondary">{d.description}</p>}
+        {description && <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/50">{description}</p>}
+      </div>
       <button
         type="button"
         onClick={() => onOpenSearch(d.district)}
-        className="mt-4 inline-flex w-fit items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:hover:text-white motion-reduce:transition-none"
+        className="mt-4 w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
       >
-        Искать с этими фильтрами
-        <span aria-hidden>→</span>
+        Искать с этими фильтрами →
       </button>
     </div>
   );
@@ -225,7 +223,6 @@ export default function HousingPage() {
                 <Reveal key={district.id} delay={index * 25}>
                   <DistrictCard
                     d={district}
-                    bestValueBadge={t.housing.bestValueBadge}
                     rooms={rooms}
                     onOpenSearch={setSearchModalDistrict}
                   />
@@ -249,8 +246,7 @@ export default function HousingPage() {
                       <Reveal key={district.id} delay={index * 25}>
                         <DistrictCard
                           d={district}
-                          bestValueBadge={t.housing.bestValueBadge}
-                          rooms={rooms}
+                                rooms={rooms}
                           onOpenSearch={setSearchModalDistrict}
                         />
                       </Reveal>
