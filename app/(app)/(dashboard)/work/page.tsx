@@ -12,16 +12,16 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 
 const LAST_PROFESSION_KEY = "lastProfession";
 
-const SALARY_DATA: { keywords: string[]; pln: number; eur: number }[] = [
-  { keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
-  { keywords: ["designer", "ux", "ui", "дизайнер"], pln: 7200, eur: 1650 },
-  { keywords: ["marketing", "маркетолог", "маркетинг"], pln: 6800, eur: 1550 },
-  { keywords: ["accountant", "finance", "бухгалтер", "финанс"], pln: 6500, eur: 1480 },
-  { keywords: ["nurse", "медсестра", "медбрат"], pln: 5800, eur: 1320 },
-  { keywords: ["teacher", "учитель", "преподаватель"], pln: 5200, eur: 1180 },
-  { keywords: ["waiter", "waitress", "barista", "официант", "бариста"], pln: 4200, eur: 950 },
-  { keywords: ["driver", "водитель"], pln: 5000, eur: 1140 },
-  { keywords: ["construction", "builder", "строитель"], pln: 5500, eur: 1250 },
+const SALARY_DATA: { name: string; keywords: string[]; pln: number; eur: number }[] = [
+  { name: "Программист", keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
+  { name: "Дизайнер", keywords: ["designer", "ux", "ui", "дизайнер"], pln: 7200, eur: 1650 },
+  { name: "Маркетолог", keywords: ["marketing", "маркетолог", "маркетинг"], pln: 6800, eur: 1550 },
+  { name: "Бухгалтер", keywords: ["accountant", "finance", "бухгалтер", "финанс"], pln: 6500, eur: 1480 },
+  { name: "Медсестра", keywords: ["nurse", "медсестра", "медбрат"], pln: 5800, eur: 1320 },
+  { name: "Учитель", keywords: ["teacher", "учитель", "преподаватель"], pln: 5200, eur: 1180 },
+  { name: "Официант / бариста", keywords: ["waiter", "waitress", "barista", "официант", "бариста"], pln: 4200, eur: 950 },
+  { name: "Водитель", keywords: ["driver", "водитель"], pln: 5000, eur: 1140 },
+  { name: "Строитель", keywords: ["construction", "builder", "строитель"], pln: 5500, eur: 1250 },
 ];
 
 const JOB_SITES = [
@@ -68,21 +68,17 @@ function translateProfessionToPolish(profession: string): string {
 function lookupSalary(query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return null;
-  const match = SALARY_DATA.find((entry) => entry.keywords.some((k) => q.includes(k)));
-  return match ?? { pln: 7000, eur: 1600, fallback: true };
+  return SALARY_DATA.find((entry) => entry.keywords.some((k) => q.includes(k))) ?? null;
 }
 
 function getSuggestions(query: string): string[] {
   const q = query.trim().toLowerCase();
-  if (!q || q.length < 1) return [];
+  if (!q) return [];
 
   const suggestions = new Set<string>();
   SALARY_DATA.forEach((entry) => {
-    entry.keywords.forEach((keyword) => {
-      if (keyword.toLowerCase().startsWith(q)) {
-        suggestions.add(keyword);
-      }
-    });
+    const matches = entry.keywords.some((keyword) => keyword.toLowerCase().startsWith(q));
+    if (matches) suggestions.add(entry.name);
   });
 
   return Array.from(suggestions).sort();
@@ -219,6 +215,25 @@ export default function WorkPage() {
               </div>
             )}
           </div>
+          {profession && !result && (
+            <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
+              <p className="text-sm font-semibold text-red-300">Такой профессии нет в базе</p>
+              <p className="mt-1 text-xs text-red-300/70">Попробуйте одну из этих профессий:</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {SALARY_DATA.map((entry) => (
+                  <button
+                    key={entry.name}
+                    type="button"
+                    onClick={() => setQuery(entry.name)}
+                    className="rounded-full border border-border-strong bg-surface-1 px-3.5 py-1.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
+                  >
+                    {entry.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {result && (
             <div className="mt-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
               <p className="text-sm font-medium text-text-secondary">{t.work.averageSalary}</p>
@@ -228,9 +243,6 @@ export default function WorkPage() {
               <p className="mt-1 text-lg font-semibold text-accent-bright">
                 ≈ €{result.eur.toLocaleString("ru-RU")} / месяц
               </p>
-              {"fallback" in result && (
-                <p className="mt-2 text-xs text-text-muted">{t.work.noExactData}</p>
-              )}
               <p className="mt-3 text-xs text-text-muted">{t.work.salaryNote}</p>
 
               <div className="mt-5 border-t border-border-subtle pt-4">
