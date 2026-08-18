@@ -103,9 +103,16 @@ export default function WorkPage() {
   const professionPl = useMemo(() => (profession ? translateProfessionToPolish(profession) : ""), [profession]);
 
   useEffect(() => {
-    if (!profession) return;
     try {
-      window.localStorage.setItem(LAST_PROFESSION_KEY, profession);
+      // Clearing the search box needs to actually clear what's remembered —
+      // previously this only ever wrote non-empty values, so an emptied
+      // input still came back on the next visit because the old value was
+      // never removed from storage.
+      if (profession) {
+        window.localStorage.setItem(LAST_PROFESSION_KEY, profession);
+      } else {
+        window.localStorage.removeItem(LAST_PROFESSION_KEY);
+      }
     } catch {
       // Storage can be unavailable (private browsing, quota) — persistence is a nice-to-have here.
     }
