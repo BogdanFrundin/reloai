@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
@@ -65,6 +66,23 @@ function translateProfessionToPolish(profession: string): string {
   return PROFESSION_PL_TRANSLATIONS[profession.trim().toLowerCase()] ?? profession;
 }
 
+const SPARKLE_ICON = (
+  <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+    />
+  </svg>
+);
+
+const CONTRACT_QUESTIONS = [
+  "Что мне выбрать: трудовой договор или B2B?",
+  "Как перейти с B2B на трудовой договор?",
+  "Какие налоги я плачу при B2B?",
+  "Что теряю, если работаю без договора?",
+];
+
 function lookupSalary(query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return null;
@@ -85,6 +103,7 @@ function getSuggestions(query: string): string[] {
 }
 
 export default function WorkPage() {
+  const router = useRouter();
   const { t } = useLanguage();
   const [query, setQuery] = useState(() => {
     if (typeof window === "undefined") return "";
@@ -153,40 +172,6 @@ export default function WorkPage() {
       />
 
       <Reveal delay={40} className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {CONTRACT_TYPES.map((type, index) => (
-            <Reveal key={type.name} delay={index * 40}>
-              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
-                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
-                <p className="text-xs text-text-muted">{type.subtitle}</p>
-                <ul className="mt-4 space-y-2.5">
-                  {type.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
-                      <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                {t.work.guides[type.key] && (
-                  <div className="mt-4">
-                    <HelpButton
-                      guideHeading={t.work.guides[type.key].heading}
-                      guideSteps={t.work.guides[type.key].steps}
-                      aiQuestion={t.work.guides[type.key].aiQuestion}
-                      label={t.helpButton.label}
-                    />
-                  </div>
-                )}
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </Reveal>
-
-      <Reveal delay={80} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.salarySearch}</h2>
         <p className="mt-1 text-sm text-text-muted">{t.work.salarySearchSub}</p>
         <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
@@ -310,6 +295,62 @@ export default function WorkPage() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </Reveal>
+
+      <Reveal delay={160} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+          {CONTRACT_TYPES.map((type, index) => (
+            <Reveal key={type.name} delay={index * 40}>
+              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
+                <p className="text-xs text-text-muted">{type.subtitle}</p>
+                <ul className="mt-4 space-y-2.5">
+                  {type.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
+                      <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                {t.work.guides[type.key] && (
+                  <div className="mt-4">
+                    <HelpButton
+                      guideHeading={t.work.guides[type.key].heading}
+                      guideSteps={t.work.guides[type.key].steps}
+                      aiQuestion={t.work.guides[type.key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  </div>
+                )}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-5 rounded-[28px] bg-[#1c1f26] p-6">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {SPARKLE_ICON}
+            </span>
+            <p className="text-[15px] font-bold text-white">Не уверены, что выбрать? Спросите ИИ</p>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {CONTRACT_QUESTIONS.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
+                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
+              >
+                {q} →
+              </button>
+            ))}
+          </div>
+          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
         </div>
       </Reveal>
     </div>
