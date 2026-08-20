@@ -58,6 +58,18 @@ const SEARCH_ICON = (
   </svg>
 );
 
+const SPARKLE_ICON = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+    />
+  </svg>
+);
+
+type MedicineSearchResult = { category: string | null; keywords: string[]; reply: string };
+
 type Clinic = {
   id: string;
   city: string;
@@ -129,7 +141,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
 }
 
 export default function MedicinePage() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { profile } = useAuth();
   const [city, setCity] = useSelectedCity(profile?.city);
   const [clinics, setClinics] = useState<Clinic[]>([]);
@@ -137,6 +149,9 @@ export default function MedicinePage() {
   const [category, setCategory] = useState<string>("all");
   const [district, setDistrict] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<MedicineSearchResult | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -152,6 +167,8 @@ export default function MedicinePage() {
         setClinics((data as Clinic[]) ?? []);
         setCategory("all");
         setDistrict("all");
+        setAiQuery("");
+        setAiResult(null);
         setLoading(false);
       });
     return () => {
@@ -188,17 +205,56 @@ export default function MedicinePage() {
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
+    const aiKeywords = (aiResult?.keywords ?? []).map((k) => k.toLowerCase()).filter(Boolean);
+
     return clinics.filter((c) => {
       if (category !== "all" && c.category !== category) return false;
       if (district !== "all" && c.district !== district) return false;
-      if (!term) return true;
-      return (
-        c.name.toLowerCase().includes(term) ||
-        (c.district ?? "").toLowerCase().includes(term) ||
-        (c.address ?? "").toLowerCase().includes(term)
-      );
+
+      if (term) {
+        const matchesTerm =
+          c.name.toLowerCase().includes(term) ||
+          (c.district ?? "").toLowerCase().includes(term) ||
+          (c.address ?? "").toLowerCase().includes(term);
+        if (!matchesTerm) return false;
+      }
+
+      if (aiKeywords.length > 0) {
+        const haystack = [c.name, c.description ?? "", ...(c.specializations ?? [])].join(" ").toLowerCase();
+        const matchesAi = aiKeywords.some((k) => haystack.includes(k));
+        if (!matchesAi) return false;
+      }
+
+      return true;
     });
-  }, [clinics, category, district, search]);
+  }, [clinics, category, district, search, aiResult]);
+
+  async function handleAiSearch() {
+    const query = aiQuery.trim();
+    if (!query || aiLoading) return;
+    setAiLoading(true);
+    try {
+      const response = await fetch("/api/medicine-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, categories, language: lang }),
+      });
+      const result = (await response.json()) as MedicineSearchResult;
+      setAiResult(result);
+      setCategory(result.category ?? "all");
+      setDistrict("all");
+    } catch (err) {
+      console.error("AI clinic search failed:", err);
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+  function resetAiSearch() {
+    setAiQuery("");
+    setAiResult(null);
+    setCategory("all");
+  }
 
   const grouped = useMemo(() => {
     const map = new Map<string, Clinic[]>();
@@ -226,6 +282,51 @@ export default function MedicinePage() {
           <div>
             <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.clinicsTitle}</h2>
             <p className="mt-1 text-sm text-text-muted">{t.medicine.clinicsSub}</p>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 backdrop-blur-sm sm:p-5">
+          <div className="flex items-start gap-3">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {SPARKLE_ICON}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-text-primary">Подбор клиники с ИИ</p>
+              <p className="mt-0.5 text-xs text-text-muted">
+                Опишите свою проблему или какой врач или клиника вам нужны — мы подберём подходящие варианты.
+              </p>
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                <input
+                  value={aiQuery}
+                  onChange={(e) => setAiQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleAiSearch();
+                  }}
+                  placeholder="Например: болит зуб, нужен стоматолог рядом с центром"
+                  className="flex-1 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleAiSearch}
+                  disabled={aiLoading || !aiQuery.trim()}
+                  className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {aiLoading ? "Подбираем…" : "Найти"}
+                </button>
+              </div>
+              {aiResult && (
+                <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-surface-1 px-4 py-2.5">
+                  <span className="text-xs text-text-secondary">{aiResult.reply}</span>
+                  <button
+                    type="button"
+                    onClick={resetAiSearch}
+                    className="ml-auto flex-shrink-0 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:text-text-primary"
+                  >
+                    Сбросить
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
