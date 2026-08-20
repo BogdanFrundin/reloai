@@ -9,7 +9,7 @@ export type ChecklistStepDef = {
   documentType: string;
   title: string;
   description: string;
-  phase: PhaseKey;
+  phase: string;
 };
 
 export const STEPS_COMPLETED_ON_ONBOARDING = ["account", "onboarding", "visa_eligibility"];
@@ -90,13 +90,17 @@ export function buildChecklistSteps(
   return steps;
 }
 
+// key/title are generic strings (not the fixed PhaseKey union) so this same
+// shape can carry either the static built-in phases or an AI-generated
+// personalized plan — see app/_lib/generatedRoadmap.ts.
 export type Phase = {
-  key: PhaseKey;
+  key: string;
+  title: string;
   steps: ChecklistStepDef[];
 };
 
-export function buildPhases(steps: ChecklistStepDef[]): Phase[] {
-  return PHASE_ORDER.map((key) => ({ key, steps: steps.filter((step) => step.phase === key) })).filter(
+export function buildPhases(steps: ChecklistStepDef[], titles: Record<PhaseKey, string>): Phase[] {
+  return PHASE_ORDER.map((key) => ({ key, title: titles[key], steps: steps.filter((step) => step.phase === key) })).filter(
     (phase) => phase.steps.length > 0,
   );
 }
@@ -106,8 +110,8 @@ export type PhaseStatus = "done" | "in_progress" | "waiting";
 export function derivePhaseStatuses(
   phases: Phase[],
   completed: Set<string>,
-): Record<PhaseKey, PhaseStatus> {
-  const statuses = {} as Record<PhaseKey, PhaseStatus>;
+): Record<string, PhaseStatus> {
+  const statuses = {} as Record<string, PhaseStatus>;
   let sawInProgress = false;
 
   for (const phase of phases) {

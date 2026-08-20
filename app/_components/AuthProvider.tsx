@@ -4,6 +4,7 @@ import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { supabase } from "../../lib/supabase";
 import type { Route, RouteEngineResult } from "../api/route/route";
+import type { GeneratedRoadmapPlan } from "../_lib/generatedRoadmap";
 
 export type Profile = {
   id: string;
@@ -21,6 +22,8 @@ export type Profile = {
   last_active_at: string | null;
   route: RouteEngineResult | null;
   selected_route: Route | null;
+  roadmap_plan: GeneratedRoadmapPlan | null;
+  roadmap_completed_steps: string[] | null;
   plan: string | null;
   language: string | null;
   email_newsletter: boolean | null;

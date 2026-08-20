@@ -1,8 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
-import { useLanguage } from "./LanguageProvider";
-import type { Phase, PhaseKey, PhaseStatus } from "../_lib/checklist";
+import type { Phase, PhaseStatus } from "../_lib/checklist";
 
 const CHECK_ICON = (
   <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -49,10 +48,8 @@ export default function PhaseStepper({
   phaseStatuses,
 }: {
   phases: Phase[];
-  phaseStatuses: Record<PhaseKey, PhaseStatus>;
+  phaseStatuses: Record<string, PhaseStatus>;
 }) {
-  const { t } = useLanguage();
-
   const columns = phases.map((_, i) => (i === phases.length - 1 ? "4.5rem" : "4.5rem 1fr")).join(" ");
 
   return (
@@ -77,7 +74,7 @@ export default function PhaseStepper({
             )}
             <div style={{ gridColumn: nodeCol, gridRow: 2 }} className="mt-2 px-1">
               <p className="truncate text-center text-[11px] font-medium text-text-muted">
-                {t.dashboard.phases[phase.key]}
+                {phase.title}
               </p>
             </div>
           </Fragment>

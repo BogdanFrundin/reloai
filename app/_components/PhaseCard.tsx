@@ -31,20 +31,48 @@ const PHASE_ICONS: Record<string, ReactNode> = {
   ),
 };
 
-function Checkbox({ checked }: { checked: boolean }) {
-  return (
-    <span
-      className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
-        checked ? "border-accent bg-accent text-white" : "border-border-strong bg-surface-1"
-      }`}
-    >
-      {checked && (
-        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-        </svg>
-      )}
-    </span>
+// Generated plans (see app/_lib/generatedRoadmap.ts) have arbitrary phase
+// keys the AI made up, so there's no fixed icon for them — fall back to a
+// generic checklist glyph instead of leaving the badge empty.
+const DEFAULT_PHASE_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+function Checkbox({
+  checked,
+  onClick,
+}: {
+  checked: boolean;
+  onClick?: () => void;
+}) {
+  const classes = `flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border transition-colors duration-150 ${
+    checked ? "border-accent bg-accent text-white" : "border-border-strong bg-surface-1"
+  }`;
+  const icon = checked && (
+    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+    </svg>
   );
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onClick();
+        }}
+        aria-pressed={checked}
+        className={`${classes} cursor-pointer hover:border-accent/60`}
+      >
+        {icon}
+      </button>
+    );
+  }
+
+  return <span className={classes}>{icon}</span>;
 }
 
 function StatusIcon({ status }: { status: PhaseStatus }) {
@@ -101,11 +129,13 @@ export default function PhaseCard({
   status,
   index,
   completed,
+  onToggleStep,
 }: {
   phase: Phase;
   status: PhaseStatus;
   index: number;
   completed: Set<string>;
+  onToggleStep?: (documentType: string) => void;
 }) {
   const { t } = useLanguage();
   const d = t.dashboard;
@@ -150,8 +180,11 @@ export default function PhaseCard({
                 isNext ? "border-accent/25 bg-accent/[0.08]" : "border-transparent"
               } ${isFuture ? "opacity-50" : ""}`}
             >
-              <span className="mt-0.5 flex-shrink-0" aria-hidden="true">
-                <Checkbox checked={checked} />
+              <span className="mt-0.5 flex-shrink-0" aria-hidden={!onToggleStep}>
+                <Checkbox
+                  checked={checked}
+                  onClick={onToggleStep ? () => onToggleStep(step.documentType) : undefined}
+                />
               </span>
               <div className="min-w-0 flex-1">
                 <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
@@ -208,7 +241,7 @@ export default function PhaseCard({
                 0{index + 1}
               </span>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-text-primary">{d.phases[phase.key]}</p>
+                <p className="truncate text-sm font-semibold text-text-primary">{phase.title}</p>
                 <p className="mt-0.5 text-xs text-text-muted">
                   {d.stepsCompletedTemplate.replace("{done}", String(doneStepsCount)).replace("{total}", String(phase.steps.length))}
                 </p>
@@ -258,9 +291,9 @@ export default function PhaseCard({
               isDone ? "bg-emerald-500/15 text-emerald-400" : "bg-surface-2 text-text-muted"
             }`}
           >
-            {PHASE_ICONS[phase.key]}
+            {PHASE_ICONS[phase.key] ?? DEFAULT_PHASE_ICON}
           </span>
-          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-text-primary">{d.phases[phase.key]}</span>
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-text-primary">{phase.title}</span>
           <span className="flex-shrink-0 text-xs font-medium text-text-muted">
             {d.stepsCompletedTemplate
               .replace("{done}", String(doneStepsCount))

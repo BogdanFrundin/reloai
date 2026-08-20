@@ -288,6 +288,35 @@ export default function OnboardingResultsPage() {
 
     try {
       await supabase.from("profiles").update({ selected_route: route }).eq("id", user.id);
+
+      // Generate the user's real, personalized step-by-step plan right now
+      // (not just the 3-option route summary) so it's already sitting on
+      // their profile and driving the dashboard roadmap the moment they land
+      // on /home — see app/api/roadmap and DashboardProgressProvider.
+      try {
+        const roadmapResponse = await fetch("/api/roadmap", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            citizenship: profile?.citizenship,
+            current_country: profile?.current_country,
+            country: profile?.country,
+            city: profile?.city,
+            goal: profile?.goal,
+            selected_route: route,
+            language: lang,
+          }),
+        });
+        if (roadmapResponse.ok) {
+          const plan = await roadmapResponse.json();
+          await supabase.from("profiles").update({ roadmap_plan: plan }).eq("id", user.id);
+        }
+      } catch (roadmapErr) {
+        // Non-fatal — the dashboard falls back to the static checklist if
+        // roadmap_plan never gets set, so don't block registration on this.
+        console.error("Failed to generate personalized roadmap:", roadmapErr);
+      }
+
       await refreshProfile();
 
       createNotification({

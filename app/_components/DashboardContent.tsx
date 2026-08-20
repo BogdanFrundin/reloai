@@ -79,6 +79,11 @@ export default function DashboardContent() {
     loading,
     registerPromptOpen,
     setRegisterPromptOpen,
+    isGeneratedPlan,
+    toggleStepCompletion,
+    regeneratePlan,
+    regenerating,
+    regenerateError,
   } = useDashboardProgress();
   const countryEntry = t.countries.list[COUNTRY_INDEX[country] ?? 0];
   const goalLabel = isGoalKey(profile?.goal) ? t.onboarding.goalOptions[profile.goal] : undefined;
@@ -126,9 +131,38 @@ export default function DashboardContent() {
       )}
 
       {!loading && phases.length > 0 && (
-        <h2 id="checklist" className="mt-8 scroll-mt-24 text-lg font-semibold text-text-primary">
-          {t.dashboard.route.checklistHeading}
-        </h2>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          <h2 id="checklist" className="scroll-mt-24 text-lg font-semibold text-text-primary">
+            {t.dashboard.route.checklistHeading}
+          </h2>
+          {isGeneratedPlan && (
+            <button
+              type="button"
+              onClick={() => {
+                if (regenerating) return;
+                if (window.confirm("Сгенерировать план заново? Отмеченные выполненными шаги сбросятся.")) {
+                  regeneratePlan();
+                }
+              }}
+              disabled={regenerating}
+              className="flex items-center gap-2 rounded-full border border-border-subtle bg-surface-1 px-4 py-2 text-xs font-semibold text-text-muted transition-colors duration-150 hover:border-accent/40 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <svg
+                className={`h-3.5 w-3.5 ${regenerating ? "animate-spin" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {regenerating ? "Генерируем..." : "Пересоздать план"}
+            </button>
+          )}
+        </div>
+      )}
+      {regenerateError && (
+        <p className="mt-2 text-xs text-red-400">Не удалось пересоздать план. Попробуйте ещё раз.</p>
       )}
       <div className="mt-4 space-y-3">
         {!loading &&
@@ -139,6 +173,7 @@ export default function DashboardContent() {
               status={phaseStatuses[phase.key]}
               index={index}
               completed={completed}
+              onToggleStep={isGeneratedPlan ? toggleStepCompletion : undefined}
             />
           ))}
       </div>

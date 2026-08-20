@@ -45,7 +45,7 @@ export default function HomePage() {
   const displayName = profile?.name?.trim() || user?.email?.split("@")[0] || null;
 
   const currentPhase = phases.find((phase) => phaseStatuses[phase.key] === "in_progress");
-  const currentPhaseLabel = currentPhase ? t.dashboard.phases[currentPhase.key] : t.dashboard.phaseStatus.done;
+  const currentPhaseLabel = currentPhase ? currentPhase.title : t.dashboard.phaseStatus.done;
 
   const daysSinceJoining = profile?.created_at
     ? Math.max(0, Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24)))

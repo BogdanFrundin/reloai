@@ -21,6 +21,8 @@ create table public.profiles (
   last_active_at timestamptz default now(),
   route jsonb,
   selected_route jsonb,
+  roadmap_plan jsonb,
+  roadmap_completed_steps text[] default '{}',
   plan text default 'free',
   language text default 'ru',
   created_at timestamptz default now()
@@ -37,6 +39,8 @@ alter table public.profiles add column if not exists skipped_steps text[] defaul
 alter table public.profiles add column if not exists last_active_at timestamptz default now();
 alter table public.profiles add column if not exists route jsonb;
 alter table public.profiles add column if not exists selected_route jsonb;
+alter table public.profiles add column if not exists roadmap_plan jsonb;
+alter table public.profiles add column if not exists roadmap_completed_steps text[] default '{}';
 
 -- citizenship and current_country store ISO 3166-1 alpha-2 country codes (e.g. "UA", "PL")
 -- selected from the searchable country dropdown — see app/onboarding/page.tsx.
@@ -44,6 +48,13 @@ alter table public.profiles add column if not exists selected_route jsonb;
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.
 -- selected_route stores the user's chosen Route from the results screen: { name, description, speed, cost, difficulty, ... }
+-- roadmap_plan stores the AI-generated personalized relocation plan (GeneratedRoadmapPlan —
+-- { phases: { key, title, steps: { id, title, description }[] }[] }), generated right after
+-- onboarding and regenerable later — see app/api/roadmap/route.ts and
+-- app/_components/DashboardProgressProvider.tsx. When present, it fully replaces the static
+-- checklist on the dashboard roadmap.
+-- roadmap_completed_steps stores the ids of roadmap_plan steps the user has manually checked
+-- off (AI-generated steps aren't tied to any other in-app action, so completion is self-reported).
 -- last_active_at is touched by AuthProvider on every session load and is what
 -- the /api/notifications/check-inactive cron job compares against to send
 -- "haven't logged in for 7 days" reminders — see app/_components/AuthProvider.tsx.
