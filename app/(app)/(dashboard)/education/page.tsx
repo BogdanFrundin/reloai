@@ -447,6 +447,27 @@ export default function EducationPage() {
                 placeholder="Например: частный садик рядом с центром для ребёнка 3 лет"
                 className="w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
               />
+                {showAiSuggestions && aiSuggestions.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-xl border border-border-subtle bg-slate-950 shadow-lg">
+                    <ul className="max-h-48 overflow-y-auto">
+                      {aiSuggestions.map((suggestion) => (
+                        <li key={suggestion}>
+                          <button
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              handleAiSuggestionClick(suggestion);
+                            }}
+                            className="w-full px-4 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg hover:bg-surface-hover hover:text-text-primary"
+                          >
+                            {suggestion}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={handleAiSearch}

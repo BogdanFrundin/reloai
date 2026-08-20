@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
@@ -152,6 +152,9 @@ export default function MedicinePage() {
   const [aiQuery, setAiQuery] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState<MedicineSearchResult | null>(null);
+  const [showAiSuggestions, setShowAiSuggestions] = useState(false);
+  const aiInputRef = useRef<HTMLInputElement>(null);
+  const aiSearchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -202,6 +205,44 @@ export default function MedicinePage() {
     }
     return list.sort((a, b) => a.localeCompare(b, "ru"));
   }, [clinics]);
+
+  // Pool of terms to suggest while typing in the AI search box — clinic
+  // categories plus every specialization mentioned across the loaded clinics,
+  // deduped, so typing "стома" can surface "Стоматолог" even though it's not
+  // a category itself.
+  const aiSuggestionPool = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const term of [...categories, ...clinics.flatMap((c) => c.specializations ?? [])]) {
+      const key = term.trim();
+      if (!key || seen.has(key.toLowerCase())) continue;
+      seen.add(key.toLowerCase());
+      list.push(key);
+    }
+    return list.sort((a, b) => a.localeCompare(b, "ru"));
+  }, [categories, clinics]);
+
+  const aiSuggestions = useMemo(() => {
+    const q = aiQuery.trim().toLowerCase();
+    if (!q) return [];
+    return aiSuggestionPool.filter((term) => term.toLowerCase().startsWith(q)).slice(0, 8);
+  }, [aiSuggestionPool, aiQuery]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (aiSearchContainerRef.current && !aiSearchContainerRef.current.contains(event.target as Node)) {
+        setShowAiSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleAiSuggestionClick(suggestion: string) {
+    setAiQuery(suggestion);
+    setShowAiSuggestions(false);
+    aiInputRef.current?.blur();
+  }
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -296,15 +337,45 @@ export default function MedicinePage() {
                 Опишите свою проблему или какой врач или клиника вам нужны — мы подберём подходящие варианты.
               </p>
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                <input
-                  value={aiQuery}
-                  onChange={(e) => setAiQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleAiSearch();
-                  }}
-                  placeholder="Например: болит зуб, нужен стоматолог рядом с центром"
-                  className="flex-1 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-                />
+                <div ref={aiSearchContainerRef} className="relative flex-1">
+                  <input
+                    ref={aiInputRef}
+                    value={aiQuery}
+                    onChange={(e) => {
+                      setAiQuery(e.target.value);
+                      setShowAiSuggestions(true);
+                    }}
+                    onFocus={() => setShowAiSuggestions(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setShowAiSuggestions(false);
+                        handleAiSearch();
+                      }
+                    }}
+                    placeholder="Например: болит зуб, нужен стоматолог рядом с центром"
+                    className="w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                  />
+                  {showAiSuggestions && aiSuggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-xl border border-border-subtle bg-slate-950 shadow-lg">
+                      <ul className="max-h-48 overflow-y-auto">
+                        {aiSuggestions.map((suggestion) => (
+                          <li key={suggestion}>
+                            <button
+                              type="button"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                handleAiSuggestionClick(suggestion);
+                              }}
+                              className="w-full px-4 py-2.5 text-left text-sm text-text-secondary transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg hover:bg-surface-hover hover:text-text-primary"
+                            >
+                              {suggestion}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={handleAiSearch}
