@@ -11,13 +11,6 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { useLanguage } from "../../../_components/LanguageProvider";
 
-// Renamed (was "lastProfession") to invalidate everyone's already-stored
-// browser value in one deploy — redeploying code never touches data a user
-// already has sitting in their own browser's localStorage, so simply
-// shipping the "clear empties out storage too" fix couldn't retroactively
-// wipe values saved before that fix existed. Changing the key does.
-const LAST_PROFESSION_KEY = "work_last_profession_v2";
-
 const SALARY_DATA: { name: string; keywords: string[]; pln: number; eur: number }[] = [
   { name: "Программист", keywords: ["software", "developer", "engineer", "programmer", "программист", "разработчик", "инженер"], pln: 9500, eur: 2200 },
   { name: "Дизайнер", keywords: ["designer", "ux", "ui", "дизайнер"], pln: 7200, eur: 1650 },
@@ -110,14 +103,10 @@ function getSuggestions(query: string): string[] {
 export default function WorkPage() {
   const router = useRouter();
   const { t } = useLanguage();
-  const [query, setQuery] = useState(() => {
-    if (typeof window === "undefined") return "";
-    try {
-      return window.localStorage.getItem(LAST_PROFESSION_KEY) ?? "";
-    } catch {
-      return "";
-    }
-  });
+  // No persistence on purpose — the profession search always starts blank
+  // on every page load/refresh, per explicit request (previously it was
+  // remembered across visits via localStorage, which read as a bug).
+  const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -125,22 +114,6 @@ export default function WorkPage() {
   const suggestions = useMemo(() => getSuggestions(query), [query]);
   const profession = query.trim();
   const professionPl = useMemo(() => (profession ? translateProfessionToPolish(profession) : ""), [profession]);
-
-  useEffect(() => {
-    try {
-      // Clearing the search box needs to actually clear what's remembered —
-      // previously this only ever wrote non-empty values, so an emptied
-      // input still came back on the next visit because the old value was
-      // never removed from storage.
-      if (profession) {
-        window.localStorage.setItem(LAST_PROFESSION_KEY, profession);
-      } else {
-        window.localStorage.removeItem(LAST_PROFESSION_KEY);
-      }
-    } catch {
-      // Storage can be unavailable (private browsing, quota) — persistence is a nice-to-have here.
-    }
-  }, [profession]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
