@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
@@ -103,6 +103,13 @@ const TAB_QUESTIONS: Record<TabId, string[]> = {
     "Есть ли бесплатные курсы польского для иностранцев?",
     "Сколько времени нужно, чтобы выучить язык до B1?",
   ],
+};
+
+type EducationSearchResult = {
+  tab: TabId | null;
+  ownership: "государственный" | "частный" | null;
+  keywords: string[];
+  reply: string;
 };
 
 function OwnershipBadge({ ownership }: { ownership: string | null }) {
@@ -233,7 +240,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 
 export default function EducationPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { profile } = useAuth();
   const [city, setCity] = useSelectedCity(profile?.city);
   const [rows, setRows] = useState<EduRow[]>([]);
@@ -241,6 +248,12 @@ export default function EducationPage() {
   const [activeTab, setActiveTab] = useState<TabId>("universities");
   const [filter, setFilter] = useState<FilterId>("all");
   const [search, setSearch] = useState("");
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<EducationSearchResult | null>(null);
+  const [showAiSuggestions, setShowAiSuggestions] = useState(false);
+  const aiInputRef = useRef<HTMLInputElement>(null);
+  const aiSearchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -252,6 +265,8 @@ export default function EducationPage() {
       .then(({ data }) => {
         if (!active) return;
         setRows((data as EduRow[]) ?? []);
+        setAiQuery("");
+        setAiResult(null);
         setLoading(false);
       });
     return () => {
@@ -264,16 +279,106 @@ export default function EducationPage() {
     setFilter("all");
   }
 
+  // Pool of terms to suggest while typing in the AI search box — every
+  // audience/language/program/highlight/feature mentioned across the loaded
+  // rows, deduped, so typing "англ" can surface "Английский язык" even
+  // though it's not a tab or ownership filter itself.
+  const aiSuggestionPool = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const row of rows) {
+      for (const term of [
+        row.audience ?? "",
+        ...(row.languages ?? []),
+        ...(row.programs ?? []),
+        ...(row.highlights ?? []),
+        ...(row.features ?? []),
+      ]) {
+        const key = term.trim();
+        if (!key || seen.has(key.toLowerCase())) continue;
+        seen.add(key.toLowerCase());
+        list.push(key);
+      }
+    }
+    return list.sort((a, b) => a.localeCompare(b, "ru"));
+  }, [rows]);
+
+  const aiSuggestions = useMemo(() => {
+    const q = aiQuery.trim().toLowerCase();
+    if (!q) return [];
+    return aiSuggestionPool.filter((term) => term.toLowerCase().startsWith(q)).slice(0, 8);
+  }, [aiSuggestionPool, aiQuery]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (aiSearchContainerRef.current && !aiSearchContainerRef.current.contains(event.target as Node)) {
+        setShowAiSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleAiSuggestionClick(suggestion: string) {
+    setAiQuery(suggestion);
+    setShowAiSuggestions(false);
+    aiInputRef.current?.blur();
+  }
+
   const items = useMemo(() => {
     const wantedType = TYPE_BY_TAB[activeTab];
     const term = search.trim().toLowerCase();
+    const aiKeywords = (aiResult?.keywords ?? []).map((k) => k.toLowerCase()).filter(Boolean);
+
     return rows.filter((r) => {
       if (r.type !== wantedType) return false;
       if (filter !== "all" && r.ownership !== filter) return false;
       if (term && !r.name.toLowerCase().includes(term)) return false;
+
+      if (aiKeywords.length > 0) {
+        const haystack = [
+          r.audience ?? "",
+          ...(r.languages ?? []),
+          ...(r.programs ?? []),
+          ...(r.highlights ?? []),
+          ...(r.features ?? []),
+        ]
+          .join(" ")
+          .toLowerCase();
+        const matchesAi = aiKeywords.some((k) => haystack.includes(k));
+        if (!matchesAi) return false;
+      }
+
       return true;
     });
-  }, [rows, activeTab, filter, search]);
+  }, [rows, activeTab, filter, search, aiResult]);
+
+  async function handleAiSearch() {
+    const query = aiQuery.trim();
+    if (!query || aiLoading) return;
+    setAiLoading(true);
+    try {
+      const response = await fetch("/api/education-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, language: lang }),
+      });
+      const result = (await response.json()) as EducationSearchResult;
+      setAiResult(result);
+      if (result.tab) setActiveTab(result.tab);
+      setFilter(result.ownership ?? "all");
+    } catch (err) {
+      console.error("AI education search failed:", err);
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+  function resetAiSearch() {
+    setAiQuery("");
+    setAiResult(null);
+    setFilter("all");
+  }
 
   const TABS: { id: TabId; label: string }[] = [
     { id: "universities", label: t.education.universitiesTab },
@@ -311,6 +416,60 @@ export default function EducationPage() {
           ))}
         </div>
         <CitySelect value={city} onChange={setCity} label="Город" />
+      </div>
+
+      <div className="mt-4 rounded-[28px] bg-[#1c1f26] p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+            {SPARKLE_ICON}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-white">Подбор с ИИ</p>
+            <p className="mt-0.5 text-xs text-white/50">
+              Опишите, что вы ищете — вуз, школу, садик или курсы — и мы подберём подходящие варианты.
+            </p>
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <div ref={aiSearchContainerRef} className="relative flex-1">
+                <input
+                ref={aiInputRef}
+                value={aiQuery}
+                onChange={(e) => {
+                  setAiQuery(e.target.value);
+                  setShowAiSuggestions(true);
+                }}
+                onFocus={() => setShowAiSuggestions(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setShowAiSuggestions(false);
+                    handleAiSearch();
+                  }
+                }}
+                placeholder="Например: частный садик рядом с центром для ребёнка 3 лет"
+                className="w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleAiSearch}
+                disabled={aiLoading || !aiQuery.trim()}
+                className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {aiLoading ? "Подбираем…" : "Найти"}
+              </button>
+            </div>
+            {aiResult && (
+              <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-white/[0.05] px-4 py-2.5">
+                <span className="text-xs text-white/70">{aiResult.reply}</span>
+                <button
+                  type="button"
+                  onClick={resetAiSearch}
+                  className="ml-auto flex-shrink-0 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:text-white"
+                >
+                  Сбросить
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="mt-3 max-w-sm">
