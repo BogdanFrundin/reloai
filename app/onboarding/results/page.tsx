@@ -111,7 +111,7 @@ function RouteCard({
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none ${
+      className={`relative flex h-full flex-col rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none ${
         isRecommended
           ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_60px_-8px_var(--accent)]"
           : "border-border-subtle bg-surface-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)]"
@@ -173,7 +173,7 @@ function RouteCard({
       <button
         onClick={() => onSelect(route)}
         disabled={selectingId !== null}
-        className="mt-5 w-full rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
+        className="mt-auto w-full self-end pt-5 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
       >
         {selectingId === route.name ? "Selecting..." : labels.results.selectButton}
       </button>
@@ -394,7 +394,7 @@ export default function OnboardingResultsPage() {
           {!loading && result && result.routes && (
             <div className="grid gap-6 sm:grid-cols-3">
               {result.routes.map((route, index) => (
-                <Reveal key={route.name} delay={index * 100}>
+                <Reveal key={route.name} delay={index * 100} className="h-full">
                   <RouteCard
                     route={route}
                     isRecommended={route.recommended}
