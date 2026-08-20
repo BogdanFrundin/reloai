@@ -87,6 +87,16 @@ type Clinic = {
 const clinicIconBadgeClass =
   "flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright";
 
+const SPARKLE_ICON_SM = (
+  <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+    />
+  </svg>
+);
+
 function ClinicCard({ clinic }: { clinic: Clinic }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -117,8 +127,10 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         </div>
 
         <div>
-          <p className="text-[19px] font-bold leading-tight text-white">{clinic.name}</p>
-          {subtitleParts.length > 0 && <p className="mt-1.5 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
+          <p className="line-clamp-2 text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
+          {subtitleParts.length > 0 && (
+            <p className="mt-1.5 line-clamp-1 text-xs text-white/50">{subtitleParts.join(" · ")}</p>
+          )}
           {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
         </div>
 
@@ -142,7 +154,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex-1 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+          className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           {open ? "Скрыть" : "Подробнее"} →
         </button>
@@ -150,9 +162,9 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
           type="button"
           onClick={askAi}
           aria-label={`Спросить ИИ про ${clinic.name}`}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+          className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
-          {SPARKLE_ICON}
+          {SPARKLE_ICON_SM}
           Спросить ИИ
         </button>
       </div>
@@ -407,7 +419,7 @@ export default function MedicinePage() {
             {grouped.map(([cat, items]) => (
               <div key={cat}>
                 <h3 className="text-sm font-bold uppercase tracking-wide text-text-muted">{cat}</h3>
-                <div className="mt-3 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-3 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((clinic, index) => (
                     <Reveal key={clinic.id} delay={index * 30}>
                       <ClinicCard clinic={clinic} />
