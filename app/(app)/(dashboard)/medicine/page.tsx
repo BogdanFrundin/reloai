@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import StarRating from "../../../_components/StarRating";
@@ -83,59 +84,98 @@ type Clinic = {
   required_docs: string[] | null;
 };
 
+const clinicIconBadgeClass =
+  "flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright";
+
 function ClinicCard({ clinic }: { clinic: Clinic }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
   const mapsQuery = encodeURIComponent([clinic.address, clinic.district, clinic.city, "Poland"].filter(Boolean).join(", "));
+  const subtitleParts = [clinic.address, clinic.district].filter(Boolean);
+
+  function askAi() {
+    const question = `Расскажи подробнее про клинику "${clinic.name}" в городе ${clinic.city}: стоит ли выбрать её, какие плюсы и минусы, на что обратить внимание?`;
+    router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
+  }
 
   return (
-    <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
-      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
-        </svg>
-      </span>
-      <p className="mt-3 text-sm font-semibold leading-snug text-text-primary">{clinic.name}</p>
-      {(clinic.address || clinic.district) && (
-        <p className="mt-1 text-xs text-text-muted">
-          {[clinic.address, clinic.district].filter(Boolean).join(" · ")}
-        </p>
-      )}
-      {clinic.rating != null && (
-        <div className="mt-2">
-          <StarRating rating={clinic.rating} />
-        </div>
-      )}
-      {clinic.description && (
-        <p className="mt-2 line-clamp-3 text-xs text-text-secondary">{clinic.description}</p>
-      )}
-      {clinic.specializations && clinic.specializations.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1">
-          {clinic.specializations.slice(0, 3).map((s) => (
-            <span key={s} className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">
-              {s}
-            </span>
-          ))}
-          {clinic.specializations.length > 3 && (
-            <span className="rounded-md bg-surface-1 px-2 py-0.5 text-[11px] text-text-muted">
-              +{clinic.specializations.length - 3}
-            </span>
-          )}
-        </div>
-      )}
-      {clinic.required_docs && clinic.required_docs.length > 0 && (
-        <p className="mt-2 text-[11px] leading-relaxed text-text-muted">
-          <span className="font-semibold text-text-secondary">Документы: </span>
-          {clinic.required_docs.join("; ")}
-        </p>
-      )}
-      <a
-        href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-auto inline-flex items-center justify-center rounded-full border border-border-strong bg-surface-1 px-4 py-2.5 text-sm font-semibold text-text-secondary transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:hover:text-white motion-reduce:transition-none"
+    <div className="group relative flex min-h-[280px] flex-col self-start rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="flex w-full flex-1 flex-col items-start gap-4 text-left"
       >
-        Показать на карте
-      </a>
+        <div className="flex w-full items-center justify-between gap-2">
+          <span className={clinicIconBadgeClass}>
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
+            </svg>
+          </span>
+          {clinic.rating != null && <StarRating rating={clinic.rating} />}
+        </div>
+
+        <div>
+          <p className="text-[19px] font-bold leading-tight text-white">{clinic.name}</p>
+          {subtitleParts.length > 0 && <p className="mt-1.5 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
+          {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
+        </div>
+
+        {clinic.specializations && clinic.specializations.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {clinic.specializations.slice(0, 3).map((s) => (
+              <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                {s}
+              </span>
+            ))}
+            {clinic.specializations.length > 3 && (
+              <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                +{clinic.specializations.length - 3}
+              </span>
+            )}
+          </div>
+        )}
+      </button>
+
+      <div className="mt-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex-1 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+        >
+          {open ? "Скрыть" : "Подробнее"} →
+        </button>
+        <button
+          type="button"
+          onClick={askAi}
+          aria-label={`Спросить ИИ про ${clinic.name}`}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+        >
+          {SPARKLE_ICON}
+          Спросить ИИ
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
+          {clinic.required_docs && clinic.required_docs.length > 0 && (
+            <p className="text-xs leading-relaxed text-white/60">
+              <span className="font-semibold text-white/80">Документы: </span>
+              {clinic.required_docs.join("; ")}
+            </p>
+          )}
+
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+          >
+            Показать на карте →
+          </a>
+        </div>
+      )}
     </div>
   );
 }
@@ -367,7 +407,7 @@ export default function MedicinePage() {
             {grouped.map(([cat, items]) => (
               <div key={cat}>
                 <h3 className="text-sm font-bold uppercase tracking-wide text-text-muted">{cat}</h3>
-                <div className="mt-3 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-3 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-4">
                   {items.map((clinic, index) => (
                     <Reveal key={clinic.id} delay={index * 30}>
                       <ClinicCard clinic={clinic} />
