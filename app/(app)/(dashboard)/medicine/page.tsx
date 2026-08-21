@@ -109,7 +109,11 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
   }
 
   return (
-    <div className="group relative flex min-h-[280px] flex-col self-start rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+    <div
+      className={`group relative flex flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none ${
+        open ? "h-auto" : "h-[380px] overflow-hidden"
+      }`}
+    >
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -127,33 +131,27 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         </div>
 
         <div className="w-full">
-          {/* Fixed min-heights below reserve the same vertical space across
-              every card regardless of how much actual text a clinic has, so
-              cards with short names/descriptions don't end up visibly
-              shorter than ones with long ones. */}
-          <p className="line-clamp-2 min-h-[46px] text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
-          <p className="mt-1.5 line-clamp-1 min-h-[18px] text-xs text-white/50">
-            {subtitleParts.length > 0 ? subtitleParts.join(" · ") : " "}
-          </p>
-          <p className="mt-2 line-clamp-3 min-h-[54px] text-xs text-white/60">{clinic.description || " "}</p>
+          <p className="line-clamp-2 text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
+          {subtitleParts.length > 0 && (
+            <p className="mt-1.5 line-clamp-1 text-xs text-white/50">{subtitleParts.join(" · ")}</p>
+          )}
+          {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
         </div>
 
-        <div className="flex min-h-[60px] w-full flex-wrap content-start gap-1.5">
-          {clinic.specializations && clinic.specializations.length > 0 && (
-            <>
-              {clinic.specializations.slice(0, 3).map((s) => (
-                <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
-                  {s}
-                </span>
-              ))}
-              {clinic.specializations.length > 3 && (
-                <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
-                  +{clinic.specializations.length - 3}
-                </span>
-              )}
-            </>
-          )}
-        </div>
+        {clinic.specializations && clinic.specializations.length > 0 && (
+          <div className="flex w-full flex-wrap gap-1.5">
+            {clinic.specializations.slice(0, 3).map((s) => (
+              <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                {s}
+              </span>
+            ))}
+            {clinic.specializations.length > 3 && (
+              <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                +{clinic.specializations.length - 3}
+              </span>
+            )}
+          </div>
+        )}
       </button>
 
       <div className="mt-4 flex gap-2">
