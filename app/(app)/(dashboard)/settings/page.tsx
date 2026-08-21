@@ -207,13 +207,11 @@ export default function SettingsPage() {
                     alt={c.name}
                     width={24}
                     height={18}
-                    className="rounded-sm"
+                    className="flex-shrink-0 rounded-sm"
                     unoptimized
                   />
-                  <span className="flex flex-col items-start leading-tight">
-                    <span>{c.name}</span>
-                    <span className="text-xs text-text-muted">{c.symbol}</span>
-                  </span>
+                  <span className="min-w-0 flex-1 truncate text-left">{c.name}</span>
+                  <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
                 </button>
               ))}
             </div>

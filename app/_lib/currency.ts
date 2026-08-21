@@ -14,15 +14,15 @@ export type Currency = {
 };
 
 export const CURRENCIES: Currency[] = [
-  { code: "PLN", symbol: "zł", name: "Злотый · Польша", flag: "pl" },
-  { code: "USD", symbol: "$", name: "Доллар США", flag: "us" },
+  { code: "PLN", symbol: "zł", name: "Польша (Злотый)", flag: "pl" },
+  { code: "USD", symbol: "$", name: "США (Доллар)", flag: "us" },
   { code: "EUR", symbol: "€", name: "Евро", flag: "eu" },
-  { code: "RUB", symbol: "₽", name: "Рубль · Россия", flag: "ru" },
-  { code: "UAH", symbol: "₴", name: "Гривна · Украина", flag: "ua" },
-  { code: "GBP", symbol: "£", name: "Фунт · Великобритания", flag: "gb" },
-  { code: "TRY", symbol: "₺", name: "Лира · Турция", flag: "tr" },
-  { code: "UZS", symbol: "so'm", name: "Сум · Узбекистан", flag: "uz" },
-  { code: "TJS", symbol: "смн", name: "Сомони · Таджикистан", flag: "tj" },
+  { code: "RUB", symbol: "₽", name: "Россия (Рубль)", flag: "ru" },
+  { code: "UAH", symbol: "₴", name: "Украина (Гривна)", flag: "ua" },
+  { code: "GBP", symbol: "£", name: "Великобритания (Фунт)", flag: "gb" },
+  { code: "TRY", symbol: "₺", name: "Турция (Лира)", flag: "tr" },
+  { code: "UZS", symbol: "so'm", name: "Узбекистан (Сум)", flag: "uz" },
+  { code: "TJS", symbol: "смн", name: "Таджикистан (Сомони)", flag: "tj" },
 ];
 
 export const DEFAULT_CURRENCY: CurrencyCode = "PLN";
