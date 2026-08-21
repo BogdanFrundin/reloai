@@ -63,23 +63,23 @@ const STATIC_FALLBACK_ROUTES: Route[] = [
 function SpeedBadge({ speed, label }: { speed: string; label: string }) {
   const colors =
     speed === "fast"
-      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+      ? "bg-emerald-500/15 text-emerald-400"
       : speed === "medium"
-        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-        : "border-red-500/30 bg-red-500/10 text-red-400";
+        ? "bg-amber-500/15 text-amber-400"
+        : "bg-red-500/15 text-red-400";
 
-  return <span className={`inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
+  return <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
 }
 
 function DifficultyBadge({ difficulty, label }: { difficulty: string; label: string }) {
   const colors =
     difficulty === "easy"
-      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+      ? "bg-emerald-500/15 text-emerald-400"
       : difficulty === "medium"
-        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-        : "border-red-500/30 bg-red-500/10 text-red-400";
+        ? "bg-amber-500/15 text-amber-400"
+        : "bg-red-500/15 text-red-400";
 
-  return <span className={`inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
+  return <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
 }
 
 function RouteCard({
@@ -111,10 +111,8 @@ function RouteCard({
 
   return (
     <div
-      className={`relative flex h-full flex-col rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1.5 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none ${
-        isRecommended
-          ? "border-accent/60 bg-accent/[0.06] shadow-[0_0_40px_-14px_var(--accent)] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_60px_-8px_var(--accent)]"
-          : "border-border-subtle bg-surface-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)]"
+      className={`group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none ${
+        isRecommended ? "ring-1 ring-accent/50" : ""
       }`}
     >
       {isRecommended && (
@@ -123,11 +121,9 @@ function RouteCard({
         </span>
       )}
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-h-[92px] flex-1">
-          <h3 className="text-lg font-semibold text-text-primary">{route.name}</h3>
-          <p className="mt-1 line-clamp-3 text-sm text-text-secondary">{route.description}</p>
-        </div>
+      <div className="min-h-[92px]">
+        <h3 className="text-[19px] font-bold leading-tight text-white">{route.name}</h3>
+        <p className="mt-1.5 line-clamp-3 text-sm text-white/60">{route.description}</p>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -135,28 +131,28 @@ function RouteCard({
         <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel} />
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-3 text-sm">
+      <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
         <div>
-          <p className="text-xs text-text-muted">{labels.results.approvalRate}</p>
-          <p className="mt-1 font-semibold text-text-secondary">{route.approval_rate}%</p>
+          <p className="text-xs text-white/40">{labels.results.approvalRate}</p>
+          <p className="mt-1 font-semibold text-white">{route.approval_rate}%</p>
         </div>
         <div>
-          <p className="text-xs text-text-muted">{labels.results.timeline}</p>
-          <p className="mt-1 font-semibold text-text-secondary">{route.timeline}</p>
+          <p className="text-xs text-white/40">{labels.results.timeline}</p>
+          <p className="mt-1 font-semibold text-white">{route.timeline}</p>
         </div>
         <div>
-          <p className="text-xs text-text-muted">{labels.results.cost}</p>
-          <p className="mt-1 font-semibold text-text-secondary">{route.cost}</p>
+          <p className="text-xs text-white/40">{labels.results.cost}</p>
+          <p className="mt-1 font-semibold text-white">{route.cost}</p>
         </div>
       </div>
 
       {route.steps && route.steps.length > 0 && (
-        <div className="mt-4 min-h-[86px]">
-          <p className="text-xs text-text-muted">{labels.results.steps}</p>
-          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-text-secondary">
+        <div className="mt-4 min-h-[86px] rounded-2xl bg-white/[0.04] p-3.5">
+          <p className="text-xs text-white/40">{labels.results.steps}</p>
+          <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-white/80">
             {route.steps.map((step, index) => (
               <span key={step} className="flex items-center gap-1.5">
-                {index > 0 && <span className="text-slate-600">→</span>}
+                {index > 0 && <span className="text-white/25">→</span>}
                 {step}
               </span>
             ))}
@@ -165,15 +161,15 @@ function RouteCard({
       )}
 
       {route.bestFor && (
-        <p className="mt-3 line-clamp-2 min-h-[32px] text-xs text-text-muted">
-          {labels.results.bestFor}: <span className="text-text-secondary">{route.bestFor}</span>
+        <p className="mt-3 line-clamp-2 min-h-[32px] text-xs text-white/40">
+          {labels.results.bestFor}: <span className="text-white/70">{route.bestFor}</span>
         </p>
       )}
 
       <button
         onClick={() => onSelect(route)}
         disabled={selectingId !== null}
-        className="mt-auto w-full rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
+        className="mt-auto w-full rounded-2xl bg-accent py-3 text-sm font-bold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
       >
         {selectingId === route.name ? "Selecting..." : labels.results.selectButton}
       </button>
