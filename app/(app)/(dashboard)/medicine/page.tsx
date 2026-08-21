@@ -126,28 +126,34 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
           {clinic.rating != null && <StarRating rating={clinic.rating} />}
         </div>
 
-        <div>
-          <p className="line-clamp-2 text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
-          {subtitleParts.length > 0 && (
-            <p className="mt-1.5 line-clamp-1 text-xs text-white/50">{subtitleParts.join(" · ")}</p>
-          )}
-          {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
+        <div className="w-full">
+          {/* Fixed min-heights below reserve the same vertical space across
+              every card regardless of how much actual text a clinic has, so
+              cards with short names/descriptions don't end up visibly
+              shorter than ones with long ones. */}
+          <p className="line-clamp-2 min-h-[46px] text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
+          <p className="mt-1.5 line-clamp-1 min-h-[18px] text-xs text-white/50">
+            {subtitleParts.length > 0 ? subtitleParts.join(" · ") : " "}
+          </p>
+          <p className="mt-2 line-clamp-3 min-h-[54px] text-xs text-white/60">{clinic.description || " "}</p>
         </div>
 
-        {clinic.specializations && clinic.specializations.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {clinic.specializations.slice(0, 3).map((s) => (
-              <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
-                {s}
-              </span>
-            ))}
-            {clinic.specializations.length > 3 && (
-              <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
-                +{clinic.specializations.length - 3}
-              </span>
-            )}
-          </div>
-        )}
+        <div className="flex min-h-[60px] w-full flex-wrap content-start gap-1.5">
+          {clinic.specializations && clinic.specializations.length > 0 && (
+            <>
+              {clinic.specializations.slice(0, 3).map((s) => (
+                <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                  {s}
+                </span>
+              ))}
+              {clinic.specializations.length > 3 && (
+                <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+                  +{clinic.specializations.length - 3}
+                </span>
+              )}
+            </>
+          )}
+        </div>
       </button>
 
       <div className="mt-4 flex gap-2">
