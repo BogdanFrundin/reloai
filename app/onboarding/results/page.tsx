@@ -151,7 +151,7 @@ function RouteCard({
       </div>
 
       {route.steps && route.steps.length > 0 && (
-        <div className="mt-4">
+        <div className="mt-4 min-h-[86px]">
           <p className="text-xs text-text-muted">{labels.results.steps}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-text-secondary">
             {route.steps.map((step, index) => (
@@ -165,7 +165,7 @@ function RouteCard({
       )}
 
       {route.bestFor && (
-        <p className="mt-3 text-xs text-text-muted">
+        <p className="mt-3 line-clamp-2 min-h-[32px] text-xs text-text-muted">
           {labels.results.bestFor}: <span className="text-text-secondary">{route.bestFor}</span>
         </p>
       )}
