@@ -121,9 +121,26 @@ function RouteCard({
         </span>
       )}
 
-      <div className="min-h-[92px]">
+      <div className="min-h-[68px]">
         <h3 className="text-[19px] font-bold leading-tight text-white">{route.name}</h3>
-        <p className="mt-1.5 line-clamp-3 text-sm text-white/60">{route.description}</p>
+        <p className="mt-1.5 line-clamp-2 text-sm text-white/60">{route.description}</p>
+      </div>
+
+      {/* The numbers a person actually compares routes by — lead with these,
+          bold and colored, so they're the first thing that registers. */}
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
+          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.approvalRate}</p>
+          <p className="mt-1 text-xl font-extrabold text-accent-bright">{route.approval_rate}%</p>
+        </div>
+        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
+          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.timeline}</p>
+          <p className="mt-1 text-lg font-extrabold text-white">{route.timeline}</p>
+        </div>
+        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
+          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.cost}</p>
+          <p className="mt-1 text-lg font-extrabold text-white">{route.cost}</p>
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -131,23 +148,8 @@ function RouteCard({
         <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel} />
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
-        <div>
-          <p className="text-xs text-white/40">{labels.results.approvalRate}</p>
-          <p className="mt-1 font-semibold text-white">{route.approval_rate}%</p>
-        </div>
-        <div>
-          <p className="text-xs text-white/40">{labels.results.timeline}</p>
-          <p className="mt-1 font-semibold text-white">{route.timeline}</p>
-        </div>
-        <div>
-          <p className="text-xs text-white/40">{labels.results.cost}</p>
-          <p className="mt-1 font-semibold text-white">{route.cost}</p>
-        </div>
-      </div>
-
       {route.steps && route.steps.length > 0 && (
-        <div className="mt-4 min-h-[86px] rounded-2xl bg-white/[0.04] p-3.5">
+        <div className="mt-4 h-[116px] overflow-hidden rounded-2xl bg-white/[0.04] p-3.5">
           <p className="text-xs text-white/40">{labels.results.steps}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-white/80">
             {route.steps.map((step, index) => (
