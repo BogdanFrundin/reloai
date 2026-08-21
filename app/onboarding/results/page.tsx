@@ -124,9 +124,9 @@ function RouteCard({
       )}
 
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
+        <div className="min-h-[92px] flex-1">
           <h3 className="text-lg font-semibold text-text-primary">{route.name}</h3>
-          <p className="mt-1 text-sm text-text-secondary">{route.description}</p>
+          <p className="mt-1 line-clamp-3 text-sm text-text-secondary">{route.description}</p>
         </div>
       </div>
 
@@ -173,7 +173,7 @@ function RouteCard({
       <button
         onClick={() => onSelect(route)}
         disabled={selectingId !== null}
-        className="mt-auto w-full self-end pt-5 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
+        className="mt-auto w-full rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
       >
         {selectingId === route.name ? "Selecting..." : labels.results.selectButton}
       </button>
