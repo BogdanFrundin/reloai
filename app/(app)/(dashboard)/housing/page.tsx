@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
@@ -39,12 +39,6 @@ const WEBSITES = [
 ] as const;
 
 type RoomsFilter = "any" | "studio" | "2room" | "3room";
-
-const ROOM_AVG_FIELD: Record<Exclude<RoomsFilter, "any">, "rent_studio_avg" | "rent_2room_avg" | "rent_3room_avg"> = {
-  studio: "rent_studio_avg",
-  "2room": "rent_2room_avg",
-  "3room": "rent_3room_avg",
-};
 
 type District = {
   id: string;
@@ -152,21 +146,13 @@ export default function HousingPage() {
     };
   }, [city]);
 
-  const sortedDistricts = useMemo(() => {
-    if (rooms === "any") return districts;
-    const field = ROOM_AVG_FIELD[rooms];
-    return [...districts].sort((a, b) => {
-      const av = a[field];
-      const bv = b[field];
-      if (av == null && bv == null) return 0;
-      if (av == null) return 1;
-      if (bv == null) return -1;
-      return av - bv;
-    });
-  }, [districts, rooms]);
-
-  const featuredDistricts = sortedDistricts.slice(0, 4);
-  const restDistricts = sortedDistricts.slice(4);
+  // The "top 4" list is a curated is_top/rank editorial pick (see the
+  // Supabase query above), not a price ranking — it must stay the same
+  // regardless of which room type is selected. Only the price label shown
+  // on each card (via districtPriceLabel) should react to the room filter;
+  // changing rooms must never swap out which districts are featured.
+  const featuredDistricts = districts.slice(0, 4);
+  const restDistricts = districts.slice(4);
 
   const cityLabel = lang === "ru" ? (CITY_GENITIVE_RU[city] ?? city) : city;
   const showAllLabel = t.housing.showAllDistricts
