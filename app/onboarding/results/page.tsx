@@ -121,7 +121,7 @@ function RouteCard({
         </span>
       )}
 
-      <div className="min-h-[68px]">
+      <div className="h-[68px] overflow-hidden">
         <h3 className="text-[19px] font-bold leading-tight text-white">{route.name}</h3>
         <p className="mt-1.5 line-clamp-2 text-sm text-white/60">{route.description}</p>
       </div>
@@ -169,7 +169,7 @@ function RouteCard({
       )}
 
       {route.bestFor && (
-        <p className="mt-3 line-clamp-2 min-h-[32px] text-xs text-white/40">
+        <p className="mt-3 line-clamp-2 h-[32px] overflow-hidden text-xs text-white/40">
           {labels.results.bestFor}: <span className="text-white/70">{route.bestFor}</span>
         </p>
       )}
