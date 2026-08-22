@@ -25,6 +25,7 @@ create table public.profiles (
   roadmap_completed_steps text[] default '{}',
   plan text default 'free',
   language text default 'ru',
+  document_profile jsonb,
   created_at timestamptz default now()
 );
 
@@ -41,6 +42,7 @@ alter table public.profiles add column if not exists route jsonb;
 alter table public.profiles add column if not exists selected_route jsonb;
 alter table public.profiles add column if not exists roadmap_plan jsonb;
 alter table public.profiles add column if not exists roadmap_completed_steps text[] default '{}';
+alter table public.profiles add column if not exists document_profile jsonb;
 
 -- citizenship and current_country store ISO 3166-1 alpha-2 country codes (e.g. "UA", "PL")
 -- selected from the searchable country dropdown — see app/onboarding/page.tsx.
@@ -55,6 +57,11 @@ alter table public.profiles add column if not exists roadmap_completed_steps tex
 -- checklist on the dashboard roadmap.
 -- roadmap_completed_steps stores the ids of roadmap_plan steps the user has manually checked
 -- off (AI-generated steps aren't tied to any other in-app action, so completion is self-reported).
+-- document_profile stores reusable personal data the AI form-fill feature needs
+-- (full name, date/place of birth, passport, address, etc.) — see
+-- app/_lib/documentProfile.ts for the shape and app/api/documents/fill/route.ts
+-- for how it's used to fill official PDF blanks (PESEL, PESEL UKR, ...).
+-- Filled once in the fill modal, then reused across every supported document.
 -- last_active_at is touched by AuthProvider on every session load and is what
 -- the /api/notifications/check-inactive cron job compares against to send
 -- "haven't logged in for 7 days" reminders — see app/_components/AuthProvider.tsx.

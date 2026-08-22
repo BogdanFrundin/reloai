@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { supabase } from "../../lib/supabase";
 import type { Route, RouteEngineResult } from "../api/route/route";
 import type { GeneratedRoadmapPlan } from "../_lib/generatedRoadmap";
+import type { DocumentProfile } from "../_lib/documentProfile";
 
 export type Profile = {
   id: string;
@@ -30,6 +31,7 @@ export type Profile = {
   email_reminders: boolean | null;
   email_updates: boolean | null;
   chosen_bank: string | null;
+  document_profile: DocumentProfile | null;
   created_at: string;
 };
 

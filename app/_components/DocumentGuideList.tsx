@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
+import DocumentFillModal from "./DocumentFillModal";
+import { getTemplateForGuide } from "../_lib/formTemplates";
 
 export type DocumentGuide = {
   id: string;
@@ -75,9 +77,11 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 function GuideCard({ guide }: { guide: DocumentGuide }) {
   const { currency, rates } = useCurrency();
   const [open, setOpen] = useState(false);
+  const [fillOpen, setFillOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const cost = convertPlnText(guide.cost, currency, rates);
+  const template = getTemplateForGuide(guide.name);
 
   return (
     <div className="rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-sm">
@@ -160,19 +164,35 @@ function GuideCard({ guide }: { guide: DocumentGuide }) {
             </div>
           )}
 
-          {link && (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
-            >
-              Официальный сайт
-              <span aria-hidden>→</span>
-            </a>
-          )}
+          <div className="flex flex-wrap gap-2">
+            {link && (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
+              >
+                Официальный сайт
+                <span aria-hidden>→</span>
+              </a>
+            )}
+            {template && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFillOpen(true);
+                }}
+                className="inline-flex items-center gap-1 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+              >
+                Заполнить с ИИ
+              </button>
+            )}
+          </div>
         </div>
       )}
+
+      {template && <DocumentFillModal open={fillOpen} onClose={() => setFillOpen(false)} template={template} />}
     </div>
   );
 }
