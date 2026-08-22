@@ -41,10 +41,10 @@ export default function CurrencyPickerModal({ open, onClose }: { open: boolean; 
               key={c.code}
               type="button"
               onClick={() => handlePick(c.code)}
-              className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors duration-150 ${
+              className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_10px_24px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none ${
                 currency === c.code
                   ? "border-accent/50 bg-accent/10 text-accent-bright"
-                  : "border-border-strong bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                  : "border-border-strong bg-surface-1 text-text-secondary [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/40 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.04] [@media(hover:hover)_and_(pointer:fine)]:hover:text-text-primary"
               } ${pressScale}`}
             >
               <Image
