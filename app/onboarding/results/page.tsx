@@ -174,13 +174,18 @@ function RouteCard({
         </p>
       )}
 
-      <button
-        onClick={() => onSelect(route)}
-        disabled={selectingId !== null}
-        className="mt-auto w-full rounded-2xl bg-accent py-3 text-sm font-bold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
-      >
-        {selectingId === route.name ? "Selecting..." : labels.results.selectButton}
-      </button>
+      <div className="mt-auto pt-4 text-center">
+        <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.cost}</p>
+        <p className="mt-1 text-2xl font-extrabold text-white">{route.cost}</p>
+
+        <button
+          onClick={() => onSelect(route)}
+          disabled={selectingId !== null}
+          className="mt-3 w-full rounded-2xl bg-accent py-3 text-sm font-bold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-50"
+        >
+          {selectingId === route.name ? "Selecting..." : labels.results.selectButton}
+        </button>
+      </div>
     </div>
   );
 }
