@@ -129,17 +129,23 @@ function RouteCard({
       {/* The numbers a person actually compares routes by — lead with these,
           bold and colored, so they're the first thing that registers. */}
       <div className="mt-4 grid grid-cols-3 gap-2">
-        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.approvalRate}</p>
-          <p className="mt-1 text-xl font-extrabold text-accent-bright">{route.approval_rate}%</p>
+        <div className="flex min-h-[84px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-1.5 py-2 text-center">
+          <p className="text-balance text-[9.5px] uppercase leading-tight tracking-wide text-white/35">
+            {labels.results.approvalRate}
+          </p>
+          <p className="mt-1.5 text-xl font-extrabold leading-none text-accent-bright">{route.approval_rate}%</p>
         </div>
-        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.timeline}</p>
-          <p className="mt-1 text-lg font-extrabold text-white">{route.timeline}</p>
+        <div className="flex min-h-[84px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-1.5 py-2 text-center">
+          <p className="text-balance text-[9.5px] uppercase leading-tight tracking-wide text-white/35">
+            {labels.results.timeline}
+          </p>
+          <p className="text-balance mt-1.5 text-base font-extrabold leading-tight text-white">{route.timeline}</p>
         </div>
-        <div className="rounded-2xl bg-white/[0.05] px-2.5 py-3 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-white/35">{labels.results.cost}</p>
-          <p className="mt-1 text-lg font-extrabold text-white">{route.cost}</p>
+        <div className="flex min-h-[84px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-1.5 py-2 text-center">
+          <p className="text-balance text-[9.5px] uppercase leading-tight tracking-wide text-white/35">
+            {labels.results.cost}
+          </p>
+          <p className="text-balance mt-1.5 text-base font-extrabold leading-tight text-white">{route.cost}</p>
         </div>
       </div>
 
