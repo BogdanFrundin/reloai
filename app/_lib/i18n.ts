@@ -724,16 +724,49 @@ export type Dictionary = {
       currentCountry: { question: string; subheading: string };
       destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
+      jobOffer: { question: string; subheading: string };
+      universityAccepted: { question: string; subheading: string };
+      studyLevel: { question: string; subheading: string };
+      businessType: { question: string; subheading: string };
+      familyMemberType: { question: string; subheading: string };
+      hasChildren: { question: string; subheading: string };
+      foreignEmployer: { question: string; subheading: string };
+      registerIp: { question: string; subheading: string };
+      timeline: { question: string; subheading: string };
+      hasCar: { question: string; subheading: string };
     };
     goalOptions: {
       work: string;
+      workDesc: string;
       study: string;
+      studyDesc: string;
       business: string;
-      passiveIncome: string;
-      digitalNomad: string;
-      familyReunification: string;
+      businessDesc: string;
+      family: string;
+      familyDesc: string;
+      remote: string;
+      remoteDesc: string;
+      savings: string;
+      savingsDesc: string;
       other: string;
     };
+    jobOfferOptions: { yes: string; no: string };
+    universityAcceptedOptions: { yes: string; no: string };
+    studyLevelOptions: { bachelor: string; master: string; phd: string };
+    businessTypeOptions: { jdg: string; spzoo: string; undecided: string };
+    familyMemberTypeOptions: { spouse: string; parent: string; child: string; multiple: string };
+    hasChildrenOptions: { yes: string; no: string };
+    foreignEmployerOptions: { yes: string; no: string };
+    registerIpOptions: { yes: string; no: string };
+    timelineOptions: {
+      already: string;
+      month1: string;
+      months3: string;
+      months6: string;
+      year1: string;
+      exploring: string;
+    };
+    hasCarOptions: { yes: string; no: string };
     results: {
       heading: string;
       loading: string;
@@ -2196,15 +2229,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         goal: { question: "What's your main goal?", subheading: "This decides which pathways we'll analyze for you." },
+        jobOffer: { question: "Do you already have a job offer?", subheading: "Helps us know which documents you'll need." },
+        universityAccepted: { question: "Have you already been accepted to a university?", subheading: "Determines where your plan starts." },
+        studyLevel: { question: "Which program are you enrolling in?", subheading: "Master's and PhD programs require diploma nostrification." },
+        businessType: { question: "What type of business are you planning to open?", subheading: "Determines the registration documents you'll need." },
+        familyMemberType: { question: "Who is already in Poland?", subheading: "Determines the type of family reunification residence card." },
+        hasChildren: { question: "Are your children moving with you?", subheading: "We'll show school/kindergarten documents if needed." },
+        foreignEmployer: { question: "Do you already have a foreign employer or clients?", subheading: "Affects which residence card type applies to you." },
+        registerIp: { question: "Are you planning to register a sole proprietorship in Poland?", subheading: "Determines whether you need NIP, ZUS and business registration." },
+        timeline: { question: "When are you planning to move?", subheading: "Helps us prioritize your plan." },
+        hasCar: { question: "Do you have a car you're bringing to Poland?", subheading: "If so, we'll add license exchange, car registration and insurance." },
       },
       goalOptions: {
         work: "Work",
+        workDesc: "Have an offer or looking for work",
         study: "Study",
-        business: "Open business",
-        passiveIncome: "Moving on personal savings",
-        digitalNomad: "Remote work / freelance",
-        familyReunification: "Family reunification",
+        studyDesc: "University or college",
+        business: "Business",
+        businessDesc: "Open a sole proprietorship or LLC",
+        family: "Family",
+        familyDesc: "Spouse/parent/child already in Poland",
+        remote: "Remote work",
+        remoteDesc: "Work for a foreign employer or freelance",
+        savings: "Moving on personal savings",
+        savingsDesc: "Moving without a job, on savings",
         other: "Other",
+      },
+      jobOfferOptions: {
+        yes: "Yes — I already have an invitation from a Polish company",
+        no: "No — I'm looking for work on my own",
+      },
+      universityAcceptedOptions: {
+        yes: "Yes — I have proof of enrollment",
+        no: "No — not accepted yet",
+      },
+      studyLevelOptions: { bachelor: "Bachelor's", master: "Master's", phd: "PhD" },
+      businessTypeOptions: {
+        jdg: "Sole proprietorship (JDG) — self-employment",
+        spzoo: "LLC (Sp. z o.o.) — limited liability company",
+        undecided: "Not decided yet",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Spouse / partner",
+        parent: "Parent",
+        child: "Child",
+        multiple: "Multiple family members",
+      },
+      hasChildrenOptions: { yes: "Yes", no: "No" },
+      foreignEmployerOptions: {
+        yes: "Yes — I work for a foreign company",
+        no: "No — I'm a freelancer looking for clients",
+      },
+      registerIpOptions: {
+        yes: "Yes — I want to work officially",
+        no: "No — not planning to yet",
+      },
+      timelineOptions: {
+        already: "Already in Poland",
+        month1: "Within 1 month",
+        months3: "Within 3 months",
+        months6: "Within 6 months",
+        year1: "Within a year",
+        exploring: "Just exploring options",
+      },
+      hasCarOptions: {
+        yes: "Yes — bringing my own car",
+        no: "No — no car",
       },
       results: {
         heading: "We found 3 relocation routes for you",
@@ -3669,15 +3759,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         goal: { question: "Какова ваша основная цель?", subheading: "Это определит, какие пути мы для вас проанализируем." },
+        jobOffer: { question: "Есть ли у вас оффер от работодателя?", subheading: "Это поможет понять, какие документы вам понадобятся." },
+        universityAccepted: { question: "Вы уже поступили в университет?", subheading: "Определяет, с чего начнётся ваш план." },
+        studyLevel: { question: "На какую программу поступаете?", subheading: "Для магистратуры и докторантуры нужна нострификация диплома." },
+        businessType: { question: "Какую форму бизнеса планируете открыть?", subheading: "От этого зависит список документов для регистрации." },
+        familyMemberType: { question: "Кто уже находится в Польше?", subheading: "Определяет тип карты побыту для воссоединения семьи." },
+        hasChildren: { question: "Едут ли с вами дети?", subheading: "Покажем документы для школы и садика, если нужно." },
+        foreignEmployer: { question: "У вас уже есть иностранный работодатель или клиенты?", subheading: "Влияет на тип карты побыту." },
+        registerIp: { question: "Планируете регистрировать ИП в Польше?", subheading: "Определяет, нужны ли вам NIP, ZUS и регистрация ИП." },
+        timeline: { question: "Когда планируете переехать?", subheading: "Поможет расставить приоритеты в вашем плане." },
+        hasCar: { question: "Есть ли у вас автомобиль, который вы везёте в Польшу?", subheading: "Если да, добавим обмен прав, регистрацию авто и страховки." },
       },
       goalOptions: {
         work: "Работа",
+        workDesc: "Есть оффер или ищу работу",
         study: "Учёба",
-        business: "Открыть бизнес",
-        passiveIncome: "Переезд на свои сбережения",
-        digitalNomad: "Удалённая работа / фриланс",
-        familyReunification: "Воссоединение семьи",
+        studyDesc: "Университет или колледж",
+        business: "Бизнес",
+        businessDesc: "Открыть ИП или ООО",
+        family: "Семья",
+        familyDesc: "Супруг/родитель/ребёнок уже в Польше",
+        remote: "Удалёнка",
+        remoteDesc: "Работаю на иностранного работодателя или фриланс",
+        savings: "Переезд на свои сбережения",
+        savingsDesc: "Переезд без работы, на сбережения",
         other: "Другое",
+      },
+      jobOfferOptions: {
+        yes: "Да — уже есть приглашение от польской компании",
+        no: "Нет — ищу работу самостоятельно",
+      },
+      universityAcceptedOptions: {
+        yes: "Да — есть подтверждение зачисления",
+        no: "Нет — ещё не поступил",
+      },
+      studyLevelOptions: { bachelor: "Бакалавриат", master: "Магистратура", phd: "Докторантура" },
+      businessTypeOptions: {
+        jdg: "ИП (JDG) — самозанятость",
+        spzoo: "ООО (Sp. z o.o.) — компания с ограниченной ответственностью",
+        undecided: "Ещё не решил",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Супруг / партнёр",
+        parent: "Родитель",
+        child: "Ребёнок",
+        multiple: "Несколько членов семьи",
+      },
+      hasChildrenOptions: { yes: "Да", no: "Нет" },
+      foreignEmployerOptions: {
+        yes: "Да — работаю на иностранную компанию",
+        no: "Нет — фрилансер, ищу клиентов",
+      },
+      registerIpOptions: {
+        yes: "Да — хочу работать официально",
+        no: "Нет — пока не планирую",
+      },
+      timelineOptions: {
+        already: "Уже нахожусь в Польше",
+        month1: "В течение 1 месяца",
+        months3: "В течение 3 месяцев",
+        months6: "В течение 6 месяцев",
+        year1: "В течение года",
+        exploring: "Просто изучаю варианты",
+      },
+      hasCarOptions: {
+        yes: "Да — везу свой автомобиль",
+        no: "Нет — автомобиля нет",
       },
       results: {
         heading: "Мы нашли 3 маршрута переезда для вас",
@@ -5137,15 +5284,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
+        jobOffer: { question: "Ish beruvchidan taklifingiz bormi?", subheading: "Bu qanday hujjatlar kerakligini bilishga yordam beradi." },
+        universityAccepted: { question: "Universitetga allaqachon qabul qilingansiz?", subheading: "Rejangiz qayerdan boshlanishini belgilaydi." },
+        studyLevel: { question: "Qaysi dasturga o'qishga kirasiz?", subheading: "Magistratura va doktoranturada diplom nostrifikatsiyasi kerak." },
+        businessType: { question: "Qanday biznes shaklini ochishni rejalashtiryapsiz?", subheading: "Ro'yxatdan o'tish uchun kerakli hujjatlarni belgilaydi." },
+        familyMemberType: { question: "Polshada allaqachon kim bor?", subheading: "Oilaviy birlashuv uchun karta pobytu turini belgilaydi." },
+        hasChildren: { question: "Farzandlaringiz siz bilan ko'chib o'tyaptimi?", subheading: "Agar kerak bo'lsa, maktab/bog'cha hujjatlarini ko'rsatamiz." },
+        foreignEmployer: { question: "Xorijiy ish beruvchi yoki mijozlaringiz bormi?", subheading: "Sizga qanday karta pobytu kerakligiga ta'sir qiladi." },
+        registerIp: { question: "Polshada YaTT ro'yxatdan o'tkazishni rejalashtiryapsizmi?", subheading: "NIP, ZUS va biznes ro'yxatidan o'tish kerakligini belgilaydi." },
+        timeline: { question: "Qachon ko'chib o'tishni rejalashtiryapsiz?", subheading: "Rejangizda ustuvorliklarni belgilashga yordam beradi." },
+        hasCar: { question: "Polshaga olib boradigan avtomobilingiz bormi?", subheading: "Bo'lsa, guvohnoma almashtirish, ro'yxatga olish va sug'urtani qo'shamiz." },
       },
       goalOptions: {
         work: "Ish",
+        workDesc: "Taklif bor yoki ish qidiryapman",
         study: "O'qish",
-        business: "Biznes ochish",
-        passiveIncome: "O'z jamg'armasi bilan ko'chish",
-        digitalNomad: "Masofaviy ish / frilanser",
-        familyReunification: "Oilaviy birlashuv",
+        studyDesc: "Universitet yoki kollej",
+        business: "Biznes",
+        businessDesc: "YaTT yoki MChJ ochish",
+        family: "Oila",
+        familyDesc: "Turmush o'rtog'i/ota-ona/farzand allaqachon Polshada",
+        remote: "Masofaviy ish",
+        remoteDesc: "Xorijiy ish beruvchi uchun ishlayman yoki frilanser",
+        savings: "O'z jamg'armasi bilan ko'chish",
+        savingsDesc: "Ishsiz, jamg'arma hisobidan ko'chish",
         other: "Boshqa",
+      },
+      jobOfferOptions: {
+        yes: "Ha — Polsha kompaniyasidan taklif bor",
+        no: "Yo'q — o'zim ish qidiryapman",
+      },
+      universityAcceptedOptions: {
+        yes: "Ha — qabul tasdig'i bor",
+        no: "Yo'q — hali qabul qilinmagan",
+      },
+      studyLevelOptions: { bachelor: "Bakalavriat", master: "Magistratura", phd: "Doktorantura" },
+      businessTypeOptions: {
+        jdg: "YaTT (JDG) — o'zini o'zi band qilish",
+        spzoo: "MChJ (Sp. z o.o.) — mas'uliyati cheklangan jamiyat",
+        undecided: "Hali qaror qilmadim",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Turmush o'rtog'i / hamkor",
+        parent: "Ota-ona",
+        child: "Farzand",
+        multiple: "Bir nechta oila a'zosi",
+      },
+      hasChildrenOptions: { yes: "Ha", no: "Yo'q" },
+      foreignEmployerOptions: {
+        yes: "Ha — xorijiy kompaniyada ishlayman",
+        no: "Yo'q — frilanserman, mijoz qidiryapman",
+      },
+      registerIpOptions: {
+        yes: "Ha — rasmiy ishlashni xohlayman",
+        no: "Yo'q — hozircha rejalashtirmayapman",
+      },
+      timelineOptions: {
+        already: "Allaqachon Polshadaman",
+        month1: "1 oy ichida",
+        months3: "3 oy ichida",
+        months6: "6 oy ichida",
+        year1: "Bir yil ichida",
+        exploring: "Shunchaki variantlarni o'rganyapman",
+      },
+      hasCarOptions: {
+        yes: "Ha — o'z avtomobilimni olib boraman",
+        no: "Yo'q — avtomobil yo'q",
       },
       results: {
         heading: "Biz siz uchun 3 ta ko'chish mararhalarini topdik",
@@ -6604,15 +6808,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Bu, sizin için hangi yolları analiz edeceğimizi belirler." },
+        jobOffer: { question: "Bir işveren teklifiniz var mı?", subheading: "Hangi belgelere ihtiyacınız olduğunu anlamamıza yardımcı olur." },
+        universityAccepted: { question: "Bir üniversiteye kabul edildiniz mi?", subheading: "Planınızın nereden başlayacağını belirler." },
+        studyLevel: { question: "Hangi programa kayıt oluyorsunuz?", subheading: "Yüksek lisans ve doktora için diploma denkliği gerekir." },
+        businessType: { question: "Ne tür bir işletme açmayı planlıyorsunuz?", subheading: "Kayıt için gereken belgeleri belirler." },
+        familyMemberType: { question: "Polonya'da şu anda kim var?", subheading: "Aile birleşimi ikamet kartı türünü belirler." },
+        hasChildren: { question: "Çocuklarınız sizinle mi taşınıyor?", subheading: "Gerekirse okul/anaokulu belgelerini göstereceğiz." },
+        foreignEmployer: { question: "Zaten yabancı bir işvereniniz veya müşterileriniz var mı?", subheading: "Size uygun ikamet kartı türünü etkiler." },
+        registerIp: { question: "Polonya'da şahıs şirketi kaydı yaptırmayı düşünüyor musunuz?", subheading: "NIP, ZUS ve işletme kaydına ihtiyacınız olup olmadığını belirler." },
+        timeline: { question: "Ne zaman taşınmayı planlıyorsunuz?", subheading: "Planınızda önceliklendirme yapmamıza yardımcı olur." },
+        hasCar: { question: "Polonya'ya getireceğiniz bir arabanız var mı?", subheading: "Varsa, ehliyet değişimi, araç tescili ve sigortayı ekleyeceğiz." },
       },
       goalOptions: {
         work: "İş",
+        workDesc: "Teklifim var ya da iş arıyorum",
         study: "Eğitim",
+        studyDesc: "Üniversite veya kolej",
         business: "İş kurma",
-        passiveIncome: "Kendi birikimiyle taşınma",
-        digitalNomad: "Uzaktan çalışma / serbest çalışma",
-        familyReunification: "Aile birleşimi",
+        businessDesc: "Şahıs şirketi veya limited şirket açmak",
+        family: "Aile",
+        familyDesc: "Eş/ebeveyn/çocuk zaten Polonya'da",
+        remote: "Uzaktan çalışma",
+        remoteDesc: "Yabancı bir işveren için çalışıyorum veya serbest çalışıyorum",
+        savings: "Kendi birikimiyle taşınma",
+        savingsDesc: "İşsiz, birikimle taşınma",
         other: "Diğer",
+      },
+      jobOfferOptions: {
+        yes: "Evet — Polonyalı bir şirketten davetim var",
+        no: "Hayır — kendim iş arıyorum",
+      },
+      universityAcceptedOptions: {
+        yes: "Evet — kayıt onayım var",
+        no: "Hayır — henüz kabul edilmedim",
+      },
+      studyLevelOptions: { bachelor: "Lisans", master: "Yüksek Lisans", phd: "Doktora" },
+      businessTypeOptions: {
+        jdg: "Şahıs şirketi (JDG) — serbest çalışma",
+        spzoo: "Limited şirket (Sp. z o.o.)",
+        undecided: "Henüz karar vermedim",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Eş / partner",
+        parent: "Ebeveyn",
+        child: "Çocuk",
+        multiple: "Birden fazla aile üyesi",
+      },
+      hasChildrenOptions: { yes: "Evet", no: "Hayır" },
+      foreignEmployerOptions: {
+        yes: "Evet — yabancı bir şirkette çalışıyorum",
+        no: "Hayır — serbest çalışanım, müşteri arıyorum",
+      },
+      registerIpOptions: {
+        yes: "Evet — resmi olarak çalışmak istiyorum",
+        no: "Hayır — şimdilik planlamıyorum",
+      },
+      timelineOptions: {
+        already: "Zaten Polonya'dayım",
+        month1: "1 ay içinde",
+        months3: "3 ay içinde",
+        months6: "6 ay içinde",
+        year1: "Bir yıl içinde",
+        exploring: "Sadece seçenekleri araştırıyorum",
+      },
+      hasCarOptions: {
+        yes: "Evet — kendi arabamı getiriyorum",
+        no: "Hayır — arabam yok",
       },
       results: {
         heading: "Sizin için 3 taşınma yolu bulduk",
@@ -8071,15 +8332,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
+        jobOffer: { question: "Оё шумо пешниҳоди корфармо доред?", subheading: "Ба фаҳмидани он, ки кадом ҳуҷҷатҳо ба шумо лозиманд, кӯмак мекунад." },
+        universityAccepted: { question: "Оё шумо аллакай ба донишгоҳ қабул шудаед?", subheading: "Муайян мекунад, ки нақшаи шумо аз куҷо оғоз мешавад." },
+        studyLevel: { question: "Ба кадом барнома дохил мешавед?", subheading: "Барои магистратура ва докторантура нострификатсияи диплом лозим аст." },
+        businessType: { question: "Кадом шакли бизнесро кушодан мехоҳед?", subheading: "Ҳуҷҷатҳои заруриро барои сабти ном муайян мекунад." },
+        familyMemberType: { question: "Ҳозир дар Полша кӣ ҳаст?", subheading: "Навъи корти иқоматро барои муттаҳидшавии оила муайян мекунад." },
+        hasChildren: { question: "Фарзандони шумо бо шумо мекӯчанд?", subheading: "Агар лозим бошад, ҳуҷҷатҳои мактаб/богча нишон медиҳем." },
+        foreignEmployer: { question: "Оё шумо аллакай корфармо ё муштариёни хориҷӣ доред?", subheading: "Ба навъи корти иқомати шумо таъсир мерасонад." },
+        registerIp: { question: "Оё дар Полша сабти ном кардани соҳибкории инфиродиро нақша доред?", subheading: "Муайян мекунад, ки оё NIP, ZUS ва сабти бизнес лозим аст." },
+        timeline: { question: "Кай кӯчиданро нақша доред?", subheading: "Ба афзалиятбандии нақшаи шумо кӯмак мекунад." },
+        hasCar: { question: "Оё мошине доред, ки ба Полша мебаред?", subheading: "Агар бале, иваз кардани шаҳодатнома, сабти мошин ва суғуртаро илова мекунем." },
       },
       goalOptions: {
         work: "Кор",
+        workDesc: "Пешниҳод дорам ё кор меҷӯям",
         study: "Таҳсил",
-        business: "Кушодани бизнес",
-        passiveIncome: "Кӯчидан бо пасандозҳои худ",
-        digitalNomad: "Кори дурдаст / фриланс",
-        familyReunification: "Муттаҳидшавии оила",
+        studyDesc: "Донишгоҳ ё коллеҷ",
+        business: "Бизнес",
+        businessDesc: "Кушодани соҳибкории инфиродӣ ё ҶМД",
+        family: "Оила",
+        familyDesc: "Ҳамсар/волидайн/фарзанд аллакай дар Полша",
+        remote: "Кори дурдаст",
+        remoteDesc: "Барои корфармои хориҷӣ кор мекунам ё фриланс",
+        savings: "Кӯчидан бо пасандозҳои худ",
+        savingsDesc: "Кӯчидан бидуни кор, бо пасандозҳо",
         other: "Дигар",
+      },
+      jobOfferOptions: {
+        yes: "Ҳа — аллакай даъвати ширкати полякӣ дорам",
+        no: "Не — худам кор меҷӯям",
+      },
+      universityAcceptedOptions: {
+        yes: "Ҳа — тасдиқи қабул дорам",
+        no: "Не — ҳанӯз қабул нашудаам",
+      },
+      studyLevelOptions: { bachelor: "Бакалавриат", master: "Магистратура", phd: "Докторантура" },
+      businessTypeOptions: {
+        jdg: "Соҳибкории инфиродӣ (JDG)",
+        spzoo: "ҶМД (Sp. z o.o.) — ширкати масъулияти маҳдуд",
+        undecided: "Ҳанӯз қарор накардаам",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Ҳамсар / шарик",
+        parent: "Волидайн",
+        child: "Фарзанд",
+        multiple: "Якчанд узви оила",
+      },
+      hasChildrenOptions: { yes: "Ҳа", no: "Не" },
+      foreignEmployerOptions: {
+        yes: "Ҳа — барои ширкати хориҷӣ кор мекунам",
+        no: "Не — фрилансерам, муштарӣ меҷӯям",
+      },
+      registerIpOptions: {
+        yes: "Ҳа — мехоҳам расман кор кунам",
+        no: "Не — ҳоло нақша надорам",
+      },
+      timelineOptions: {
+        already: "Аллакай дар Полша ҳастам",
+        month1: "Дар давоми 1 моҳ",
+        months3: "Дар давоми 3 моҳ",
+        months6: "Дар давоми 6 моҳ",
+        year1: "Дар давоми як сол",
+        exploring: "Танҳо вариантҳоро меомӯзам",
+      },
+      hasCarOptions: {
+        yes: "Ҳа — мошини худро мебарам",
+        no: "Не — мошин надорам",
       },
       results: {
         heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем",
@@ -9544,15 +9862,72 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentCountry: { question: "У якій країні ви зараз перебуваєте?", subheading: "Дозволить адаптувати наступні кроки під ваше поточне місцезнаходження." },
         destination: { question: "Куди ви переїжджаєте?", subheading: "Ми адаптуємо ваш план під цю країну." },
         goal: { question: "Яка ваша основна мета?", subheading: "Це визначить, які шляхи ми для вас проаналізуємо." },
+        jobOffer: { question: "Чи є у вас оффер від роботодавця?", subheading: "Допоможе зрозуміти, які документи вам знадобляться." },
+        universityAccepted: { question: "Ви вже вступили до університету?", subheading: "Визначає, з чого почнеться ваш план." },
+        studyLevel: { question: "На яку програму вступаєте?", subheading: "Для магістратури та докторантури потрібна нострифікація диплома." },
+        businessType: { question: "Яку форму бізнесу плануєте відкрити?", subheading: "Від цього залежить перелік документів для реєстрації." },
+        familyMemberType: { question: "Хто вже перебуває в Польщі?", subheading: "Визначає тип карти побиту для возз'єднання сім'ї." },
+        hasChildren: { question: "Чи їдуть з вами діти?", subheading: "Покажемо документи для школи та садка, якщо потрібно." },
+        foreignEmployer: { question: "У вас вже є іноземний роботодавець або клієнти?", subheading: "Впливає на тип карти побиту." },
+        registerIp: { question: "Плануєте реєструвати ФОП у Польщі?", subheading: "Визначає, чи потрібні вам NIP, ZUS та реєстрація бізнесу." },
+        timeline: { question: "Коли плануєте переїхати?", subheading: "Допоможе розставити пріоритети у вашому плані." },
+        hasCar: { question: "Чи є у вас автомобіль, який ви везете до Польщі?", subheading: "Якщо так, додамо обмін посвідчення, реєстрацію авто та страхування." },
       },
       goalOptions: {
         work: "Робота",
+        workDesc: "Є оффер або шукаю роботу",
         study: "Навчання",
-        business: "Відкрити бізнес",
-        passiveIncome: "Переїзд на власні заощадження",
-        digitalNomad: "Віддалена робота / фриланс",
-        familyReunification: "Возз'єднання сім'ї",
+        studyDesc: "Університет або коледж",
+        business: "Бізнес",
+        businessDesc: "Відкрити ФОП або ТОВ",
+        family: "Сім'я",
+        familyDesc: "Чоловік/дружина, батьки чи дитина вже в Польщі",
+        remote: "Віддалена робота",
+        remoteDesc: "Працюю на іноземного роботодавця або фриланс",
+        savings: "Переїзд на власні заощадження",
+        savingsDesc: "Переїзд без роботи, на заощадження",
         other: "Інше",
+      },
+      jobOfferOptions: {
+        yes: "Так — вже є запрошення від польської компанії",
+        no: "Ні — шукаю роботу самостійно",
+      },
+      universityAcceptedOptions: {
+        yes: "Так — є підтвердження зарахування",
+        no: "Ні — ще не вступив(ла)",
+      },
+      studyLevelOptions: { bachelor: "Бакалаврат", master: "Магістратура", phd: "Докторантура" },
+      businessTypeOptions: {
+        jdg: "ФОП (JDG) — самозайнятість",
+        spzoo: "ТОВ (Sp. z o.o.) — компанія з обмеженою відповідальністю",
+        undecided: "Ще не вирішив(ла)",
+      },
+      familyMemberTypeOptions: {
+        spouse: "Чоловік / дружина / партнер",
+        parent: "Батько/мати",
+        child: "Дитина",
+        multiple: "Кілька членів сім'ї",
+      },
+      hasChildrenOptions: { yes: "Так", no: "Ні" },
+      foreignEmployerOptions: {
+        yes: "Так — працюю на іноземну компанію",
+        no: "Ні — фрилансер, шукаю клієнтів",
+      },
+      registerIpOptions: {
+        yes: "Так — хочу працювати офіційно",
+        no: "Ні — поки не планую",
+      },
+      timelineOptions: {
+        already: "Вже перебуваю в Польщі",
+        month1: "Протягом 1 місяця",
+        months3: "Протягом 3 місяців",
+        months6: "Протягом 6 місяців",
+        year1: "Протягом року",
+        exploring: "Просто вивчаю варіанти",
+      },
+      hasCarOptions: {
+        yes: "Так — везу свій автомобіль",
+        no: "Ні — автомобіля немає",
       },
       results: {
         heading: "Ми знайшли 3 маршрути переїзду для вас",

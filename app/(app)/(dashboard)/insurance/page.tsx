@@ -37,7 +37,15 @@ export default function InsurancePage() {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<string>("all");
 
-  const visibleGuides = guides.filter((g) => guideAppliesTo(g, profile?.citizenship));
+  const visibleGuides = guides.filter((g) =>
+    guideAppliesTo(g, {
+      citizenship: profile?.citizenship,
+      citizenshipGroup: profile?.citizenship_group,
+      goal: profile?.goal,
+      hasCar: profile?.has_car,
+      hasChildren: profile?.has_children,
+    }),
+  );
 
   useEffect(() => {
     let active = true;

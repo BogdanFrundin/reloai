@@ -11,6 +11,7 @@ import { useLanguage } from "../_components/LanguageProvider";
 import { useAuth } from "../_components/AuthProvider";
 import { LANGUAGES, type Lang } from "../_lib/i18n";
 import { STEPS_COMPLETED_ON_ONBOARDING } from "../_lib/checklist";
+import { citizenshipGroup } from "../_lib/citizenshipGroups";
 import { pressScale } from "../_lib/motion";
 import { getFlagUrl } from "../_lib/flags";
 import { supabase } from "../../lib/supabase";
@@ -18,6 +19,7 @@ import { supabase } from "../../lib/supabase";
 type Option = {
   id: string;
   label: string;
+  description?: string;
   icon: ReactNode;
   bareIcon?: boolean;
 };
@@ -28,20 +30,144 @@ type Answers = {
   currentCountry?: string;
   destination?: string;
   goal?: string;
+  // Dynamic follow-up answers — only ever populated for the goal that
+  // triggers them, everything else stays undefined.
+  jobOffer?: string; // reuses the existing job_offer profile column
+  alreadyAdmitted?: string; // reuses the existing already_admitted profile column
+  studyLevel?: string;
+  businessType?: string;
+  familyMemberType?: string;
+  hasChildren?: string;
+  hasForeignEmployer?: string;
+  willRegisterIp?: string;
+  timeline?: string;
+  hasCar?: string;
 };
 
 type ProfileFields = {
   language?: string;
   citizenship?: string;
+  citizenship_group?: string | null;
   current_country?: string;
   country?: string;
   goal?: string;
+  job_offer?: string;
+  already_admitted?: string;
+  study_level?: string;
+  business_type?: string;
+  family_member_type?: string;
+  has_children?: string;
+  has_foreign_employer?: string;
+  will_register_ip?: string;
+  timeline?: string;
+  has_car?: string;
   onboarding_skipped?: boolean;
   skipped_steps?: string[];
 };
 
-const STEP_ORDER = ["language", "citizenship", "currentCountry", "destination", "goal"] as const;
-type StepKey = (typeof STEP_ORDER)[number];
+// Every possible step across every path. The actual order shown to a given
+// user is computed by computeStepOrder() below, based on their goal answer —
+// see the big comment there for why.
+const ALL_STEP_KEYS = [
+  "language",
+  "citizenship",
+  "currentCountry",
+  "destination",
+  "goal",
+  "jobOffer",
+  "universityAccepted",
+  "studyLevel",
+  "businessType",
+  "familyMemberType",
+  "hasChildren",
+  "foreignEmployer",
+  "registerIp",
+  "timeline",
+  "hasCar",
+] as const;
+type StepKey = (typeof ALL_STEP_KEYS)[number];
+
+type DynamicStepKey =
+  | "jobOffer"
+  | "universityAccepted"
+  | "studyLevel"
+  | "businessType"
+  | "familyMemberType"
+  | "hasChildren"
+  | "foreignEmployer"
+  | "registerIp"
+  | "timeline"
+  | "hasCar";
+
+const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
+  "jobOffer",
+  "universityAccepted",
+  "studyLevel",
+  "businessType",
+  "familyMemberType",
+  "hasChildren",
+  "foreignEmployer",
+  "registerIp",
+  "timeline",
+  "hasCar",
+];
+
+function isDynamicStep(key: StepKey): key is DynamicStepKey {
+  return (DYNAMIC_STEP_KEYS as readonly string[]).includes(key);
+}
+
+// Maps each dynamic step to the Answers field it reads/writes. jobOffer and
+// universityAccepted deliberately reuse the existing job_offer /
+// already_admitted answers (see ProfileFields) instead of introducing
+// duplicate columns.
+const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
+  jobOffer: "jobOffer",
+  universityAccepted: "alreadyAdmitted",
+  studyLevel: "studyLevel",
+  businessType: "businessType",
+  familyMemberType: "familyMemberType",
+  hasChildren: "hasChildren",
+  foreignEmployer: "hasForeignEmployer",
+  registerIp: "willRegisterIp",
+  timeline: "timeline",
+  hasCar: "hasCar",
+};
+
+const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
+  jobOffer: "job_offer",
+  universityAccepted: "already_admitted",
+  studyLevel: "study_level",
+  businessType: "business_type",
+  familyMemberType: "family_member_type",
+  hasChildren: "has_children",
+  foreignEmployer: "has_foreign_employer",
+  registerIp: "will_register_ip",
+  timeline: "timeline",
+  hasCar: "has_car",
+};
+
+// Builds the actual step sequence for this user. destination is answered
+// before goal, and goal is answered before any of these, so by the time we
+// need to know which follow-ups to show, we already know the answer.
+function computeStepOrder(goal: string | undefined): StepKey[] {
+  const base: StepKey[] = ["language", "citizenship", "currentCountry", "destination", "goal"];
+  const dynamic: StepKey[] = [];
+
+  if (goal === "work") {
+    dynamic.push("jobOffer");
+  } else if (goal === "study") {
+    dynamic.push("universityAccepted", "studyLevel");
+  } else if (goal === "business") {
+    dynamic.push("businessType");
+  } else if (goal === "family") {
+    dynamic.push("familyMemberType", "hasChildren");
+  } else if (goal === "remote") {
+    dynamic.push("foreignEmployer", "registerIp");
+  }
+  // savings and other: no extra questions, straight to timeline.
+
+  return [...base, ...dynamic, "timeline", "hasCar"];
+}
 
 const ICON_PROPS = {
   className: "h-7 w-7",
@@ -102,6 +228,30 @@ const OTHER_ICON = (
     />
   </svg>
 );
+const YES_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 12.75l2.5 2.5 5-5.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+const NO_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+const CLOCK_ICON = (
+  <svg {...ICON_PROPS}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75v5.25l3.5 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+const CAR_ICON = (
+  <svg {...ICON_PROPS}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 16.5v-3.375c0-.621.504-1.125 1.125-1.125h.375l1.5-3.75a1.5 1.5 0 011.382-1h7.736a1.5 1.5 0 011.382 1l1.5 3.75h.375c.621 0 1.125.504 1.125 1.125V16.5M3.75 16.5a1.5 1.5 0 001.5 1.5h.75a1.5 1.5 0 001.5-1.5M3.75 16.5v1.125c0 .621.504 1.125 1.125 1.125h.375m13.5-2.25a1.5 1.5 0 01-1.5 1.5h-.75a1.5 1.5 0 01-1.5-1.5m3.75 0v1.125c0 .621-.504 1.125-1.125 1.125h-.375M6.75 13.5h10.5"
+    />
+  </svg>
+);
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -132,35 +282,58 @@ export default function OnboardingPage() {
       currentCountry: profile.current_country ?? undefined,
       destination: profile.country ?? undefined,
       goal: profile.goal ?? undefined,
+      jobOffer: profile.job_offer ?? undefined,
+      alreadyAdmitted: profile.already_admitted ?? undefined,
+      studyLevel: profile.study_level ?? undefined,
+      businessType: profile.business_type ?? undefined,
+      familyMemberType: profile.family_member_type ?? undefined,
+      hasChildren: profile.has_children ?? undefined,
+      hasForeignEmployer: profile.has_foreign_employer ?? undefined,
+      willRegisterIp: profile.will_register_ip ?? undefined,
+      timeline: profile.timeline ?? undefined,
+      hasCar: profile.has_car ?? undefined,
     };
     const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
-      STEP_ORDER.includes(key as StepKey),
+      (ALL_STEP_KEYS as readonly string[]).includes(key),
     );
 
     if (Object.values(restoredAnswers).some(Boolean) || restoredSkipped.length > 0) {
       setAnswers(restoredAnswers);
       setSkippedSteps(restoredSkipped);
 
-      const resumeIndex = STEP_ORDER.findIndex((key) => restoredSkipped.includes(key));
+      // Resolve the resume index against the step order this user's actual
+      // goal produces, not the order at the time this effect happens to run.
+      const resumeStepOrder = computeStepOrder(restoredAnswers.goal);
+      const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
     }
 
     setHydrated(true);
   }, [profile, hydrated]);
 
-  const stepKey: StepKey = STEP_ORDER[step];
-  const isLast = step === STEP_ORDER.length - 1;
+  const STEP_ORDER = computeStepOrder(answers.goal);
+  const stepIndex = Math.min(step, STEP_ORDER.length - 1);
+  const stepKey: StepKey = STEP_ORDER[stepIndex];
+  const isLast = stepIndex === STEP_ORDER.length - 1;
 
-  const canContinue =
-    stepKey === "language"
-      ? !!answers.language
-      : stepKey === "citizenship"
-        ? !!answers.citizenship
-        : stepKey === "currentCountry"
-          ? !!answers.currentCountry
-          : stepKey === "destination"
-            ? !!answers.destination
-            : !!answers.goal;
+  function isStepAnswered(key: StepKey, a: Answers): boolean {
+    switch (key) {
+      case "language":
+        return !!a.language;
+      case "citizenship":
+        return !!a.citizenship;
+      case "currentCountry":
+        return !!a.currentCountry;
+      case "destination":
+        return !!a.destination;
+      case "goal":
+        return !!a.goal;
+      default:
+        return !!a[DYNAMIC_STEP_ANSWER_FIELD[key]];
+    }
+  }
+
+  const canContinue = isStepAnswered(stepKey, answers);
 
   async function saveFields(fields: ProfileFields) {
     if (!user) return;
@@ -180,7 +353,7 @@ export default function OnboardingPage() {
 
   function selectCitizenship(code: string) {
     setAnswers((prev) => ({ ...prev, citizenship: code }));
-    saveFields({ citizenship: code });
+    saveFields({ citizenship: code, citizenship_group: citizenshipGroup(code) ?? null });
   }
 
   function selectCurrentCountry(code: string) {
@@ -199,13 +372,33 @@ export default function OnboardingPage() {
     saveFields({ goal: id });
   }
 
+  function selectDynamicAnswer(key: DynamicStepKey, value: string) {
+    const answerField = DYNAMIC_STEP_ANSWER_FIELD[key];
+    const dbField = DYNAMIC_STEP_DB_FIELD[key];
+    setAnswers((prev) => ({ ...prev, [answerField]: value }));
+    saveFields({ [dbField]: value } as ProfileFields);
+  }
+
   function answeredFields(a: Answers): ProfileFields {
     const fields: ProfileFields = {};
     if (a.language) fields.language = a.language;
-    if (a.citizenship) fields.citizenship = a.citizenship;
+    if (a.citizenship) {
+      fields.citizenship = a.citizenship;
+      fields.citizenship_group = citizenshipGroup(a.citizenship) ?? null;
+    }
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
     if (a.goal) fields.goal = a.goal;
+    if (a.jobOffer) fields.job_offer = a.jobOffer;
+    if (a.alreadyAdmitted) fields.already_admitted = a.alreadyAdmitted;
+    if (a.studyLevel) fields.study_level = a.studyLevel;
+    if (a.businessType) fields.business_type = a.businessType;
+    if (a.familyMemberType) fields.family_member_type = a.familyMemberType;
+    if (a.hasChildren) fields.has_children = a.hasChildren;
+    if (a.hasForeignEmployer) fields.has_foreign_employer = a.hasForeignEmployer;
+    if (a.willRegisterIp) fields.will_register_ip = a.willRegisterIp;
+    if (a.timeline) fields.timeline = a.timeline;
+    if (a.hasCar) fields.has_car = a.hasCar;
     return fields;
   }
 
@@ -216,10 +409,11 @@ export default function OnboardingPage() {
     setError(null);
     setSaving(true);
 
-    const finalAnswers = {
+    const baseFields: ProfileFields = {
       language: answers.language ?? "ru",
       country: answers.destination ?? "Poland",
       citizenship: answers.citizenship ?? "Other",
+      citizenship_group: citizenshipGroup(answers.citizenship) ?? null,
       current_country: answers.currentCountry ?? "Other",
       goal: answers.goal ?? "work",
     };
@@ -230,7 +424,8 @@ export default function OnboardingPage() {
       email: user.email,
       skipped_steps: finalSkipped,
       onboarding_skipped: finalSkipped.length > 0,
-      ...finalAnswers,
+      ...baseFields,
+      ...answeredFields(answers),
     });
 
     if (profileError) {
@@ -241,7 +436,7 @@ export default function OnboardingPage() {
 
     const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
       user_id: user.id,
-      country: finalAnswers.country,
+      country: baseFields.country,
       document_type: documentType,
       steps_completed: 1,
       total_steps: 1,
@@ -340,15 +535,16 @@ export default function OnboardingPage() {
   // (praca, studia, działalność gospodarcza, łączenie rodzin, inne
   // okoliczności), so no id needs to be removed for Poland — the ids
   // themselves are load-bearing (matched exactly in checklist.ts, the home
-  // and profile pages, and the AI chat route), so only order/labels/icons
-  // are customized per destination, never the id strings.
+  // and profile pages, the AI chat route, and the document filtering
+  // matrix), so only order/labels/icons are customized per destination,
+  // never the id strings.
   const ALL_GOAL_OPTIONS: Record<string, Option> = {
-    work: { id: "work", label: t.onboarding.goalOptions.work, icon: WORK_ICON },
-    study: { id: "study", label: t.onboarding.goalOptions.study, icon: STUDY_ICON },
-    business: { id: "business", label: t.onboarding.goalOptions.business, icon: BUSINESS_ICON },
-    familyReunification: { id: "familyReunification", label: t.onboarding.goalOptions.familyReunification, icon: FAMILY_ICON },
-    passiveIncome: { id: "passiveIncome", label: t.onboarding.goalOptions.passiveIncome, icon: INVESTMENT_ICON },
-    digitalNomad: { id: "digitalNomad", label: t.onboarding.goalOptions.digitalNomad, icon: NOMAD_ICON },
+    work: { id: "work", label: t.onboarding.goalOptions.work, description: t.onboarding.goalOptions.workDesc, icon: WORK_ICON },
+    study: { id: "study", label: t.onboarding.goalOptions.study, description: t.onboarding.goalOptions.studyDesc, icon: STUDY_ICON },
+    business: { id: "business", label: t.onboarding.goalOptions.business, description: t.onboarding.goalOptions.businessDesc, icon: BUSINESS_ICON },
+    family: { id: "family", label: t.onboarding.goalOptions.family, description: t.onboarding.goalOptions.familyDesc, icon: FAMILY_ICON },
+    remote: { id: "remote", label: t.onboarding.goalOptions.remote, description: t.onboarding.goalOptions.remoteDesc, icon: NOMAD_ICON },
+    savings: { id: "savings", label: t.onboarding.goalOptions.savings, description: t.onboarding.goalOptions.savingsDesc, icon: INVESTMENT_ICON },
     other: { id: "other", label: t.onboarding.goalOptions.other, icon: OTHER_ICON },
   };
 
@@ -359,13 +555,65 @@ export default function OnboardingPage() {
   // freelance-adjacent goals (Poland has no dedicated digital-nomad or
   // passive-income visa, unlike Spain/Portugal), then "other" last.
   const GOAL_ORDER_BY_DESTINATION: Record<string, string[]> = {
-    Poland: ["work", "study", "business", "familyReunification", "passiveIncome", "digitalNomad", "other"],
+    Poland: ["work", "study", "business", "family", "savings", "remote", "other"],
   };
-  const DEFAULT_GOAL_ORDER = ["work", "study", "business", "passiveIncome", "digitalNomad", "familyReunification", "other"];
+  const DEFAULT_GOAL_ORDER = ["work", "study", "business", "savings", "remote", "family", "other"];
 
   const goalOptions: Option[] = (GOAL_ORDER_BY_DESTINATION[answers.destination ?? ""] ?? DEFAULT_GOAL_ORDER).map(
     (id) => ALL_GOAL_OPTIONS[id]
   );
+
+  function binaryOptions(dict: { yes: string; no: string }, yesIcon: ReactNode = YES_ICON, noIcon: ReactNode = NO_ICON): Option[] {
+    return [
+      { id: "yes", label: dict.yes, icon: yesIcon },
+      { id: "no", label: dict.no, icon: noIcon },
+    ];
+  }
+
+  function dynamicStepOptions(key: DynamicStepKey): Option[] {
+    switch (key) {
+      case "jobOffer":
+        return binaryOptions(t.onboarding.jobOfferOptions);
+      case "universityAccepted":
+        return binaryOptions(t.onboarding.universityAcceptedOptions);
+      case "studyLevel":
+        return [
+          { id: "bachelor", label: t.onboarding.studyLevelOptions.bachelor, icon: STUDY_ICON },
+          { id: "master", label: t.onboarding.studyLevelOptions.master, icon: STUDY_ICON },
+          { id: "phd", label: t.onboarding.studyLevelOptions.phd, icon: STUDY_ICON },
+        ];
+      case "businessType":
+        return [
+          { id: "jdg", label: t.onboarding.businessTypeOptions.jdg, icon: BUSINESS_ICON },
+          { id: "spzoo", label: t.onboarding.businessTypeOptions.spzoo, icon: BUSINESS_ICON },
+          { id: "undecided", label: t.onboarding.businessTypeOptions.undecided, icon: OTHER_ICON },
+        ];
+      case "familyMemberType":
+        return [
+          { id: "spouse", label: t.onboarding.familyMemberTypeOptions.spouse, icon: FAMILY_ICON },
+          { id: "parent", label: t.onboarding.familyMemberTypeOptions.parent, icon: FAMILY_ICON },
+          { id: "child", label: t.onboarding.familyMemberTypeOptions.child, icon: FAMILY_ICON },
+          { id: "multiple", label: t.onboarding.familyMemberTypeOptions.multiple, icon: FAMILY_ICON },
+        ];
+      case "hasChildren":
+        return binaryOptions(t.onboarding.hasChildrenOptions);
+      case "foreignEmployer":
+        return binaryOptions(t.onboarding.foreignEmployerOptions);
+      case "registerIp":
+        return binaryOptions(t.onboarding.registerIpOptions);
+      case "timeline":
+        return [
+          { id: "already", label: t.onboarding.timelineOptions.already, icon: CLOCK_ICON },
+          { id: "month1", label: t.onboarding.timelineOptions.month1, icon: CLOCK_ICON },
+          { id: "months3", label: t.onboarding.timelineOptions.months3, icon: CLOCK_ICON },
+          { id: "months6", label: t.onboarding.timelineOptions.months6, icon: CLOCK_ICON },
+          { id: "year1", label: t.onboarding.timelineOptions.year1, icon: CLOCK_ICON },
+          { id: "exploring", label: t.onboarding.timelineOptions.exploring, icon: OTHER_ICON },
+        ];
+      case "hasCar":
+        return binaryOptions(t.onboarding.hasCarOptions, CAR_ICON, NO_ICON);
+    }
+  }
 
   function renderOptionCard(
     option: Option & { disabled?: boolean },
@@ -399,7 +647,12 @@ export default function OnboardingPage() {
             {option.icon}
           </span>
         )}
-        <span className="flex-1 text-sm font-semibold text-text-primary">{option.label}</span>
+        <span className="flex-1">
+          <span className="block text-sm font-semibold text-text-primary">{option.label}</span>
+          {option.description && (
+            <span className="mt-0.5 block text-xs leading-snug text-text-muted">{option.description}</span>
+          )}
+        </span>
         {option.disabled ? (
           <span className="rounded-full border border-border-strong px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
             {t.onboarding.comingSoon}
@@ -438,19 +691,19 @@ export default function OnboardingPage() {
               <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
             </Link>
             <p className="text-sm text-text-muted">
-              {t.onboarding.stepLabel.replace("{current}", String(step + 1)).replace("{total}", String(STEP_ORDER.length))}
+              {t.onboarding.stepLabel.replace("{current}", String(stepIndex + 1)).replace("{total}", String(STEP_ORDER.length))}
             </p>
           </div>
 
           <div className="mt-6 h-1.5 w-full overflow-hidden rounded-full bg-border-subtle">
             <div
               className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-500 ease-[var(--ease-out-strong)]"
-              style={{ width: `${((step + 1) / STEP_ORDER.length) * 100}%` }}
+              style={{ width: `${((stepIndex + 1) / STEP_ORDER.length) * 100}%` }}
             />
           </div>
 
           <div className="flex flex-1 flex-col justify-center py-12">
-            <Reveal key={step}>
+            <Reveal key={stepKey}>
               <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{question}</h1>
               <p className="mt-3 text-text-muted">{subheading}</p>
 
@@ -505,16 +758,28 @@ export default function OnboardingPage() {
                   )}
                 </div>
               )}
+
+              {isDynamicStep(stepKey) && (
+                <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                  {dynamicStepOptions(stepKey).map((option) =>
+                    renderOptionCard(
+                      option,
+                      answers[DYNAMIC_STEP_ANSWER_FIELD[stepKey]] === option.id,
+                      () => selectDynamicAnswer(stepKey, option.id),
+                    ),
+                  )}
+                </div>
+              )}
             </Reveal>
           </div>
 
           <div className="flex items-center justify-between">
             <button
               type="button"
-              onClick={step === 0 ? handleCancel : handleBack}
+              onClick={stepIndex === 0 ? handleCancel : handleBack}
               className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover ${pressScale}`}
             >
-              {step === 0 ? t.onboarding.cancel : t.onboarding.back}
+              {stepIndex === 0 ? t.onboarding.cancel : t.onboarding.back}
             </button>
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}

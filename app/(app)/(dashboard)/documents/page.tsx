@@ -295,10 +295,18 @@ export default function DocumentsPage() {
     };
   }, []);
 
-  const visibleGuides = useMemo(
-    () => guides.filter((g) => guideAppliesTo(g, profile?.citizenship)),
-    [guides, profile?.citizenship],
-  );
+  const visibleGuides = useMemo(() => {
+    const ctx = {
+      citizenship: profile?.citizenship,
+      citizenshipGroup: profile?.citizenship_group,
+      goal: profile?.goal,
+      hasCar: profile?.has_car,
+      hasChildren: profile?.has_children,
+    };
+    return guides
+      .filter((g) => guideAppliesTo(g, ctx))
+      .sort((a, b) => (a.step_order ?? 999) - (b.step_order ?? 999));
+  }, [guides, profile?.citizenship, profile?.citizenship_group, profile?.goal, profile?.has_car, profile?.has_children]);
 
   const guideCategories = useMemo(() => {
     const seen = new Set<string>();

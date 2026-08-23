@@ -56,7 +56,7 @@ export default function HomePage() {
     [checklistSteps, completed],
   );
 
-  const isWorkGoal = profile?.goal === "work" || profile?.goal === "digitalNomad";
+  const isWorkGoal = profile?.goal === "work" || profile?.goal === "remote";
 
   const quickActions = [
     { key: "roadmap", href: "/dashboard", icon: ROADMAP_ICON, title: t.dashboard.sidebar.roadmap, desc: h.quickActionRoadmapDesc },

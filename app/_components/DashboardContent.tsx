@@ -56,9 +56,9 @@ const GOAL_KEYS = [
   "work",
   "study",
   "business",
-  "passiveIncome",
-  "digitalNomad",
-  "familyReunification",
+  "savings",
+  "remote",
+  "family",
   "other",
 ] as const;
 type GoalKey = (typeof GOAL_KEYS)[number];

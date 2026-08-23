@@ -19,8 +19,8 @@ type CountryKey = "poland" | "germany" | "spain";
 
 function goalBucket(goal: string | null | undefined): GoalBucket {
   if (goal === "study") return "study";
-  if (goal === "business" || goal === "investment" || goal === "passiveIncome") return "business";
-  if (goal === "work" || goal === "digitalNomad") return "work";
+  if (goal === "business" || goal === "investment" || goal === "savings") return "business";
+  if (goal === "work" || goal === "remote") return "work";
   return "family";
 }
 

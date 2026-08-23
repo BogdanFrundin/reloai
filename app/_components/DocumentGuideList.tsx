@@ -30,15 +30,106 @@ export type DocumentGuide = {
   countries: Record<string, boolean> | null;
   tags: string[] | null;
   price_label: string | null;
+  // Document filtering matrix columns (see add-document-guides-matrix.sql).
+  // Only populated for the 66+2 documents covered by the matrix so far —
+  // guides without any of this data (e.g. PIT bundle forms) fall back to
+  // "visible to everyone", same as the legacy countries-only behavior.
+  group_a: boolean | null;
+  group_b: boolean | null;
+  group_c: boolean | null;
+  group_d: boolean | null;
+  goal_work: boolean | null;
+  goal_study: boolean | null;
+  goal_business: boolean | null;
+  goal_family: boolean | null;
+  goal_remote: boolean | null;
+  goal_savings: boolean | null;
+  goal_other: boolean | null;
+  step_order: number | null;
+  timing: string | null;
+  requires_car: boolean | null;
+  requires_children: boolean | null;
 };
 
-// Returns true if the guide is relevant for a given citizenship (ISO alpha-2 code).
-// Missing countries data, or no citizenship known yet, defaults to visible.
-export function guideAppliesTo(guide: Pick<DocumentGuide, "countries">, citizenship: string | null | undefined): boolean {
-  if (!citizenship) return true;
-  const countries = guide.countries;
-  if (!countries || !(citizenship in countries)) return true;
-  return countries[citizenship] !== false;
+type GuideFilterFlags = Pick<
+  DocumentGuide,
+  | "countries"
+  | "group_a"
+  | "group_b"
+  | "group_c"
+  | "group_d"
+  | "goal_work"
+  | "goal_study"
+  | "goal_business"
+  | "goal_family"
+  | "goal_remote"
+  | "goal_savings"
+  | "goal_other"
+  | "requires_car"
+  | "requires_children"
+>;
+
+export type GuideFilterContext = {
+  citizenship?: string | null;
+  citizenshipGroup?: string | null; // "A" | "B" | "C" | "D"
+  goal?: string | null; // "work" | "study" | "business" | "family" | "remote" | "savings" | "other"
+  hasCar?: string | null; // "yes" | "no"
+  hasChildren?: string | null; // "yes" | "no"
+};
+
+const GROUP_FIELD: Record<string, keyof GuideFilterFlags> = {
+  A: "group_a",
+  B: "group_b",
+  C: "group_c",
+  D: "group_d",
+};
+
+const GOAL_FIELD: Record<string, keyof GuideFilterFlags> = {
+  work: "goal_work",
+  study: "goal_study",
+  business: "goal_business",
+  family: "goal_family",
+  remote: "goal_remote",
+  savings: "goal_savings",
+  other: "goal_other",
+};
+
+// Returns true if the guide is relevant for this user, combining every
+// filter the matrix defines: legacy per-citizenship-code overrides, the
+// citizenship group (A/B/C/D), the onboarding goal, and the has_car /
+// has_children follow-up answers. Each filter only applies if the guide
+// actually carries that kind of data — a guide with no group/goal columns
+// set at all (not yet migrated) stays visible to everyone, same as before.
+export function guideAppliesTo(guide: GuideFilterFlags, ctx: GuideFilterContext): boolean {
+  // Legacy per-country override (still used by guides added before the matrix).
+  if (ctx.citizenship) {
+    const countries = guide.countries;
+    if (countries && ctx.citizenship in countries && countries[ctx.citizenship] === false) return false;
+  }
+
+  const hasGroupData = guide.group_a || guide.group_b || guide.group_c || guide.group_d;
+  if (hasGroupData && ctx.citizenshipGroup) {
+    const field = GROUP_FIELD[ctx.citizenshipGroup];
+    if (field && guide[field] === false) return false;
+  }
+
+  const hasGoalData =
+    guide.goal_work ||
+    guide.goal_study ||
+    guide.goal_business ||
+    guide.goal_family ||
+    guide.goal_remote ||
+    guide.goal_savings ||
+    guide.goal_other;
+  if (hasGoalData && ctx.goal) {
+    const field = GOAL_FIELD[ctx.goal];
+    if (field && guide[field] === false) return false;
+  }
+
+  if (guide.requires_car && ctx.hasCar === "no") return false;
+  if (guide.requires_children && ctx.hasChildren === "no") return false;
+
+  return true;
 }
 
 const CHEVRON_ICON = (
