@@ -29,6 +29,27 @@ const COMMON_QUESTIONS = [
   "Можно ли открыть онлайн?",
 ];
 
+// Fixed display order: first 4 are the featured banks BankCardGrid shows by
+// default, the rest appear under "Другие банки". Anything not in this list
+// (there shouldn't be any, once prune-banks.sql has been run) sorts last.
+const BANK_ORDER = [
+  "mBank",
+  "ING Bank Śląski",
+  "PKO Bank Polski",
+  "Bank Millennium",
+  "Toyota Bank Polska",
+  "Volkswagen Bank Polska",
+  "Plus Bank",
+  "BOŚ Bank",
+  "Erste Bank Polska",
+  "Bank Pocztowy",
+];
+
+function bankSortRank(name: string): number {
+  const index = BANK_ORDER.indexOf(name);
+  return index === -1 ? BANK_ORDER.length : index;
+}
+
 export default function BanksPage() {
   const { t } = useLanguage();
   const { profile } = useAuth();
@@ -36,7 +57,15 @@ export default function BanksPage() {
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const visibleBanks = banks.filter((g) => guideAppliesTo(g, profile?.citizenship));
+  const visibleBanks = banks.filter((g) =>
+    guideAppliesTo(g, {
+      citizenship: profile?.citizenship,
+      citizenshipGroup: profile?.citizenship_group,
+      goal: profile?.goal,
+      hasCar: profile?.has_car,
+      hasChildren: profile?.has_children,
+    }),
+  );
 
   useEffect(() => {
     let active = true;
