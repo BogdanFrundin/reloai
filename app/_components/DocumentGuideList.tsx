@@ -176,6 +176,16 @@ function GuideCard({ guide }: { guide: DocumentGuide }) {
                 <span aria-hidden>→</span>
               </a>
             )}
+            {guide.pdf_url && (
+              <a
+                href={guide.pdf_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full border border-border-strong px-4 py-2 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary"
+              >
+                Скачать бланк
+              </a>
+            )}
             {template && (
               <button
                 type="button"
