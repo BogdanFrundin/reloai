@@ -784,28 +784,33 @@ export default function OnboardingPage() {
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}
               <div className="flex items-center gap-3">
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={handleSkip}
-                    disabled={saving}
-                    onMouseEnter={() => setShowSkipTip(true)}
-                    onMouseLeave={() => setShowSkipTip(false)}
-                    onFocus={() => setShowSkipTip(true)}
-                    onBlur={() => setShowSkipTip(false)}
-                    className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
-                  >
-                    {t.onboarding.skip}
-                  </button>
-                  {showSkipTip && (
-                    <div
-                      role="tooltip"
-                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-border-subtle bg-panel/95 px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-xl shadow-black/40 backdrop-blur-xl"
+                {/* Hidden on the citizenship/currentCountry steps — their searchable
+                    country dropdown can open downward over this button, and a
+                    click-through skip button underneath an open list looks broken. */}
+                {stepKey !== "citizenship" && stepKey !== "currentCountry" && (
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={handleSkip}
+                      disabled={saving}
+                      onMouseEnter={() => setShowSkipTip(true)}
+                      onMouseLeave={() => setShowSkipTip(false)}
+                      onFocus={() => setShowSkipTip(true)}
+                      onBlur={() => setShowSkipTip(false)}
+                      className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
                     >
-                      {t.onboarding.skipTooltip}
-                    </div>
-                  )}
-                </div>
+                      {t.onboarding.skip}
+                    </button>
+                    {showSkipTip && (
+                      <div
+                        role="tooltip"
+                        className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-border-subtle bg-panel/95 px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-xl shadow-black/40 backdrop-blur-xl"
+                      >
+                        {t.onboarding.skipTooltip}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={handleContinue}
