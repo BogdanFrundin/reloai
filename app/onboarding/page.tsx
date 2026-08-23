@@ -264,6 +264,10 @@ export default function OnboardingPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSkipTip, setShowSkipTip] = useState(false);
+  // True while the citizenship/currentCountry searchable dropdown is open —
+  // its list can extend down over the skip button, so we fade the button
+  // out (not unmount it) while that's happening, then fade it back in.
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -315,6 +319,13 @@ export default function OnboardingPage() {
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
   const isLast = stepIndex === STEP_ORDER.length - 1;
+
+  // The country dropdown unmounts on every step change (Reveal below is
+  // keyed by stepKey), so make sure the skip button doesn't stay faded out
+  // if a step change happened while it was open.
+  useEffect(() => {
+    setCountryDropdownOpen(false);
+  }, [stepKey]);
 
   function isStepAnswered(key: StepKey, a: Answers): boolean {
     switch (key) {
@@ -724,6 +735,7 @@ export default function OnboardingPage() {
                       value={answers.citizenship}
                       onSelect={selectCitizenship}
                       placeholder={t.onboarding.citizenshipPlaceholder}
+                      onOpenChange={setCountryDropdownOpen}
                     />
                   </div>
                 </div>
@@ -738,6 +750,7 @@ export default function OnboardingPage() {
                       value={answers.currentCountry}
                       onSelect={selectCurrentCountry}
                       placeholder={t.onboarding.currentCountryPlaceholder}
+                      onOpenChange={setCountryDropdownOpen}
                     />
                   </div>
                 </div>
@@ -784,33 +797,35 @@ export default function OnboardingPage() {
             <div className="flex flex-col items-end gap-2">
               {error && <p className="text-xs text-red-400">{error}</p>}
               <div className="flex items-center gap-3">
-                {/* Hidden on the citizenship/currentCountry steps — their searchable
-                    country dropdown can open downward over this button, and a
-                    click-through skip button underneath an open list looks broken. */}
-                {stepKey !== "citizenship" && stepKey !== "currentCountry" && (
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={handleSkip}
-                      disabled={saving}
-                      onMouseEnter={() => setShowSkipTip(true)}
-                      onMouseLeave={() => setShowSkipTip(false)}
-                      onFocus={() => setShowSkipTip(true)}
-                      onBlur={() => setShowSkipTip(false)}
-                      className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+                {/* Fades out (doesn't unmount) while the citizenship/currentCountry
+                    dropdown is open — its list can extend down over this button. */}
+                <div
+                  className={`relative transition-opacity duration-200 ease-[var(--ease-out-strong)] ${
+                    countryDropdownOpen ? "pointer-events-none opacity-0" : "opacity-100"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    tabIndex={countryDropdownOpen ? -1 : 0}
+                    onClick={handleSkip}
+                    disabled={saving}
+                    onMouseEnter={() => setShowSkipTip(true)}
+                    onMouseLeave={() => setShowSkipTip(false)}
+                    onFocus={() => setShowSkipTip(true)}
+                    onBlur={() => setShowSkipTip(false)}
+                    className={`rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:bg-surface-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 ${pressScale}`}
+                  >
+                    {t.onboarding.skip}
+                  </button>
+                  {showSkipTip && !countryDropdownOpen && (
+                    <div
+                      role="tooltip"
+                      className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-border-subtle bg-panel/95 px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-xl shadow-black/40 backdrop-blur-xl"
                     >
-                      {t.onboarding.skip}
-                    </button>
-                    {showSkipTip && (
-                      <div
-                        role="tooltip"
-                        className="absolute bottom-full right-0 z-10 mb-2 w-56 rounded-xl border border-border-subtle bg-panel/95 px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-xl shadow-black/40 backdrop-blur-xl"
-                      >
-                        {t.onboarding.skipTooltip}
-                      </div>
-                    )}
-                  </div>
-                )}
+                      {t.onboarding.skipTooltip}
+                    </div>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={handleContinue}

@@ -13,15 +13,26 @@ export default function SearchableCountrySelect({
   value,
   onSelect,
   placeholder,
+  onOpenChange,
 }: {
   lang: string;
   value?: string;
   onSelect: (code: string) => void;
   placeholder: string;
+  // Lets a parent react to the dropdown opening/closing — e.g. to fade out
+  // page chrome that would otherwise visually collide with the open list
+  // (see app/onboarding/page.tsx, where the skip button sits right where
+  // this list can extend to).
+  onOpenChange?: (open: boolean) => void;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    onOpenChange?.(open);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-fire when open itself changes, not on every onOpenChange identity change
+  }, [open]);
 
   const countries = useMemo(() => getCountryList(lang), [lang]);
   const selected = useMemo(() => countries.find((c) => c.code === value), [countries, value]);
