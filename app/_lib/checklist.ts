@@ -10,14 +10,17 @@ export type ChecklistStepDef = {
   title: string;
   description: string;
   phase: string;
-  // Set for steps built from a dated route timeline (see
-  // app/_lib/routeTimeline.ts) — an exact calendar date/deadline, an urgency
-  // color cue derived from it, an optional warning line, and whether the
-  // step should link out to /documents instead of an i18n step guide.
+  // Set for steps built from the document_guides timeline (see
+  // app/_lib/documentRoadmap.ts) — a sequential step number, an exact
+  // calendar date/deadline, an urgency color cue derived from it, an
+  // optional warning line, and whether the step should link out to
+  // /documents instead of an i18n step guide.
+  stepNumber?: number;
   dateLabel?: string;
   warning?: string;
   urgency?: "urgent" | "upcoming" | "future";
   linkToDocuments?: boolean;
+  linkAnchor?: string;
 };
 
 export const STEPS_COMPLETED_ON_ONBOARDING = ["account", "onboarding", "visa_eligibility"];

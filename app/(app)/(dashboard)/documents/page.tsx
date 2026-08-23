@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../../../_components/Reveal";
 import RegisterPromptModal from "../../../_components/RegisterPromptModal";
@@ -13,7 +14,8 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
-import DocumentGuideList, { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import DocumentRoadmapList from "../../../_components/DocumentRoadmapList";
+import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
 
 type Category = "all" | DocumentItem["category"];
 type Status = DocStatus;
@@ -96,6 +98,16 @@ const ARROW_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
   </svg>
 );
+
+function RouteSpeedBadge({ speed, label }: { speed: string; label: string }) {
+  const colors =
+    speed === "fast"
+      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+      : speed === "medium"
+        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+        : "border-red-500/30 bg-red-500/10 text-red-400";
+  return <span className={`inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
+}
 
 const CATEGORY_TO_STEP: Record<string, string> = {
   biometric: "biometric",
@@ -270,58 +282,34 @@ export default function DocumentsPage() {
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [guides, setGuides] = useState<DocumentGuide[]>([]);
-  const [guidesLoading, setGuidesLoading] = useState(true);
   const [guideCategory, setGuideCategory] = useState<string>("all");
 
-  useEffect(() => {
-    let active = true;
-    // Legalization/visa/business/etc. guides live in document_guides under
-    // every category except "финансы" (banks) and "медицина" (insurance) —
-    // those have their own dedicated pages. See banks/page.tsx and insurance/page.tsx.
-    supabase
-      .from("document_guides")
-      .select("*")
-      .not("category", "in", "(финансы,медицина)")
-      .order("category")
-      .order("name")
-      .then(({ data }) => {
-        if (!active) return;
-        setGuides((data as DocumentGuide[]) ?? []);
-        setGuidesLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  const visibleGuides = useMemo(() => {
-    const ctx = {
-      citizenship: profile?.citizenship,
-      citizenshipGroup: profile?.citizenship_group,
-      goal: profile?.goal,
-      hasCar: profile?.has_car,
-      hasChildren: profile?.has_children,
-    };
-    return guides
-      .filter((g) => guideAppliesTo(g, ctx))
-      .sort((a, b) => (a.step_order ?? 999) - (b.step_order ?? 999));
-  }, [guides, profile?.citizenship, profile?.citizenship_group, profile?.goal, profile?.has_car, profile?.has_children]);
+  // The personalized, dated document list (filtered by citizenship
+  // group/goal/has_car/has_children and ordered by step_order) is built once
+  // in DashboardProgressProvider from document_guides — the same source the
+  // dashboard roadmap page reads — so both pages always agree.
+  const { documentRoadmap, documentGuidesLoading, completed, toggleStepCompletion } = useDashboardProgress();
 
   const guideCategories = useMemo(() => {
     const seen = new Set<string>();
     const list: string[] = [];
-    for (const g of visibleGuides) {
-      if (!seen.has(g.category)) {
-        seen.add(g.category);
-        list.push(g.category);
+    for (const section of documentRoadmap) {
+      for (const entry of section.entries) {
+        if (!seen.has(entry.guide.category)) {
+          seen.add(entry.guide.category);
+          list.push(entry.guide.category);
+        }
       }
     }
     return list;
-  }, [visibleGuides]);
+  }, [documentRoadmap]);
 
-  const filteredGuides =
-    guideCategory === "all" ? visibleGuides : visibleGuides.filter((g) => g.category === guideCategory);
+  const filteredSections = useMemo(() => {
+    if (guideCategory === "all") return documentRoadmap;
+    return documentRoadmap
+      .map((section) => ({ ...section, entries: section.entries.filter((e) => e.guide.category === guideCategory) }))
+      .filter((section) => section.entries.length > 0);
+  }, [documentRoadmap, guideCategory]);
 
   useEffect(() => {
     if (!user) {
@@ -623,6 +611,50 @@ export default function DocumentsPage() {
             <p className="mt-2 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
           )}
 
+          {profile?.selected_route ? (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent/30 bg-accent/5 p-4">
+              <div>
+                <p className="text-xs font-medium text-text-muted">Ваш маршрут</p>
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <p className="text-sm font-semibold text-text-primary">{profile.selected_route.name}</p>
+                  <RouteSpeedBadge
+                    speed={profile.selected_route.speed}
+                    label={
+                      profile.selected_route.speed === "fast"
+                        ? "Быстро"
+                        : profile.selected_route.speed === "medium"
+                          ? "Средне"
+                          : "Медленно"
+                    }
+                  />
+                </div>
+                <p className="mt-1 text-xs text-text-muted">
+                  Список документов ниже подобран именно под этот маршрут.
+                </p>
+              </div>
+              <Link
+                href="/onboarding/results"
+                className={`flex-shrink-0 rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+              >
+                Изменить маршрут
+              </Link>
+            </div>
+          ) : (
+            profile?.goal && (
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
+                <p className="text-sm text-text-muted">
+                  Выберите маршрут легализации, чтобы увидеть точный список документов именно для него.
+                </p>
+                <Link
+                  href="/onboarding/results"
+                  className={`flex-shrink-0 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                >
+                  Выбрать маршрут
+                </Link>
+              </div>
+            )
+          )}
+
           {guideCategories.length > 1 && (
             <div className="mt-4 flex flex-wrap gap-2">
               <button
@@ -654,11 +686,12 @@ export default function DocumentsPage() {
           )}
 
           <div className="mt-4">
-            <DocumentGuideList
-              guides={filteredGuides}
-              loading={guidesLoading}
+            <DocumentRoadmapList
+              sections={filteredSections}
+              completed={completed}
+              onToggle={toggleStepCompletion}
+              loading={documentGuidesLoading}
               emptyText="Пока нет гайдов в этой категории."
-              searchPlaceholder="Поиск гайда"
             />
           </div>
         </div>

@@ -206,6 +206,11 @@ export default function PhaseCard({
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  {step.stepNumber && (
+                    <span className="flex-shrink-0 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent-bright">
+                      Шаг {step.stepNumber}
+                    </span>
+                  )}
                   <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
                   {step.dateLabel && (
                     <span
@@ -229,7 +234,7 @@ export default function PhaseCard({
               <div className="flex flex-shrink-0 items-center gap-2" onClick={(event) => event.stopPropagation()}>
                 {(step.documentType === "documents" || step.linkToDocuments) && (
                   <Link
-                    href="/documents"
+                    href={step.linkAnchor ? `/documents#${step.linkAnchor}` : "/documents"}
                     onClick={(event) => event.stopPropagation()}
                     className={
                       isNext

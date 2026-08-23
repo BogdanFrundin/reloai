@@ -15,7 +15,8 @@ import {
   type PhaseStatus,
 } from "../_lib/checklist";
 import { generatedPlanToPhases, isGeneratedRoadmapPlan } from "../_lib/generatedRoadmap";
-import { buildRouteTimelinePhases } from "../_lib/routeTimeline";
+import { buildDocumentRoadmap, documentRoadmapToPhases, type DocumentRoadmapSection } from "../_lib/documentRoadmap";
+import type { DocumentGuide } from "./DocumentGuideList";
 
 type DashboardProgressValue = {
   country: string;
@@ -29,6 +30,8 @@ type DashboardProgressValue = {
   setRegisterPromptOpen: (open: boolean) => void;
   isGeneratedPlan: boolean;
   isInteractivePlan: boolean;
+  documentRoadmap: DocumentRoadmapSection[];
+  documentGuidesLoading: boolean;
   toggleStepCompletion: (documentType: string) => void;
   regeneratePlan: () => Promise<void>;
   regenerating: boolean;
@@ -43,16 +46,49 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
   const { t, lang } = useLanguage();
   const [progressCompleted, setProgressCompleted] = useState<Set<string>>(new Set());
   const [roadmapCompleted, setRoadmapCompleted] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
+  const [progressLoading, setProgressLoading] = useState(true);
   const [registerPromptOpen, setRegisterPromptOpen] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
   const [regenerateError, setRegenerateError] = useState(false);
+  const [guides, setGuides] = useState<DocumentGuide[]>([]);
+  const [documentGuidesLoading, setDocumentGuidesLoading] = useState(true);
 
   const country = profile?.country || searchParams.get("country") || "Poland";
 
   const generatedPlan = isGeneratedRoadmapPlan(profile?.roadmap_plan) ? profile.roadmap_plan : null;
   const routeSteps = profile?.route_steps?.length ? profile.route_steps : profile?.selected_route?.steps ?? null;
-  const routeTimelinePhases = buildRouteTimelinePhases(routeSteps, profile?.timeline);
+
+  // The personalized, dated document checklist (see app/_lib/documentRoadmap.ts)
+  // is built from document_guides — the same source /documents reads — filtered
+  // by citizenship group/goal/has_car/has_children and anchored on the user's
+  // move date. It's the most specific roadmap source, so it wins over the
+  // AI-generated plan (app/_lib/generatedRoadmap.ts), which itself takes over
+  // the generic static checklist that only branches on country/goal/citizenship.
+  const documentRoadmap = useMemo(
+    () =>
+      buildDocumentRoadmap(
+        guides,
+        {
+          citizenship: profile?.citizenship,
+          citizenshipGroup: profile?.citizenship_group,
+          goal: profile?.goal,
+          hasCar: profile?.has_car,
+          hasChildren: profile?.has_children,
+        },
+        routeSteps,
+        profile?.timeline,
+      ),
+    [
+      guides,
+      profile?.citizenship,
+      profile?.citizenship_group,
+      profile?.goal,
+      profile?.has_car,
+      profile?.has_children,
+      profile?.timeline,
+      routeSteps,
+    ],
+  );
 
   const phaseTitles: Record<PhaseKey, string> = {
     beforeDeparture: t.dashboard.phases.beforeDeparture,
@@ -61,13 +97,8 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
     workTaxes: t.dashboard.phases.workTaxes,
   };
 
-  // The dated route timeline (see app/_lib/routeTimeline.ts) is the most
-  // specific source — it's deterministically built from the user's actual
-  // chosen route and move date — so it wins over the AI-generated plan
-  // (app/_lib/generatedRoadmap.ts), which itself takes over the generic
-  // static checklist that only branches on country/goal/citizenship.
-  const phases = routeTimelinePhases
-    ? routeTimelinePhases
+  const phases = documentRoadmap.length > 0
+    ? documentRoadmapToPhases(documentRoadmap)
     : generatedPlan
       ? generatedPlanToPhases(generatedPlan)
       : buildPhases(buildChecklistSteps(t, country, profile?.goal, profile?.citizenship), phaseTitles);
@@ -82,7 +113,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
     if (!user) {
       // Demo/preview mode: nothing has actually been done yet, so don't fake progress.
       setProgressCompleted(new Set());
-      setLoading(false);
+      setProgressLoading(false);
       return;
     }
     let active = true;
@@ -99,13 +130,34 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
             .map((row) => row.document_type),
         );
         setProgressCompleted(done);
-        setLoading(false);
+        setProgressLoading(false);
       });
 
     return () => {
       active = false;
     };
   }, [user]);
+
+  // document_guides is a public reference table (not per-user), so this is
+  // fetched once regardless of auth state — same query documents/page.tsx
+  // runs, minus the categories that have their own dedicated pages.
+  useEffect(() => {
+    let active = true;
+    supabase
+      .from("document_guides")
+      .select("*")
+      .not("category", "in", "(финансы,медицина)")
+      .order("step_order", { nullsFirst: false })
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) console.error("Failed to load document guides:", error);
+        setGuides((data as DocumentGuide[]) ?? []);
+        setDocumentGuidesLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Steps in an AI-generated plan aren't tied to any real action elsewhere
   // in the app (document upload, biometric booking, etc.), so they're
@@ -171,6 +223,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
 
   const progressPercent =
     checklistSteps.length > 0 ? Math.round((completed.size / checklistSteps.length) * 100) : 0;
+  const loading = progressLoading || documentGuidesLoading;
 
   return (
     <DashboardProgressContext.Provider
@@ -184,8 +237,10 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         loading,
         registerPromptOpen,
         setRegisterPromptOpen,
-        isGeneratedPlan: !routeTimelinePhases && !!generatedPlan,
-        isInteractivePlan: !!routeTimelinePhases || !!generatedPlan,
+        isGeneratedPlan: documentRoadmap.length === 0 && !!generatedPlan,
+        isInteractivePlan: documentRoadmap.length > 0 || !!generatedPlan,
+        documentRoadmap,
+        documentGuidesLoading,
         toggleStepCompletion,
         regeneratePlan,
         regenerating,
