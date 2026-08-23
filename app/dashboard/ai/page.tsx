@@ -17,6 +17,30 @@ function now(): number {
   return Date.now();
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Reveals `fullText` a few characters at a time into the last message of the
+// array, so the AI's reply appears to be typed live instead of dumped in one
+// frame. Speed scales with length so long answers don't take forever to finish.
+async function revealReply(
+  baseMessages: Message[],
+  fullText: string,
+  setMessages: (messages: Message[]) => void,
+): Promise<Message[]> {
+  const step = fullText.length > 500 ? 7 : fullText.length > 200 ? 4 : fullText.length > 60 ? 2 : 1;
+  let shown = 0;
+  while (shown < fullText.length) {
+    shown = Math.min(fullText.length, shown + step);
+    setMessages([...baseMessages, { from: "ai", text: fullText.slice(0, shown), time: null }]);
+    await sleep(14);
+  }
+  const finalMessages: Message[] = [...baseMessages, { from: "ai", text: fullText, time: now() }];
+  setMessages(finalMessages);
+  return finalMessages;
+}
+
 function renderMessageBody(text: string) {
   const lines = text.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
   return (
@@ -146,6 +170,7 @@ function DashboardAiContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const [deleteTargetSessionId, setDeleteTargetSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -306,21 +331,27 @@ function DashboardAiContent() {
       const data = await response.json();
 
       if (!response.ok) {
+        setIsTyping(false);
         const withError: Message[] = [...nextMessages, { from: "ai", text: data.error ?? t.aiChat.connectionError, time: now() }];
         setMessages(withError);
         await persistSession(withError, sessionId);
         return;
       }
 
-      const withReply: Message[] = [...nextMessages, { from: "ai", text: data.reply, time: now() }];
-      setMessages(withReply);
+      setIsTyping(false);
+      setIsRevealing(true);
+      const withReply = await revealReply(nextMessages, data.reply, setMessages);
+      setIsRevealing(false);
       await persistSession(withReply, sessionId);
     } catch {
+      setIsTyping(false);
+      setIsRevealing(false);
       const withError: Message[] = [...nextMessages, { from: "ai", text: t.aiChat.connectionError, time: now() }];
       setMessages(withError);
       await persistSession(withError, sessionId);
     } finally {
       setIsTyping(false);
+      setIsRevealing(false);
     }
   }
 
@@ -408,13 +439,21 @@ function DashboardAiContent() {
           </div>
         </aside>
 
-        <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1">
-          <div className="flex items-center gap-3 border-b border-border-subtle px-5 py-4">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
-              {SPARKLE_ICON}
+        <div className="relative flex flex-1 flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 shadow-2xl shadow-black/30 ring-1 ring-white/[0.03]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(91,141,239,0.16),transparent)]"
+          />
+          <div className="relative flex items-center gap-3 border-b border-border-subtle bg-surface-1/80 px-5 py-4 backdrop-blur-xl">
+            <span className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_0_24px_-4px_rgba(91,141,239,0.65)]">
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent to-accent-bright opacity-60 blur-md"
+              />
+              <span className="relative">{SPARKLE_ICON}</span>
             </span>
             <div>
-              <p className="text-sm font-semibold text-text-primary">ReloAI ассистент</p>
+              <p className="text-sm font-semibold tracking-tight text-text-primary">ReloAI ассистент</p>
               <p className="flex items-center gap-1.5 text-xs text-text-muted">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 motion-reduce:animate-none" />
@@ -426,9 +465,18 @@ function DashboardAiContent() {
           </div>
 
           {isEmpty ? (
-            <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
+            <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
+              <span className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_0_40px_-8px_rgba(91,141,239,0.6)]">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent to-accent-bright opacity-50 blur-xl"
+                />
+                <span className="relative h-7 w-7">{SPARKLE_ICON}</span>
+              </span>
               <div>
-                <h2 className="text-2xl font-bold text-text-primary">Чем могу помочь?</h2>
+                <h2 className="bg-gradient-to-br from-text-primary to-text-secondary bg-clip-text text-2xl font-bold text-transparent">
+                  Чем могу помочь?
+                </h2>
                 <p className="mt-2 text-sm text-text-muted">Задайте вопрос о переезде — или выберите один из примеров ниже.</p>
               </div>
               <div className="grid w-full max-w-xl gap-2.5 sm:grid-cols-2">
@@ -437,9 +485,9 @@ function DashboardAiContent() {
                     key={reply}
                     type="button"
                     onClick={() => sendMessage(reply)}
-                    className={`flex items-center gap-2.5 rounded-2xl border border-border-subtle bg-surface-1 px-4 py-3 text-left text-sm text-text-secondary transition-colors duration-150 hover:border-accent/40 hover:bg-accent/5 hover:text-text-primary ${pressScale}`}
+                    className={`group flex items-center gap-2.5 rounded-2xl border border-border-subtle bg-surface-1 px-4 py-3 text-left text-sm text-text-secondary shadow-sm transition-[transform,border-color,background-color,color,box-shadow] duration-150 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-accent/5 hover:text-text-primary hover:shadow-[0_8px_24px_-8px_rgba(91,141,239,0.35)] ${pressScale}`}
                   >
-                    <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-accent/15 text-accent-bright">
+                    <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-accent/15 text-accent-bright transition-colors duration-150 group-hover:bg-accent group-hover:text-white">
                       {quickReplyIcon(reply)}
                     </span>
                     {reply}
@@ -456,7 +504,7 @@ function DashboardAiContent() {
                       key={index}
                       className="flex flex-col items-end transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2"
                     >
-                      <div className="max-w-[85%] rounded-2xl rounded-br-md bg-accent px-4 py-3 text-sm leading-relaxed text-white sm:max-w-[75%]">
+                      <div className="max-w-[85%] rounded-2xl rounded-br-md bg-gradient-to-br from-accent to-accent-bright px-4 py-3 text-sm leading-relaxed text-white shadow-[0_8px_24px_-10px_rgba(91,141,239,0.6)] sm:max-w-[75%]">
                         {message.text}
                       </div>
                       {message.time !== null && (
@@ -469,11 +517,14 @@ function DashboardAiContent() {
                       className="flex flex-col items-start transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2"
                     >
                       <div className="flex max-w-[85%] items-start gap-2.5 sm:max-w-[75%]">
-                        <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                        <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_0_14px_-3px_rgba(91,141,239,0.7)]">
                           {SPARKLE_ICON_SM}
                         </span>
-                        <div className="text-sm leading-relaxed text-text-secondary">
+                        <div className="rounded-2xl rounded-bl-md border border-border-subtle bg-surface-2/80 px-4 py-3 text-sm leading-relaxed text-text-secondary shadow-sm backdrop-blur-sm">
                           {renderMessageBody(message.text)}
+                          {isRevealing && index === messages.length - 1 && (
+                            <span className="ml-0.5 inline-block h-4 w-[2px] -mb-0.5 animate-pulse bg-accent-bright align-middle" />
+                          )}
                         </div>
                       </div>
                       {message.time !== null && (
@@ -496,22 +547,23 @@ function DashboardAiContent() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="border-t border-border-subtle p-3 sm:p-4">
-            <div className="mx-auto flex w-full max-w-5xl items-center gap-2 rounded-full border border-border-subtle bg-surface-1 py-1.5 pl-5 pr-1.5 transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30">
+          <form onSubmit={handleSubmit} className="relative border-t border-border-subtle bg-surface-1/80 p-3 backdrop-blur-xl sm:p-4">
+            <div className="mx-auto flex w-full max-w-5xl items-center gap-2 rounded-full border border-border-subtle bg-surface-1 py-1.5 pl-5 pr-1.5 shadow-inner transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30">
               <input
                 type="text"
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 placeholder={t.aiChat.placeholder}
-                className="flex-1 bg-transparent py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none"
+                disabled={isTyping || isRevealing}
+                className="flex-1 bg-transparent py-2 text-sm text-text-primary placeholder:text-text-muted focus:outline-none disabled:opacity-60"
               />
               <button
                 type="submit"
-                disabled={isTyping || !input.trim()}
+                disabled={isTyping || isRevealing || !input.trim()}
                 aria-label={t.aiChat.sendAria}
-                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-accent text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-40 ${pressScale}`}
+                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_0_16px_-4px_rgba(91,141,239,0.7)] transition-colors duration-150 hover:brightness-110 disabled:opacity-40 disabled:shadow-none ${pressScale}`}
               >
-                {isTyping ? (
+                {isTyping || isRevealing ? (
                   <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />

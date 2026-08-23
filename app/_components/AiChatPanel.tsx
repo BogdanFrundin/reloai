@@ -16,6 +16,29 @@ function now(): number {
   return Date.now();
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Reveals `fullText` a few characters at a time into the last message of the
+// array, so replies appear to be typed live instead of dumped in one frame.
+async function revealReply(
+  baseMessages: Message[],
+  fullText: string,
+  action: MessageAction | undefined,
+  setMessages: (updater: (prev: Message[]) => Message[]) => void,
+): Promise<void> {
+  const step = fullText.length > 500 ? 7 : fullText.length > 200 ? 4 : fullText.length > 60 ? 2 : 1;
+  let shown = 0;
+  while (shown < fullText.length) {
+    shown = Math.min(fullText.length, shown + step);
+    const partial = fullText.slice(0, shown);
+    setMessages((prev) => [...prev.slice(0, baseMessages.length), { from: "ai", text: partial, time: null }]);
+    await sleep(14);
+  }
+  setMessages((prev) => [...prev.slice(0, baseMessages.length), { from: "ai", text: fullText, time: now(), action }]);
+}
+
 type SectionKey = "documents" | "housing" | "banks" | "medicine" | "work";
 
 const SECTION_HREFS: Record<SectionKey, string> = {
@@ -106,6 +129,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [greetingInputs, setGreetingInputs] = useState({ t, profile });
   const [upgradeOpen, setUpgradeOpen] = useState(false);
@@ -184,6 +208,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
       const data = await response.json();
 
       if (!response.ok) {
+        setIsTyping(false);
         setMessages((prev) => [
           ...prev,
           { from: "ai", text: data.error ?? t.aiChat.connectionError, time: now() },
@@ -192,12 +217,18 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
       }
 
       const action = detectAction(text, profile?.plan);
-      setMessages((prev) => [...prev, { from: "ai", text: data.reply, time: now(), action }]);
+      setIsTyping(false);
+      setIsRevealing(true);
+      await revealReply(nextMessages, data.reply, action, setMessages);
+      setIsRevealing(false);
       saveMessage("assistant", data.reply);
     } catch {
+      setIsTyping(false);
+      setIsRevealing(false);
       setMessages((prev) => [...prev, { from: "ai", text: t.aiChat.connectionError, time: now() }]);
     } finally {
       setIsTyping(false);
+      setIsRevealing(false);
     }
   }
 
@@ -216,7 +247,7 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 backdrop-blur-xl">
       <div className="flex items-center gap-3 border-b border-border-subtle px-5 py-4">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
+        <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white shadow-[0_0_18px_-4px_rgba(91,141,239,0.7)]">
           AI
         </span>
         <div className="flex-1">
@@ -254,11 +285,20 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
             <div
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 message.from === "user"
-                  ? "rounded-br-md bg-accent text-white"
-                  : "rounded-bl-md border border-border-subtle bg-surface-2 text-text-secondary"
+                  ? "rounded-br-md bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_6px_18px_-8px_rgba(91,141,239,0.6)]"
+                  : "rounded-bl-md border border-border-subtle bg-surface-2/80 text-text-secondary shadow-sm backdrop-blur-sm"
               }`}
             >
-              {message.from === "user" ? message.text : renderMessageBody(message.text)}
+              {message.from === "user" ? (
+                message.text
+              ) : (
+                <>
+                  {renderMessageBody(message.text)}
+                  {isRevealing && index === messages.length - 1 && (
+                    <span className="ml-0.5 inline-block h-4 w-[2px] -mb-0.5 animate-pulse bg-accent-bright align-middle" />
+                  )}
+                </>
+              )}
             </div>
             {message.from === "ai" && message.action && (
               message.action.type === "premium" ? (
@@ -316,15 +356,16 @@ export default function AiChatPanel({ onClose }: { onClose?: () => void }) {
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder={t.aiChat.placeholder}
-          className="flex-1 rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+          disabled={isTyping || isRevealing}
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-[border-color,box-shadow] duration-150 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 disabled:opacity-60"
         />
         <button
           type="submit"
-          disabled={isTyping}
+          disabled={isTyping || isRevealing}
           aria-label={t.aiChat.sendAria}
-          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-60 ${pressScale}`}
+          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-white shadow-[0_0_14px_-4px_rgba(91,141,239,0.7)] transition-colors duration-150 hover:brightness-110 disabled:opacity-60 disabled:shadow-none ${pressScale}`}
         >
-          {isTyping ? (
+          {isTyping || isRevealing ? (
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
