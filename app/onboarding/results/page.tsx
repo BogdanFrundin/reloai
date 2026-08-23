@@ -286,6 +286,12 @@ export default function OnboardingResultsPage() {
   async function handleSelectRoute(route: Route) {
     if (!user) return;
 
+    // A user who already has a selected_route has been through onboarding
+    // before -- they're redoing/recreating their roadmap, not registering
+    // for the first time. Capture this before we overwrite selected_route
+    // below, so the notification wording matches what actually happened.
+    const isFirstOnboarding = !profile?.selected_route;
+
     setSelectingId(route.name);
     setSelectError(false);
 
@@ -322,11 +328,22 @@ export default function OnboardingResultsPage() {
 
       await refreshProfile();
 
-      createNotification({
-        title: "Спасибо за регистрацию! 🎉",
-        message: `Вы успешно заполнили данные анкеты и выбрали план релокации (${route.name}). Вы можете изменить эти данные в любой момент в настройках профиля.`,
-        type: "welcome",
-      });
+      if (isFirstOnboarding) {
+        // The "welcome / thanks for registering" notification already fired
+        // once at account creation (see app/register/page.tsx) -- this one
+        // is about finishing the onboarding questionnaire, not registering.
+        createNotification({
+          title: "Анкета заполнена! 🎉",
+          message: `Вы успешно заполнили данные анкеты и выбрали план релокации (${route.name}). Вы можете изменить эти данные в любой момент в настройках профиля.`,
+          type: "welcome",
+        });
+      } else {
+        createNotification({
+          title: "Дорожная карта обновлена ✅",
+          message: `Вы пересоздали план релокации (${route.name}). Прогресс по новой дорожной карте начнётся заново — прежние данные анкеты можно посмотреть и изменить в настройках профиля.`,
+          type: "checklist",
+        });
+      }
 
       router.push("/home");
     } catch (err) {
