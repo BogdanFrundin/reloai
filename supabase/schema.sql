@@ -12,6 +12,7 @@ create table public.profiles (
   country text,
   city text,
   citizenship text,
+  citizenship_group text,
   current_country text,
   goal text,
   job_offer text,
@@ -21,6 +22,7 @@ create table public.profiles (
   last_active_at timestamptz default now(),
   route jsonb,
   selected_route jsonb,
+  route_steps text[] default '{}',
   roadmap_plan jsonb,
   roadmap_completed_steps text[] default '{}',
   plan text default 'free',
@@ -31,6 +33,7 @@ create table public.profiles (
 
 -- Safe to re-run against a database created before these columns existed.
 alter table public.profiles add column if not exists citizenship text;
+alter table public.profiles add column if not exists citizenship_group text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists job_offer text;
@@ -40,16 +43,23 @@ alter table public.profiles add column if not exists skipped_steps text[] defaul
 alter table public.profiles add column if not exists last_active_at timestamptz default now();
 alter table public.profiles add column if not exists route jsonb;
 alter table public.profiles add column if not exists selected_route jsonb;
+alter table public.profiles add column if not exists route_steps text[] default '{}';
 alter table public.profiles add column if not exists roadmap_plan jsonb;
 alter table public.profiles add column if not exists roadmap_completed_steps text[] default '{}';
 alter table public.profiles add column if not exists document_profile jsonb;
 
 -- citizenship and current_country store ISO 3166-1 alpha-2 country codes (e.g. "UA", "PL")
 -- selected from the searchable country dropdown — see app/onboarding/page.tsx.
+-- citizenship_group is the derived "A"/"B"/"C"/"D" bucket for that citizenship code (see
+-- app/_lib/citizenshipGroups.ts), saved alongside citizenship so route generation and the
+-- document filtering matrix don't need to recompute it on every read.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.
--- selected_route stores the user's chosen Route from the results screen: { name, description, speed, cost, difficulty, ... }
+-- selected_route stores the user's chosen Route from the results screen: { name, description, speed, cost, difficulty, ... },
+-- generated deterministically from citizenship_group/goal/job_offer by app/_lib/routeEngine.ts.
+-- route_steps stores just the step names from that route (Route.steps) as its own array,
+-- so they can be queried without unpacking the selected_route jsonb.
 -- roadmap_plan stores the AI-generated personalized relocation plan (GeneratedRoadmapPlan —
 -- { phases: { key, title, steps: { id, title, description }[] }[] }), generated right after
 -- onboarding and regenerable later — see app/api/roadmap/route.ts and

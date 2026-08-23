@@ -32,6 +32,7 @@ export type Profile = {
   last_active_at: string | null;
   route: RouteEngineResult | null;
   selected_route: Route | null;
+  route_steps: string[] | null;
   roadmap_plan: GeneratedRoadmapPlan | null;
   roadmap_completed_steps: string[] | null;
   plan: string | null;

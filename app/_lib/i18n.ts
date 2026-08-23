@@ -784,6 +784,8 @@ export type Dictionary = {
       steps: string;
       bestFor: string;
       selectError: string;
+      incompleteHeading: string;
+      incompleteCta: string;
     };
   };
 };
@@ -2313,6 +2315,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Steps",
         bestFor: "Best for",
         selectError: "Couldn't save your selected route. Please try again.",
+        incompleteHeading: "Please finish the questionnaire first — we need your citizenship and goal to build your routes.",
+        incompleteCta: "Continue the questionnaire",
       },
     },
   },
@@ -3843,6 +3847,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Шаги",
         bestFor: "Подходит для",
         selectError: "Не удалось сохранить выбранный маршрут. Попробуйте снова.",
+        incompleteHeading: "Сначала завершите анкету — нам нужны гражданство и цель переезда, чтобы построить маршруты.",
+        incompleteCta: "Продолжить анкету",
       },
     },
   },
@@ -5368,6 +5374,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Bosqichlar",
         bestFor: "Kimlarga mos",
         selectError: "Tanlangan yo'lni saqlab bo'lmadi. Qayta urinib ko'ring.",
+        incompleteHeading: "Avval anketani to'ldiring — mararhalarni yaratish uchun fuqarolik va maqsad kerak.",
+        incompleteCta: "Anketani davom ettirish",
       },
     },
   },
@@ -6892,6 +6900,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Adımlar",
         bestFor: "Kimler için uygun",
         selectError: "Seçilen rota kaydedilemedi. Lütfen tekrar deneyin.",
+        incompleteHeading: "Önce anketi tamamlayın — yollarınızı oluşturmak için uyruk ve hedef bilgisi gerekiyor.",
+        incompleteCta: "Ankete devam et",
       },
     },
   },
@@ -8416,6 +8426,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Қадамҳо",
         bestFor: "Барои кӣ мувофиқ аст",
         selectError: "Роҳи интихобшуда захира нашуд. Лутфан аз нав кӯшиш кунед.",
+        incompleteHeading: "Аввал анкетаро пур кунед — барои сохтани роҳҳо шаҳрвандӣ ва ҳадаф лозим аст.",
+        incompleteCta: "Идомаи анкета",
       },
     },
   },
@@ -9946,6 +9958,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         steps: "Кроки",
         bestFor: "Підходить для",
         selectError: "Не вдалося зберегти обраний маршрут. Спробуйте ще раз.",
+        incompleteHeading: "Спершу завершіть анкету — нам потрібні громадянство і мета переїзду, щоб побудувати маршрути.",
+        incompleteCta: "Продовжити анкету",
       },
     },
   },

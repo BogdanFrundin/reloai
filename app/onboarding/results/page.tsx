@@ -10,55 +10,9 @@ import { supabase } from "../../../lib/supabase";
 import { fireConfetti } from "../../_lib/confetti";
 import { createNotification } from "../../_lib/notifications";
 import type { Dictionary } from "../../_lib/i18n";
-import type { Route, RouteEngineResult } from "../../api/route/route";
-
-const OPENAI_TIMEOUT_MS = 5000;
-const FAKE_LOADING_MS = 3000;
-
-const STATIC_FALLBACK_ROUTES: Route[] = [
-  {
-    name: "Быстрый маршрут",
-    description: "Самый быстрый путь для тех, кто уже нашёл работу в Польше.",
-    speed: "fast",
-    cost: "€300–800",
-    difficulty: "easy",
-    approval_rate: 80,
-    documents_needed: ["Виза", "PESEL", "Банк", "Работа"],
-    timeline: "3-6 месяцев",
-    recommended: false,
-    reason: "Оптимальный вариант, если у вас уже есть предложение о работе.",
-    steps: ["Виза", "PESEL", "Банк", "Работа"],
-    bestFor: "работа по найму",
-  },
-  {
-    name: "Стандартный маршрут",
-    description: "Полный путь легализации для тех, кто планирует остаться в Польше надолго.",
-    speed: "medium",
-    cost: "€800–2000",
-    difficulty: "medium",
-    approval_rate: 65,
-    documents_needed: ["Виза", "Карта побыту", "PESEL", "Банк", "Жильё", "Работа"],
-    timeline: "6-12 месяцев",
-    recommended: true,
-    reason: "Самый сбалансированный маршрут для долгосрочного переезда.",
-    steps: ["Виза", "Карта побыту", "PESEL", "Банк", "Жильё", "Работа"],
-    bestFor: "долгосрочное проживание",
-  },
-  {
-    name: "Бизнес маршрут",
-    description: "Путь для предпринимателей, которые хотят открыть бизнес в Польше.",
-    speed: "medium",
-    cost: "€1500–4000",
-    difficulty: "hard",
-    approval_rate: 55,
-    documents_needed: ["Виза", "PESEL", "Банк", "Регистрация компании", "ВНЖ"],
-    timeline: "6-9 месяцев",
-    recommended: false,
-    reason: "Подходит для тех, кто хочет вести бизнес и получить ВНЖ через компанию.",
-    steps: ["Виза", "PESEL", "Банк", "Регистрация компании", "ВНЖ"],
-    bestFor: "открытие бизнеса",
-  },
-];
+import type { Route } from "../../api/route/route";
+import { generateRoutes } from "../../_lib/routeEngine";
+import type { CitizenshipGroup } from "../../_lib/citizenshipGroups";
 
 function SpeedBadge({ speed, label }: { speed: string; label: string }) {
   const colors =
@@ -188,100 +142,31 @@ export default function OnboardingResultsPage() {
   const router = useRouter();
   const { user, profile, refreshProfile } = useAuth();
   const { t, lang } = useLanguage();
-  const [result, setResult] = useState<RouteEngineResult | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [selectingId, setSelectingId] = useState<string | null>(null);
   const [selectError, setSelectError] = useState(false);
   const confettiFiredRef = useRef(false);
 
+  // Profile is missing the fields the route engine needs (e.g. onboarding was
+  // exited before citizenship/goal were answered) — never happens on the
+  // normal flow since finishOnboarding() always fills in defaults, but guards
+  // against direct navigation or stale accounts.
+  const profileIncomplete = !!profile && (!profile.citizenship_group || !profile.goal);
+
+  const routes =
+    profile && !profileIncomplete
+      ? generateRoutes({
+          citizenshipGroup: profile.citizenship_group as CitizenshipGroup | null,
+          goal: profile.goal,
+          hasJobOffer: profile.job_offer === "yes",
+        })
+      : null;
+
   useEffect(() => {
-    if (!loading && result?.routes && !confettiFiredRef.current) {
+    if (routes && !confettiFiredRef.current) {
       confettiFiredRef.current = true;
       fireConfetti();
     }
-  }, [loading, result]);
-
-  // Drives the progress bar shown while routes are being generated. Caps at
-  // 96% so it never visually claims "done" before the real result lands —
-  // the last stretch snaps to 100% once loading actually flips to false.
-  useEffect(() => {
-    if (!loading) {
-      setLoadingProgress(0);
-      return;
-    }
-    const start = Date.now();
-    const timer = setInterval(() => {
-      const elapsed = Date.now() - start;
-      setLoadingProgress(Math.min(96, Math.round((elapsed / FAKE_LOADING_MS) * 100)));
-    }, 100);
-    return () => clearInterval(timer);
-  }, [loading]);
-
-  useEffect(() => {
-    if (!user || !profile) return;
-    let active = true;
-    let settled = false;
-
-    setLoading(true);
-
-    const controller = new AbortController();
-    const abortTimer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
-
-    // Never keep the user waiting more than a few seconds — if the AI route
-    // engine hasn't answered by then, show the static Poland routes instead.
-    const fallbackTimer = setTimeout(() => {
-      if (!active || settled) return;
-      settled = true;
-      controller.abort();
-      setResult({ routes: STATIC_FALLBACK_ROUTES });
-      setLoading(false);
-    }, FAKE_LOADING_MS);
-
-    async function loadRoutes() {
-      try {
-        const response = await fetch("/api/route", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            citizenship: profile?.citizenship,
-            current_country: profile?.current_country,
-            country: profile?.country,
-            goal: profile?.goal,
-            language: lang,
-          }),
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Route API returned ${response.status}`);
-        }
-
-        const data = (await response.json()) as RouteEngineResult;
-        if (!active || settled) return;
-        settled = true;
-        clearTimeout(fallbackTimer);
-        setResult(data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Failed to load relocation routes, using static fallback:", err);
-        if (!active || settled) return;
-        settled = true;
-        clearTimeout(fallbackTimer);
-        setResult({ routes: STATIC_FALLBACK_ROUTES });
-        setLoading(false);
-      } finally {
-        clearTimeout(abortTimer);
-      }
-    }
-
-    loadRoutes();
-    return () => {
-      active = false;
-      clearTimeout(abortTimer);
-      clearTimeout(fallbackTimer);
-    };
-  }, [user, profile]);
+  }, [routes]);
 
   async function handleSelectRoute(route: Route) {
     if (!user) return;
@@ -296,7 +181,10 @@ export default function OnboardingResultsPage() {
     setSelectError(false);
 
     try {
-      await supabase.from("profiles").update({ selected_route: route }).eq("id", user.id);
+      await supabase
+        .from("profiles")
+        .update({ selected_route: route, route_steps: route.steps ?? [] })
+        .eq("id", user.id);
 
       // Generate the user's real, personalized step-by-step plan right now
       // (not just the 3-option route summary) so it's already sitting on
@@ -381,39 +269,40 @@ export default function OnboardingResultsPage() {
             </Reveal>
           </div>
 
-          {loading && (
+          {!profile && (
             <Reveal>
               <div className="flex flex-col items-center justify-center py-20">
                 <svg className="h-8 w-8 animate-spin text-accent-bright" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                 </svg>
-                <p className="mt-4 text-text-muted">{t.onboarding.results.loading}</p>
-
-                <div className="mt-6 w-full max-w-xs">
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-                    <div
-                      className="h-full rounded-full bg-accent transition-[width] duration-150 ease-out"
-                      style={{ width: `${loadingProgress}%` }}
-                    />
-                  </div>
-                </div>
-                <p className="mt-3 text-center text-xs text-text-muted">
-                  Обычно это занимает несколько секунд. Подождите — не закрывайте и не обновляйте вкладку.
-                </p>
               </div>
             </Reveal>
           )}
 
-          {selectError && !loading && (
+          {profileIncomplete && (
+            <Reveal>
+              <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
+                <p className="max-w-md text-text-muted">{t.onboarding.results.incompleteHeading}</p>
+                <button
+                  onClick={() => router.push("/onboarding")}
+                  className="rounded-2xl bg-accent px-6 py-3 text-sm font-bold text-white transition-colors duration-150 hover:bg-accent-bright"
+                >
+                  {t.onboarding.results.incompleteCta}
+                </button>
+              </div>
+            </Reveal>
+          )}
+
+          {selectError && (
             <Reveal>
               <p className="mb-6 text-center text-sm text-red-400">{t.onboarding.results.selectError}</p>
             </Reveal>
           )}
 
-          {!loading && result && result.routes && (
+          {routes && (
             <div className="grid gap-6 sm:grid-cols-3">
-              {result.routes.map((route, index) => (
+              {routes.map((route, index) => (
                 <Reveal key={route.name} delay={index * 100} className="h-full">
                   <RouteCard
                     route={route}
