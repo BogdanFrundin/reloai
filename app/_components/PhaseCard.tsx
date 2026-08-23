@@ -124,6 +124,24 @@ const CHEVRON_ICON = (
   </svg>
 );
 
+const CALENDAR_ICON = (
+  <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M4.5 6h15a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75h-15a.75.75 0 01-.75-.75V6.75A.75.75 0 014.5 6z" />
+  </svg>
+);
+
+const WARNING_ICON = (
+  <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0 3.75h.008v.008H12v-.008zM9.401 3.6l-8.2 14.2A1.5 1.5 0 002.5 20h19a1.5 1.5 0 001.3-2.2l-8.2-14.2a1.5 1.5 0 00-2.6 0z" />
+  </svg>
+);
+
+const URGENCY_TEXT_CLASS: Record<"urgent" | "upcoming" | "future", string> = {
+  urgent: "text-red-400",
+  upcoming: "text-amber-400",
+  future: "text-text-muted",
+};
+
 export default function PhaseCard({
   phase,
   status,
@@ -187,11 +205,29 @@ export default function PhaseCard({
                 />
               </span>
               <div className="min-w-0 flex-1">
-                <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>
+                  {step.dateLabel && (
+                    <span
+                      className={`flex items-center gap-1 text-xs font-semibold ${
+                        step.urgency ? URGENCY_TEXT_CLASS[step.urgency] : "text-text-muted"
+                      }`}
+                    >
+                      {CALENDAR_ICON}
+                      {step.dateLabel}
+                    </span>
+                  )}
+                </div>
                 <p className="mt-0.5 text-xs text-text-muted">{step.description}</p>
+                {step.warning && (
+                  <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-400">
+                    {WARNING_ICON}
+                    {step.warning}
+                  </p>
+                )}
               </div>
               <div className="flex flex-shrink-0 items-center gap-2" onClick={(event) => event.stopPropagation()}>
-                {step.documentType === "documents" && (
+                {(step.documentType === "documents" || step.linkToDocuments) && (
                   <Link
                     href="/documents"
                     onClick={(event) => event.stopPropagation()}

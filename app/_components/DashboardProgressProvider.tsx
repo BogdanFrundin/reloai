@@ -15,6 +15,7 @@ import {
   type PhaseStatus,
 } from "../_lib/checklist";
 import { generatedPlanToPhases, isGeneratedRoadmapPlan } from "../_lib/generatedRoadmap";
+import { buildRouteTimelinePhases } from "../_lib/routeTimeline";
 
 type DashboardProgressValue = {
   country: string;
@@ -27,6 +28,7 @@ type DashboardProgressValue = {
   registerPromptOpen: boolean;
   setRegisterPromptOpen: (open: boolean) => void;
   isGeneratedPlan: boolean;
+  isInteractivePlan: boolean;
   toggleStepCompletion: (documentType: string) => void;
   regeneratePlan: () => Promise<void>;
   regenerating: boolean;
@@ -49,6 +51,8 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
   const country = profile?.country || searchParams.get("country") || "Poland";
 
   const generatedPlan = isGeneratedRoadmapPlan(profile?.roadmap_plan) ? profile.roadmap_plan : null;
+  const routeSteps = profile?.route_steps?.length ? profile.route_steps : profile?.selected_route?.steps ?? null;
+  const routeTimelinePhases = buildRouteTimelinePhases(routeSteps, profile?.timeline);
 
   const phaseTitles: Record<PhaseKey, string> = {
     beforeDeparture: t.dashboard.phases.beforeDeparture,
@@ -57,12 +61,16 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
     workTaxes: t.dashboard.phases.workTaxes,
   };
 
-  // A user's AI-generated personal plan (see app/_lib/generatedRoadmap.ts)
-  // takes over the roadmap entirely once it exists; otherwise fall back to
-  // the built-in static checklist that only branches on country/goal/citizenship.
-  const phases = generatedPlan
-    ? generatedPlanToPhases(generatedPlan)
-    : buildPhases(buildChecklistSteps(t, country, profile?.goal, profile?.citizenship), phaseTitles);
+  // The dated route timeline (see app/_lib/routeTimeline.ts) is the most
+  // specific source — it's deterministically built from the user's actual
+  // chosen route and move date — so it wins over the AI-generated plan
+  // (app/_lib/generatedRoadmap.ts), which itself takes over the generic
+  // static checklist that only branches on country/goal/citizenship.
+  const phases = routeTimelinePhases
+    ? routeTimelinePhases
+    : generatedPlan
+      ? generatedPlanToPhases(generatedPlan)
+      : buildPhases(buildChecklistSteps(t, country, profile?.goal, profile?.citizenship), phaseTitles);
   const checklistSteps = phases.flatMap((phase) => phase.steps);
   const completed = useMemo(
     () => new Set<string>([...progressCompleted, ...roadmapCompleted]),
@@ -176,7 +184,8 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         loading,
         registerPromptOpen,
         setRegisterPromptOpen,
-        isGeneratedPlan: !!generatedPlan,
+        isGeneratedPlan: !routeTimelinePhases && !!generatedPlan,
+        isInteractivePlan: !!routeTimelinePhases || !!generatedPlan,
         toggleStepCompletion,
         regeneratePlan,
         regenerating,

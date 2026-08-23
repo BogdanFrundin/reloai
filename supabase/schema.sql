@@ -17,6 +17,14 @@ create table public.profiles (
   goal text,
   job_offer text,
   already_admitted text,
+  study_level text,
+  business_type text,
+  family_member_type text,
+  has_children text,
+  has_foreign_employer text,
+  will_register_ip text,
+  timeline text,
+  has_car text,
   onboarding_skipped boolean default false,
   skipped_steps text[] default '{}',
   last_active_at timestamptz default now(),
@@ -38,6 +46,14 @@ alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists job_offer text;
 alter table public.profiles add column if not exists already_admitted text;
+alter table public.profiles add column if not exists study_level text;
+alter table public.profiles add column if not exists business_type text;
+alter table public.profiles add column if not exists family_member_type text;
+alter table public.profiles add column if not exists has_children text;
+alter table public.profiles add column if not exists has_foreign_employer text;
+alter table public.profiles add column if not exists will_register_ip text;
+alter table public.profiles add column if not exists timeline text;
+alter table public.profiles add column if not exists has_car text;
 alter table public.profiles add column if not exists onboarding_skipped boolean default false;
 alter table public.profiles add column if not exists skipped_steps text[] default '{}';
 alter table public.profiles add column if not exists last_active_at timestamptz default now();
@@ -60,13 +76,17 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- generated deterministically from citizenship_group/goal/job_offer by app/_lib/routeEngine.ts.
 -- route_steps stores just the step names from that route (Route.steps) as its own array,
 -- so they can be queried without unpacking the selected_route jsonb.
+-- timeline is the onboarding "when do you plan to move?" answer (already/month1/months3/
+-- months6/year1/exploring — see the "timeline" step in app/onboarding/page.tsx). Together with
+-- route_steps it anchors the dated document timeline on the dashboard roadmap page — see
+-- app/_lib/routeTimeline.ts.
 -- roadmap_plan stores the AI-generated personalized relocation plan (GeneratedRoadmapPlan —
 -- { phases: { key, title, steps: { id, title, description }[] }[] }), generated right after
 -- onboarding and regenerable later — see app/api/roadmap/route.ts and
--- app/_components/DashboardProgressProvider.tsx. When present, it fully replaces the static
--- checklist on the dashboard roadmap.
--- roadmap_completed_steps stores the ids of roadmap_plan steps the user has manually checked
--- off (AI-generated steps aren't tied to any other in-app action, so completion is self-reported).
+-- app/_components/DashboardProgressProvider.tsx. It's used on the dashboard roadmap whenever
+-- there's no route_steps-based timeline to show instead.
+-- roadmap_completed_steps stores the ids of roadmap_plan/route timeline steps the user has
+-- manually checked off (neither is tied to any other in-app action, so completion is self-reported).
 -- document_profile stores reusable personal data the AI form-fill feature needs
 -- (full name, date/place of birth, passport, address, etc.) — see
 -- app/_lib/documentProfile.ts for the shape and app/api/documents/fill/route.ts

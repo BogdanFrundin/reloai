@@ -80,6 +80,7 @@ export default function DashboardContent() {
     registerPromptOpen,
     setRegisterPromptOpen,
     isGeneratedPlan,
+    isInteractivePlan,
     toggleStepCompletion,
     regeneratePlan,
     regenerating,
@@ -173,7 +174,7 @@ export default function DashboardContent() {
               status={phaseStatuses[phase.key]}
               index={index}
               completed={completed}
-              onToggleStep={isGeneratedPlan ? toggleStepCompletion : undefined}
+              onToggleStep={isInteractivePlan ? toggleStepCompletion : undefined}
             />
           ))}
       </div>
