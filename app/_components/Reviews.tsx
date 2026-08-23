@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
 import { pressScale } from "../_lib/motion";
+import { REVIEW_AVATARS } from "../_lib/reviewAvatars";
 
 const AUTO_SCROLL_MS = 4000;
 
@@ -56,7 +58,7 @@ export default function Reviews() {
             onScroll={handleScroll}
             className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {items.map((review) => (
+            {items.map((review, reviewIndex) => (
               <div key={review.name} className="w-full flex-shrink-0 snap-start px-1 sm:px-8">
                 <div className="mx-auto flex h-full max-w-2xl flex-col rounded-2xl border border-border-subtle bg-surface-1 p-7 backdrop-blur-sm sm:p-10">
                   <div className="flex items-center justify-between">
@@ -91,9 +93,19 @@ export default function Reviews() {
                   )}
 
                   <div className="mt-6 flex items-center gap-3">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white">
-                      {review.initials}
-                    </span>
+                    {REVIEW_AVATARS[reviewIndex] ? (
+                      <Image
+                        src={REVIEW_AVATARS[reviewIndex]}
+                        alt={review.name}
+                        width={40}
+                        height={40}
+                        className="h-10 w-10 flex-shrink-0 rounded-full object-cover ring-1 ring-border-subtle"
+                      />
+                    ) : (
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white">
+                        {review.initials}
+                      </span>
+                    )}
                     <div>
                       <p className="text-sm font-semibold text-text-primary">{review.name}</p>
                       <p className="text-xs text-text-muted">{review.route}</p>
