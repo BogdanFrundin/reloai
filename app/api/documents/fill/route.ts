@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 import { getTemplateByKey } from "../../../_lib/formTemplates";
 import type { DocumentProfile } from "../../../_lib/documentProfile";
 
@@ -38,37 +38,59 @@ export async function POST(request: Request) {
   }
 
   const pdfDoc = await PDFDocument.load(bytes);
-  const form = pdfDoc.getForm();
+  const hasOverlayFields = template.fields.some((f) => f.kind === "overlay-text" || f.kind === "overlay-check");
+  const helvetica = hasOverlayFields ? await pdfDoc.embedFont(StandardFonts.Helvetica) : null;
+  const helveticaBold = hasOverlayFields ? await pdfDoc.embedFont(StandardFonts.HelveticaBold) : null;
 
   const skipped: string[] = [];
 
   for (const field of template.fields) {
     try {
       if (field.kind === "text") {
+        const form = pdfDoc.getForm();
         const value = field.value(ctx);
         if (!value) continue;
         const textField = form.getTextField(field.pdfField);
         textField.setText(String(value));
-      } else {
+      } else if (field.kind === "checkbox") {
+        const form = pdfDoc.getForm();
         const shouldCheck = field.checked(ctx);
         const checkBox = form.getCheckBox(field.pdfField);
-        if (shouldCheck) {
-          checkBox.check();
+        if (shouldCheck) checkBox.check();
+      } else if (field.kind === "overlay-text") {
+        const value = field.value(ctx);
+        if (!value) continue;
+        const page = pdfDoc.getPage(field.page);
+        const size = field.size ?? 9;
+        let drawSize = size;
+        if (field.maxWidth && helvetica) {
+          const width = helvetica.widthOfTextAtSize(String(value), size);
+          if (width > field.maxWidth) {
+            drawSize = Math.max(6, size * (field.maxWidth / width));
+          }
         }
+        page.drawText(String(value), { x: field.x, y: field.y, size: drawSize, font: helvetica! });
+      } else {
+        // overlay-check
+        if (!field.checked(ctx)) continue;
+        const page = pdfDoc.getPage(field.page);
+        const size = field.size ?? 9;
+        page.drawText("X", { x: field.x, y: field.y, size, font: helveticaBold! });
       }
     } catch (err) {
-      // A field name that no longer matches the source PDF shouldn't take
-      // down the whole fill -- skip it and keep going with the rest.
-      skipped.push(field.pdfField);
+      // A field/position that no longer matches the source PDF shouldn't
+      // take down the whole fill -- skip it and keep going with the rest.
+      const label = field.kind === "text" || field.kind === "checkbox" ? field.pdfField : `${field.kind}@${field.page}`;
+      skipped.push(label);
     }
   }
 
   if (skipped.length > 0) {
-    console.warn(`Form fill (${template.key}): ${skipped.length} field(s) not found in PDF:`, skipped);
+    console.warn(`Form fill (${template.key}): ${skipped.length} field(s) failed:`, skipped);
   }
 
   try {
-    form.updateFieldAppearances();
+    pdfDoc.getForm().updateFieldAppearances();
   } catch {
     // Best-effort -- pdf-lib already generates appearances per setText/check call.
   }
