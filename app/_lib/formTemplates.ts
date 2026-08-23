@@ -96,6 +96,21 @@ function countryName(code: string | undefined | null): string {
   return getCountryName(code, "ru");
 }
 
+// Generates 11 overlay-text fields, one per digit, for the boxed "Numer
+// PESEL" grid that appears on most Polish government forms. x0/boxWidth are
+// measured from the box-drawing glyphs (pdftotext -bbox) or, when the boxes
+// are vector graphics rather than text, from a rendered image.
+function peselBoxFields(page: number, x0: number, boxWidth: number, y: number, size = 8, charOffset = 6.1): OverlayTextMap[] {
+  return Array.from({ length: 11 }, (_, i) => ({
+    kind: "overlay-text" as const,
+    page,
+    x: x0 + i * boxWidth + charOffset,
+    y,
+    size,
+    value: (c: FillContext) => c.profile.pesel?.[i],
+  }));
+}
+
 const PESEL_STANDARD: FormTemplate = {
   key: "pesel-standard",
   guideNames: ["PESEL обычный"],
@@ -419,6 +434,7 @@ const PIT36: FormTemplate = {
   pdfPath: "/forms/pit-36.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 57.84, 16.55, 791),
     { kind: "overlay-text", page: 0, x: 36, y: 348, size: 7, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 289, y: 348, size: 7, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 426, y: 348, size: 7, value: (c) => formatDateDMY(c.profile.birthDate) },
@@ -438,6 +454,7 @@ const PIT37: FormTemplate = {
   pdfPath: "/forms/pit-37.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 69.624, 16.536, 795),
     { kind: "overlay-text", page: 0, x: 36, y: 308, size: 7, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 330, y: 308, size: 7, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 447, y: 308, size: 7, value: (c) => formatDateDMY(c.profile.birthDate) },
@@ -457,6 +474,7 @@ const PIT28: FormTemplate = {
   pdfPath: "/forms/pit-28.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 72.504, 16.536, 776),
     { kind: "overlay-text", page: 0, x: 38, y: 463, size: 7, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 254, y: 463, size: 7, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 434, y: 463, size: 7, value: (c) => formatDateDMY(c.profile.birthDate) },
@@ -476,6 +494,7 @@ const ZAP3: FormTemplate = {
   pdfPath: "/forms/zap-3.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 54.36, 16.536, 796),
     { kind: "overlay-text", page: 0, x: 33, y: 520, size: 7, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 360, y: 520, size: 7, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 36, y: 448, size: 7, value: () => "Polska" },
@@ -496,6 +515,7 @@ const DSF1: FormTemplate = {
   pdfPath: "/forms/dsf-1.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 72.024, 16.536, 781),
     { kind: "overlay-text", page: 0, x: 60, y: 530, size: 7, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 300, y: 530, size: 7, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 419, y: 530, size: 7, value: (c) => formatDateDMY(c.profile.birthDate) },
@@ -515,6 +535,7 @@ const MELDUNEK: FormTemplate = {
   pdfPath: "/forms/meldunek.pdf",
   verified: true,
   fields: [
+    ...peselBoxFields(0, 182, 15.9, 510, 8, 5.7),
     { kind: "overlay-text", page: 0, x: 195, y: 567, size: 9, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 195, y: 537, size: 9, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 195, y: 477, size: 9, value: (c) => c.profile.birthCountry || countryName(c.citizenship) },
@@ -580,6 +601,7 @@ const LEGITYMACJA_STUDENCKA: FormTemplate = {
     { kind: "overlay-text", page: 0, x: 90, y: 721, size: 9, value: (c) => c.profile.firstName },
     { kind: "overlay-text", page: 0, x: 340, y: 721, size: 9, value: (c) => c.profile.lastName },
     { kind: "overlay-text", page: 0, x: 100, y: 699, size: 9, value: (c) => formatDateDMY(c.profile.birthDate) },
+    { kind: "overlay-text", page: 0, x: 340, y: 699, size: 9, value: (c) => c.profile.pesel },
     { kind: "overlay-text", page: 0, x: 395, y: 655, size: 8, value: (c) => countryName(c.citizenship) },
     {
       kind: "overlay-text",

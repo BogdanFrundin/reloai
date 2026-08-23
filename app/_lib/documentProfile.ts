@@ -13,6 +13,7 @@ export type DocumentProfile = {
   birthDate?: string; // ISO yyyy-mm-dd
   birthPlace?: string;
   birthCountry?: string;
+  pesel?: string; // the user's own PESEL, if already assigned
   citizenship?: string; // ISO alpha-2, defaults from profile.citizenship
   maritalStatus?: "single" | "married" | "divorced" | "widowed";
   spouseFirstName?: string;
@@ -66,6 +67,7 @@ export const DOCUMENT_PROFILE_GROUPS: DocumentProfileFieldGroup[] = [
       { key: "birthDate", label: "Дата рождения", type: "date" },
       { key: "birthPlace", label: "Место рождения (город)", type: "text" },
       { key: "birthCountry", label: "Страна рождения", type: "text" },
+      { key: "pesel", label: "Ваш PESEL (если уже присвоен)", type: "text", placeholder: "11 цифр" },
     ],
   },
   {
