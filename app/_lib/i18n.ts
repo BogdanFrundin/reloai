@@ -1413,7 +1413,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Documents",
-      subtitle: "Everything you need for your relocation, in one place.",
+      subtitle: "The documents you need, in one place.",
       tabs: {
         all: "All",
         passport: "Passport",
@@ -2943,7 +2943,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Документы",
-      subtitle: "Всё необходимое для переезда — в одном месте.",
+      subtitle: "Документы, которые нужны именно вам, — в одном месте.",
       tabs: {
         all: "Все",
         passport: "Паспорт",
@@ -4470,7 +4470,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Hujjatlar",
-      subtitle: "Ko'chib o'tishingiz uchun kerak bo'lgan hamma narsa bir joyda.",
+      subtitle: "Aynan sizga kerak bo'lgan hujjatlar bir joyda.",
       tabs: {
         all: "Barchasi",
         passport: "Pasport",
@@ -5994,7 +5994,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Belgeler",
-      subtitle: "Taşınmanız için ihtiyacınız olan her şey tek bir yerde.",
+      subtitle: "Tam olarak size gereken belgeler, tek bir yerde.",
       tabs: {
         all: "Tümü",
         passport: "Pasaport",
@@ -7518,7 +7518,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Ҳуҷҷатҳо",
-      subtitle: "Барои кӯчиданатон лозим будаи ҳама чиз дар як ҷо.",
+      subtitle: "Ҳуҷҷатҳое, ки маҳз ба шумо лозиманд, дар як ҷо.",
       tabs: {
         all: "Ҳама",
         passport: "Шиноснома",
@@ -9046,7 +9046,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     documents: {
       title: "Документи",
-      subtitle: "Все необхідне для переїзду — в одному місці.",
+      subtitle: "Документи, які потрібні саме вам, — в одному місці.",
       tabs: {
         all: "Усі",
         passport: "Паспорт",
