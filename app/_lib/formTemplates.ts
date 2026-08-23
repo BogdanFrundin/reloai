@@ -508,6 +508,95 @@ const DSF1: FormTemplate = {
   ],
 };
 
+const MELDUNEK: FormTemplate = {
+  key: "meldunek",
+  guideNames: ["Регистрация адреса (мелдунок)"],
+  label: "Zgłoszenie pobytu czasowego — регистрация адреса",
+  pdfPath: "/forms/meldunek.pdf",
+  verified: true,
+  fields: [
+    { kind: "overlay-text", page: 0, x: 195, y: 567, size: 9, value: (c) => c.profile.lastName },
+    { kind: "overlay-text", page: 0, x: 195, y: 537, size: 9, value: (c) => c.profile.firstName },
+    { kind: "overlay-text", page: 0, x: 195, y: 477, size: 9, value: (c) => c.profile.birthCountry || countryName(c.citizenship) },
+    { kind: "overlay-text", page: 0, x: 195, y: 397, size: 9, value: (c) => c.profile.birthPlace },
+    {
+      kind: "overlay-text",
+      page: 0,
+      x: 195,
+      y: 277,
+      size: 9,
+      value: (c) => [c.profile.addressStreet, c.profile.addressHouseNo, c.profile.addressApartmentNo].filter(Boolean).join(" "),
+    },
+    { kind: "overlay-text", page: 0, x: 195, y: 187, size: 9, value: (c) => c.profile.addressCity },
+  ],
+};
+
+const NOSTRYFIKACJA_DYPLOMU: FormTemplate = {
+  key: "nostryfikacja-dyplomu",
+  guideNames: ["Нострификация диплома"],
+  label: "Wniosek o uznanie dyplomu — нострификация диплома (образец Politechnika Gdańska)",
+  pdfPath: "/forms/nostryfikacja-dyplomu.pdf",
+  verified: true,
+  fields: [
+    { kind: "overlay-text", page: 0, x: 255, y: 629, size: 9, value: (c) => c.profile.firstName },
+    { kind: "overlay-text", page: 0, x: 255, y: 599, size: 9, value: (c) => c.profile.lastName },
+    {
+      kind: "overlay-text",
+      page: 0,
+      x: 255,
+      y: 539,
+      size: 9,
+      value: (c) => [formatDateDMY(c.profile.birthDate), c.profile.birthPlace].filter(Boolean).join(", "),
+    },
+    { kind: "overlay-text", page: 0, x: 255, y: 508, size: 9, value: (c) => countryName(c.citizenship) },
+    {
+      kind: "overlay-text",
+      page: 0,
+      x: 255,
+      y: 448,
+      size: 9,
+      value: (c) => [c.profile.addressStreet, c.profile.addressHouseNo].filter(Boolean).join(" "),
+    },
+    {
+      kind: "overlay-text",
+      page: 0,
+      x: 255,
+      y: 423,
+      size: 9,
+      value: (c) => [c.profile.addressPostCode, c.profile.addressCity].filter(Boolean).join(" "),
+    },
+    { kind: "overlay-text", page: 0, x: 255, y: 393, size: 9, value: (c) => c.profile.phone },
+    { kind: "overlay-text", page: 0, x: 255, y: 363, size: 9, value: (c) => c.profile.email },
+  ],
+};
+
+const LEGITYMACJA_STUDENCKA: FormTemplate = {
+  key: "legitymacja-studencka",
+  guideNames: ["Студенческая карта ISIC"],
+  label: "Wniosek o wystawienie legitymacji ISIC/ISIC 360/ITIC",
+  pdfPath: "/forms/legitymacja-studencka.pdf",
+  verified: true,
+  fields: [
+    { kind: "overlay-text", page: 0, x: 90, y: 721, size: 9, value: (c) => c.profile.firstName },
+    { kind: "overlay-text", page: 0, x: 340, y: 721, size: 9, value: (c) => c.profile.lastName },
+    { kind: "overlay-text", page: 0, x: 100, y: 699, size: 9, value: (c) => formatDateDMY(c.profile.birthDate) },
+    { kind: "overlay-text", page: 0, x: 395, y: 655, size: 8, value: (c) => countryName(c.citizenship) },
+    {
+      kind: "overlay-text",
+      page: 0,
+      x: 115,
+      y: 631,
+      size: 8,
+      value: (c) =>
+        [c.profile.addressStreet, c.profile.addressHouseNo, c.profile.addressApartmentNo, c.profile.addressPostCode, c.profile.addressCity]
+          .filter(Boolean)
+          .join(", "),
+    },
+    { kind: "overlay-text", page: 0, x: 115, y: 601, size: 9, value: (c) => c.profile.phone },
+    { kind: "overlay-text", page: 0, x: 310, y: 601, size: 9, value: (c) => c.profile.email },
+  ],
+};
+
 export const FORM_TEMPLATES: FormTemplate[] = [
   PESEL_STANDARD,
   PESEL_UKR,
@@ -522,6 +611,9 @@ export const FORM_TEMPLATES: FormTemplate[] = [
   ZAP3,
   DSF1,
   SCHENGEN_VISA,
+  MELDUNEK,
+  NOSTRYFIKACJA_DYPLOMU,
+  LEGITYMACJA_STUDENCKA,
 ];
 
 export function getTemplateForGuide(guideName: string): FormTemplate | null {
