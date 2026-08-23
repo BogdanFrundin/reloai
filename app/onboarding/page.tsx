@@ -66,14 +66,26 @@ const FAMILY_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2.5 5 6 5c2 0 3.5 1.5 4 2.5.5-1 2-2.5 4-2.5 3.5 0 5.5 3.5 3.5 7.5C19 16.65 12 21 12 21z" />
   </svg>
 );
+// Laptop — represents remote/location-independent work, distinct from the
+// briefcase used for WORK_ICON so the two goals don't look identical.
 const NOMAD_ICON = (
   <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 19.5h18M5 19.5V8.25A1.5 1.5 0 016.5 6.75h11A1.5 1.5 0 0119 8.25V19.5M10 6.75V4.5a1 1 0 011-1h2a1 1 0 011 1v2.25" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4 16.5V6a1 1 0 011-1h14a1 1 0 011 1v10.5M2.5 19.5h19a1 1 0 00.95-1.32l-.5-1.5a1 1 0 00-.95-.68H3a1 1 0 00-.95.68l-.5 1.5a1 1 0 00.95 1.32zM9 8.5h6"
+    />
   </svg>
 );
+// City skyline (office buildings) — was previously a house silhouette, which
+// visually read as "housing" rather than "business" (see onboarding screenshot).
 const BUSINESS_ICON = (
   <svg {...ICON_PROPS}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M4 21V10.5L12 4l8 6.5V21M9 21v-6h6v6" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4 21V6a1 1 0 011-1h4a1 1 0 011 1v15M10 21V3a1 1 0 011-1h2a1 1 0 011 1v18M14 21V9a1 1 0 011-1h4a1 1 0 011 1v12M3 21h18M7 8.5h.01M7 12h.01M7 15.5h.01M17 12h.01M17 15.5h.01"
+    />
   </svg>
 );
 const INVESTMENT_ICON = (
@@ -324,15 +336,36 @@ export default function OnboardingPage() {
     { id: "Other", label: t.onboarding.goalOptions.other, icon: <span className="text-3xl">🌍</span>, disabled: true },
   ];
 
-  const goalOptions: Option[] = [
-    { id: "work", label: t.onboarding.goalOptions.work, icon: WORK_ICON },
-    { id: "study", label: t.onboarding.goalOptions.study, icon: STUDY_ICON },
-    { id: "business", label: t.onboarding.goalOptions.business, icon: BUSINESS_ICON },
-    { id: "passiveIncome", label: t.onboarding.goalOptions.passiveIncome, icon: INVESTMENT_ICON },
-    { id: "digitalNomad", label: t.onboarding.goalOptions.digitalNomad, icon: NOMAD_ICON },
-    { id: "familyReunification", label: t.onboarding.goalOptions.familyReunification, icon: FAMILY_ICON },
-    { id: "other", label: t.onboarding.goalOptions.other, icon: OTHER_ICON },
-  ];
+  // Every goal maps to a real legal basis for a Polish residence permit
+  // (praca, studia, działalność gospodarcza, łączenie rodzin, inne
+  // okoliczności), so no id needs to be removed for Poland — the ids
+  // themselves are load-bearing (matched exactly in checklist.ts, the home
+  // and profile pages, and the AI chat route), so only order/labels/icons
+  // are customized per destination, never the id strings.
+  const ALL_GOAL_OPTIONS: Record<string, Option> = {
+    work: { id: "work", label: t.onboarding.goalOptions.work, icon: WORK_ICON },
+    study: { id: "study", label: t.onboarding.goalOptions.study, icon: STUDY_ICON },
+    business: { id: "business", label: t.onboarding.goalOptions.business, icon: BUSINESS_ICON },
+    familyReunification: { id: "familyReunification", label: t.onboarding.goalOptions.familyReunification, icon: FAMILY_ICON },
+    passiveIncome: { id: "passiveIncome", label: t.onboarding.goalOptions.passiveIncome, icon: INVESTMENT_ICON },
+    digitalNomad: { id: "digitalNomad", label: t.onboarding.goalOptions.digitalNomad, icon: NOMAD_ICON },
+    other: { id: "other", label: t.onboarding.goalOptions.other, icon: OTHER_ICON },
+  };
+
+  // Order per destination country. Poland (the only currently-selectable
+  // destination) leads with the four goals that map to a dedicated,
+  // well-established Polish residence-permit basis (work/study/business
+  // visas, family reunification), then the two "inne okoliczności" /
+  // freelance-adjacent goals (Poland has no dedicated digital-nomad or
+  // passive-income visa, unlike Spain/Portugal), then "other" last.
+  const GOAL_ORDER_BY_DESTINATION: Record<string, string[]> = {
+    Poland: ["work", "study", "business", "familyReunification", "passiveIncome", "digitalNomad", "other"],
+  };
+  const DEFAULT_GOAL_ORDER = ["work", "study", "business", "passiveIncome", "digitalNomad", "familyReunification", "other"];
+
+  const goalOptions: Option[] = (GOAL_ORDER_BY_DESTINATION[answers.destination ?? ""] ?? DEFAULT_GOAL_ORDER).map(
+    (id) => ALL_GOAL_OPTIONS[id]
+  );
 
   function renderOptionCard(
     option: Option & { disabled?: boolean },
