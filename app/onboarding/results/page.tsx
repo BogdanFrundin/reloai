@@ -69,10 +69,16 @@ function RouteCard({
         isRecommended ? "ring-1 ring-accent/50" : ""
       }`}
     >
-      {isRecommended && (
+      {isRecommended ? (
         <span className="absolute -top-3 left-6 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-white shadow-[0_0_16px_-4px_var(--accent)]">
-          {labels.results.recommended}
+          {route.badge ?? labels.results.recommended}
         </span>
+      ) : (
+        route.badge && (
+          <span className="absolute -top-3 left-6 rounded-full border border-white/15 bg-[#1c1f26] px-3 py-1 text-[11px] font-semibold text-white/70">
+            {route.badge}
+          </span>
+        )
       )}
 
       <div className="h-[68px] overflow-hidden">

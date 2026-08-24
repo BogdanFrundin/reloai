@@ -18,6 +18,7 @@ export type Route = {
   reason: string;
   steps?: string[];
   bestFor?: string;
+  badge?: string;
 };
 
 export type RouteEngineResult = {
