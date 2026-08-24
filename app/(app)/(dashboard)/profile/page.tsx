@@ -158,9 +158,11 @@ export default function ProfilePage() {
     pro: { label: t.appPricing.proName, className: "border-purple-400/30 bg-purple-500/10 text-purple-300" },
   };
   const planBadge = PLAN_BADGE[planValue] ?? PLAN_BADGE.free;
-  const memberSince = profile?.created_at
+  // Real account-registration date, not profile.created_at (only set when
+  // onboarding finishes — see app/(app)/(dashboard)/home/page.tsx).
+  const memberSince = user?.created_at
     ? new Intl.DateTimeFormat(lang, { year: "numeric", month: "long", day: "numeric" }).format(
-        new Date(profile.created_at),
+        new Date(user.created_at),
       )
     : null;
 

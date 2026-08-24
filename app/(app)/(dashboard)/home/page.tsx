@@ -47,8 +47,11 @@ export default function HomePage() {
   const currentPhase = phases.find((phase) => phaseStatuses[phase.key] === "in_progress");
   const currentPhaseLabel = currentPhase ? currentPhase.title : t.dashboard.phaseStatus.done;
 
-  const daysSinceJoining = profile?.created_at
-    ? Math.max(0, Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24)))
+  // profile.created_at is set when onboarding finishes, not when the account
+  // was actually registered (profiles rows only get created via upsert at
+  // the end of onboarding) — use the Supabase Auth user's real created_at.
+  const daysSinceJoining = user?.created_at
+    ? Math.max(0, Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24)))
     : null;
 
   const currentStep = useMemo(

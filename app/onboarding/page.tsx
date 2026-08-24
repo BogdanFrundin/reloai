@@ -453,7 +453,17 @@ export default function OnboardingPage() {
       total_steps: 1,
     }));
 
-    await supabase.from("progress").upsert(progressRows, { onConflict: "user_id,document_type" });
+    const { error: progressError } = await supabase
+      .from("progress")
+      .upsert(progressRows, { onConflict: "user_id,document_type" });
+
+    if (progressError) {
+      // Non-fatal for navigation (the user still finished onboarding), but
+      // if this silently fails the dashboard's "Текущий этап" gets stuck on
+      // the first phase forever since account/onboarding/visa_eligibility
+      // never register as done. Surface it so it's visible in monitoring.
+      console.error("Failed to mark onboarding progress steps complete:", progressError.message);
+    }
 
     router.push("/onboarding/results");
   }

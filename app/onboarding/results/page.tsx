@@ -212,7 +212,14 @@ export default function OnboardingResultsPage() {
         });
         if (roadmapResponse.ok) {
           const plan = await roadmapResponse.json();
-          await supabase.from("profiles").update({ roadmap_plan: plan }).eq("id", user.id);
+          // Clear roadmap_completed_steps along with the new plan — those IDs
+          // are generated fresh by the AI each time and won't match the old
+          // plan's step IDs, so leaving stale ones behind just orphans them
+          // and makes progress silently look reset without explanation.
+          await supabase
+            .from("profiles")
+            .update({ roadmap_plan: plan, roadmap_completed_steps: [] })
+            .eq("id", user.id);
         }
       } catch (roadmapErr) {
         // Non-fatal — the dashboard falls back to the static checklist if
