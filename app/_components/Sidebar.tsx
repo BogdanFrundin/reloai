@@ -127,7 +127,7 @@ export default function Sidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+            className={`flex items-center justify-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
               pathname === "/profile"
                 ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                 : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -139,7 +139,7 @@ export default function Sidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            className="flex items-center justify-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {SETTINGS_ICON}
             <span>{s.settings}</span>
