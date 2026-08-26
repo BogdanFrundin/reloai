@@ -6,6 +6,7 @@ import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import DocumentFillModal from "./DocumentFillModal";
 import { getTemplateForGuide } from "../_lib/formTemplates";
+import TextWithGlossary from "./TextWithGlossary";
 
 export type DocumentGuide = {
   id: string;
@@ -289,7 +290,9 @@ function GuideCard({ guide }: { guide: DocumentGuide }) {
         className="flex w-full items-start justify-between gap-4 px-5 py-4 text-left"
       >
         <div>
-          <p className="text-sm font-semibold text-text-primary">{guide.name}</p>
+          <p className="text-sm font-semibold text-text-primary">
+            <TextWithGlossary text={guide.name} />
+          </p>
           {guide.description && (
             <p className={`mt-1 text-xs text-text-muted ${open ? "" : "line-clamp-2"}`}>{guide.description}</p>
           )}

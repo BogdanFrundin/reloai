@@ -6,6 +6,7 @@ import type { DocumentGuide } from "./DocumentGuideList";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
+import TextWithGlossary from "./TextWithGlossary";
 
 const SCALE_ICON = (
   <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -180,7 +181,9 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
 
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[19px] font-bold leading-tight text-white">{guide.name}</p>
+            <p className="text-[19px] font-bold leading-tight text-white">
+              <TextWithGlossary text={guide.name} />
+            </p>
             {guide.important_2026 && (
               <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
                 Важно 2026

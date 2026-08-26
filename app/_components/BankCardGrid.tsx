@@ -8,6 +8,7 @@ import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
+import TextWithGlossary from "./TextWithGlossary";
 import { supabase } from "../../lib/supabase";
 
 export const TAG_LABELS: Record<string, string> = {
@@ -207,12 +208,20 @@ function BankCard({
               Ваш банк
             </span>
           )}
-          <p className="text-[22px] font-bold leading-tight text-white">{headline}</p>
-          {subtitle && <p className="mt-2 text-xs text-white/50">{subtitle}</p>}
+          <p className="text-[22px] font-bold leading-tight text-white">
+            <TextWithGlossary text={headline} />
+          </p>
+          {subtitle && (
+            <p className="mt-2 text-xs text-white/50">
+              <TextWithGlossary text={subtitle} />
+            </p>
+          )}
         </div>
 
         {open && guide.description && (
-          <p className="text-xs leading-relaxed text-white/60">{guide.description}</p>
+          <p className="text-xs leading-relaxed text-white/60">
+            <TextWithGlossary text={guide.description} />
+          </p>
         )}
       </button>
 
