@@ -1,48 +1,27 @@
 "use client";
 
-import type { ReactElement } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
 import { buildOlxUrl, buildOtodomUrl, buildGratkaUrl } from "../_lib/housingSearchLinks";
 
-// Small brand-colored marks for each listing site. Not the sites' official
-// logo files (we don't have a way to pull real brand assets in here) — each
-// is a simple wordmark/icon badge in that brand's recognizable color, just
-// enough to make the picker feel less like a plain text list.
-function OlxMark() {
-  return (
-    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-[#002f34]">
-      <span className="text-[11px] font-extrabold tracking-tight text-[#e8fd53]">OLX</span>
-    </span>
-  );
-}
-
-function OtodomMark() {
-  return (
-    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff7a3d] to-[#ff4d6d]">
-      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white">
-        <path d="M12 3.2 2.5 10.8v9.6h6.2v-6.1h6.6v6.1h6.2v-9.6L12 3.2z" />
-      </svg>
-    </span>
-  );
-}
-
-function GratkaMark() {
-  return (
-    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-[#0a5cd8]">
-      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white">
-        <path d="M12 2 2 8.5V21h6v-6.5h8V21h6V8.5L12 2z" />
-      </svg>
-    </span>
-  );
-}
-
-const SITE_MARK: Record<string, () => ReactElement> = {
-  olx: OlxMark,
-  otodom: OtodomMark,
-  gratka: GratkaMark,
+// Real brand logos, cropped from files the user provided, saved under
+// public/images/housing-sites/. Otodom's is its square icon mark (not the
+// full wordmark) since the wordmark itself is too wide to read at this size.
+const SITE_LOGO: Record<string, string> = {
+  olx: "/images/housing-sites/olx.png",
+  otodom: "/images/housing-sites/otodom.png",
+  gratka: "/images/housing-sites/gratka.png",
 };
+
+function SiteLogo({ site, name }: { site: string; name: string }) {
+  return (
+    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl">
+      <Image src={SITE_LOGO[site]} alt={name} width={44} height={44} className="h-full w-full object-cover" />
+    </span>
+  );
+}
 
 export default function HousingSiteChoiceModal({
   open,
@@ -106,26 +85,23 @@ export default function HousingSiteChoiceModal({
         </p>
 
         <div className="mt-5 space-y-2">
-          {sites.map((site) => {
-            const Mark = SITE_MARK[site.key];
-            return (
-              <button
-                key={site.key}
-                type="button"
-                onClick={() => handlePick(site.href)}
-                className={`flex w-full items-center gap-3 rounded-xl border border-border-strong bg-surface-1 px-4 py-3 text-left transition-colors duration-150 hover:border-accent/40 hover:bg-surface-hover ${pressScale}`}
-              >
-                <Mark />
-                <span className="min-w-0 flex-1 text-sm">
-                  <span className="font-semibold text-text-primary">{site.name}</span>
-                  <span className="text-text-muted"> — {site.description}</span>
-                </span>
-                <span aria-hidden className="flex-shrink-0 text-accent-bright">
-                  →
-                </span>
-              </button>
-            );
-          })}
+          {sites.map((site) => (
+            <button
+              key={site.key}
+              type="button"
+              onClick={() => handlePick(site.href)}
+              className={`flex w-full items-center gap-3 rounded-xl border border-border-strong bg-surface-1 px-4 py-3 text-left transition-colors duration-150 hover:border-accent/40 hover:bg-surface-hover ${pressScale}`}
+            >
+              <SiteLogo site={site.key} name={site.name} />
+              <span className="min-w-0 flex-1 text-sm">
+                <span className="font-semibold text-text-primary">{site.name}</span>
+                <span className="text-text-muted"> — {site.description}</span>
+              </span>
+              <span aria-hidden className="flex-shrink-0 text-accent-bright">
+                →
+              </span>
+            </button>
+          ))}
         </div>
 
         <button
