@@ -8,10 +8,23 @@ import HelpButton from "./HelpButton";
 import { pressScale } from "../_lib/motion";
 import type { Phase, PhaseStatus } from "../_lib/checklist";
 
-const PHASE_ICONS: Record<string, ReactNode> = {
+// Keyed by the document-timeline phase keys (see app/_lib/documentTiming.ts)
+// plus the legacy static-checklist keys, so whichever roadmap source is
+// active gets a matching icon instead of falling through to the generic one.
+export const PHASE_ICONS: Record<string, ReactNode> = {
+  before_departure: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.77 59.77 0 0121.485 12 59.77 59.77 0 013.27 20.876L6 12zm0 0h7.5" />
+    </svg>
+  ),
   beforeDeparture: (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V6a3 3 0 013-3h1.5a3 3 0 013 3v3M4.5 9h15l-1 10.5a1.5 1.5 0 01-1.494 1.5H6.994A1.5 1.5 0 015.5 19.5L4.5 9z" />
+    </svg>
+  ),
+  first_week: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0L22.28 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
     </svg>
   ),
   legalization: (
@@ -19,9 +32,19 @@ const PHASE_ICONS: Record<string, ReactNode> = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
     </svg>
   ),
+  first_month: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-7 9l2 2 4-4" />
+    </svg>
+  ),
   residenceCard: (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 8.25v10.5a1.5 1.5 0 001.5 1.5h16.5a1.5 1.5 0 001.5-1.5V8.25M2.25 8.25V6a1.5 1.5 0 011.5-1.5h16.5A1.5 1.5 0 0121.75 6v2.25M6 15h4.5" />
+    </svg>
+  ),
+  longterm: (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 3v18M4.5 4.5h13.5l-2.75 3.5 2.75 3.5H4.5" />
     </svg>
   ),
   workTaxes: (
@@ -34,7 +57,7 @@ const PHASE_ICONS: Record<string, ReactNode> = {
 // Generated plans (see app/_lib/generatedRoadmap.ts) have arbitrary phase
 // keys the AI made up, so there's no fixed icon for them — fall back to a
 // generic checklist glyph instead of leaving the badge empty.
-const DEFAULT_PHASE_ICON = (
+export const DEFAULT_PHASE_ICON = (
   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
@@ -75,34 +98,6 @@ function Checkbox({
   return <span className={classes}>{icon}</span>;
 }
 
-function StatusIcon({ status }: { status: PhaseStatus }) {
-  if (status === "done") {
-    return (
-      <svg className="h-5 w-5 flex-shrink-0 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-      </svg>
-    );
-  }
-
-  if (status === "in_progress") {
-    return (
-      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center">
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-bright animate-glow-pulse motion-reduce:animate-none" />
-      </span>
-    );
-  }
-
-  return (
-    <svg className="h-5 w-5 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-      />
-    </svg>
-  );
-}
-
 function StatusBadge({ status, label }: { status: PhaseStatus; label: string }) {
   const colors =
     status === "done"
@@ -116,6 +111,46 @@ function StatusBadge({ status, label }: { status: PhaseStatus; label: string }) 
       {label}
     </span>
   );
+}
+
+// Left-border + icon-badge colors for the vertical stepper: green = done,
+// blue = the current/active phase, gray = still upcoming.
+const STATUS_ACCENT: Record<
+  PhaseStatus,
+  { border: string; bg: string; icon: string; connector: string; opacity: string }
+> = {
+  done: {
+    border: "border-l-emerald-400",
+    bg: "bg-emerald-500/[0.03]",
+    icon: "bg-emerald-500/15 text-emerald-400",
+    connector: "border-emerald-400/50",
+    opacity: "",
+  },
+  in_progress: {
+    border: "border-l-accent-bright",
+    bg: "bg-accent/[0.05]",
+    icon: "bg-accent text-white",
+    connector: "border-border-strong",
+    opacity: "",
+  },
+  waiting: {
+    border: "border-l-border-strong",
+    bg: "bg-surface-1",
+    icon: "bg-surface-2 text-text-muted",
+    connector: "border-border-strong",
+    opacity: "opacity-80",
+  },
+};
+
+// A range built from the phase's own dated steps (see app/_lib/documentRoadmap.ts)
+// when one exists; other roadmap sources (AI plan, static checklist) have no
+// dates, so the subtitle is simply omitted for them.
+function phaseSubtitle(phase: Phase): string | null {
+  const dated = phase.steps.filter((s) => s.dateLabel);
+  if (dated.length === 0) return null;
+  const first = dated[0].dateLabel as string;
+  const last = dated[dated.length - 1].dateLabel as string;
+  return first === last ? first : `${first} – ${last}`;
 }
 
 const CHEVRON_ICON = (
@@ -148,12 +183,14 @@ export default function PhaseCard({
   index,
   completed,
   onToggleStep,
+  isLast = false,
 }: {
   phase: Phase;
   status: PhaseStatus;
   index: number;
   completed: Set<string>;
   onToggleStep?: (documentType: string) => void;
+  isLast?: boolean;
 }) {
   const { t } = useLanguage();
   const d = t.dashboard;
@@ -178,6 +215,8 @@ export default function PhaseCard({
   }, [showSteps]);
 
   const statusLabel = isDone ? d.phaseStatus.done : isActive ? d.phaseStatus.inProgress : d.phaseStatus.waiting;
+  const accent = STATUS_ACCENT[status];
+  const subtitle = phaseSubtitle(phase);
 
   const doneStepsCount = phase.steps.filter((s) => completed.has(s.documentType)).length;
   const nextStepId = phase.steps.find((s) => !completed.has(s.documentType))?.documentType;
@@ -262,90 +301,66 @@ export default function PhaseCard({
     );
   }
 
-  if (isActive) {
-    return (
-      <Reveal delay={index * 60}>
-        <div className="relative flex w-full flex-col overflow-hidden rounded-2xl border border-accent/60 bg-accent/[0.05] p-5 shadow-[0_0_40px_-12px_var(--accent)] transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)]">
+  return (
+    <Reveal delay={index * 60}>
+      <div className="flex gap-4">
+        <div className="flex flex-shrink-0 flex-col items-center">
           <span
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-accent via-accent-bright to-accent shadow-[0_0_12px_-1px_var(--accent-bright)]"
-          />
+            className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-200 ${accent.icon} ${
+              isActive ? "shadow-[0_0_0_4px_var(--accent-light)]" : ""
+            }`}
+          >
+            {PHASE_ICONS[phase.key] ?? DEFAULT_PHASE_ICON}
+          </span>
+          {!isLast && <span aria-hidden className={`my-2 w-0 flex-1 border-l-2 border-dashed ${accent.connector}`} />}
+        </div>
+
+        <div
+          className={`min-w-0 flex-1 overflow-hidden rounded-2xl border border-border-subtle border-l-4 ${accent.border} ${accent.bg} ${accent.opacity} p-5 transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+            isActive ? "shadow-[0_10px_30px_-20px_var(--accent)]" : ""
+          } ${isLast ? "mb-0" : "mb-6"}`}
+        >
           <button
             type="button"
             onClick={() => setExpanded((prev) => !prev)}
             aria-expanded={expanded}
             aria-label={expanded ? d.collapseBtn : d.expandBtn}
-            className="flex w-full items-center justify-between gap-3 text-left"
+            className="flex w-full items-start gap-3 text-left"
           >
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-semibold text-accent-bright">
-                0{index + 1}
-              </span>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-text-primary">{phase.title}</p>
-                <p className="mt-0.5 text-xs text-text-muted">
-                  {d.stepsCompletedTemplate.replace("{done}", String(doneStepsCount)).replace("{total}", String(phase.steps.length))}
-                </p>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                <div className="min-w-0">
+                  <p className="truncate text-base font-bold text-text-primary sm:text-lg">{phase.title}</p>
+                  {subtitle && <p className="mt-0.5 text-xs font-medium text-accent-bright">{subtitle}</p>}
+                </div>
+                <div className="flex flex-shrink-0 items-center gap-2">
+                  <StatusBadge status={status} label={statusLabel} />
+                  <span className={`flex-shrink-0 text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
+                    {CHEVRON_ICON}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-shrink-0 items-center gap-2">
-              <StatusBadge status={status} label={statusLabel} />
-              <span className={`text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
-                {CHEVRON_ICON}
-              </span>
+              <p className="mt-1.5 text-xs text-text-muted">
+                {d.stepsCompletedTemplate
+                  .replace("{done}", String(doneStepsCount))
+                  .replace("{total}", String(phase.steps.length))}
+              </p>
             </div>
           </button>
 
-          <div className="mt-4 flex gap-1">
-            {phase.steps.map((step, i) => (
-              <div
-                key={step.documentType}
-                className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i < doneStepsCount ? "bg-accent" : "bg-surface-2"}`}
-              />
-            ))}
-          </div>
+          {isActive && (
+            <div className="mt-4 flex gap-1">
+              {phase.steps.map((step, i) => (
+                <div
+                  key={step.documentType}
+                  className={`h-1 flex-1 rounded-full transition-colors duration-300 ${i < doneStepsCount ? "bg-accent" : "bg-surface-2"}`}
+                />
+              ))}
+            </div>
+          )}
 
           {showSteps && renderSteps()}
         </div>
-      </Reveal>
-    );
-  }
-
-  return (
-    <Reveal delay={index * 60}>
-      <div
-        className={`relative flex w-full flex-col overflow-hidden rounded-2xl transition-[border-color,opacity,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-          isDone
-            ? "border border-border-subtle border-l-4 border-l-emerald-400 bg-emerald-500/[0.03] p-5"
-            : "border border-border-subtle bg-surface-1 p-5 opacity-[0.48]"
-        }`}
-      >
-        <button
-          type="button"
-          onClick={() => setExpanded((prev) => !prev)}
-          aria-expanded={expanded}
-          aria-label={expanded ? d.collapseBtn : d.expandBtn}
-          className="flex w-full items-center gap-3 text-left"
-        >
-          <span
-            className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl ${
-              isDone ? "bg-emerald-500/15 text-emerald-400" : "bg-surface-2 text-text-muted"
-            }`}
-          >
-            {PHASE_ICONS[phase.key] ?? DEFAULT_PHASE_ICON}
-          </span>
-          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-text-primary">{phase.title}</span>
-          <span className="flex-shrink-0 text-xs font-medium text-text-muted">
-            {d.stepsCompletedTemplate
-              .replace("{done}", String(doneStepsCount))
-              .replace("{total}", String(phase.steps.length))}
-          </span>
-          <span className={`flex-shrink-0 text-text-muted transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}>
-            {CHEVRON_ICON}
-          </span>
-        </button>
-
-        {showSteps && renderSteps()}
       </div>
     </Reveal>
   );
