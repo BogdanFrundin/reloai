@@ -284,11 +284,15 @@ export default function OnboardingResultsPage() {
 
           {!profile && (
             <Reveal>
-              <div className="flex flex-col items-center justify-center py-20">
-                <svg className="h-8 w-8 animate-spin text-accent-bright" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+              <div className="flex flex-col items-center justify-center gap-5 py-20">
+                <svg className="h-10 w-10 animate-spin text-accent-bright" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                 </svg>
+                <div className="relative h-1 w-56 overflow-hidden rounded-full bg-white/10">
+                  <span className="absolute inset-y-0 w-1/3 animate-loading-bar rounded-full bg-gradient-to-r from-accent/0 via-accent-bright to-accent/0" />
+                </div>
+                <p className="text-sm text-text-muted">{t.onboarding.results.loading}</p>
               </div>
             </Reveal>
           )}
