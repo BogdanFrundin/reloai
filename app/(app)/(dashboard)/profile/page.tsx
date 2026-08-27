@@ -7,6 +7,7 @@ import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import LogoutConfirmModal from "../../../_components/LogoutConfirmModal";
 import UpgradeModal from "../../../_components/UpgradeModal";
+import RouteSelectModal from "../../../_components/RouteSelectModal";
 import SearchableCountrySelect from "../../../_components/SearchableCountrySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -73,6 +74,7 @@ export default function ProfilePage() {
 
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [routeModalOpen, setRouteModalOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
@@ -352,12 +354,13 @@ export default function ProfilePage() {
               ) : (
                 <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
                   <span className="text-sm text-text-muted">{p.noRouteSelected}</span>
-                  <Link
-                    href="/onboarding/results"
+                  <button
+                    type="button"
+                    onClick={() => setRouteModalOpen(true)}
                     className={`flex-shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
                   >
                     {p.chooseRoute}
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
@@ -370,12 +373,13 @@ export default function ProfilePage() {
               >
                 {p.editBtn}
               </button>
-              <Link
-                href="/onboarding/results"
+              <button
+                type="button"
+                onClick={() => setRouteModalOpen(true)}
                 className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-center text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
               >
                 {p.changeRouteBtn}
-              </Link>
+              </button>
             </div>
           </div>
         </Reveal>
@@ -617,6 +621,7 @@ export default function ProfilePage() {
         onConfirm={confirmLogOut}
       />
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
+      <RouteSelectModal open={routeModalOpen} onClose={() => setRouteModalOpen(false)} />
     </div>
   );
 }

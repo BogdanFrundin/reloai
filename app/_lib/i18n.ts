@@ -201,6 +201,7 @@ export type Dictionary = {
     routeLabel: string;
     noRouteSelected: string;
     chooseRoute: string;
+    routeModalSubheading: string;
     jobOfferLabel: string;
     alreadyAdmittedLabel: string;
     yes: string;
@@ -771,6 +772,8 @@ export type Dictionary = {
       heading: string;
       loading: string;
       selectButton: string;
+      selecting: string;
+      currentRoute: string;
       recommended: string;
       speedFast: string;
       speedMedium: string;
@@ -1339,6 +1342,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Selected legalization route",
       noRouteSelected: "No route selected yet",
       chooseRoute: "Choose a route",
+      routeModalSubheading: "Pick a plan below — you can switch anytime.",
       jobOfferLabel: "Has job offer",
       alreadyAdmittedLabel: "Already admitted",
       yes: "Yes",
@@ -2302,6 +2306,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "We found 3 relocation routes for you",
         loading: "Generating your personalized routes...",
         selectButton: "Choose this route",
+        selecting: "Selecting…",
+        currentRoute: "Current route",
         recommended: "Recommended",
         speedFast: "High speed",
         speedMedium: "Medium speed",
@@ -2871,6 +2877,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Выбранный маршрут легализации",
       noRouteSelected: "Маршрут ещё не выбран",
       chooseRoute: "Выбрать маршрут",
+      routeModalSubheading: "Выберите один из вариантов ниже — маршрут можно поменять в любой момент.",
       jobOfferLabel: "Есть предложение о работе",
       alreadyAdmittedLabel: "Уже зачислен(а)",
       yes: "Да",
@@ -3834,6 +3841,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "Мы нашли 3 маршрута переезда для вас",
         loading: "Генерируем ваши персональные маршруты...",
         selectButton: "Выбрать этот маршрут",
+        selecting: "Выбираем…",
+        currentRoute: "Текущий маршрут",
         recommended: "Рекомендуем",
         speedFast: "Высокая скорость",
         speedMedium: "Средняя скорость",
@@ -4400,6 +4409,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Tanlangan legalizatsiya yo'li",
       noRouteSelected: "Hali yo'l tanlanmagan",
       chooseRoute: "Yo'l tanlash",
+      routeModalSubheading: "Quyidagi variantlardan birini tanlang — istalgan vaqtda o'zgartirishingiz mumkin.",
       jobOfferLabel: "Ish taklifi bor",
       alreadyAdmittedLabel: "Allaqachon qabul qilingan",
       yes: "Ha",
@@ -5361,6 +5371,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "Biz siz uchun 3 ta ko'chish mararhalarini topdik",
         loading: "Sizning shaxsiy mararhalarini yaratmoqdamiz...",
         selectButton: "Bu mararhanni tanlang",
+        selecting: "Tanlanmoqda…",
+        currentRoute: "Joriy marshrut",
         recommended: "Tafsiya qilingan",
         speedFast: "Yuqori tezlik",
         speedMedium: "O'rta tezlik",
@@ -5926,6 +5938,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Seçilen yasallaştırma rotası",
       noRouteSelected: "Henüz bir rota seçilmedi",
       chooseRoute: "Rota seç",
+      routeModalSubheading: "Aşağıdaki seçeneklerden birini seçin — istediğiniz zaman değiştirebilirsiniz.",
       jobOfferLabel: "İş teklifi var",
       alreadyAdmittedLabel: "Zaten kabul edildi",
       yes: "Evet",
@@ -6887,6 +6900,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "Sizin için 3 taşınma yolu bulduk",
         loading: "Kişiselleştirilmiş yollarınız oluşturuluyor...",
         selectButton: "Bu yolu seçin",
+        selecting: "Seçiliyor…",
+        currentRoute: "Mevcut yol",
         recommended: "Önerilen",
         speedFast: "Yüksek hız",
         speedMedium: "Orta hız",
@@ -7452,6 +7467,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Роҳи интихобшудаи қонунигардонӣ",
       noRouteSelected: "Роҳ ҳанӯз интихоб нашудааст",
       chooseRoute: "Роҳро интихоб кунед",
+      routeModalSubheading: "Яке аз вариантҳои поёнро интихоб кунед — шумо метавонед онро дар вақти дилхоҳ иваз кунед.",
       jobOfferLabel: "Пешниҳоди кор дорад",
       alreadyAdmittedLabel: "Аллакай қабул шудааст",
       yes: "Ҳа",
@@ -8413,6 +8429,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем",
         loading: "Роҳҳои шахсии шумо сохта мешаванд...",
         selectButton: "Ин роҳро интихоб кунед",
+        selecting: "Интихоб шуда истодааст…",
+        currentRoute: "Роҳи ҷорӣ",
         recommended: "Тавсияшуда",
         speedFast: "Суръати баланд",
         speedMedium: "Суръати миёна",
@@ -8982,6 +9000,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       routeLabel: "Обраний маршрут легалізації",
       noRouteSelected: "Маршрут ще не обрано",
       chooseRoute: "Обрати маршрут",
+      routeModalSubheading: "Оберіть один із варіантів нижче — маршрут можна змінити будь-коли.",
       jobOfferLabel: "Є пропозиція роботи",
       alreadyAdmittedLabel: "Вже зараховано",
       yes: "Так",
@@ -9945,6 +9964,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         heading: "Ми знайшли 3 маршрути переїзду для вас",
         loading: "Генеруємо ваші персональні маршрути...",
         selectButton: "Обрати цей маршрут",
+        selecting: "Обираємо…",
+        currentRoute: "Поточний маршрут",
         recommended: "Рекомендуємо",
         speedFast: "Висока швидкість",
         speedMedium: "Середня швидкість",
