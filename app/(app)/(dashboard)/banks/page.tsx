@@ -61,7 +61,7 @@ export default function BanksPage() {
     guideAppliesTo(g, {
       citizenship: profile?.citizenship,
       citizenshipGroup: profile?.citizenship_group,
-      goal: profile?.goal,
+      goals: profile?.goals?.length ? profile.goals : profile?.goal ? [profile.goal] : null,
       hasCar: profile?.has_car,
       hasChildren: profile?.has_children,
     }),

@@ -201,7 +201,7 @@ export default function OnboardingResultsPage() {
     profile && !profileIncomplete
       ? generateRoutes({
           citizenshipGroup: profile.citizenship_group as CitizenshipGroup | null,
-          goal: profile.goal,
+          goals: profile.goals?.length ? profile.goals : profile.goal ? [profile.goal] : null,
           hasJobOffer: profile.job_offer === "yes",
         })
       : null;

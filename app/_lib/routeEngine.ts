@@ -572,27 +572,119 @@ function specsForGroupCD(goal: Goal): RouteSpec[] {
   ]);
 }
 
-function normalizeGoal(raw: string | null | undefined): Goal {
-  const goals: Goal[] = ["work", "study", "business", "family", "remote", "savings", "other"];
-  return goals.includes(raw as Goal) ? (raw as Goal) : "work";
+function specsForGoal(goal: Goal, citizenshipGroup: CitizenshipGroup | null | undefined, hasJobOffer: boolean): RouteSpec[] {
+  return citizenshipGroup === "B"
+    ? specsForGroupB(goal, hasJobOffer)
+    : citizenshipGroup === "C" || citizenshipGroup === "D"
+      ? specsForGroupCD(goal)
+      : specsForGroupA(goal);
+}
+
+// --- Multi-goal merging -----------------------------------------------
+// A user can now select more than one goal in onboarding (e.g. "Бизнес" +
+// "Удалёнка"). Each goal independently produces its own well-formed 3-tier
+// spec set; when 2+ goals are selected, generateRoutes() combines them into
+// ONE 3-tier set (still exactly Быстрый/Стандартный/Полный) instead of
+// showing a separate set of 3 cards per goal — see tier merge below.
+
+function parseCostRange(cost: string): [number, number] | null {
+  const m = cost.match(/€\s*(\d+)\s*-\s*(\d+)/);
+  return m ? [Number(m[1]), Number(m[2])] : null;
+}
+
+// Costs are additive across goals — registering a business AND enrolling at
+// a university genuinely costs more than either alone — and €-amounts have
+// no pluralization to worry about, so summing and reformatting is safe.
+function mergeCost(costs: string[]): string {
+  const parsed = costs.map(parseCostRange);
+  if (parsed.every((p): p is [number, number] => p !== null)) {
+    const min = parsed.reduce((sum, [lo]) => sum + lo, 0);
+    const max = parsed.reduce((sum, [, hi]) => sum + hi, 0);
+    return `€${min}-${max}`;
+  }
+  return Array.from(new Set(costs)).join(" + ");
+}
+
+function timelineToDays(timeline: string): number | null {
+  const m = timeline.match(/(\d+)\s*-\s*(\d+)\s*(недел|месяц)/i);
+  if (!m) return null;
+  return m[3].toLowerCase().startsWith("недел") ? Number(m[2]) * 7 : Number(m[2]) * 30;
+}
+
+// Unlike cost, timelines aren't summed — several goals' paperwork can often
+// run in parallel, so the combined route is bounded below by whichever
+// individual goal takes longest. Picking that goal's own (already correctly
+// pluralized) string instead of reformatting a new number avoids having to
+// reconstruct Russian недель/месяц/месяцев plural forms ourselves.
+function mergeTimeline(timelines: string[]): string {
+  let best = timelines[0];
+  let bestDays = timelineToDays(best) ?? -1;
+  for (const t of timelines.slice(1)) {
+    const days = timelineToDays(t) ?? -1;
+    if (days > bestDays) {
+      best = t;
+      bestDays = days;
+    }
+  }
+  return best;
+}
+
+function mergeSteps(stepLists: string[][]): string[] {
+  const seen = new Set<string>();
+  const merged: string[] = [];
+  for (const steps of stepLists) {
+    for (const step of steps) {
+      if (!seen.has(step)) {
+        seen.add(step);
+        merged.push(step);
+      }
+    }
+  }
+  return merged;
+}
+
+// Combined, more conservative estimate: satisfying two goals at once has
+// more that can go wrong than satisfying just one, so the weakest-link
+// (lowest) individual probability wins rather than an average.
+function mergeTierSpecs(specsPerGoal: RouteSpec[][]): RouteSpec[] {
+  // Every goal's spec array is exactly 3 tiers (Быстрый/Стандартный/Полный),
+  // always in the same order (see threeTierSpecs()), so tier index lines up
+  // across goals — merge index-by-index.
+  return specsPerGoal[0].map((_, tierIndex) => {
+    const tierAcrossGoals = specsPerGoal.map((goalSpecs) => goalSpecs[tierIndex]);
+    return {
+      // name/badge/recommended/speed/complexity/description come straight
+      // from TIER_META and are identical across goals for the same tier —
+      // only the goal-specific fields below actually need merging.
+      ...tierAcrossGoals[0],
+      suitableFor: Array.from(new Set(tierAcrossGoals.map((t) => t.suitableFor))).join(" + "),
+      steps: mergeSteps(tierAcrossGoals.map((t) => t.steps)),
+      timeline: mergeTimeline(tierAcrossGoals.map((t) => t.timeline)),
+      cost: mergeCost(tierAcrossGoals.map((t) => t.cost)),
+      probability: Math.min(...tierAcrossGoals.map((t) => t.probability)),
+    };
+  });
+}
+
+function normalizeGoals(raw: string[] | null | undefined): Goal[] {
+  const valid: Goal[] = ["work", "study", "business", "family", "remote", "savings", "other"];
+  const filtered = (raw ?? []).filter((g): g is Goal => valid.includes(g as Goal));
+  const unique = Array.from(new Set(filtered));
+  return unique.length > 0 ? unique : ["work"];
 }
 
 export function generateRoutes(input: {
   citizenshipGroup: CitizenshipGroup | null | undefined;
-  goal: string | null | undefined;
+  goals: string[] | null | undefined;
   hasJobOffer: boolean;
 }): Route[] {
-  const goal = normalizeGoal(input.goal);
+  const goals = normalizeGoals(input.goals);
 
-  const specs =
-    input.citizenshipGroup === "B"
-      ? specsForGroupB(goal, input.hasJobOffer)
-      : input.citizenshipGroup === "C" || input.citizenshipGroup === "D"
-        ? specsForGroupCD(goal)
-        : specsForGroupA(goal);
+  const specsPerGoal = goals.map((goal) => specsForGoal(goal, input.citizenshipGroup, input.hasJobOffer));
+  // threeTierSpecs() already guarantees exactly 3 tiers per goal — no
+  // slice() needed, and none should ever be dropped here (that was the
+  // source of the earlier "only 1 route" bug for citizenship groups C/D).
+  const specs = specsPerGoal.length === 1 ? specsPerGoal[0] : mergeTierSpecs(specsPerGoal);
 
-  // threeTierSpecs() already guarantees exactly 3 — no slice() needed, and
-  // none should ever be dropped here (that was the source of the "only 1
-  // route" bug for citizenship groups C/D, whose old specs had just 1).
   return specs.map(toRoute);
 }

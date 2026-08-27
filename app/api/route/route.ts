@@ -29,6 +29,7 @@ type RouteRequestBody = {
   citizenship?: string;
   citizenship_group?: CitizenshipGroup;
   goal?: string;
+  goals?: string[];
   job_offer?: string;
   has_job_offer?: boolean;
 };
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
   const group = body.citizenship_group ?? citizenshipGroup(body.citizenship);
   const hasJobOffer = body.has_job_offer ?? body.job_offer === "yes";
 
-  const routes = generateRoutes({ citizenshipGroup: group, goal: body.goal, hasJobOffer });
+  const goals = body.goals?.length ? body.goals : body.goal ? [body.goal] : [];
+  const routes = generateRoutes({ citizenshipGroup: group, goals, hasJobOffer });
   return NextResponse.json({ routes } satisfies RouteEngineResult);
 }

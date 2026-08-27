@@ -29,9 +29,13 @@ type Answers = {
   citizenship?: string;
   currentCountry?: string;
   destination?: string;
-  goal?: string;
-  // Dynamic follow-up answers — only ever populated for the goal that
-  // triggers them, everything else stays undefined.
+  // Multi-select: a user can pick more than one goal (e.g. "Бизнес" +
+  // "Удалёнка"). Order is selection order, which is also the order their
+  // follow-up questions get asked in (see computeStepOrder()).
+  goals?: string[];
+  // Dynamic follow-up answers — populated for every goal that triggers
+  // them (a user can answer both jobOffer AND businessType if they picked
+  // both "Работа" and "Бизнес"), everything else stays undefined.
   jobOffer?: string; // reuses the existing job_offer profile column
   alreadyAdmitted?: string; // reuses the existing already_admitted profile column
   studyLevel?: string;
@@ -50,7 +54,11 @@ type ProfileFields = {
   citizenship_group?: string | null;
   current_country?: string;
   country?: string;
+  // goal always mirrors goals[0] — kept in sync for every place that still
+  // only reads a single goal (see the comment on Profile.goals in
+  // AuthProvider.tsx).
   goal?: string;
+  goals?: string[];
   job_offer?: string;
   already_admitted?: string;
   study_level?: string;
@@ -148,23 +156,33 @@ const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
 
 // Builds the actual step sequence for this user. destination is answered
 // before goal, and goal is answered before any of these, so by the time we
-// need to know which follow-ups to show, we already know the answer.
-function computeStepOrder(goal: string | undefined): StepKey[] {
-  const base: StepKey[] = ["language", "citizenship", "currentCountry", "destination", "goal"];
-  const dynamic: StepKey[] = [];
-
-  if (goal === "work") {
-    dynamic.push("jobOffer");
-  } else if (goal === "study") {
-    dynamic.push("universityAccepted", "studyLevel");
-  } else if (goal === "business") {
-    dynamic.push("businessType");
-  } else if (goal === "family") {
-    dynamic.push("familyMemberType", "hasChildren");
-  } else if (goal === "remote") {
-    dynamic.push("foreignEmployer", "registerIp");
+// need to know which follow-ups to show, we already know the answer(s).
+//
+// A user can select more than one goal now (e.g. "Бизнес" + "Удалёнка") —
+// each goal's own follow-up questions are appended in the order the goals
+// were selected. No two goals share a follow-up step key, so simple
+// concatenation can't produce duplicates.
+function stepsForGoal(goal: string): StepKey[] {
+  switch (goal) {
+    case "work":
+      return ["jobOffer"];
+    case "study":
+      return ["universityAccepted", "studyLevel"];
+    case "business":
+      return ["businessType"];
+    case "family":
+      return ["familyMemberType", "hasChildren"];
+    case "remote":
+      return ["foreignEmployer", "registerIp"];
+    default:
+      // savings and other: no extra questions.
+      return [];
   }
-  // savings and other: no extra questions, straight to timeline.
+}
+
+function computeStepOrder(goals: string[] | undefined): StepKey[] {
+  const base: StepKey[] = ["language", "citizenship", "currentCountry", "destination", "goal"];
+  const dynamic = (goals ?? []).flatMap(stepsForGoal);
 
   return [...base, ...dynamic, "timeline", "hasCar"];
 }
@@ -285,7 +303,13 @@ export default function OnboardingPage() {
       citizenship: profile.citizenship ?? undefined,
       currentCountry: profile.current_country ?? undefined,
       destination: profile.country ?? undefined,
-      goal: profile.goal ?? undefined,
+      // Falls back to the legacy single `goal` column so accounts that went
+      // through onboarding before multi-select existed still resume
+      // correctly instead of restarting the goal step. Deliberately
+      // `undefined` rather than `[]` when there's nothing to restore — an
+      // empty array is truthy, which would make the "anything answered?"
+      // check below think this step was already answered.
+      goals: profile.goals?.length ? profile.goals : profile.goal ? [profile.goal] : undefined,
       jobOffer: profile.job_offer ?? undefined,
       alreadyAdmitted: profile.already_admitted ?? undefined,
       studyLevel: profile.study_level ?? undefined,
@@ -306,8 +330,8 @@ export default function OnboardingPage() {
       setSkippedSteps(restoredSkipped);
 
       // Resolve the resume index against the step order this user's actual
-      // goal produces, not the order at the time this effect happens to run.
-      const resumeStepOrder = computeStepOrder(restoredAnswers.goal);
+      // goal(s) produce, not the order at the time this effect happens to run.
+      const resumeStepOrder = computeStepOrder(restoredAnswers.goals);
       const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
     }
@@ -315,7 +339,7 @@ export default function OnboardingPage() {
     setHydrated(true);
   }, [profile, hydrated]);
 
-  const STEP_ORDER = computeStepOrder(answers.goal);
+  const STEP_ORDER = computeStepOrder(answers.goals);
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
   const isLast = stepIndex === STEP_ORDER.length - 1;
@@ -338,7 +362,7 @@ export default function OnboardingPage() {
       case "destination":
         return !!a.destination;
       case "goal":
-        return !!a.goal;
+        return !!a.goals && a.goals.length > 0;
       default:
         return !!a[DYNAMIC_STEP_ANSWER_FIELD[key]];
     }
@@ -378,9 +402,22 @@ export default function OnboardingPage() {
     saveFields({ country: id });
   }
 
-  function selectGoal(id: string) {
-    setAnswers((prev) => ({ ...prev, goal: id }));
-    saveFields({ goal: id });
+  // Multi-select: clicking a goal toggles it in/out of the set rather than
+  // replacing it. Selection order is preserved (new picks are appended,
+  // removals just splice out) since that order also drives which goal's
+  // follow-up questions come first — see computeStepOrder().
+  function toggleGoal(id: string) {
+    setAnswers((prev) => {
+      const current = prev.goals ?? [];
+      const nextGoals = current.includes(id) ? current.filter((g) => g !== id) : [...current, id];
+      saveFields({
+        goals: nextGoals,
+        // Keep the legacy scalar `goal` column mirroring the first pick, for
+        // every other part of the app that still only reads a single goal.
+        goal: nextGoals[0],
+      });
+      return { ...prev, goals: nextGoals };
+    });
   }
 
   function selectDynamicAnswer(key: DynamicStepKey, value: string) {
@@ -399,7 +436,10 @@ export default function OnboardingPage() {
     }
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
-    if (a.goal) fields.goal = a.goal;
+    if (a.goals && a.goals.length > 0) {
+      fields.goals = a.goals;
+      fields.goal = a.goals[0];
+    }
     if (a.jobOffer) fields.job_offer = a.jobOffer;
     if (a.alreadyAdmitted) fields.already_admitted = a.alreadyAdmitted;
     if (a.studyLevel) fields.study_level = a.studyLevel;
@@ -426,7 +466,8 @@ export default function OnboardingPage() {
       citizenship: answers.citizenship ?? "Other",
       citizenship_group: citizenshipGroup(answers.citizenship) ?? null,
       current_country: answers.currentCountry ?? "Other",
-      goal: answers.goal ?? "work",
+      goal: answers.goals?.[0] ?? "work",
+      goals: answers.goals?.length ? answers.goals : ["work"],
     };
 
     const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
@@ -786,7 +827,7 @@ export default function OnboardingPage() {
               {stepKey === "goal" && (
                 <div className="mt-10 grid gap-4 sm:grid-cols-2">
                   {goalOptions.map((option) =>
-                    renderOptionCard(option, answers.goal === option.id, () => selectGoal(option.id)),
+                    renderOptionCard(option, !!answers.goals?.includes(option.id), () => toggleGoal(option.id)),
                   )}
                 </div>
               )}

@@ -73,6 +73,12 @@ type GuideFilterFlags = Pick<
 export type GuideFilterContext = {
   citizenship?: string | null;
   citizenshipGroup?: string | null; // "A" | "B" | "C" | "D"
+  // A user can select more than one goal in onboarding now (see
+  // app/onboarding/page.tsx) — a guide is only hidden if it's explicitly
+  // excluded (goal_X === false) for EVERY selected goal; it stays visible
+  // if it applies to at least one of them. `goal` (singular) is still
+  // accepted as a fallback for any caller that hasn't been updated yet.
+  goals?: (string | null | undefined)[] | null;
   goal?: string | null; // "work" | "study" | "business" | "family" | "remote" | "savings" | "other"
   hasCar?: string | null; // "yes" | "no"
   hasChildren?: string | null; // "yes" | "no"
@@ -122,9 +128,15 @@ export function guideAppliesTo(guide: GuideFilterFlags, ctx: GuideFilterContext)
     guide.goal_remote ||
     guide.goal_savings ||
     guide.goal_other;
-  if (hasGoalData && ctx.goal) {
-    const field = GOAL_FIELD[ctx.goal];
-    if (field && guide[field] === false) return false;
+  const goals = (ctx.goals?.length ? ctx.goals : ctx.goal ? [ctx.goal] : []).filter(
+    (g): g is string => !!g,
+  );
+  if (hasGoalData && goals.length > 0) {
+    const excludedFromEverySelectedGoal = goals.every((goal) => {
+      const field = GOAL_FIELD[goal];
+      return !!field && guide[field] === false;
+    });
+    if (excludedFromEverySelectedGoal) return false;
   }
 
   if (guide.requires_car && ctx.hasCar === "no") return false;

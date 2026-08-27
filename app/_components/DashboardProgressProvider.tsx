@@ -76,7 +76,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         {
           citizenship: profile?.citizenship,
           citizenshipGroup: profile?.citizenship_group,
-          goal: profile?.goal,
+          goals: profile?.goals?.length ? profile.goals : profile?.goal ? [profile.goal] : null,
           hasCar: profile?.has_car,
           hasChildren: profile?.has_children,
         },
@@ -87,6 +87,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
       guides,
       profile?.citizenship,
       profile?.citizenship_group,
+      profile?.goals,
       profile?.goal,
       profile?.has_car,
       profile?.has_children,

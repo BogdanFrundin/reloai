@@ -15,6 +15,7 @@ create table public.profiles (
   citizenship_group text,
   current_country text,
   goal text,
+  goals text[],
   job_offer text,
   already_admitted text,
   study_level text,
@@ -44,6 +45,7 @@ alter table public.profiles add column if not exists citizenship text;
 alter table public.profiles add column if not exists citizenship_group text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
+alter table public.profiles add column if not exists goals text[];
 alter table public.profiles add column if not exists job_offer text;
 alter table public.profiles add column if not exists already_admitted text;
 alter table public.profiles add column if not exists study_level text;

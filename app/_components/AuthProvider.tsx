@@ -17,6 +17,13 @@ export type Profile = {
   citizenship_group: string | null;
   current_country: string | null;
   goal: string | null;
+  // Full multi-select set from onboarding (see app/onboarding/page.tsx) —
+  // `goal` above always mirrors goals[0] for every place that still only
+  // reads a single goal (dashboard subtitle, AI chat context, the static
+  // checklist fallback, etc.); routeEngine.ts and document filtering read
+  // this array directly so a combined route/document set reflects every
+  // goal the user picked, not just the first.
+  goals: string[] | null;
   job_offer: string | null;
   already_admitted: string | null;
   study_level: string | null;
