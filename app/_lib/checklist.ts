@@ -25,10 +25,10 @@ export type ChecklistStepDef = {
 
 export const STEPS_COMPLETED_ON_ONBOARDING = ["account", "onboarding", "visa_eligibility"];
 
-type GoalBucket = "work" | "study" | "business" | "family";
+export type GoalBucket = "work" | "study" | "business" | "family";
 type CountryKey = "poland" | "germany" | "spain";
 
-function goalBucket(goal: string | null | undefined): GoalBucket {
+export function goalBucket(goal: string | null | undefined): GoalBucket {
   if (goal === "study") return "study";
   if (goal === "business" || goal === "investment" || goal === "savings") return "business";
   if (goal === "work" || goal === "remote") return "work";

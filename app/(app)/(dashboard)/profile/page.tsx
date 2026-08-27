@@ -17,7 +17,8 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { getCountryName } from "../../../_lib/countries";
 import { POLISH_CITIES } from "../../../_lib/polishCities";
-import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
+import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus, type DocCategory } from "../../../_lib/documents";
+import { goalBucket } from "../../../_lib/checklist";
 import { supabase } from "../../../../lib/supabase";
 
 const COUNTRY_INDEX: Record<string, number> = { Poland: 0, Germany: 1, Spain: 2 };
@@ -80,6 +81,28 @@ export default function ProfilePage() {
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [documents, setDocuments] = useState<DocumentItem[]>(DOCUMENT_CATALOG);
+
+  // Categories that only apply to a subset of goals — hide them for users
+  // whose selected goal(s) don't need them, so this card only lists
+  // documents that are actually relevant, matching the same goal-bucket
+  // logic used to build the static checklist (app/_lib/checklist.ts).
+  const GOAL_ONLY_CATEGORIES: Partial<Record<DocCategory, "work" | "business">> = {
+    workPermit: "work",
+    employment: "work",
+    business: "business",
+  };
+  const profileGoals = profile?.goals?.length ? profile.goals : profile?.goal ? [profile.goal] : [];
+  const relevantBuckets = new Set(profileGoals.map((g) => goalBucket(g)));
+  const visibleDocuments = useMemo(
+    () =>
+      documents.filter((doc) => {
+        const requiredBucket = GOAL_ONLY_CATEGORIES[doc.category];
+        if (!requiredBucket) return true;
+        return relevantBuckets.has(requiredBucket);
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [documents, profile?.goals, profile?.goal],
+  );
 
   const [formCitizenship, setFormCitizenship] = useState<string | undefined>(profile?.citizenship ?? undefined);
   const [formCurrentCountry, setFormCurrentCountry] = useState<string | undefined>(profile?.current_country ?? undefined);
@@ -430,7 +453,7 @@ export default function ProfilePage() {
               </Link>
             </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              {documents.map((doc) => (
+              {visibleDocuments.map((doc) => (
                 <div
                   key={doc.id}
                   className="flex items-center justify-between gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5"
