@@ -190,7 +190,7 @@ export default function ProfilePage() {
 
   return (
     <div className="px-6 pb-8 lg:px-10 lg:pb-10">
-      <PageHeader title={p.title} subtitle={p.subtitle} />
+      <PageHeader title={p.title} subtitle={p.subtitle} center />
 
       <div className="mt-4 max-w-4xl space-y-6 mx-auto">
         {/* Section 1 — Personal Info */}
