@@ -152,6 +152,19 @@ export default function OnboardingResultsPage() {
   const [selectError, setSelectError] = useState(false);
   const confettiFiredRef = useRef(false);
 
+  // The profile sitting in AuthProvider's context can be stale here:
+  // finishOnboarding() (app/onboarding/page.tsx) writes the just-answered
+  // citizenship/goal fields straight to Postgres via upsert(), which is a
+  // plain DB write, not an auth event — it never fires AuthProvider's
+  // onAuthStateChange listener, so nothing else was pulling the fresh row
+  // in. In practice that meant this page was often waiting on a fetch that
+  // was never actually in flight. Force one the instant this page mounts so
+  // the wait is a real, immediate request instead of an indefinite stall.
+  useEffect(() => {
+    refreshProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount only; refreshProfile's identity changes every AuthProvider render
+  }, []);
+
   // Route generation itself is instant (generateRoutes() is a synchronous,
   // rule-based lookup) — the only real wait here is the profile fetch in
   // AuthProvider. There's no genuine byte-by-byte progress to report, so

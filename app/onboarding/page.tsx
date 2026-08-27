@@ -429,6 +429,21 @@ export default function OnboardingPage() {
       goal: answers.goal ?? "work",
     };
 
+    const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
+      user_id: user.id,
+      country: baseFields.country,
+      document_type: documentType,
+      steps_completed: 1,
+      total_steps: 1,
+    }));
+
+    // progress.user_id has a (non-deferrable) foreign key on profiles.id, so
+    // for a brand-new account (no profiles row yet) this write can only
+    // start once the profiles upsert above has actually committed — running
+    // them in parallel race-conditions new signups into an FK violation.
+    // Awaiting the profile write, then firing progress without awaiting it,
+    // keeps the FK safe while still not blocking navigation on the
+    // non-critical write (it's already handled as non-fatal below).
     const { error: profileError } = await supabase.from("profiles").upsert({
       id: user.id,
       name: (user.user_metadata?.name as string | undefined) ?? null,
@@ -445,25 +460,19 @@ export default function OnboardingPage() {
       return;
     }
 
-    const progressRows = STEPS_COMPLETED_ON_ONBOARDING.map((documentType) => ({
-      user_id: user.id,
-      country: baseFields.country,
-      document_type: documentType,
-      steps_completed: 1,
-      total_steps: 1,
-    }));
-
-    const { error: progressError } = await supabase
+    supabase
       .from("progress")
-      .upsert(progressRows, { onConflict: "user_id,document_type" });
-
-    if (progressError) {
-      // Non-fatal for navigation (the user still finished onboarding), but
-      // if this silently fails the dashboard's "Текущий этап" gets stuck on
-      // the first phase forever since account/onboarding/visa_eligibility
-      // never register as done. Surface it so it's visible in monitoring.
-      console.error("Failed to mark onboarding progress steps complete:", progressError.message);
-    }
+      .upsert(progressRows, { onConflict: "user_id,document_type" })
+      .then(({ error: progressError }) => {
+        if (progressError) {
+          // Non-fatal for navigation (the user still finished onboarding),
+          // but if this silently fails the dashboard's "Текущий этап" gets
+          // stuck on the first phase forever since account/onboarding/
+          // visa_eligibility never register as done. Surface it so it's
+          // visible in monitoring.
+          console.error("Failed to mark onboarding progress steps complete:", progressError.message);
+        }
+      });
 
     router.push("/onboarding/results");
   }
