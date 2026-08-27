@@ -3838,7 +3838,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "Нет — автомобиля нет",
       },
       results: {
-        heading: "Мы нашли 3 маршрута переезда для вас",
+        heading: "Мы нашли 3 маршрута переезда для вас!",
         loading: "Генерируем ваши персональные маршруты...",
         selectButton: "Выбрать этот маршрут",
         selecting: "Выбираем…",
