@@ -697,7 +697,7 @@ export default function OnboardingPage() {
 
   return (
     <PageTransition>
-      <div className="relative flex min-h-screen flex-col overflow-hidden px-6 py-10">
+      <div className="relative flex min-h-dvh flex-col overflow-x-hidden px-6 py-10">
         <div
           aria-hidden
           className="animate-blob-drift absolute left-1/2 top-1/4 -z-10 h-[520px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/15 opacity-70 blur-[120px] motion-reduce:animate-none"

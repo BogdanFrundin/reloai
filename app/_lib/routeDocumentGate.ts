@@ -23,9 +23,14 @@ const CONDITIONAL_DOC_RULES: { docMarker: string; requireStepMarker: string }[] 
   { docMarker: "regon", requireStepMarker: "regon" },
   { docMarker: "vat регистрация", requireStepMarker: "vat" },
   { docMarker: "печать компании", requireStepMarker: "регистрация ооо" },
-  // Work-permit type: fast track with an existing employer offer (type A)
-  // vs the generic permit needed when still job-hunting.
-  { docMarker: "разрешение на работу тип a", requireStepMarker: "тип a" },
+  // NOTE: there used to be a rule here gating "Разрешение на работу тип A"
+  // on a "тип a" step marker. The current routeEngine.ts specs (offer vs
+  // no-offer branches for group B + goal=work) never emit that marker text
+  // in any route's steps, so the rule always evaluated to "hide" and
+  // permanently removed that document for every user. Removed rather than
+  // re-targeted: there's no reliable step-level signal left to distinguish
+  // the two work-permit branches, so this doc now falls back to the default
+  // (always visible), same as most other guides.
   { docMarker: "заявление о намерении доверить работу", requireStepMarker: "разрешение на работу" },
   // Ukraine temporary-protection fast track vs the full karta pobytu track.
   { docMarker: "временная защита", requireStepMarker: "временная защита" },

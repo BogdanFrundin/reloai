@@ -122,7 +122,7 @@ function CheckoutContent() {
 
   return (
     <PageTransition>
-      <div className="relative flex min-h-screen flex-col overflow-hidden bg-background px-6 py-10">
+      <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background px-6 py-10">
         <div
           aria-hidden
           className="absolute left-1/2 top-1/3 -z-10 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 opacity-60 blur-[100px]"
