@@ -168,24 +168,6 @@ body {
   animation: slide-up 0.4s var(--ease-out-strong) both;
 }
 
-/* Indeterminate loading bar: a short gradient segment sweeps left-to-right
-   across the track, looping. Used for "we're generating/analyzing this for
-   you" states where there's no real percentage to report — e.g. the route
-   engine on /onboarding/results, which computes instantly but still needs
-   a moment of "thinking" feedback so the transition doesn't feel abrupt. */
-@keyframes loading-bar-sweep {
-  0% {
-    left: -35%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-.animate-loading-bar {
-  animation: loading-bar-sweep 1.3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
