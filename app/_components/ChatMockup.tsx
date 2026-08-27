@@ -194,15 +194,13 @@ export default function ChatMockup() {
                     }}
                   >
                     <div className="absolute left-1.5 top-1.5 h-2 w-2.5 rounded-[1.5px] bg-gradient-to-br from-amber-200 to-amber-500/90 ring-[0.5px] ring-black/20" />
+                    <div className="absolute right-1.5 top-1.5 h-3 w-3 rounded-full bg-white/20 ring-1 ring-white/25" />
                     <div className="absolute bottom-1.5 left-1.5 h-3.5 w-2.5 rounded-[1px] bg-white/15 ring-1 ring-white/20" />
                     <div className="absolute bottom-1.5 right-1.5 left-[26px] space-y-[2.5px]">
                       <div className="h-[2px] w-full rounded-full bg-white/30" />
                       <div className="h-[2px] w-2/3 rounded-full bg-white/20" />
                       <div className="h-[2px] w-1/3 rounded-full bg-white/15" />
                     </div>
-                    <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 rotate-6 items-center justify-center rounded-full border-2 border-red-400/80 bg-[#0d1c30] text-[6px] font-bold text-red-400/90 shadow-sm">
-                      OK
-                    </span>
                   </div>
                 )}
               </div>
