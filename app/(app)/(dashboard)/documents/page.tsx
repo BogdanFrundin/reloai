@@ -15,6 +15,7 @@ import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 import DocumentRoadmapList from "../../../_components/DocumentRoadmapList";
+import DocumentGuideList from "../../../_components/DocumentGuideList";
 import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
 
 type Category = "all" | DocumentItem["category"];
@@ -288,7 +289,7 @@ export default function DocumentsPage() {
   // group/goal/has_car/has_children and ordered by step_order) is built once
   // in DashboardProgressProvider from document_guides — the same source the
   // dashboard roadmap page reads — so both pages always agree.
-  const { documentRoadmap, documentGuidesLoading, completed, toggleStepCompletion } = useDashboardProgress();
+  const { documentRoadmap, allGuides, documentGuidesLoading, completed, toggleStepCompletion } = useDashboardProgress();
 
   const guideCategories = useMemo(() => {
     const seen = new Set<string>();
@@ -602,10 +603,9 @@ export default function DocumentsPage() {
 
       <Reveal delay={160}>
         <div className="mt-12">
-          <h2 className="text-xl font-bold tracking-tight text-text-primary">Гайды по легализации</h2>
+          <h2 className="text-xl font-bold tracking-tight text-text-primary">Вероятно нужные документы</h2>
           <p className="mt-1 text-sm text-text-muted">
-            Визы, ПЕСЕЛЬ, карта побыту, работа, бизнес, образование, авто, жильё, переводы и другие документы —
-            пошаговые инструкции.
+            Подобраны под ваш маршрут, цель переезда и гражданство — пошаговые инструкции.
           </p>
           {profile?.citizenship && (
             <p className="mt-2 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
@@ -692,6 +692,23 @@ export default function DocumentsPage() {
               onToggle={toggleStepCompletion}
               loading={documentGuidesLoading}
               emptyText="Пока нет гайдов в этой категории."
+            />
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={180}>
+        <div className="mt-12">
+          <h2 className="text-xl font-bold tracking-tight text-text-primary">Все документы</h2>
+          <p className="mt-1 text-sm text-text-muted">
+            Полный список гайдов по легализации — на случай, если нужен документ, не попавший в список выше.
+          </p>
+          <div className="mt-4">
+            <DocumentGuideList
+              guides={allGuides}
+              loading={documentGuidesLoading}
+              emptyText="Пока нет гайдов."
+              searchPlaceholder="Поиск гайда"
             />
           </div>
         </div>

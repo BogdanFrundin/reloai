@@ -31,6 +31,11 @@ type DashboardProgressValue = {
   isGeneratedPlan: boolean;
   isInteractivePlan: boolean;
   documentRoadmap: DocumentRoadmapSection[];
+  // Every document_guides row (minus банки/insurance categories, which have
+  // their own pages), unfiltered by citizenship/goal/route — the "browse
+  // everything" list shown under the personalized documentRoadmap on
+  // /documents, for anything the personalization might have missed.
+  allGuides: DocumentGuide[];
   documentGuidesLoading: boolean;
   toggleStepCompletion: (documentType: string) => void;
   regeneratePlan: () => Promise<void>;
@@ -240,6 +245,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         isGeneratedPlan: documentRoadmap.length === 0 && !!generatedPlan,
         isInteractivePlan: documentRoadmap.length > 0 || !!generatedPlan,
         documentRoadmap,
+        allGuides: guides,
         documentGuidesLoading,
         toggleStepCompletion,
         regeneratePlan,
