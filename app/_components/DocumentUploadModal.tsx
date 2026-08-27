@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
@@ -32,7 +32,23 @@ export default function DocumentUploadModal({
   const { t } = useLanguage();
   const d = t.documents.uploadModal;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Show an actual thumbnail of what the person is about to upload instead
+  // of just the bare filename — image object URLs only, PDFs and other
+  // scans still fall back to the filename + camera icon. Revoked on every
+  // change/unmount so swapping files (or closing the modal) doesn't leak
+  // blob URLs.
+  useEffect(() => {
+    if (!selectedFile || !selectedFile.type.startsWith("image/")) {
+      setPreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(selectedFile);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [selectedFile]);
 
   // `open` only ever becomes true from a client-side click after hydration,
   // so document.body is always available here — no mount-detection needed.
@@ -83,11 +99,22 @@ export default function DocumentUploadModal({
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="mt-9 flex w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-border-strong bg-surface-1 px-6 py-16 text-center transition-colors duration-150 hover:border-accent/40"
+            className={`mt-9 flex w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-border-strong bg-surface-1 text-center transition-colors duration-150 hover:border-accent/40 ${
+              previewUrl ? "p-4" : "px-6 py-16"
+            }`}
           >
-            <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-accent/15 text-accent-bright">
-              {CAMERA_ICON}
-            </span>
+            {previewUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- object URL, not a static/remote asset next/image can optimize
+              <img
+                src={previewUrl}
+                alt={selectedFile?.name ?? ""}
+                className="max-h-64 w-full rounded-2xl border border-border-subtle object-contain"
+              />
+            ) : (
+              <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                {CAMERA_ICON}
+              </span>
+            )}
             <span className="truncate text-base font-semibold text-text-primary">
               {selectedFile ? selectedFile.name : d.dropzoneLabel}
             </span>
