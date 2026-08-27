@@ -21,6 +21,18 @@ export const TAG_LABELS: Record<string, string> = {
 
 const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"];
 
+// Russian noun-plural agreement for "банк" after a count — 1 банк, 2-4 банка,
+// 5+/11-14 банков — used so the "show more" button says exactly how many
+// more cards are behind it instead of a generic "other banks" label.
+function bankWord(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) return "банков";
+  if (mod10 === 1) return "банк";
+  if (mod10 >= 2 && mod10 <= 4) return "банка";
+  return "банков";
+}
+
 const HEADLINE_PHRASES: Record<string, string> = {
   no_pesel: "Без PESEL",
   fully_online: "Открыть счёт онлайн",
@@ -462,7 +474,7 @@ export default function BankCardGrid({
                 onClick={() => setShowAll((prev) => !prev)}
                 className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
               >
-                {showAll ? "Скрыть" : "Другие банки"}
+                {showAll ? "Скрыть" : `Ещё ${rest.length} ${bankWord(rest.length)}`}
               </button>
 
               {showAll && (
