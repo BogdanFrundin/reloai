@@ -72,6 +72,26 @@ export type ParsedTiming = {
   label: string;
 };
 
+// Some document_guides rows have their `timing` column set to the raw
+// English section-key (e.g. "before_departure") instead of a human-readable
+// Russian description — likely leftover from a bulk edit that used the
+// internal key as a placeholder. Since these are plain English tokens, none
+// of the Russian regexes below ever match them, so without this table they
+// silently fall through to the generic "first_month" default AND get
+// rendered to the user as literal untranslated key text (the exact bug this
+// fixes). Recognize them up front and translate straight to a proper
+// section + Russian label instead of treating them as unstructured text.
+const RAW_SECTION_KEY_ALIASES: Record<string, TimelineSection> = {
+  before_departure: "before_departure",
+  beforedeparture: "before_departure",
+  first_week: "first_week",
+  firstweek: "first_week",
+  first_month: "first_month",
+  firstmonth: "first_month",
+  longterm: "longterm",
+  long_term: "longterm",
+};
+
 // Parses a document_guides.timing string into a section + day offset from
 // the move's start date. Falls back to "first_month"/no exact offset for
 // text it doesn't recognize, so an unusual timing string still renders
@@ -84,6 +104,11 @@ export function parseTiming(raw: string | null | undefined): ParsedTiming {
 
   if (!label) {
     return { section: "first_month", offsetDays: null, recurring: false, urgent: false, label: "" };
+  }
+
+  const aliasedSection = RAW_SECTION_KEY_ALIASES[lower.replace(/\s+/g, "")];
+  if (aliasedSection) {
+    return { section: aliasedSection, offsetDays: null, recurring: false, urgent, label: SECTION_TITLES[aliasedSection] };
   }
 
   if (recurring) {
