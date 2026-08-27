@@ -846,7 +846,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Countries" },
-        { value: "10x", label: "Cheaper" },
+        { value: "100x", label: "Cheaper" },
         { value: "24/7", label: "AI Support" },
       ],
     },
@@ -2378,7 +2378,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Страны" },
-        { value: "10x", label: "Дешевле" },
+        { value: "100x", label: "Дешевле" },
         { value: "24/7", label: "Поддержка AI" },
       ],
     },
@@ -3913,7 +3913,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Davlat" },
-        { value: "10x", label: "Arzon" },
+        { value: "100x", label: "Arzon" },
         { value: "24/7", label: "AI yordam" },
       ],
     },
@@ -5443,7 +5443,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Ülke" },
-        { value: "10x", label: "Daha ucuz" },
+        { value: "100x", label: "Daha ucuz" },
         { value: "24/7", label: "AI desteği" },
       ],
     },
@@ -6972,7 +6972,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Кишвар" },
-        { value: "10x", label: "Арзонтар" },
+        { value: "100x", label: "Арзонтар" },
         { value: "24/7", label: "Дастгирии AI" },
       ],
     },
@@ -8501,7 +8501,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     stats: {
       items: [
         { value: "3", label: "Країни" },
-        { value: "10x", label: "Дешевше" },
+        { value: "100x", label: "Дешевше" },
         { value: "24/7", label: "Підтримка AI" },
       ],
     },
