@@ -7,6 +7,7 @@ import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
+import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 
 const SCALE_ICON = (
   <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -218,7 +219,20 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
 
           <div className="grid gap-3 sm:grid-cols-2">
             {guide.when_to_get && <InfoRow label="Когда оформлять" value={guide.when_to_get} />}
-            {guide.where_to_submit && <InfoRow label="Куда подавать" value={guide.where_to_submit} />}
+            {guide.where_to_submit && (
+              <div>
+                <InfoRow label="Куда подавать" value={guide.where_to_submit} />
+                <a
+                  href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => event.stopPropagation()}
+                  className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
+                >
+                  Показать на карте →
+                </a>
+              </div>
+            )}
             {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
             {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}

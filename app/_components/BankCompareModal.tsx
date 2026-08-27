@@ -6,6 +6,7 @@ import { TAG_LABELS } from "./BankCardGrid";
 import { useCurrency } from "./CurrencyProvider";
 import { convertPlnText, type CurrencyCode, type RatesMap } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
+import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 
 const ROWS: {
   key: string;
@@ -89,6 +90,16 @@ export default function BankCompareModal({
                   {guides.map((g) => (
                     <td key={g.id} className="p-3 text-left text-xs text-text-secondary">
                       {row.render(g, currency, rates)}
+                      {row.key === "where_to_submit" && g.where_to_submit && (
+                        <a
+                          href={buildGoogleMapsUrl([g.where_to_submit, "Poland"])}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-1 block font-semibold text-accent-bright hover:underline"
+                        >
+                          На карте →
+                        </a>
+                      )}
                     </td>
                   ))}
                 </tr>
