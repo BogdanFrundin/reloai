@@ -14,6 +14,7 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
+import { buildGoogleMapsUrl } from "../../../_lib/mapsLink";
 
 const PHONE_ICON = (
   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -100,7 +101,7 @@ const SPARKLE_ICON_SM = (
 function ClinicCard({ clinic }: { clinic: Clinic }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const mapsQuery = encodeURIComponent([clinic.address, clinic.district, clinic.city, "Poland"].filter(Boolean).join(", "));
+  const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
   const subtitleParts = [clinic.address, clinic.district].filter(Boolean);
 
   function askAi() {
@@ -183,7 +184,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
           )}
 
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+            href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex w-full items-center justify-center rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"

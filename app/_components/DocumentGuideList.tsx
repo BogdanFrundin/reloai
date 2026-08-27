@@ -7,6 +7,7 @@ import CurrencyHint from "./CurrencyHint";
 import DocumentFillModal from "./DocumentFillModal";
 import { getTemplateForGuide } from "../_lib/formTemplates";
 import TextWithGlossary from "./TextWithGlossary";
+import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 
 export type DocumentGuide = {
   id: string;
@@ -199,7 +200,19 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
 
       <div className="grid gap-3 sm:grid-cols-2">
         {guide.when_to_get && <InfoRow label="Когда оформлять" value={guide.when_to_get} />}
-        {guide.where_to_submit && <InfoRow label="Куда подавать" value={guide.where_to_submit} />}
+        {guide.where_to_submit && (
+          <div>
+            <InfoRow label="Куда подавать" value={guide.where_to_submit} />
+            <a
+              href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
+            >
+              Показать на карте →
+            </a>
+          </div>
+        )}
         {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
         {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
         {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}

@@ -14,6 +14,7 @@ import CurrencyHint from "../../../_components/CurrencyHint";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
+import { buildGoogleMapsUrl } from "../../../_lib/mapsLink";
 
 type TabId = "courses" | "schools" | "kindergartens" | "universities";
 type FilterId = "all" | "государственный" | "частный";
@@ -211,7 +212,20 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
 
       {open && (
         <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
-          {row.address && <InfoRow label="Адрес" value={row.address} />}
+          {row.address && (
+            <div>
+              <InfoRow label="Адрес" value={row.address} />
+              <a
+                href={buildGoogleMapsUrl([row.address, row.city, "Poland"])}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(event) => event.stopPropagation()}
+                className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
+              >
+                Показать на карте →
+              </a>
+            </div>
+          )}
 
           <div className="grid gap-3 sm:grid-cols-2">
             {row.audience && <InfoRow label="Для кого" value={row.audience} />}
