@@ -8,7 +8,7 @@ type ConversationMessage = { from: MessageFrom; text: string };
 
 const DOC_CARDS = [
   { title: "Скан паспорта", subtitle: "Нужен почти для всех шагов", status: "Готово", statusColor: "emerald" as const, kind: "passport" as const },
-  { title: "Медицинская страховка", subtitle: "Обязательна для резиденции", status: "На проверке", statusColor: "amber" as const, kind: "insurance" as const },
+  { title: "Мед. страховка", subtitle: "Обязательна для ВНЖ", status: "На проверке", statusColor: "amber" as const, kind: "insurance" as const },
 ];
 
 // Pacing for the simulated live-conversation reveal — AI "replies" get a
