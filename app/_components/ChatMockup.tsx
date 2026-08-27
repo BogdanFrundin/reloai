@@ -8,7 +8,7 @@ type ConversationMessage = { from: MessageFrom; text: string };
 
 const DOC_CARDS = [
   { title: "Скан паспорта", subtitle: "Нужен почти для всех шагов", status: "Готово", statusColor: "emerald" as const, kind: "passport" as const },
-  { title: "Виза или ВНЖ", subtitle: "Основа для легализации", status: "На проверке", statusColor: "amber" as const, kind: "visa" as const },
+  { title: "Медицинская страховка", subtitle: "Обязательна для резиденции", status: "На проверке", statusColor: "amber" as const, kind: "insurance" as const },
 ];
 
 // Pacing for the simulated live-conversation reveal — AI "replies" get a
@@ -187,19 +187,34 @@ export default function ChatMockup() {
                   </div>
                 ) : (
                   <div
-                    className="relative h-9 w-14 rounded-md bg-gradient-to-br from-[#1f3a5f] to-[#0d1c30] ring-1 ring-white/15"
+                    className="relative h-12 w-9 rounded-[3px] bg-gradient-to-br from-[#1f3a5f] to-[#0d1c30] ring-1 ring-white/15"
                     style={{
                       boxShadow:
                         "0 6px 12px -4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 1px rgba(255,255,255,0.12)",
                     }}
                   >
-                    <div className="absolute left-1.5 top-1.5 h-2 w-2.5 rounded-[1.5px] bg-gradient-to-br from-amber-200 to-amber-500/90 ring-[0.5px] ring-black/20" />
-                    <div className="absolute right-1.5 top-1.5 h-3 w-3 rounded-full bg-white/20 ring-1 ring-white/25" />
-                    <div className="absolute bottom-1.5 left-1.5 h-3.5 w-2.5 rounded-[1px] bg-white/15 ring-1 ring-white/20" />
-                    <div className="absolute bottom-1.5 right-1.5 left-[26px] space-y-[2.5px]">
-                      <div className="h-[2px] w-full rounded-full bg-white/30" />
-                      <div className="h-[2px] w-2/3 rounded-full bg-white/20" />
-                      <div className="h-[2px] w-1/3 rounded-full bg-white/15" />
+                    <div
+                      aria-hidden
+                      className="absolute right-0 top-0 h-3 w-3 bg-white/10"
+                      style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
+                    />
+                    <div className="absolute inset-x-0 top-2.5 flex justify-center">
+                      <svg className="h-4 w-4 text-emerald-400/90" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.5l6.5 2.6v5.4c0 4.6-2.8 8.1-6.5 9.5-3.7-1.4-6.5-4.9-6.5-9.5V5.1L12 2.5z" />
+                        <path
+                          d="M9.5 12.2l1.8 1.8 3.4-3.6"
+                          fill="none"
+                          stroke="#18294a"
+                          strokeWidth="1.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          opacity="0.75"
+                        />
+                      </svg>
+                    </div>
+                    <div className="absolute inset-x-1.5 bottom-1.5 space-y-[3px]">
+                      <div className="h-[2.5px] w-full rounded-full bg-white/30" />
+                      <div className="h-[2px] w-1/2 rounded-full bg-white/20" />
                     </div>
                   </div>
                 )}
