@@ -2303,7 +2303,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "No — no car",
       },
       results: {
-        heading: "We found 3 relocation routes for you",
+        heading: "We found 3 relocation routes for you!",
         loading: "Generating your personalized routes...",
         selectButton: "Choose this route",
         selecting: "Selecting…",
@@ -5368,7 +5368,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "Yo'q — avtomobil yo'q",
       },
       results: {
-        heading: "Biz siz uchun 3 ta ko'chish mararhalarini topdik",
+        heading: "Biz siz uchun 3 ta ko'chish mararhalarini topdik!",
         loading: "Sizning shaxsiy mararhalarini yaratmoqdamiz...",
         selectButton: "Bu mararhanni tanlang",
         selecting: "Tanlanmoqda…",
@@ -6897,7 +6897,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "Hayır — arabam yok",
       },
       results: {
-        heading: "Sizin için 3 taşınma yolu bulduk",
+        heading: "Sizin için 3 taşınma yolu bulduk!",
         loading: "Kişiselleştirilmiş yollarınız oluşturuluyor...",
         selectButton: "Bu yolu seçin",
         selecting: "Seçiliyor…",
@@ -8426,7 +8426,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "Не — мошин надорам",
       },
       results: {
-        heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем",
+        heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем!",
         loading: "Роҳҳои шахсии шумо сохта мешаванд...",
         selectButton: "Ин роҳро интихоб кунед",
         selecting: "Интихоб шуда истодааст…",
@@ -9961,7 +9961,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         no: "Ні — автомобіля немає",
       },
       results: {
-        heading: "Ми знайшли 3 маршрути переїзду для вас",
+        heading: "Ми знайшли 3 маршрути переїзду для вас!",
         loading: "Генеруємо ваші персональні маршрути...",
         selectButton: "Обрати цей маршрут",
         selecting: "Обираємо…",
