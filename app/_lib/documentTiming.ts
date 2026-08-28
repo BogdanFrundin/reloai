@@ -96,7 +96,16 @@ const RAW_SECTION_KEY_ALIASES: Record<string, TimelineSection> = {
 // the move's start date. Falls back to "first_month"/no exact offset for
 // text it doesn't recognize, so an unusual timing string still renders
 // (just without a computed deadline date) instead of breaking the page.
-export function parseTiming(raw: string | null | undefined): ParsedTiming {
+//
+// `sectionTitles` overrides the section-name labels used when a timing
+// value is one of the RAW_SECTION_KEY_ALIASES (rather than free-text) —
+// pass the current UI language's translated titles so this label isn't
+// stuck in Russian. Defaults to SECTION_TITLES (Russian) for callers that
+// don't have a Dictionary handy.
+export function parseTiming(
+  raw: string | null | undefined,
+  sectionTitles: Record<TimelineSection, string> = SECTION_TITLES,
+): ParsedTiming {
   const label = (raw ?? "").replace(/⚠️?/g, "").trim();
   const lower = label.toLowerCase();
   const urgent = /⚠|сразу/i.test(raw ?? "");
@@ -108,7 +117,7 @@ export function parseTiming(raw: string | null | undefined): ParsedTiming {
 
   const aliasedSection = RAW_SECTION_KEY_ALIASES[lower.replace(/\s+/g, "")];
   if (aliasedSection) {
-    return { section: aliasedSection, offsetDays: null, recurring: false, urgent, label: SECTION_TITLES[aliasedSection] };
+    return { section: aliasedSection, offsetDays: null, recurring: false, urgent, label: sectionTitles[aliasedSection] };
   }
 
   if (recurring) {

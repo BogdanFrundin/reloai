@@ -82,6 +82,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         },
         routeSteps,
         profile?.timeline,
+        t.dashboard.timelineSections,
       ),
     [
       guides,
@@ -93,6 +94,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
       profile?.has_children,
       profile?.timeline,
       routeSteps,
+      t.dashboard.timelineSections,
     ],
   );
 

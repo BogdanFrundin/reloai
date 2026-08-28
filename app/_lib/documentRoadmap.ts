@@ -67,6 +67,7 @@ export function buildDocumentRoadmap(
   ctx: GuideFilterContext,
   routeSteps: string[] | null | undefined,
   timeline: string | null | undefined,
+  sectionTitles: Record<TimelineSection, string> = SECTION_TITLES,
 ): DocumentRoadmapSection[] {
   const startDate = computeStartDate(timeline);
   const showBeforeDeparture = hasFutureMoveDate(timeline);
@@ -75,7 +76,7 @@ export function buildDocumentRoadmap(
     .filter((g) => guideAppliesTo(g, ctx))
     .filter((g) => guidePassesRouteGate(g.name, routeSteps))
     .map((guide) => {
-      const parsed = parseTiming(guide.timing);
+      const parsed = parseTiming(guide.timing, sectionTitles);
       return { guide, ...parsed };
     })
     .filter((e) => e.section !== "before_departure" || showBeforeDeparture)
@@ -87,7 +88,7 @@ export function buildDocumentRoadmap(
       guide: e.guide,
       stepNumber: index + 1,
       section: e.section,
-      timingLabel: e.label || SECTION_TITLES[e.section],
+      timingLabel: e.label || sectionTitles[e.section],
       dateLabel: exactDate ? formatDateRu(exactDate) : undefined,
       offsetDays: e.offsetDays,
       urgency: urgencyFor(exactDate),
@@ -97,7 +98,7 @@ export function buildDocumentRoadmap(
 
   return SECTION_ORDER.map((key) => ({
     key,
-    title: SECTION_TITLES[key],
+    title: sectionTitles[key],
     entries: entries.filter((e) => e.section === key),
   })).filter((section) => section.entries.length > 0);
 }

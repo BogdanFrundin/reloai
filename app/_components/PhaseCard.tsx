@@ -247,7 +247,7 @@ export default function PhaseCard({
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                   {step.stepNumber && (
                     <span className="flex-shrink-0 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent-bright">
-                      Шаг {step.stepNumber}
+                      {t.dashboard.route.stepLabel} {step.stepNumber}
                     </span>
                   )}
                   <p className={`text-sm font-medium ${checked ? "text-text-muted" : "text-text-primary"}`}>{step.title}</p>

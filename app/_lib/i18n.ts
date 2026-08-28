@@ -512,6 +512,12 @@ export type Dictionary = {
     docsReadyTemplate: string;
     currentPhasePrefix: string;
     allPhasesDone: string;
+    timelineSections: {
+      before_departure: string;
+      first_week: string;
+      first_month: string;
+      longterm: string;
+    };
     countdown: {
       heading: string;
       remaining: string;
@@ -558,6 +564,7 @@ export type Dictionary = {
       reasoningTitle: string;
       checklistHeading: string;
       loading: string;
+      stepLabel: string;
     };
     steps: {
       account: { title: string; desc: string };
@@ -1887,6 +1894,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} of {total} documents ready",
       currentPhasePrefix: "Now: {phase}",
       allPhasesDone: "All phases complete",
+      timelineSections: {
+        before_departure: "Before departure",
+        first_week: "First week",
+        first_month: "First month",
+        longterm: "Long-term",
+      },
       countdown: {
         heading: "You have 30 days of legal stay under the visa-free regime",
         remaining: "{days} days left — apply for your PESEL and residence card in time",
@@ -1933,6 +1946,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Why this pathway",
         checklistHeading: "Your personalized checklist",
         loading: "Analyzing your relocation options…",
+        stepLabel: "Step",
       },
       steps: {
         account: { title: "Create your account", desc: "You're all set up." },
@@ -3431,6 +3445,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} из {total} документов готово",
       currentPhasePrefix: "Сейчас: {phase}",
       allPhasesDone: "Все этапы завершены",
+      timelineSections: {
+        before_departure: "До отъезда",
+        first_week: "Первая неделя",
+        first_month: "Первый месяц",
+        longterm: "Долгосрочно",
+      },
       countdown: {
         heading: "У вас 30 дней легального пребывания по визовому режиму",
         remaining: "Осталось {days} дней — нужно успеть подать на PESEL и карту побыту",
@@ -3477,6 +3497,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Почему этот путь",
         checklistHeading: "Ваш персональный чек-лист",
         loading: "Анализируем ваши варианты переезда…",
+        stepLabel: "Шаг",
       },
       steps: {
         account: { title: "Создайте аккаунт", desc: "Всё готово." },
@@ -4972,6 +4993,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{total} tadan {done} tasi hujjat tayyor",
       currentPhasePrefix: "Hozir: {phase}",
       allPhasesDone: "Barcha bosqichlar yakunlandi",
+      timelineSections: {
+        before_departure: "Jo'nashdan oldin",
+        first_week: "Birinchi hafta",
+        first_month: "Birinchi oy",
+        longterm: "Uzoq muddatli",
+      },
       countdown: {
         heading: "Sizda vizasiz rejim bo'yicha 30 kunlik qonuniy turish muddati bor",
         remaining: "{days} kun qoldi — PESEL va karta pobytu uchun ariza berishga ulgurish kerak",
@@ -5018,6 +5045,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Nega aynan shu yo'l",
         checklistHeading: "Sizning shaxsiy bajarish ro'yxatingiz",
         loading: "Ko'chish variantlaringiz tahlil qilinmoqda…",
+        stepLabel: "Qadam",
       },
       steps: {
         account: { title: "Hisobingizni yarating", desc: "Hammasi tayyor." },
@@ -6510,6 +6538,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{total} belgeden {done} hazır",
       currentPhasePrefix: "Şimdi: {phase}",
       allPhasesDone: "Tüm aşamalar tamamlandı",
+      timelineSections: {
+        before_departure: "Gitmeden önce",
+        first_week: "İlk hafta",
+        first_month: "İlk ay",
+        longterm: "Uzun vadeli",
+      },
       countdown: {
         heading: "Vizesiz rejim kapsamında 30 günlük yasal kalış hakkınız var",
         remaining: "{days} gün kaldı — PESEL ve ikamet kartı başvurunuzu zamanında yapmanız gerekiyor",
@@ -6556,6 +6590,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Neden bu yol",
         checklistHeading: "Kişiselleştirilmiş kontrol listeniz",
         loading: "Taşınma seçenekleriniz analiz ediliyor…",
+        stepLabel: "Adım",
       },
       steps: {
         account: { title: "Hesabınızı oluşturun", desc: "Her şey hazır." },
@@ -8048,6 +8083,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} аз {total} ҳуҷҷат тайёр",
       currentPhasePrefix: "Ҳозир: {phase}",
       allPhasesDone: "Ҳамаи марҳилаҳо ба анҷом расиданд",
+      timelineSections: {
+        before_departure: "Пеш аз рафтан",
+        first_week: "Ҳафтаи аввал",
+        first_month: "Моҳи аввал",
+        longterm: "Дарозмуддат",
+      },
       countdown: {
         heading: "Шумо 30 рӯз иқомати қонунӣ дар низоми бидуни виза доред",
         remaining: "{days} рӯз боқӣ мондааст — бояд барои PESEL ва карти иқомат дар мӯҳлат муроҷиат кунед",
@@ -8094,6 +8135,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Чаро маҳз ин роҳ",
         checklistHeading: "Рӯйхати корҳои шахсии шумо",
         loading: "Вариантҳои кӯчидани шумо таҳлил мешаванд…",
+        stepLabel: "Қадам",
       },
       steps: {
         account: { title: "Аккаунти худро эҷод кунед", desc: "Ҳама чиз омода аст." },
@@ -9590,6 +9632,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} із {total} документів готово",
       currentPhasePrefix: "Зараз: {phase}",
       allPhasesDone: "Усі етапи завершено",
+      timelineSections: {
+        before_departure: "До від'їзду",
+        first_week: "Перший тиждень",
+        first_month: "Перший місяць",
+        longterm: "Довгостроково",
+      },
       countdown: {
         heading: "У вас 30 днів легального перебування за візовим режимом",
         remaining: "Залишилося {days} днів — потрібно встигнути подати на PESEL і карту побиту",
@@ -9636,6 +9684,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         reasoningTitle: "Чому цей шлях",
         checklistHeading: "Ваш персональний чек-лист",
         loading: "Аналізуємо ваші варіанти переїзду…",
+        stepLabel: "Крок",
       },
       steps: {
         account: { title: "Створіть акаунт", desc: "Все готово." },
