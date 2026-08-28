@@ -53,6 +53,12 @@ export type Dictionary = {
     docQuestion: string;
     docResponse: string;
     inputPlaceholder: string;
+    docCardPassportTitle: string;
+    docCardPassportSubtitle: string;
+    docCardInsuranceTitle: string;
+    docCardInsuranceSubtitle: string;
+    docStatusDone: string;
+    docStatusPending: string;
   };
   stats: {
     items: { value: string; label: string }[];
@@ -503,6 +509,9 @@ export type Dictionary = {
     collapseBtn: string;
     whatNextBtn: string;
     stepsCompletedTemplate: string;
+    docsReadyTemplate: string;
+    currentPhasePrefix: string;
+    allPhasesDone: string;
     countdown: {
       heading: string;
       remaining: string;
@@ -842,6 +851,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "And which documents do I need first?",
       docResponse: "Here are 2 documents to start with:",
       inputPlaceholder: "Ask about living in Poland...",
+      docCardPassportTitle: "Passport scan",
+      docCardPassportSubtitle: "Needed for almost every step",
+      docCardInsuranceTitle: "Health insurance",
+      docCardInsuranceSubtitle: "Required for your residence permit",
+      docStatusDone: "Done",
+      docStatusPending: "Under review",
     },
     stats: {
       items: [
@@ -1869,6 +1884,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Collapse",
       whatNextBtn: "What to do next",
       stepsCompletedTemplate: "{done} of {total} steps completed",
+      docsReadyTemplate: "{done} of {total} documents ready",
+      currentPhasePrefix: "Now: {phase}",
+      allPhasesDone: "All phases complete",
       countdown: {
         heading: "You have 30 days of legal stay under the visa-free regime",
         remaining: "{days} days left — apply for your PESEL and residence card in time",
@@ -2374,6 +2392,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "А какие документы нужны в первую очередь?",
       docResponse: "Вот 2 документа, с которых стоит начать:",
       inputPlaceholder: "Спросите о жизни в Польше...",
+      docCardPassportTitle: "Скан паспорта",
+      docCardPassportSubtitle: "Нужен почти для всех шагов",
+      docCardInsuranceTitle: "Мед. страховка",
+      docCardInsuranceSubtitle: "Обязательна для ВНЖ",
+      docStatusDone: "Готово",
+      docStatusPending: "На проверке",
     },
     stats: {
       items: [
@@ -3404,6 +3428,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Свернуть",
       whatNextBtn: "Что делать дальше",
       stepsCompletedTemplate: "{done} из {total} шагов выполнено",
+      docsReadyTemplate: "{done} из {total} документов готово",
+      currentPhasePrefix: "Сейчас: {phase}",
+      allPhasesDone: "Все этапы завершены",
       countdown: {
         heading: "У вас 30 дней легального пребывания по визовому режиму",
         remaining: "Осталось {days} дней — нужно успеть подать на PESEL и карту побыту",
@@ -3909,6 +3936,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "Birinchi navbatda qanday hujjatlar kerak?",
       docResponse: "Mana boshlash uchun 2 ta hujjat:",
       inputPlaceholder: "Polshada yashash haqida so'rang...",
+      docCardPassportTitle: "Pasport skani",
+      docCardPassportSubtitle: "Deyarli barcha qadamlar uchun kerak",
+      docCardInsuranceTitle: "Tibbiy sug'urta",
+      docCardInsuranceSubtitle: "Yashash ruxsatnomasi uchun talab qilinadi",
+      docStatusDone: "Tasdiqlangan",
+      docStatusPending: "Ko'rib chiqilmoqda",
     },
     stats: {
       items: [
@@ -4936,6 +4969,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Yig'ish",
       whatNextBtn: "Keyingi qadam",
       stepsCompletedTemplate: "{total} tadan {done} tasi bajarildi",
+      docsReadyTemplate: "{total} tadan {done} tasi hujjat tayyor",
+      currentPhasePrefix: "Hozir: {phase}",
+      allPhasesDone: "Barcha bosqichlar yakunlandi",
       countdown: {
         heading: "Sizda vizasiz rejim bo'yicha 30 kunlik qonuniy turish muddati bor",
         remaining: "{days} kun qoldi — PESEL va karta pobytu uchun ariza berishga ulgurish kerak",
@@ -5439,6 +5475,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "Peki öncelikle hangi belgeler gerekiyor?",
       docResponse: "İşte başlamanız gereken 2 belge:",
       inputPlaceholder: "Polonya'da yaşam hakkında sorun...",
+      docCardPassportTitle: "Pasaport taraması",
+      docCardPassportSubtitle: "Neredeyse tüm adımlar için gerekli",
+      docCardInsuranceTitle: "Sağlık sigortası",
+      docCardInsuranceSubtitle: "Oturma izni için gereklidir",
+      docStatusDone: "Onaylandı",
+      docStatusPending: "İnceleniyor",
     },
     stats: {
       items: [
@@ -6465,6 +6507,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Daralt",
       whatNextBtn: "Sırada ne var",
       stepsCompletedTemplate: "{total} adımdan {done} tamamlandı",
+      docsReadyTemplate: "{total} belgeden {done} hazır",
+      currentPhasePrefix: "Şimdi: {phase}",
+      allPhasesDone: "Tüm aşamalar tamamlandı",
       countdown: {
         heading: "Vizesiz rejim kapsamında 30 günlük yasal kalış hakkınız var",
         remaining: "{days} gün kaldı — PESEL ve ikamet kartı başvurunuzu zamanında yapmanız gerekiyor",
@@ -6968,6 +7013,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "Пас, дар навбати аввал кадом ҳуҷҷатҳо лозиманд?",
       docResponse: "Инак 2 ҳуҷҷате, ки бо онҳо оғоз кардан лозим аст:",
       inputPlaceholder: "Дар бораи зиндагӣ дар Полша бипурсед...",
+      docCardPassportTitle: "Скани шиноснома",
+      docCardPassportSubtitle: "Барои қариб ҳамаи қадамҳо лозим аст",
+      docCardInsuranceTitle: "Суғуртаи тиббӣ",
+      docCardInsuranceSubtitle: "Барои иҷозати истиқомат лозим аст",
+      docStatusDone: "Тасдиқшуда",
+      docStatusPending: "Дар баррасӣ",
     },
     stats: {
       items: [
@@ -7994,6 +8045,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Пӯшидан",
       whatNextBtn: "Баъд чӣ бояд кард",
       stepsCompletedTemplate: "{done} аз {total} қадам иҷро шуд",
+      docsReadyTemplate: "{done} аз {total} ҳуҷҷат тайёр",
+      currentPhasePrefix: "Ҳозир: {phase}",
+      allPhasesDone: "Ҳамаи марҳилаҳо ба анҷом расиданд",
       countdown: {
         heading: "Шумо 30 рӯз иқомати қонунӣ дар низоми бидуни виза доред",
         remaining: "{days} рӯз боқӣ мондааст — бояд барои PESEL ва карти иқомат дар мӯҳлат муроҷиат кунед",
@@ -8497,6 +8551,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docQuestion: "А які документи потрібні в першу чергу?",
       docResponse: "Ось 2 документи, з яких варто почати:",
       inputPlaceholder: "Запитайте про життя в Польщі...",
+      docCardPassportTitle: "Скан паспорта",
+      docCardPassportSubtitle: "Потрібен майже для всіх кроків",
+      docCardInsuranceTitle: "Мед. страхування",
+      docCardInsuranceSubtitle: "Обов'язкове для посвідки на проживання",
+      docStatusDone: "Готово",
+      docStatusPending: "На перевірці",
     },
     stats: {
       items: [
@@ -9527,6 +9587,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       collapseBtn: "Згорнути",
       whatNextBtn: "Що робити далі",
       stepsCompletedTemplate: "{done} із {total} кроків виконано",
+      docsReadyTemplate: "{done} із {total} документів готово",
+      currentPhasePrefix: "Зараз: {phase}",
+      allPhasesDone: "Усі етапи завершено",
       countdown: {
         heading: "У вас 30 днів легального перебування за візовим режимом",
         remaining: "Залишилося {days} днів — потрібно встигнути подати на PESEL і карту побиту",

@@ -185,10 +185,16 @@ export default function DashboardContent() {
               <div className="flex flex-shrink-0 items-center gap-5">
                 <div className="text-right">
                   <p className="text-sm font-semibold text-text-primary">
-                    {doneCount} из {totalCount} документов готово
+                    {t.dashboard.docsReadyTemplate
+                      .replace("{done}", String(doneCount))
+                      .replace("{total}", String(totalCount))}
                   </p>
                   <p className="mt-1 text-xs font-medium text-accent-bright">
-                    {currentPhase ? `Сейчас: ${currentPhase.title}` : progressPercent >= 100 ? "Все этапы завершены" : ""}
+                    {currentPhase
+                      ? t.dashboard.currentPhasePrefix.replace("{phase}", currentPhase.title)
+                      : progressPercent >= 100
+                        ? t.dashboard.allPhasesDone
+                        : ""}
                   </p>
                 </div>
                 <ProgressRing percent={progressPercent} />
