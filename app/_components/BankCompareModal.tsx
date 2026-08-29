@@ -2,30 +2,39 @@
 
 import { createPortal } from "react-dom";
 import type { DocumentGuide } from "./DocumentGuideList";
-import { TAG_LABELS } from "./BankCardGrid";
 import { useCurrency } from "./CurrencyProvider";
+import { useLanguage } from "./LanguageProvider";
 import { convertPlnText, type CurrencyCode, type RatesMap } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
+import type { Dictionary } from "../_lib/i18n";
 
-const ROWS: {
+function buildRows(t: Dictionary): {
   key: string;
   label: string;
   render: (g: DocumentGuide, currency: CurrencyCode, rates: RatesMap | null) => string;
-}[] = [
-  { key: "cost", label: "Стоимость", render: (g, currency, rates) => convertPlnText(g.cost, currency, rates) || "—" },
-  { key: "where_to_submit", label: "Куда подавать", render: (g) => g.where_to_submit ?? "—" },
-  {
-    key: "required_docs",
-    label: "Документы",
-    render: (g) => (g.required_docs && g.required_docs.length > 0 ? g.required_docs.join("; ") : "—"),
-  },
-  {
-    key: "tags",
-    label: "Теги",
-    render: (g) => (g.tags && g.tags.length > 0 ? g.tags.map((tag) => TAG_LABELS[tag] ?? tag).join(", ") : "—"),
-  },
-];
+}[] {
+  const tagLabels: Record<string, string> = {
+    no_pesel: t.guideCard.tags.noPesel,
+    fully_online: t.guideCard.tags.fullyOnline,
+    free: t.guideCard.tags.free,
+    multicurrency: t.guideCard.tags.multicurrency,
+  };
+  return [
+    { key: "cost", label: t.guideCard.cost, render: (g, currency, rates) => convertPlnText(g.cost, currency, rates) || "—" },
+    { key: "where_to_submit", label: t.guideCard.whereToSubmit, render: (g) => g.where_to_submit ?? "—" },
+    {
+      key: "required_docs",
+      label: t.guideCard.requiredDocs,
+      render: (g) => (g.required_docs && g.required_docs.length > 0 ? g.required_docs.join("; ") : "—"),
+    },
+    {
+      key: "tags",
+      label: t.guideCard.tagsLabel,
+      render: (g) => (g.tags && g.tags.length > 0 ? g.tags.map((tag) => tagLabels[tag] ?? tag).join(", ") : "—"),
+    },
+  ];
+}
 
 export default function BankCompareModal({
   open,
@@ -37,6 +46,8 @@ export default function BankCompareModal({
   guides: DocumentGuide[];
 }) {
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
+  const ROWS = buildRows(t);
   // `open` only ever becomes true from a client-side click after hydration,
   // so document.body is always available here — no mount-detection needed.
   if (!open) return null;
@@ -53,7 +64,7 @@ export default function BankCompareModal({
         className="w-full max-w-3xl rounded-2xl border border-border-subtle bg-panel p-6 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95"
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 className="text-lg font-bold text-text-primary">Сравнение банков</h2>
+          <h2 className="text-lg font-bold text-text-primary">{t.guideCard.compareBanksTitle}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -97,7 +108,7 @@ export default function BankCompareModal({
                           rel="noopener noreferrer"
                           className="mt-1 block font-semibold text-accent-bright hover:underline"
                         >
-                          На карте →
+                          {t.guideCard.onMap} →
                         </a>
                       )}
                     </td>

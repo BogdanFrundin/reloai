@@ -708,7 +708,7 @@ export default function DocumentsPage() {
               guides={allGuides}
               loading={documentGuidesLoading}
               emptyText="Пока нет гайдов."
-              searchPlaceholder="Поиск гайда"
+              searchPlaceholder={t.guideCard.searchGuides}
             />
           </div>
         </div>

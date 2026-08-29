@@ -10,6 +10,7 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import { localizeDocumentGuides } from "../../../_lib/localizeGuide";
 import GuideTopicGrid from "../../../_components/GuideTopicGrid";
 
 const INFO_ICON = (
@@ -31,7 +32,7 @@ const SPARKLE_ICON = (
 
 export default function InsurancePage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { profile } = useAuth();
   const [guides, setGuides] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,13 +61,13 @@ export default function InsurancePage() {
       .order("name")
       .then(({ data }) => {
         if (!active) return;
-        setGuides((data as DocumentGuide[]) ?? []);
+        setGuides(localizeDocumentGuides((data as DocumentGuide[]) ?? [], lang));
         setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, []);
+  }, [lang]);
 
   const categories = useMemo(() => {
     const seen = new Set<string>();
@@ -132,7 +133,7 @@ export default function InsurancePage() {
           guides={filtered}
           loading={loading}
           emptyText="Пока нет данных по страховкам."
-          searchPlaceholder="Поиск страховки"
+          searchPlaceholder={t.guideCard.searchInsurance}
         />
       </Reveal>
 

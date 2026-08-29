@@ -6,24 +6,19 @@ import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
+import { useLanguage } from "./LanguageProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
 import { supabase } from "../../lib/supabase";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
+import type { Dictionary, Lang } from "../_lib/i18n";
 
-export const TAG_LABELS: Record<string, string> = {
-  no_pesel: "Без PESEL",
-  fully_online: "Полностью онлайн",
-  free: "Бесплатно",
-  multicurrency: "Мультивалютный",
-};
-
-const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"];
+const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"] as const;
 
 // Russian noun-plural agreement for "банк" after a count — 1 банк, 2-4 банка,
-// 5+/11-14 банков — used so the "show more" button says exactly how many
-// more cards are behind it instead of a generic "other banks" label.
+// 5+/11-14 банков — only applies when the active language is Russian; every
+// other language just uses the single plural form baked into moreBanksTemplate.
 function bankWord(n: number): string {
   const mod10 = n % 10;
   const mod100 = n % 100;
@@ -33,12 +28,10 @@ function bankWord(n: number): string {
   return "банков";
 }
 
-const HEADLINE_PHRASES: Record<string, string> = {
-  no_pesel: "Без PESEL",
-  fully_online: "Открыть счёт онлайн",
-  free: "Бесплатное обслуживание",
-  multicurrency: "Мультивалютный счёт",
-};
+function moreBanksLabel(n: number, lang: Lang, t: Dictionary): string {
+  const template = t.guideCard.moreBanksTemplate.replace("{n}", String(n));
+  return lang === "ru" ? template.replace("{word}", bankWord(n)) : template;
+}
 
 // Headline replaces the old price display: the bank's single most useful
 // feature, in plain language, so the card leads with "what's in it for you"
@@ -46,15 +39,28 @@ const HEADLINE_PHRASES: Record<string, string> = {
 function buildHeadline(
   guide: DocumentGuide,
   currency: ReturnType<typeof useCurrency>["currency"],
-  rates: ReturnType<typeof useCurrency>["rates"]
+  rates: ReturnType<typeof useCurrency>["rates"],
+  t: Dictionary
 ): { headline: string; subtitle: string } {
-  const tags = TAG_ORDER.filter((t) => guide.tags?.includes(t));
+  const tagLabels: Record<string, string> = {
+    no_pesel: t.guideCard.tags.noPesel,
+    fully_online: t.guideCard.tags.fullyOnline,
+    free: t.guideCard.tags.free,
+    multicurrency: t.guideCard.tags.multicurrency,
+  };
+  const headlinePhrases: Record<string, string> = {
+    no_pesel: t.guideCard.headlines.noPesel,
+    fully_online: t.guideCard.headlines.fullyOnline,
+    free: t.guideCard.headlines.free,
+    multicurrency: t.guideCard.headlines.multicurrency,
+  };
+  const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
   if (tags.length === 0) {
-    return { headline: "Классический счёт", subtitle: convertPlnText(guide.cost, currency, rates) };
+    return { headline: t.guideCard.classicAccount, subtitle: convertPlnText(guide.cost, currency, rates) };
   }
   const [first, ...rest] = tags;
-  const headline = HEADLINE_PHRASES[first] ?? TAG_LABELS[first];
-  const subtitle = rest.map((t) => TAG_LABELS[t]).join(" · ");
+  const headline = headlinePhrases[first] ?? tagLabels[first];
+  const subtitle = rest.map((tag) => tagLabels[tag]).join(" · ");
   return { headline, subtitle };
 }
 
@@ -168,15 +174,17 @@ function BankCard({
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
+  const gc = t.guideCard;
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
-  const { headline, subtitle } = buildHeadline(guide, currency, rates);
+  const { headline, subtitle } = buildHeadline(guide, currency, rates, t);
   const cost = convertPlnText(guide.cost, currency, rates);
 
   function askAi() {
-    const question = `Расскажи подробнее про ${guide.name}: как открыть счёт, какие документы нужны и на что обратить внимание?`;
+    const question = gc.askAiBankQuestionTemplate.replace("{name}", guide.name);
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
@@ -188,7 +196,7 @@ function BankCard({
           event.stopPropagation();
           askAi();
         }}
-        aria-label={`Спросить ИИ про ${guide.name}`}
+        aria-label={gc.askAiAriaTemplate.replace("{name}", guide.name)}
         className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-accent hover:text-white"
       >
         <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -198,7 +206,7 @@ function BankCard({
             d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z"
           />
         </svg>
-        Спросить ИИ
+        {gc.askAi}
       </button>
 
       <button
@@ -218,7 +226,7 @@ function BankCard({
               <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
               </svg>
-              Ваш банк
+              {gc.yourBank}
             </span>
           )}
           <p className="text-[22px] font-bold leading-tight text-white">
@@ -247,7 +255,7 @@ function BankCard({
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
             >
-              Официальный сайт
+              {gc.officialSite}
               <span aria-hidden>→</span>
             </a>
           )
@@ -257,7 +265,7 @@ function BankCard({
             onClick={() => onChoose(guide.name)}
             className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
           >
-            Выбрать банк →
+            {gc.chooseBank} →
           </button>
         )}
 
@@ -266,7 +274,7 @@ function BankCard({
           onClick={() => setOpen((prev) => !prev)}
           className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
-          {open ? "Скрыть" : "Информация о банке"}
+          {open ? t.dashboard.collapseBtn : gc.bankInfo}
         </button>
       </div>
 
@@ -279,10 +287,10 @@ function BankCard({
           )}
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {guide.when_to_get && <InfoRow label="Когда оформлять" value={guide.when_to_get} />}
+            {guide.when_to_get && <InfoRow label={gc.whenToGet} value={guide.when_to_get} />}
             {guide.where_to_submit && (
               <div>
-                <InfoRow label="Куда подавать" value={guide.where_to_submit} />
+                <InfoRow label={gc.whereToSubmit} value={guide.where_to_submit} />
                 <a
                   href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
                   target="_blank"
@@ -290,19 +298,19 @@ function BankCard({
                   onClick={(event) => event.stopPropagation()}
                   className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
                 >
-                  Показать на карте →
+                  {gc.showOnMap} →
                 </a>
               </div>
             )}
-            {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
-            {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-            {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
-            {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
+            {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
+            {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
+            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint />}
+            {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-text-secondary">Документы</p>
+              <p className="text-xs font-semibold text-text-secondary">{gc.requiredDocs}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.required_docs} />
               </div>
@@ -311,7 +319,7 @@ function BankCard({
 
           {guide.instructions && guide.instructions.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-text-secondary">Как оформить</p>
+              <p className="text-xs font-semibold text-text-secondary">{gc.howToApply}</p>
               <ol className="mt-1.5 space-y-1.5">
                 {guide.instructions.map((step, i) => (
                   <li key={step} className="flex items-start gap-2 text-xs text-text-secondary">
@@ -327,7 +335,7 @@ function BankCard({
 
           {guide.tips && guide.tips.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-text-secondary">Советы</p>
+              <p className="text-xs font-semibold text-text-secondary">{gc.tips}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.tips} tone="accent" />
               </div>
@@ -336,7 +344,7 @@ function BankCard({
 
           {guide.common_mistakes && guide.common_mistakes.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-text-secondary">Частые ошибки</p>
+              <p className="text-xs font-semibold text-text-secondary">{gc.commonMistakes}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.common_mistakes} tone="warn" />
               </div>
@@ -350,7 +358,7 @@ function BankCard({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
             >
-              Официальный сайт
+              {gc.officialSite}
               <span aria-hidden>→</span>
             </a>
           )}
@@ -360,7 +368,7 @@ function BankCard({
             onClick={() => setOpen(false)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
           >
-            Свернуть
+            {t.dashboard.collapseBtn}
             <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
@@ -375,7 +383,7 @@ export default function BankCardGrid({
   guides,
   loading,
   emptyText,
-  searchPlaceholder = "Поиск",
+  searchPlaceholder,
 }: {
   guides: DocumentGuide[];
   loading: boolean;
@@ -383,6 +391,14 @@ export default function BankCardGrid({
   searchPlaceholder?: string;
 }) {
   const { user, profile, refreshProfile } = useAuth();
+  const { t, lang } = useLanguage();
+  const gc = t.guideCard;
+  const tagLabels: Record<string, string> = {
+    no_pesel: gc.tags.noPesel,
+    fully_online: gc.tags.fullyOnline,
+    free: gc.tags.free,
+    multicurrency: gc.tags.multicurrency,
+  };
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -421,7 +437,7 @@ export default function BankCardGrid({
               : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
           }`}
         >
-          Все
+          {gc.allTag}
         </button>
         {TAG_ORDER.map((tag) => (
           <button
@@ -434,7 +450,7 @@ export default function BankCardGrid({
                 : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
             }`}
           >
-            {TAG_LABELS[tag]}
+            {tagLabels[tag]}
           </button>
         ))}
       </div>
@@ -444,14 +460,14 @@ export default function BankCardGrid({
           <input
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder ?? gc.searchGeneric}
             className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
           />
         </div>
       </div>
 
       {loading ? (
-        <p className="text-sm text-text-muted">Загрузка…</p>
+        <p className="text-sm text-text-muted">{gc.loading}</p>
       ) : filtered.length === 0 ? (
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
@@ -474,7 +490,7 @@ export default function BankCardGrid({
                 onClick={() => setShowAll((prev) => !prev)}
                 className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
               >
-                {showAll ? "Скрыть" : `Ещё ${rest.length} ${bankWord(rest.length)}`}
+                {showAll ? t.dashboard.collapseBtn : moreBanksLabel(rest.length, lang, t)}
               </button>
 
               {showAll && (

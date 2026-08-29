@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { useCurrency } from "./CurrencyProvider";
+import { useLanguage } from "./LanguageProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
@@ -141,6 +142,8 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 function TopicCard({ guide }: { guide: DocumentGuide }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
+  const gc = t.guideCard;
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
@@ -148,7 +151,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
   const cost = convertPlnText(guide.cost, currency, rates);
 
   function askAi() {
-    const question = `Расскажи подробнее про "${guide.name}": как оформить, какие документы нужны и на что обратить внимание?`;
+    const question = gc.askAiTopicQuestionTemplate.replace("{name}", guide.name);
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
@@ -160,11 +163,11 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
           event.stopPropagation();
           askAi();
         }}
-        aria-label={`Спросить ИИ про ${guide.name}`}
+        aria-label={gc.askAiAriaTemplate.replace("{name}", guide.name)}
         className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-accent hover:text-white"
       >
         {SPARKLE_ICON}
-        Спросить ИИ
+        {gc.askAi}
       </button>
 
       <button
@@ -187,7 +190,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
             </p>
             {guide.important_2026 && (
               <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
-                Важно 2026
+                {gc.important2026Badge}
               </span>
             )}
           </div>
@@ -205,7 +208,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
           onClick={() => setOpen((prev) => !prev)}
           className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
-          {open ? "Свернуть" : "Подробнее"}
+          {open ? t.dashboard.collapseBtn : gc.moreDetails}
         </button>
       </div>
 
@@ -218,10 +221,10 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
           )}
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {guide.when_to_get && <InfoRow label="Когда оформлять" value={guide.when_to_get} />}
+            {guide.when_to_get && <InfoRow label={gc.whenToGet} value={guide.when_to_get} />}
             {guide.where_to_submit && (
               <div>
-                <InfoRow label="Куда подавать" value={guide.where_to_submit} />
+                <InfoRow label={gc.whereToSubmit} value={guide.where_to_submit} />
                 <a
                   href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
                   target="_blank"
@@ -229,19 +232,19 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
                   onClick={(event) => event.stopPropagation()}
                   className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
                 >
-                  Показать на карте →
+                  {gc.showOnMap} →
                 </a>
               </div>
             )}
-            {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
-            {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-            {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
-            {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
+            {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
+            {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
+            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint />}
+            {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-white/70">Документы</p>
+              <p className="text-xs font-semibold text-white/70">{gc.requiredDocs}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.required_docs} />
               </div>
@@ -250,7 +253,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
 
           {guide.instructions && guide.instructions.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-white/70">Как оформить</p>
+              <p className="text-xs font-semibold text-white/70">{gc.howToApply}</p>
               <ol className="mt-1.5 space-y-1.5">
                 {guide.instructions.map((step, i) => (
                   <li key={step} className="flex items-start gap-2 text-xs text-white/70">
@@ -266,7 +269,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
 
           {guide.tips && guide.tips.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-white/70">Советы</p>
+              <p className="text-xs font-semibold text-white/70">{gc.tips}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.tips} tone="accent" />
               </div>
@@ -275,7 +278,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
 
           {guide.common_mistakes && guide.common_mistakes.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-white/70">Частые ошибки</p>
+              <p className="text-xs font-semibold text-white/70">{gc.commonMistakes}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.common_mistakes} tone="warn" />
               </div>
@@ -289,7 +292,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent"
             >
-              Официальный сайт
+              {gc.officialSite}
               <span aria-hidden>→</span>
             </a>
           )}
@@ -299,7 +302,7 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
             onClick={() => setOpen(false)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
           >
-            Свернуть
+            {t.dashboard.collapseBtn}
             <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
@@ -314,13 +317,14 @@ export default function GuideTopicGrid({
   guides,
   loading,
   emptyText,
-  searchPlaceholder = "Поиск",
+  searchPlaceholder,
 }: {
   guides: DocumentGuide[];
   loading: boolean;
   emptyText: string;
   searchPlaceholder?: string;
 }) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const term = search.trim().toLowerCase();
   const filtered = term
@@ -335,12 +339,12 @@ export default function GuideTopicGrid({
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder={searchPlaceholder}
+          placeholder={searchPlaceholder ?? t.guideCard.searchGeneric}
           className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
       </div>
       {loading ? (
-        <p className="text-sm text-text-muted">Загрузка…</p>
+        <p className="text-sm text-text-muted">{t.guideCard.loading}</p>
       ) : filtered.length === 0 ? (
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (

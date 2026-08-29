@@ -10,6 +10,7 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
+import { localizeDocumentGuides } from "../../../_lib/localizeGuide";
 import BankCardGrid from "../../../_components/BankCardGrid";
 
 const SPARKLE_ICON = (
@@ -51,7 +52,7 @@ function bankSortRank(name: string): number {
 }
 
 export default function BanksPage() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { profile } = useAuth();
   const router = useRouter();
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
@@ -76,13 +77,13 @@ export default function BanksPage() {
       .order("name")
       .then(({ data }) => {
         if (!active) return;
-        setBanks((data as DocumentGuide[]) ?? []);
+        setBanks(localizeDocumentGuides((data as DocumentGuide[]) ?? [], lang));
         setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, []);
+  }, [lang]);
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -104,7 +105,7 @@ export default function BanksPage() {
           guides={visibleBanks}
           loading={loading}
           emptyText="Пока нет данных по банкам."
-          searchPlaceholder="Поиск банка"
+          searchPlaceholder={t.guideCard.searchBanks}
         />
       </Reveal>
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCurrency } from "./CurrencyProvider";
+import { useLanguage } from "./LanguageProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import DocumentFillModal from "./DocumentFillModal";
@@ -184,6 +185,8 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 // stepped rows on /documents, so both surfaces render identical guide detail.
 export function GuideDetails({ guide }: { guide: DocumentGuide }) {
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
+  const gc = t.guideCard;
   const [fillOpen, setFillOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
@@ -199,29 +202,29 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
       )}
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {guide.when_to_get && <InfoRow label="Когда оформлять" value={guide.when_to_get} />}
+        {guide.when_to_get && <InfoRow label={gc.whenToGet} value={guide.when_to_get} />}
         {guide.where_to_submit && (
           <div>
-            <InfoRow label="Куда подавать" value={guide.where_to_submit} />
+            <InfoRow label={gc.whereToSubmit} value={guide.where_to_submit} />
             <a
               href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
             >
-              Показать на карте →
+              {gc.showOnMap} →
             </a>
           </div>
         )}
-        {guide.working_hours && <InfoRow label="Часы работы" value={guide.working_hours} />}
-        {guide.online_booking && <InfoRow label="Запись онлайн" value={guide.online_booking} />}
-        {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
-        {guide.waiting_time && <InfoRow label="Срок ожидания" value={guide.waiting_time} />}
+        {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
+        {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
+        {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint />}
+        {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
       </div>
 
       {guide.required_docs && guide.required_docs.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-text-secondary">Документы</p>
+          <p className="text-xs font-semibold text-text-secondary">{gc.requiredDocs}</p>
           <div className="mt-1.5">
             <Bullets items={guide.required_docs} />
           </div>
@@ -230,7 +233,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
 
       {guide.instructions && guide.instructions.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-text-secondary">Как оформить</p>
+          <p className="text-xs font-semibold text-text-secondary">{gc.howToApply}</p>
           <ol className="mt-1.5 space-y-1.5">
             {guide.instructions.map((step, i) => (
               <li key={step} className="flex items-start gap-2 text-xs text-text-secondary">
@@ -246,7 +249,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
 
       {guide.tips && guide.tips.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-text-secondary">Советы</p>
+          <p className="text-xs font-semibold text-text-secondary">{gc.tips}</p>
           <div className="mt-1.5">
             <Bullets items={guide.tips} tone="accent" />
           </div>
@@ -255,7 +258,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
 
       {guide.common_mistakes && guide.common_mistakes.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-text-secondary">Частые ошибки</p>
+          <p className="text-xs font-semibold text-text-secondary">{gc.commonMistakes}</p>
           <div className="mt-1.5">
             <Bullets items={guide.common_mistakes} tone="warn" />
           </div>
@@ -270,7 +273,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
           >
-            Официальный сайт
+            {gc.officialSite}
             <span aria-hidden>→</span>
           </a>
         )}
@@ -281,7 +284,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 rounded-full border border-border-strong px-4 py-2 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary"
           >
-            Скачать бланк
+            {gc.downloadForm}
           </a>
         )}
         {template && (
@@ -293,7 +296,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
             }}
             className="inline-flex items-center gap-1 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
           >
-            Заполнить с ИИ
+            {gc.fillWithAi}
           </button>
         )}
       </div>
@@ -342,13 +345,14 @@ export default function DocumentGuideList({
   guides,
   loading,
   emptyText,
-  searchPlaceholder = "Поиск",
+  searchPlaceholder,
 }: {
   guides: DocumentGuide[];
   loading: boolean;
   emptyText: string;
   searchPlaceholder?: string;
 }) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const term = search.trim().toLowerCase();
   const filtered = term
@@ -363,12 +367,12 @@ export default function DocumentGuideList({
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder={searchPlaceholder}
+          placeholder={searchPlaceholder ?? t.guideCard.searchGeneric}
           className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
       </div>
       {loading ? (
-        <p className="text-sm text-text-muted">Загрузка…</p>
+        <p className="text-sm text-text-muted">{t.guideCard.loading}</p>
       ) : filtered.length === 0 ? (
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (

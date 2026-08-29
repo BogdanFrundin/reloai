@@ -3,7 +3,11 @@
 import { useState } from "react";
 import type { DocumentRoadmapEntry, DocumentRoadmapSection } from "../_lib/documentRoadmap";
 import { GuideDetails } from "./DocumentGuideList";
+import { PHASE_ICONS, DEFAULT_PHASE_ICON } from "./PhaseCard";
+import Reveal from "./Reveal";
 import { pressScale } from "../_lib/motion";
+import TextWithGlossary from "./TextWithGlossary";
+import { useLanguage } from "./LanguageProvider";
 
 const URGENCY_TEXT_CLASS: Record<"urgent" | "upcoming" | "future", string> = {
   urgent: "text-red-400",
@@ -33,7 +37,7 @@ function capitalize(text: string): string {
   return text.length > 0 ? text[0].toUpperCase() + text.slice(1) : text;
 }
 
-function StatusBadge({ done }: { done: boolean }) {
+function StatusBadge({ done, t }: { done: boolean; t: ReturnType<typeof useLanguage>["t"] }) {
   return (
     <span
       className={`inline-flex flex-shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
@@ -43,7 +47,7 @@ function StatusBadge({ done }: { done: boolean }) {
       }`}
     >
       {done && CHECK_ICON}
-      {done ? "Готово" : "Не начато"}
+      {done ? t.guideCard.statusDone : t.guideCard.statusNotStarted}
     </span>
   );
 }
@@ -57,14 +61,20 @@ function StepRow({
   done: boolean;
   onToggle?: (documentId: string) => void;
 }) {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const { guide } = entry;
 
   return (
-    <div id={`guide-${guide.id}`} className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1">
+    <div
+      id={`guide-${guide.id}`}
+      className={`scroll-mt-24 overflow-hidden rounded-2xl border transition-colors duration-150 ${
+        done ? "border-emerald-500/25 bg-emerald-500/[0.03]" : "border-border-subtle bg-surface-1 hover:border-border-strong"
+      }`}
+    >
       <div className="flex items-center gap-4 p-4">
         <span
-          className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${
+          className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors duration-150 ${
             done ? "bg-emerald-500 text-white" : "bg-accent text-white"
           }`}
         >
@@ -78,9 +88,11 @@ function StepRow({
           className="min-w-0 flex-1 text-left"
         >
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-sm font-semibold text-text-primary">{guide.name}</p>
+            <p className="text-sm font-semibold text-text-primary">
+              <TextWithGlossary text={guide.name} />
+            </p>
             {entry.warning && (
-              <span className="text-amber-400" aria-label="Требует срочного внимания">
+              <span className="text-amber-400" aria-label={t.guideCard.urgentAria}>
                 {WARNING_ICON}
               </span>
             )}
@@ -104,7 +116,7 @@ function StepRow({
             aria-pressed={done}
             className="flex-shrink-0"
           >
-            <StatusBadge done={done} />
+            <StatusBadge done={done} t={t} />
           </button>
           <button
             type="button"
@@ -112,7 +124,7 @@ function StepRow({
             aria-expanded={open}
             className={`flex flex-shrink-0 items-center gap-1 rounded-full bg-accent px-3.5 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
           >
-            {open ? "Свернуть" : "Начать"}
+            {open ? t.dashboard.collapseBtn : t.guideCard.start}
             <span className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`}>{CHEVRON_ICON}</span>
           </button>
         </div>
@@ -140,8 +152,9 @@ export default function DocumentRoadmapList({
   loading: boolean;
   emptyText: string;
 }) {
+  const { t } = useLanguage();
   if (loading) {
-    return <p className="text-sm text-text-muted">Загрузка…</p>;
+    return <p className="text-sm text-text-muted">{t.guideCard.loading}</p>;
   }
 
   if (sections.length === 0) {
@@ -150,20 +163,27 @@ export default function DocumentRoadmapList({
 
   return (
     <div className="space-y-8">
-      {sections.map((section) => (
-        <div key={section.key}>
-          <h3 className="mb-3 text-sm font-semibold text-text-secondary">{section.title}</h3>
-          <div className="space-y-3">
-            {section.entries.map((entry) => (
-              <StepRow
-                key={entry.guide.id}
-                entry={entry}
-                done={completed.has(`guide-${entry.guide.id}`)}
-                onToggle={onToggle}
-              />
-            ))}
+      {sections.map((section, sectionIndex) => (
+        <Reveal key={section.key} delay={sectionIndex * 60}>
+          <div>
+            <div className="mb-3 flex items-center gap-2.5">
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent-bright">
+                {PHASE_ICONS[section.key] ?? DEFAULT_PHASE_ICON}
+              </span>
+              <h3 className="text-sm font-bold text-text-primary">{section.title}</h3>
+            </div>
+            <div className="space-y-3">
+              {section.entries.map((entry) => (
+                <StepRow
+                  key={entry.guide.id}
+                  entry={entry}
+                  done={completed.has(`guide-${entry.guide.id}`)}
+                  onToggle={onToggle}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        </Reveal>
       ))}
     </div>
   );

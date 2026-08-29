@@ -613,6 +613,48 @@ export type Dictionary = {
       currentStepCta: string;
     };
   };
+  guideCard: {
+    whenToGet: string;
+    whereToSubmit: string;
+    showOnMap: string;
+    onMap: string;
+    workingHours: string;
+    onlineBooking: string;
+    cost: string;
+    waitingTime: string;
+    requiredDocs: string;
+    howToApply: string;
+    tips: string;
+    commonMistakes: string;
+    officialSite: string;
+    downloadForm: string;
+    fillWithAi: string;
+    askAi: string;
+    askAiAriaTemplate: string;
+    askAiBankQuestionTemplate: string;
+    askAiTopicQuestionTemplate: string;
+    yourBank: string;
+    chooseBank: string;
+    bankInfo: string;
+    classicAccount: string;
+    moreDetails: string;
+    allTag: string;
+    loading: string;
+    searchGeneric: string;
+    searchBanks: string;
+    searchInsurance: string;
+    searchGuides: string;
+    important2026Badge: string;
+    moreBanksTemplate: string;
+    statusDone: string;
+    statusNotStarted: string;
+    urgentAria: string;
+    start: string;
+    compareBanksTitle: string;
+    tagsLabel: string;
+    tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+    headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+  };
   helpButton: {
     label: string;
     openGuide: string;
@@ -2100,6 +2142,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         quickActionBanksDesc: "Find a bank for newcomers",
         quickActionWorkDesc: "Search jobs and check salaries",
         currentStepCta: "Go to step →",
+      },
+    },
+    guideCard: {
+      whenToGet: "When to apply",
+      whereToSubmit: "Where to submit",
+      showOnMap: "Show on map",
+      onMap: "On map",
+      workingHours: "Working hours",
+      onlineBooking: "Online booking",
+      cost: "Cost",
+      waitingTime: "Waiting time",
+      requiredDocs: "Documents",
+      howToApply: "How to apply",
+      tips: "Tips",
+      commonMistakes: "Common mistakes",
+      officialSite: "Official website",
+      downloadForm: "Download form",
+      fillWithAi: "Fill with AI",
+      askAi: "Ask AI",
+      askAiAriaTemplate: "Ask AI about {name}",
+      askAiBankQuestionTemplate:
+        "Tell me more about {name}: how to open an account, what documents are needed, and what to watch out for?",
+      askAiTopicQuestionTemplate:
+        'Tell me more about "{name}": how to apply, what documents are needed, and what to watch out for?',
+      yourBank: "Your bank",
+      chooseBank: "Choose bank",
+      bankInfo: "Bank information",
+      classicAccount: "Classic account",
+      moreDetails: "More details",
+      allTag: "All",
+      loading: "Loading…",
+      searchGeneric: "Search",
+      searchBanks: "Search banks",
+      searchInsurance: "Search insurance",
+      searchGuides: "Search guides",
+      important2026Badge: "Important 2026",
+      moreBanksTemplate: "{n} more banks",
+      statusDone: "Done",
+      statusNotStarted: "Not started",
+      urgentAria: "Requires urgent attention",
+      start: "Start",
+      compareBanksTitle: "Bank comparison",
+      tagsLabel: "Tags",
+      tags: { noPesel: "No PESEL", fullyOnline: "Fully online", free: "Free", multicurrency: "Multi-currency" },
+      headlines: {
+        noPesel: "No PESEL",
+        fullyOnline: "Open an account online",
+        free: "Free service",
+        multicurrency: "Multi-currency account",
       },
     },
     helpButton: {
@@ -3653,6 +3744,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentStepCta: "Перейти к шагу →",
       },
     },
+    guideCard: {
+      whenToGet: "Когда оформлять",
+      whereToSubmit: "Куда подавать",
+      showOnMap: "Показать на карте",
+      onMap: "На карте",
+      workingHours: "Часы работы",
+      onlineBooking: "Запись онлайн",
+      cost: "Стоимость",
+      waitingTime: "Срок ожидания",
+      requiredDocs: "Документы",
+      howToApply: "Как оформить",
+      tips: "Советы",
+      commonMistakes: "Частые ошибки",
+      officialSite: "Официальный сайт",
+      downloadForm: "Скачать бланк",
+      fillWithAi: "Заполнить с ИИ",
+      askAi: "Спросить ИИ",
+      askAiAriaTemplate: "Спросить ИИ про {name}",
+      askAiBankQuestionTemplate:
+        "Расскажи подробнее про {name}: как открыть счёт, какие документы нужны и на что обратить внимание?",
+      askAiTopicQuestionTemplate:
+        'Расскажи подробнее про "{name}": как оформить, какие документы нужны и на что обратить внимание?',
+      yourBank: "Ваш банк",
+      chooseBank: "Выбрать банк",
+      bankInfo: "Информация о банке",
+      classicAccount: "Классический счёт",
+      moreDetails: "Подробнее",
+      allTag: "Все",
+      loading: "Загрузка…",
+      searchGeneric: "Поиск",
+      searchBanks: "Поиск банка",
+      searchInsurance: "Поиск страховки",
+      searchGuides: "Поиск гайда",
+      important2026Badge: "Важно 2026",
+      moreBanksTemplate: "Ещё {n} {word}",
+      statusDone: "Готово",
+      statusNotStarted: "Не начато",
+      urgentAria: "Требует срочного внимания",
+      start: "Начать",
+      compareBanksTitle: "Сравнение банков",
+      tagsLabel: "Теги",
+      tags: { noPesel: "Без PESEL", fullyOnline: "Полностью онлайн", free: "Бесплатно", multicurrency: "Мультивалютный" },
+      headlines: {
+        noPesel: "Без PESEL",
+        fullyOnline: "Открыть счёт онлайн",
+        free: "Бесплатное обслуживание",
+        multicurrency: "Мультивалютный счёт",
+      },
+    },
     helpButton: {
       label: "Как это получить?",
       openGuide: "📄 Открыть инструкцию",
@@ -5201,6 +5341,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentStepCta: "Qadamga o'tish →",
       },
     },
+    guideCard: {
+      whenToGet: "Qachon rasmiylashtirish kerak",
+      whereToSubmit: "Qayerga topshiriladi",
+      showOnMap: "Xaritada ko'rsatish",
+      onMap: "Xaritada",
+      workingHours: "Ish vaqti",
+      onlineBooking: "Onlayn ro'yxatga olish",
+      cost: "Narxi",
+      waitingTime: "Kutish muddati",
+      requiredDocs: "Hujjatlar",
+      howToApply: "Qanday rasmiylashtiriladi",
+      tips: "Maslahatlar",
+      commonMistakes: "Tez-tez uchraydigan xatolar",
+      officialSite: "Rasmiy sayt",
+      downloadForm: "Blankni yuklab olish",
+      fillWithAi: "AI bilan to'ldirish",
+      askAi: "AI'dan so'rash",
+      askAiAriaTemplate: "{name} haqida AI'dan so'rash",
+      askAiBankQuestionTemplate:
+        "{name} haqida batafsil ayting: hisobni qanday ochish kerak, qanday hujjatlar kerak va nimalarga e'tibor berish kerak?",
+      askAiTopicQuestionTemplate:
+        '"{name}" haqida batafsil ayting: qanday rasmiylashtiriladi, qanday hujjatlar kerak va nimalarga e\'tibor berish kerak?',
+      yourBank: "Sizning bankingiz",
+      chooseBank: "Bankni tanlash",
+      bankInfo: "Bank haqida ma'lumot",
+      classicAccount: "Klassik hisob",
+      moreDetails: "Batafsil",
+      allTag: "Barchasi",
+      loading: "Yuklanmoqda…",
+      searchGeneric: "Qidiruv",
+      searchBanks: "Bank qidirish",
+      searchInsurance: "Sug'urta qidirish",
+      searchGuides: "Qo'llanma qidirish",
+      important2026Badge: "2026 uchun muhim",
+      moreBanksTemplate: "Yana {n} ta bank",
+      statusDone: "Tayyor",
+      statusNotStarted: "Boshlanmagan",
+      urgentAria: "Shoshilinch e'tibor talab qiladi",
+      start: "Boshlash",
+      compareBanksTitle: "Banklarni solishtirish",
+      tagsLabel: "Teglar",
+      tags: { noPesel: "PESELsiz", fullyOnline: "To'liq onlayn", free: "Bepul", multicurrency: "Ko'p valyutali" },
+      headlines: {
+        noPesel: "PESELsiz",
+        fullyOnline: "Hisobni onlayn ochish",
+        free: "Bepul xizmat",
+        multicurrency: "Ko'p valyutali hisob",
+      },
+    },
     helpButton: {
       label: "Buni qanday olish mumkin?",
       openGuide: "📄 Yo'riqnomani ochish",
@@ -6746,6 +6935,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         currentStepCta: "Adıma git →",
       },
     },
+    guideCard: {
+      whenToGet: "Ne zaman başvurulmalı",
+      whereToSubmit: "Nereye başvurulmalı",
+      showOnMap: "Haritada göster",
+      onMap: "Haritada",
+      workingHours: "Çalışma saatleri",
+      onlineBooking: "Online randevu",
+      cost: "Ücret",
+      waitingTime: "Bekleme süresi",
+      requiredDocs: "Belgeler",
+      howToApply: "Nasıl başvurulur",
+      tips: "İpuçları",
+      commonMistakes: "Sık yapılan hatalar",
+      officialSite: "Resmi site",
+      downloadForm: "Formu indir",
+      fillWithAi: "Yapay zeka ile doldur",
+      askAi: "Yapay zekaya sor",
+      askAiAriaTemplate: "{name} hakkında yapay zekaya sor",
+      askAiBankQuestionTemplate:
+        "{name} hakkında daha fazla bilgi ver: hesap nasıl açılır, hangi belgeler gerekir ve nelere dikkat edilmeli?",
+      askAiTopicQuestionTemplate:
+        '"{name}" hakkında daha fazla bilgi ver: nasıl başvurulur, hangi belgeler gerekir ve nelere dikkat edilmeli?',
+      yourBank: "Bankanız",
+      chooseBank: "Banka seç",
+      bankInfo: "Banka bilgisi",
+      classicAccount: "Klasik hesap",
+      moreDetails: "Daha fazla",
+      allTag: "Tümü",
+      loading: "Yükleniyor…",
+      searchGeneric: "Ara",
+      searchBanks: "Banka ara",
+      searchInsurance: "Sigorta ara",
+      searchGuides: "Rehber ara",
+      important2026Badge: "2026 için önemli",
+      moreBanksTemplate: "{n} banka daha",
+      statusDone: "Tamamlandı",
+      statusNotStarted: "Başlanmadı",
+      urgentAria: "Acil dikkat gerektirir",
+      start: "Başla",
+      compareBanksTitle: "Banka karşılaştırması",
+      tagsLabel: "Etiketler",
+      tags: { noPesel: "PESEL'siz", fullyOnline: "Tamamen online", free: "Ücretsiz", multicurrency: "Çoklu döviz" },
+      headlines: {
+        noPesel: "PESEL'siz",
+        fullyOnline: "Online hesap aç",
+        free: "Ücretsiz hizmet",
+        multicurrency: "Çoklu döviz hesabı",
+      },
+    },
     helpButton: {
       label: "Bu nasıl alınır?",
       openGuide: "📄 Talimatları aç",
@@ -8289,6 +8527,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         quickActionBanksDesc: "Барои навакак омадагон бонк ёбед",
         quickActionWorkDesc: "Кор ҷустуҷӯ кунед ва маошро фаҳмед",
         currentStepCta: "Ба қадам гузаред →",
+      },
+    },
+    guideCard: {
+      whenToGet: "Кай гирифта мешавад",
+      whereToSubmit: "Ба куҷо супорида мешавад",
+      showOnMap: "Дар харита нишон додан",
+      onMap: "Дар харита",
+      workingHours: "Соатҳои корӣ",
+      onlineBooking: "Сабти ном онлайн",
+      cost: "Арзиш",
+      waitingTime: "Мӯҳлати интизорӣ",
+      requiredDocs: "Ҳуҷҷатҳо",
+      howToApply: "Чӣ тавр гирифта мешавад",
+      tips: "Маслиҳатҳо",
+      commonMistakes: "Хатоҳои маъмул",
+      officialSite: "Сомонаи расмӣ",
+      downloadForm: "Боргирии бланк",
+      fillWithAi: "Бо AI пур кардан",
+      askAi: "Аз AI пурсидан",
+      askAiAriaTemplate: "Дар бораи {name} аз AI пурсидан",
+      askAiBankQuestionTemplate:
+        "Дар бораи {name} муфассал нақл кун: чӣ тавр ҳисоб кушода мешавад, кадом ҳуҷҷатҳо лозиманд ва ба чӣ бояд диққат дод?",
+      askAiTopicQuestionTemplate:
+        'Дар бораи "{name}" муфассал нақл кун: чӣ тавр гирифта мешавад, кадом ҳуҷҷатҳо лозиманд ва ба чӣ бояд диққат дод?',
+      yourBank: "Бонки шумо",
+      chooseBank: "Бонкро интихоб кунед",
+      bankInfo: "Маълумот дар бораи бонк",
+      classicAccount: "Ҳисоби классикӣ",
+      moreDetails: "Муфассалтар",
+      allTag: "Ҳама",
+      loading: "Боргузорӣ…",
+      searchGeneric: "Ҷустуҷӯ",
+      searchBanks: "Ҷустуҷӯи бонк",
+      searchInsurance: "Ҷустуҷӯи суғурта",
+      searchGuides: "Ҷустуҷӯи роҳнамо",
+      important2026Badge: "Муҳим барои 2026",
+      moreBanksTemplate: "Боз {n} бонк",
+      statusDone: "Тайёр",
+      statusNotStarted: "Оғоз нашудааст",
+      urgentAria: "Диққати таъҷилиро талаб мекунад",
+      start: "Оғоз кардан",
+      compareBanksTitle: "Муқоисаи бонкҳо",
+      tagsLabel: "Тегҳо",
+      tags: { noPesel: "Бе PESEL", fullyOnline: "Комилан онлайн", free: "Ройгон", multicurrency: "Бисёрасъорӣ" },
+      headlines: {
+        noPesel: "Бе PESEL",
+        fullyOnline: "Кушодани ҳисоб онлайн",
+        free: "Хизматрасонии ройгон",
+        multicurrency: "Ҳисоби бисёрасъорӣ",
       },
     },
     helpButton: {
@@ -9838,6 +10125,55 @@ export const dictionaries: Record<Lang, Dictionary> = {
         quickActionBanksDesc: "Знайдіть банк для новоприбулих",
         quickActionWorkDesc: "Шукайте роботу та дізнавайтеся зарплати",
         currentStepCta: "Перейти до кроку →",
+      },
+    },
+    guideCard: {
+      whenToGet: "Коли оформлювати",
+      whereToSubmit: "Куди подавати",
+      showOnMap: "Показати на карті",
+      onMap: "На карті",
+      workingHours: "Години роботи",
+      onlineBooking: "Запис онлайн",
+      cost: "Вартість",
+      waitingTime: "Термін очікування",
+      requiredDocs: "Документи",
+      howToApply: "Як оформити",
+      tips: "Поради",
+      commonMistakes: "Часті помилки",
+      officialSite: "Офіційний сайт",
+      downloadForm: "Завантажити бланк",
+      fillWithAi: "Заповнити з ШІ",
+      askAi: "Запитати ШІ",
+      askAiAriaTemplate: "Запитати ШІ про {name}",
+      askAiBankQuestionTemplate:
+        "Розкажи детальніше про {name}: як відкрити рахунок, які документи потрібні і на що звернути увагу?",
+      askAiTopicQuestionTemplate:
+        'Розкажи детальніше про "{name}": як оформити, які документи потрібні і на що звернути увагу?',
+      yourBank: "Ваш банк",
+      chooseBank: "Обрати банк",
+      bankInfo: "Інформація про банк",
+      classicAccount: "Класичний рахунок",
+      moreDetails: "Детальніше",
+      allTag: "Усі",
+      loading: "Завантаження…",
+      searchGeneric: "Пошук",
+      searchBanks: "Пошук банку",
+      searchInsurance: "Пошук страховки",
+      searchGuides: "Пошук гайда",
+      important2026Badge: "Важливо 2026",
+      moreBanksTemplate: "Ще {n} банків",
+      statusDone: "Готово",
+      statusNotStarted: "Не розпочато",
+      urgentAria: "Потребує термінової уваги",
+      start: "Почати",
+      compareBanksTitle: "Порівняння банків",
+      tagsLabel: "Теги",
+      tags: { noPesel: "Без PESEL", fullyOnline: "Повністю онлайн", free: "Безкоштовно", multicurrency: "Мультивалютний" },
+      headlines: {
+        noPesel: "Без PESEL",
+        fullyOnline: "Відкрити рахунок онлайн",
+        free: "Безкоштовне обслуговування",
+        multicurrency: "Мультивалютний рахунок",
       },
     },
     helpButton: {
