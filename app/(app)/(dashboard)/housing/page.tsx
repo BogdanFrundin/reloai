@@ -19,6 +19,7 @@ import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildOlxUrl, buildOtodomUrl } from "../../../_lib/housingSearchLinks";
+import { getCityName } from "../../../_lib/cities";
 
 const CITY_GENITIVE_RU: Record<string, string> = {
   "Варшава": "Варшавы",
@@ -89,6 +90,7 @@ function DistrictCard({
   onOpenSearch: (district: string) => void;
 }) {
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
   const priceLabel = districtPriceLabel(d, rooms, currency, rates);
   const description = d.description ? stripPricePrefix(d.description) : null;
 
@@ -109,7 +111,7 @@ function DistrictCard({
         onClick={() => onOpenSearch(d.district)}
         className="mt-4 w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
       >
-        Искать с этими фильтрами →
+        {t.housing.searchWithFiltersBtn}
       </button>
     </div>
   );
@@ -154,7 +156,7 @@ export default function HousingPage() {
   const featuredDistricts = districts.slice(0, 4);
   const restDistricts = districts.slice(4);
 
-  const cityLabel = lang === "ru" ? (CITY_GENITIVE_RU[city] ?? city) : city;
+  const cityLabel = lang === "ru" ? (CITY_GENITIVE_RU[city] ?? city) : getCityName(city, lang);
   const showAllLabel = t.housing.showAllDistricts
     .replace("{count}", String(districts.length))
     .replace("{city}", cityLabel);
@@ -183,23 +185,23 @@ export default function HousingPage() {
             <Dropdown<RoomsFilter>
               value={rooms}
               onChange={setRooms}
-              label="Комнат"
+              label={t.housing.roomsLabel}
               options={[
-                { value: "any", label: "Любое" },
-                { value: "studio", label: "Студия" },
-                { value: "2room", label: "2 комнаты" },
-                { value: "3room", label: "3 комнаты" },
+                { value: "any", label: t.housing.roomsAny },
+                { value: "studio", label: t.housing.roomsStudio },
+                { value: "2room", label: t.housing.rooms2 },
+                { value: "3room", label: t.housing.rooms3 },
               ]}
             />
-            <CitySelect value={city} onChange={setCity} label="Город" />
+            <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
           </div>
         </div>
         <p className="mt-1.5 max-w-2xl text-sm text-text-muted">{t.housing.rentMarketSub}</p>
 
         {loading ? (
-          <p className="mt-6 text-sm text-text-muted">Загрузка…</p>
+          <p className="mt-6 text-sm text-text-muted">{t.guideCard.loading}</p>
         ) : districts.length === 0 ? (
-          <p className="mt-6 text-sm text-text-muted">Нет данных по районам для {city}.</p>
+          <p className="mt-6 text-sm text-text-muted">{t.housing.noDistrictsText.replace("{city}", getCityName(city, lang))}</p>
         ) : (
           <>
             <div className="mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

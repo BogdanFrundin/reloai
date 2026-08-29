@@ -7,6 +7,7 @@ import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
+import type { Dictionary } from "../../../_lib/i18n";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useCurrency } from "../../../_components/CurrencyProvider";
 import { convertPlnText } from "../../../_lib/currency";
@@ -83,28 +84,6 @@ const SPARKLE_ICON = (
   </svg>
 );
 
-const TAB_QUESTIONS: Record<TabId, string[]> = {
-  universities: [
-    "Как подать документы в университет в Польше?",
-    "Нужна ли нострификация диплома?",
-    "Какие есть стипендии для иностранцев?",
-  ],
-  schools: [
-    "Чем отличаются частные и государственные школы?",
-    "Как записать ребёнка в школу без знания польского?",
-    "Какие документы нужны для зачисления?",
-  ],
-  kindergartens: [
-    "Нужен ли PESEL для детского сада?",
-    "Как устроена очередь в государственные сады?",
-    "Сколько стоит частный детский сад?",
-  ],
-  courses: [
-    "Как выбрать языковые курсы в Польше?",
-    "Есть ли бесплатные курсы польского для иностранцев?",
-    "Сколько времени нужно, чтобы выучить язык до B1?",
-  ],
-};
 
 type EducationSearchResult = {
   tab: TabId | null;
@@ -113,15 +92,15 @@ type EducationSearchResult = {
   reply: string;
 };
 
-function OwnershipBadge({ ownership }: { ownership: string | null }) {
+function OwnershipBadge({ ownership, t }: { ownership: string | null; t: Dictionary }) {
   if (!ownership) return null;
   return ownership === "государственный" ? (
     <span className="inline-flex flex-shrink-0 items-center rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-[#9fb0e8]">
-      Гос.
+      {t.education.publicBadge}
     </span>
   ) : (
     <span className="inline-flex flex-shrink-0 items-center rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-semibold text-amber-300">
-      Частный
+      {t.education.privateBadge}
     </span>
   );
 }
@@ -141,6 +120,8 @@ function InfoRow({ label, value, showCurrencyHint }: { label: string; value: str
 function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
+  const { t } = useLanguage();
+  const ed = t.education;
   const [open, setOpen] = useState(false);
   const cost = convertPlnText(row.cost, currency, rates);
   const notes = [...(row.highlights ?? []), ...(row.features ?? [])];
@@ -149,7 +130,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
   );
 
   function askAi() {
-    const question = `Расскажи подробнее про "${row.name}" в городе ${row.city}: стоит ли выбрать это заведение, какие плюсы и минусы, на что обратить внимание?`;
+    const question = ed.askAiQuestionTemplate.replace("{name}", row.name).replace("{city}", row.city);
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
@@ -163,13 +144,13 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
       >
         <div className="flex w-full items-center justify-between gap-2">
           <span className={iconBadgeClass}>{icon}</span>
-          <OwnershipBadge ownership={row.ownership} />
+          <OwnershipBadge ownership={row.ownership} t={t} />
         </div>
 
         <div>
           <p className="text-[19px] font-bold leading-tight text-white">{row.name}</p>
           <div className="mt-1.5 flex items-center gap-1.5">
-            <p className="text-sm font-medium text-accent-bright/70">{cost || "Уточняйте цену"}</p>
+            <p className="text-sm font-medium text-accent-bright/70">{cost || ed.priceOnRequestText}</p>
             <CurrencyHint />
           </div>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
@@ -197,16 +178,16 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
           onClick={() => setOpen((prev) => !prev)}
           className="flex-1 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
-          {open ? "Скрыть" : "Подробнее"} →
+          {open ? t.dashboard.collapseBtn : ed.learnMore}
         </button>
         <button
           type="button"
           onClick={askAi}
-          aria-label={`Спросить ИИ про ${row.name}`}
+          aria-label={ed.askAiAriaTemplate.replace("{name}", row.name)}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           {SPARKLE_ICON}
-          Спросить ИИ
+          {ed.askAiBtn}
         </button>
       </div>
 
@@ -214,7 +195,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
         <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
           {row.address && (
             <div>
-              <InfoRow label="Адрес" value={row.address} />
+              <InfoRow label={ed.addressLabel} value={row.address} />
               <a
                 href={buildGoogleMapsUrl([row.address, row.city, "Poland"])}
                 target="_blank"
@@ -222,21 +203,21 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
                 onClick={(event) => event.stopPropagation()}
                 className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
               >
-                Показать на карте →
+                {ed.showOnMapBtn}
               </a>
             </div>
           )}
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {row.audience && <InfoRow label="Для кого" value={row.audience} />}
-            {row.languages && row.languages.length > 0 && <InfoRow label="Язык" value={row.languages.join(", ")} />}
-            {row.schedule && <InfoRow label="График" value={row.schedule} />}
-            {cost && <InfoRow label="Стоимость" value={cost} showCurrencyHint />}
+            {row.audience && <InfoRow label={ed.forWhomLabel} value={row.audience} />}
+            {row.languages && row.languages.length > 0 && <InfoRow label={ed.languageLabel} value={row.languages.join(", ")} />}
+            {row.schedule && <InfoRow label={ed.scheduleLabel} value={row.schedule} />}
+            {cost && <InfoRow label={ed.costLabel} value={cost} showCurrencyHint />}
           </div>
 
           {row.required_docs && row.required_docs.length > 0 && (
             <p className="text-xs leading-relaxed text-white/60">
-              <span className="font-semibold text-white/80">Документы: </span>
+              <span className="font-semibold text-white/80">{ed.documentsLabel}</span>
               {row.required_docs.join("; ")}
             </p>
           )}
@@ -252,7 +233,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
             onClick={() => setOpen(false)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
           >
-            Свернуть
+            {t.dashboard.collapseBtn}
             <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
@@ -391,7 +372,7 @@ export default function EducationPage() {
             </button>
           ))}
         </div>
-        <CitySelect value={city} onChange={setCity} label="Город" />
+        <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
       </div>
 
       <div className="mt-4 rounded-[28px] bg-[#1c1f26] p-4 sm:p-5">
@@ -400,10 +381,8 @@ export default function EducationPage() {
             {SPARKLE_ICON}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-white">Подбор с ИИ</p>
-            <p className="mt-0.5 text-xs text-white/50">
-              Опишите, что вы ищете — вуз, школу, садик или курсы — и мы подберём подходящие варианты.
-            </p>
+            <p className="text-sm font-semibold text-white">{t.education.aiPickHeading}</p>
+            <p className="mt-0.5 text-xs text-white/50">{t.education.aiPickSubtitle}</p>
             <div className="mt-3 flex flex-col gap-2 sm:flex-row">
               <input
                 value={aiQuery}
@@ -411,7 +390,7 @@ export default function EducationPage() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleAiSearch();
                 }}
-                placeholder="Например: частный садик рядом с центром для ребёнка 3 лет"
+                placeholder={t.education.aiPickPlaceholder}
                 className="flex-1 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
               />
               <button
@@ -420,7 +399,7 @@ export default function EducationPage() {
                 disabled={aiLoading || !aiQuery.trim()}
                 className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {aiLoading ? "Подбираем…" : "Найти"}
+                {aiLoading ? t.education.findingBtn : t.education.findBtn}
               </button>
             </div>
             {aiResult && (
@@ -431,7 +410,7 @@ export default function EducationPage() {
                   onClick={resetAiSearch}
                   className="ml-auto flex-shrink-0 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:text-white"
                 >
-                  Сбросить
+                  {t.education.resetBtn}
                 </button>
               </div>
             )}
@@ -443,7 +422,7 @@ export default function EducationPage() {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Поиск по названию"
+          placeholder={t.education.searchByNamePlaceholder}
           className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
       </div>
@@ -476,7 +455,7 @@ export default function EducationPage() {
 
       <div className="mt-6">
         {loading ? (
-          <p className="py-14 text-center text-sm text-text-muted">Загрузка…</p>
+          <p className="py-14 text-center text-sm text-text-muted">{t.guideCard.loading}</p>
         ) : items.length > 0 ? (
           <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((row, i) => (
@@ -496,10 +475,10 @@ export default function EducationPage() {
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
             </span>
-            <p className="text-[15px] font-bold text-white">Нужна помощь с выбором? Спросите ИИ</p>
+            <p className="text-[15px] font-bold text-white">{t.education.needHelpHeading}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {TAB_QUESTIONS[activeTab].map((q) => (
+            {t.education.tabQuestions[activeTab].map((q) => (
               <button
                 key={q}
                 type="button"
@@ -510,7 +489,7 @@ export default function EducationPage() {
               </button>
             ))}
           </div>
-          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
+          <p className="mt-3.5 text-xs text-white/40">{t.education.clickHintText}</p>
         </div>
       </Reveal>
     </div>

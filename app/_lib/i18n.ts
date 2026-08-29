@@ -28,6 +28,7 @@ export type Dictionary = {
     logoutBtn: string;
     logoutConfirmTitle: string;
     logoutConfirmBody: string;
+    cityLabel: string;
   };
   hero: {
     badge: string;
@@ -413,6 +414,13 @@ export type Dictionary = {
     showAllDistricts: string;
     showFewerDistricts: string;
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
+    roomsLabel: string;
+    roomsAny: string;
+    roomsStudio: string;
+    rooms2: string;
+    rooms3: string;
+    noDistrictsText: string;
+    searchWithFiltersBtn: string;
   };
   banks: {
     title: string;
@@ -770,6 +778,32 @@ export type Dictionary = {
       germany: { courses: string; schools: string };
       spain: { courses: string; schools: string };
     };
+    aiPickHeading: string;
+    aiPickSubtitle: string;
+    aiPickPlaceholder: string;
+    findBtn: string;
+    findingBtn: string;
+    resetBtn: string;
+    searchByNamePlaceholder: string;
+    addressLabel: string;
+    showOnMapBtn: string;
+    forWhomLabel: string;
+    languageLabel: string;
+    scheduleLabel: string;
+    costLabel: string;
+    documentsLabel: string;
+    priceOnRequestText: string;
+    askAiBtn: string;
+    askAiAriaTemplate: string;
+    askAiQuestionTemplate: string;
+    needHelpHeading: string;
+    clickHintText: string;
+    tabQuestions: {
+      universities: [string, string, string];
+      schools: [string, string, string];
+      kindergartens: [string, string, string];
+      courses: [string, string, string];
+    };
   };
   aiChat: {
     welcome: string;
@@ -923,6 +957,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Log out",
       logoutConfirmTitle: "Log out of your account?",
       logoutConfirmBody: "Are you sure you want to log out?",
+      cityLabel: "City",
     },
     hero: {
       badge: "Your AI relocation guide",
@@ -1688,6 +1723,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Релокантов' choice",
       showAllDistricts: "Show all {count} districts in {city} →",
       showFewerDistricts: "Show fewer districts",
+      roomsLabel: "Rooms",
+      roomsAny: "Any",
+      roomsStudio: "Studio",
+      rooms2: "2 rooms",
+      rooms3: "3 rooms",
+      noDistrictsText: "No district data available for {city}.",
+      searchWithFiltersBtn: "Search with these filters →",
       guides: {
         olx: {
           heading: "How to search for housing on OLX",
@@ -2392,6 +2434,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Application deadline",
       morePrograms: "more",
       emptyState: "No options for the selected filter.",
+      aiPickHeading: "AI-powered matching",
+      aiPickSubtitle: "Describe what you're looking for — a university, school, kindergarten, or courses — and we'll find matching options.",
+      aiPickPlaceholder: "E.g.: a private kindergarten near the center for a 3-year-old",
+      findBtn: "Find",
+      findingBtn: "Searching…",
+      resetBtn: "Reset",
+      searchByNamePlaceholder: "Search by name",
+      addressLabel: "Address",
+      showOnMapBtn: "Show on map →",
+      forWhomLabel: "For whom",
+      languageLabel: "Language",
+      scheduleLabel: "Schedule",
+      costLabel: "Cost",
+      documentsLabel: "Documents: ",
+      priceOnRequestText: "Contact for price",
+      askAiBtn: "Ask AI",
+      askAiAriaTemplate: "Ask AI about {name}",
+      askAiQuestionTemplate: 'Tell me more about "{name}" in {city}: is it worth choosing, what are the pros and cons, what should I pay attention to?',
+      needHelpHeading: "Need help choosing? Ask AI",
+      clickHintText: "Clicking a question opens a chat with a ready answer from AI",
+      tabQuestions: {
+        universities: [
+          "How do I apply to a university in Poland?",
+          "Do I need to have my diploma recognized (nostrification)?",
+          "What scholarships are available for foreigners?",
+        ],
+        schools: [
+          "What's the difference between private and public schools?",
+          "How do I enroll a child in school without knowing Polish?",
+          "What documents are needed for enrollment?",
+        ],
+        kindergartens: [
+          "Do I need a PESEL for kindergarten?",
+          "How does the queue for public kindergartens work?",
+          "How much does a private kindergarten cost?",
+        ],
+        courses: [
+          "How do I choose language courses in Poland?",
+          "Are there free Polish courses for foreigners?",
+          "How long does it take to learn the language to B1?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Holder of temporary protection status? Many Warsaw city courses are free. Ask at your local district office or Powiatowy Urząd Pracy (PUP).",
@@ -2585,6 +2669,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Выйти",
       logoutConfirmTitle: "Выйти из аккаунта?",
       logoutConfirmBody: "Вы уверены, что хотите выйти?",
+      cityLabel: "Город",
     },
     hero: {
       badge: "Ваш AI-гид по переезду",
@@ -3353,6 +3438,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Выбор релокантов",
       showAllDistricts: "Показать все {count} районов {city} →",
       showFewerDistricts: "Свернуть список районов",
+      roomsLabel: "Комнат",
+      roomsAny: "Любое",
+      roomsStudio: "Студия",
+      rooms2: "2 комнаты",
+      rooms3: "3 комнаты",
+      noDistrictsText: "Нет данных по районам для {city}.",
+      searchWithFiltersBtn: "Искать с этими фильтрами →",
       guides: {
         olx: {
           heading: "Как искать жильё на OLX",
@@ -4057,6 +4149,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Подача заявок",
       morePrograms: "ещё",
       emptyState: "Нет вариантов для выбранного фильтра.",
+      aiPickHeading: "Подбор с ИИ",
+      aiPickSubtitle: "Опишите, что вы ищете — вуз, школу, садик или курсы — и мы подберём подходящие варианты.",
+      aiPickPlaceholder: "Например: частный садик рядом с центром для ребёнка 3 лет",
+      findBtn: "Найти",
+      findingBtn: "Подбираем…",
+      resetBtn: "Сбросить",
+      searchByNamePlaceholder: "Поиск по названию",
+      addressLabel: "Адрес",
+      showOnMapBtn: "Показать на карте →",
+      forWhomLabel: "Для кого",
+      languageLabel: "Язык",
+      scheduleLabel: "График",
+      costLabel: "Стоимость",
+      documentsLabel: "Документы: ",
+      priceOnRequestText: "Уточняйте цену",
+      askAiBtn: "Спросить ИИ",
+      askAiAriaTemplate: "Спросить ИИ про {name}",
+      askAiQuestionTemplate: 'Расскажи подробнее про "{name}" в городе {city}: стоит ли выбрать это заведение, какие плюсы и минусы, на что обратить внимание?',
+      needHelpHeading: "Нужна помощь с выбором? Спросите ИИ",
+      clickHintText: "Клик по вопросу сразу открывает чат с готовым ответом от ИИ",
+      tabQuestions: {
+        universities: [
+          "Как подать документы в университет в Польше?",
+          "Нужна ли нострификация диплома?",
+          "Какие есть стипендии для иностранцев?",
+        ],
+        schools: [
+          "Чем отличаются частные и государственные школы?",
+          "Как записать ребёнка в школу без знания польского?",
+          "Какие документы нужны для зачисления?",
+        ],
+        kindergartens: [
+          "Нужен ли PESEL для детского сада?",
+          "Как устроена очередь в государственные сады?",
+          "Сколько стоит частный детский сад?",
+        ],
+        courses: [
+          "Как выбрать языковые курсы в Польше?",
+          "Есть ли бесплатные курсы польского для иностранцев?",
+          "Сколько времени нужно, чтобы выучить язык до B1?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Есть статус временной защиты? Многие курсы от города Варшавы бесплатны. Спросите в местном urząd dzielnicy или Powiatowy Urząd Pracy (PUP).",
@@ -4250,6 +4384,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Chiqish",
       logoutConfirmTitle: "Hisobdan chiqasizmi?",
       logoutConfirmBody: "Chiqishga ishonchingiz komilmi?",
+      cityLabel: "Shahar",
     },
     hero: {
       badge: "Sizning AI ko'chish yordamchingiz",
@@ -5015,6 +5150,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Chet elliklar tanlovi",
       showAllDistricts: "{city} shahridagi barcha {count} ta tumanni ko'rsatish →",
       showFewerDistricts: "Ro'yxatni yig'ish",
+      roomsLabel: "Xonalar",
+      roomsAny: "Har qanday",
+      roomsStudio: "Studiya",
+      rooms2: "2 xonali",
+      rooms3: "3 xonali",
+      noDistrictsText: "{city} bo'yicha tumanlar haqida ma'lumot yo'q.",
+      searchWithFiltersBtn: "Shu filtrlar bilan qidirish →",
       guides: {
         olx: {
           heading: "OLX'da uy-joy qanday qidiriladi",
@@ -5719,6 +5861,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Ariza topshirish muddati",
       morePrograms: "yana",
       emptyState: "Tanlangan filtr uchun variantlar topilmadi.",
+      aiPickHeading: "AI bilan tanlash",
+      aiPickSubtitle: "Nima izlayotganingizni tasvirlab bering — universitet, maktab, bog'cha yoki kurslar — biz mos variantlarni topamiz.",
+      aiPickPlaceholder: "Masalan: markazga yaqin, 3 yoshli bola uchun xususiy bog'cha",
+      findBtn: "Topish",
+      findingBtn: "Qidirilmoqda…",
+      resetBtn: "Bekor qilish",
+      searchByNamePlaceholder: "Nomi bo'yicha qidirish",
+      addressLabel: "Manzil",
+      showOnMapBtn: "Xaritada ko'rsatish →",
+      forWhomLabel: "Kimlar uchun",
+      languageLabel: "Til",
+      scheduleLabel: "Jadval",
+      costLabel: "Narxi",
+      documentsLabel: "Hujjatlar: ",
+      priceOnRequestText: "Narxini so'rang",
+      askAiBtn: "AI'dan so'rash",
+      askAiAriaTemplate: "{name} haqida AI'dan so'rash",
+      askAiQuestionTemplate: '"{name}" ({city}) haqida batafsil ayting: uni tanlash arziydimi, qanday afzallik va kamchiliklari bor, nimaga e\'tibor berish kerak?',
+      needHelpHeading: "Tanlashda yordam kerakmi? AI'dan so'rang",
+      clickHintText: "Savolga bosish AI'dan tayyor javob bilan chatni ochadi",
+      tabQuestions: {
+        universities: [
+          "Polshada universitetga qanday hujjat topshiraman?",
+          "Diplomni nostrifikatsiya qilish kerakmi?",
+          "Chet elliklar uchun qanday stipendiyalar bor?",
+        ],
+        schools: [
+          "Xususiy va davlat maktablari qanday farq qiladi?",
+          "Polyak tilini bilmasdan bolani maktabga qanday yozaman?",
+          "Qabul uchun qanday hujjatlar kerak?",
+        ],
+        kindergartens: [
+          "Bog'cha uchun PESEL kerakmi?",
+          "Davlat bog'chalariga navbat qanday ishlaydi?",
+          "Xususiy bog'cha qancha turadi?",
+        ],
+        courses: [
+          "Polshada til kurslarini qanday tanlash kerak?",
+          "Chet elliklar uchun bepul polyak tili kurslari bormi?",
+          "Tilni B1 darajasigacha o'rganish qancha vaqt oladi?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Vaqtinchalik himoya maqomiga egamisiz? Varshavadagi ko'plab shahar kurslari bepul. Mahalliy tuman idorasi yoki Powiatowy Urząd Pracy (PUP) dan so'rang.",
@@ -5910,6 +6094,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Çıkış yap",
       logoutConfirmTitle: "Hesaptan çıkış yapılsın mı?",
       logoutConfirmBody: "Çıkış yapmak istediğinizden emin misiniz?",
+      cityLabel: "Şehir",
     },
     hero: {
       badge: "Yapay zeka destekli taşınma rehberiniz",
@@ -6674,6 +6859,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Göçmenlerin tercihi",
       showAllDistricts: "{city} şehrindeki tüm {count} ilçeyi göster →",
       showFewerDistricts: "Listeyi daralt",
+      roomsLabel: "Oda",
+      roomsAny: "Fark etmez",
+      roomsStudio: "Stüdyo",
+      rooms2: "2 oda",
+      rooms3: "3 oda",
+      noDistrictsText: "{city} için mahalle verisi yok.",
+      searchWithFiltersBtn: "Bu filtrelerle ara →",
       guides: {
         olx: {
           heading: "OLX'te konut nasıl aranır",
@@ -7378,6 +7570,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Başvuru son tarihi",
       morePrograms: "daha",
       emptyState: "Seçilen filtre için seçenek yok.",
+      aiPickHeading: "Yapay zeka ile seçim",
+      aiPickSubtitle: "Ne aradığınızı tarif edin — üniversite, okul, anaokulu ya da kurs — size uygun seçenekleri bulalım.",
+      aiPickPlaceholder: "Örn: merkeze yakın, 3 yaşındaki çocuk için özel anaokulu",
+      findBtn: "Bul",
+      findingBtn: "Aranıyor…",
+      resetBtn: "Sıfırla",
+      searchByNamePlaceholder: "İsme göre ara",
+      addressLabel: "Adres",
+      showOnMapBtn: "Haritada göster →",
+      forWhomLabel: "Kimler için",
+      languageLabel: "Dil",
+      scheduleLabel: "Program",
+      costLabel: "Ücret",
+      documentsLabel: "Belgeler: ",
+      priceOnRequestText: "Fiyat için iletişime geçin",
+      askAiBtn: "Yapay zekaya sor",
+      askAiAriaTemplate: "{name} hakkında yapay zekaya sor",
+      askAiQuestionTemplate: '"{name}" ({city}) hakkında daha fazla bilgi ver: seçmeye değer mi, artıları ve eksileri neler, nelere dikkat etmeli?',
+      needHelpHeading: "Seçim konusunda yardıma mı ihtiyacınız var? Yapay zekaya sorun",
+      clickHintText: "Soruya tıklamak, yapay zekadan hazır cevabı olan bir sohbet açar",
+      tabQuestions: {
+        universities: [
+          "Polonya'da üniversiteye nasıl başvururum?",
+          "Diploma denkliği (nostrifikasyon) gerekli mi?",
+          "Yabancılar için hangi burslar mevcut?",
+        ],
+        schools: [
+          "Özel ve devlet okulları arasındaki fark nedir?",
+          "Lehçe bilmeden çocuğumu okula nasıl kaydettiririm?",
+          "Kayıt için hangi belgeler gerekli?",
+        ],
+        kindergartens: [
+          "Anaokulu için PESEL gerekli mi?",
+          "Devlet anaokullarındaki sıra nasıl işler?",
+          "Özel anaokulu ne kadar tutar?",
+        ],
+        courses: [
+          "Polonya'da dil kursu nasıl seçilir?",
+          "Yabancılar için ücretsiz Lehçe kursu var mı?",
+          "Dili B1 seviyesine öğrenmek ne kadar sürer?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Geçici koruma statüsüne mi sahipsiniz? Varşova belediyesinin birçok kursu ücretsizdir. Bölgenizdeki urząd dzielnicy veya Powiatowy Urząd Pracy'ye (PUP) sorun.",
@@ -7569,6 +7803,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Баромадан",
       logoutConfirmTitle: "Аз ҳисоб мебароед?",
       logoutConfirmBody: "Оё мутмаин ҳастед, ки мехоҳед бароед?",
+      cityLabel: "Шаҳр",
     },
     hero: {
       badge: "Роҳнамои сунъии аз ҷониби AI барои кӯчиш",
@@ -8333,6 +8568,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Интихоби муҳоҷирон",
       showAllDistricts: "Ҳамаи {count} ноҳияи шаҳри {city}-ро нишон диҳед →",
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
+      roomsLabel: "Хонаҳо",
+      roomsAny: "Фарқ надорад",
+      roomsStudio: "Студия",
+      rooms2: "2 хона",
+      rooms3: "3 хона",
+      noDistrictsText: "Барои {city} маълумот дар бораи ноҳияҳо нест.",
+      searchWithFiltersBtn: "Бо ин филтрҳо ҷустуҷӯ кардан →",
       guides: {
         olx: {
           heading: "Чӣ тавр дар OLX манзил ҷустуҷӯ кунем",
@@ -9037,6 +9279,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Мӯҳлати пешниҳоди ариза",
       morePrograms: "боз",
       emptyState: "Барои филтри интихобшуда ҳеҷ гузинае нест.",
+      aiPickHeading: "Интихоб бо ёрии ЗҲ",
+      aiPickSubtitle: "Тавсиф кунед, ки чиро меҷӯед — донишгоҳ, мактаб, боғча ё курс — мо вариантҳои мувофиқро меёбем.",
+      aiPickPlaceholder: "Масалан: боғчаи хусусии наздики марказ барои кӯдаки 3-сола",
+      findBtn: "Ёфтан",
+      findingBtn: "Ҷустуҷӯ…",
+      resetBtn: "Бекор кардан",
+      searchByNamePlaceholder: "Ҷустуҷӯ аз рӯи ном",
+      addressLabel: "Суроға",
+      showOnMapBtn: "Дар харита нишон додан →",
+      forWhomLabel: "Барои кӣ",
+      languageLabel: "Забон",
+      scheduleLabel: "Ҷадвал",
+      costLabel: "Арзиш",
+      documentsLabel: "Ҳуҷҷатҳо: ",
+      priceOnRequestText: "Нархро дақиқ кунед",
+      askAiBtn: "Аз ЗҲ пурсидан",
+      askAiAriaTemplate: "Дар бораи {name} аз ЗҲ пурсидан",
+      askAiQuestionTemplate: 'Дар бораи "{name}" дар {city} бештар нақл кунед: оё интихоби он арзанда аст, чӣ бартарӣ ва камбудӣ дорад, ба чӣ бояд диққат дод?',
+      needHelpHeading: "Барои интихоб кӯмак лозим аст? Аз ЗҲ бипурсед",
+      clickHintText: "Клик ба савол дарҳол чатро бо ҷавоби тайёри ЗҲ мекушояд",
+      tabQuestions: {
+        universities: [
+          "Чӣ тавр ба донишгоҳ дар Лаҳистон ҳуҷҷат супорам?",
+          "Оё нострификатсияи диплом лозим аст?",
+          "Барои хориҷиён кадом стипендияҳо мавҷуданд?",
+        ],
+        schools: [
+          "Фарқи мактабҳои хусусӣ ва давлатӣ дар чист?",
+          "Чӣ тавр кӯдакро бе донистани забони лаҳистонӣ ба мактаб сабт кунам?",
+          "Барои қабул кадом ҳуҷҷатҳо лозиманд?",
+        ],
+        kindergartens: [
+          "Барои боғча PESEL лозим аст?",
+          "Навбат ба боғчаҳои давлатӣ чӣ тавр кор мекунад?",
+          "Боғчаи хусусӣ чанд арзиш дорад?",
+        ],
+        courses: [
+          "Чӣ тавр курсҳои забон дар Лаҳистонро интихоб кунам?",
+          "Барои хориҷиён курсҳои ройгони забони лаҳистонӣ ҳастанд?",
+          "Барои омӯхтани забон то дараҷаи B1 чанд вақт лозим аст?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Соҳиби мақоми ҳимояи муваққатӣ ҳастед? Бисёр курсҳои шаҳри Варшава ройгонанд. Дар идораи ноҳиявии худ ё Powiatowy Urząd Pracy (PUP) пурсон шавед.",
@@ -9228,6 +9512,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutBtn: "Вийти",
       logoutConfirmTitle: "Вийти з акаунту?",
       logoutConfirmBody: "Ви впевнені, що хочете вийти?",
+      cityLabel: "Місто",
     },
     hero: {
       badge: "Ваш AI-гід з переїзду",
@@ -9996,6 +10281,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       expatsChoiceBadge: "Вибір експатів",
       showAllDistricts: "Показати всі {count} районів міста {city} →",
       showFewerDistricts: "Згорнути список районів",
+      roomsLabel: "Кімнат",
+      roomsAny: "Будь-яке",
+      roomsStudio: "Студія",
+      rooms2: "2 кімнати",
+      rooms3: "3 кімнати",
+      noDistrictsText: "Немає даних по районах для {city}.",
+      searchWithFiltersBtn: "Шукати з цими фільтрами →",
       guides: {
         olx: {
           heading: "Як шукати житло на OLX",
@@ -10700,6 +10992,48 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rowDeadline: "Подача заявок",
       morePrograms: "ще",
       emptyState: "Немає варіантів для обраного фільтра.",
+      aiPickHeading: "Підбір з ШІ",
+      aiPickSubtitle: "Опишіть, що ви шукаєте — виш, школу, садок або курси — і ми підберемо відповідні варіанти.",
+      aiPickPlaceholder: "Наприклад: приватний садок поруч із центром для дитини 3 років",
+      findBtn: "Знайти",
+      findingBtn: "Підбираємо…",
+      resetBtn: "Скинути",
+      searchByNamePlaceholder: "Пошук за назвою",
+      addressLabel: "Адреса",
+      showOnMapBtn: "Показати на карті →",
+      forWhomLabel: "Для кого",
+      languageLabel: "Мова",
+      scheduleLabel: "Графік",
+      costLabel: "Вартість",
+      documentsLabel: "Документи: ",
+      priceOnRequestText: "Уточнюйте ціну",
+      askAiBtn: "Запитати ШІ",
+      askAiAriaTemplate: "Запитати ШІ про {name}",
+      askAiQuestionTemplate: 'Розкажи детальніше про "{name}" у місті {city}: чи варто обрати цей заклад, які плюси й мінуси, на що звернути увагу?',
+      needHelpHeading: "Потрібна допомога з вибором? Запитайте ШІ",
+      clickHintText: "Клік по питанню одразу відкриває чат з готовою відповіддю від ШІ",
+      tabQuestions: {
+        universities: [
+          "Як подати документи до університету в Польщі?",
+          "Чи потрібна нострифікація диплома?",
+          "Які стипендії доступні для іноземців?",
+        ],
+        schools: [
+          "Чим відрізняються приватні та державні школи?",
+          "Як записати дитину до школи без знання польської?",
+          "Які документи потрібні для зарахування?",
+        ],
+        kindergartens: [
+          "Чи потрібен PESEL для дитячого садка?",
+          "Як влаштована черга до державних садків?",
+          "Скільки коштує приватний дитячий садок?",
+        ],
+        courses: [
+          "Як обрати мовні курси в Польщі?",
+          "Чи є безкоштовні курси польської для іноземців?",
+          "Скільки часу потрібно, щоб вивчити мову до рівня B1?",
+        ],
+      },
       banners: {
         poland: {
           courses: "Маєте статус тимчасового захисту? Багато курсів від міста Варшава безкоштовні. Запитайте в місцевому urząd dzielnicy або Powiatowy Urząd Pracy (PUP).",

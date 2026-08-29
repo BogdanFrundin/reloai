@@ -1,7 +1,8 @@
 "use client";
 
 import Dropdown from "./Dropdown";
-import { CITIES, type CityName } from "../_lib/cities";
+import { CITIES, getCityName, type CityName } from "../_lib/cities";
+import { useLanguage } from "./LanguageProvider";
 
 export default function CitySelect({
   value,
@@ -12,12 +13,13 @@ export default function CitySelect({
   onChange: (city: CityName) => void;
   label?: string;
 }) {
+  const { lang } = useLanguage();
   return (
     <Dropdown
       value={value}
       onChange={onChange}
       label={label}
-      options={CITIES.map((city) => ({ value: city, label: city }))}
+      options={CITIES.map((city) => ({ value: city, label: getCityName(city, lang) }))}
     />
   );
 }
