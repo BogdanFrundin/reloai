@@ -107,7 +107,7 @@ export default function InsurancePage() {
                   : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
               }`}
             >
-              Все
+              {t.guideCard.allTag}
             </button>
             {categories.map((c) => (
               <button
@@ -127,12 +127,12 @@ export default function InsurancePage() {
         )}
 
         {profile?.citizenship && (
-          <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+          <p className="mb-3 text-xs text-text-muted">{t.guideCard.citizenshipNote}</p>
         )}
         <GuideTopicGrid
           guides={filtered}
           loading={loading}
-          emptyText="Пока нет данных по страховкам."
+          emptyText={t.insurance.emptyText}
           searchPlaceholder={t.guideCard.searchInsurance}
         />
       </Reveal>
@@ -172,11 +172,7 @@ export default function InsurancePage() {
         <button
           type="button"
           onClick={() =>
-            router.push(
-              `/dashboard/ai?q=${encodeURIComponent(
-                "Что мне выбрать — государственную страховку NFZ или частную? Учти мою ситуацию: работаю ли я официально, нужен ли быстрый доступ к врачам, важен ли бюджет."
-              )}`
-            )
+            router.push(`/dashboard/ai?q=${encodeURIComponent(t.insurance.aiPromptQuestion)}`)
           }
           className="mt-4 flex w-full items-center gap-3 rounded-2xl bg-[#1c1f26] p-5 text-left transition-colors duration-150 hover:bg-[#20242d]"
         >
@@ -184,12 +180,10 @@ export default function InsurancePage() {
             {SPARKLE_ICON}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[14px] font-bold text-white">Не знаете, что выбрать?</span>
-            <span className="mt-0.5 block text-xs text-white/50">
-              Спросите ИИ — он учтёт вашу ситуацию и подскажет, что подойдёт именно вам
-            </span>
+            <span className="block text-[14px] font-bold text-white">{t.insurance.aiPromptHeading}</span>
+            <span className="mt-0.5 block text-xs text-white/50">{t.insurance.aiPromptSubtitle}</span>
           </span>
-          <span className="flex-shrink-0 text-sm font-semibold text-accent-bright">Спросить →</span>
+          <span className="flex-shrink-0 text-sm font-semibold text-accent-bright">{t.insurance.aiPromptCta} →</span>
         </button>
       </Reveal>
     </div>

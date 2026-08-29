@@ -23,13 +23,6 @@ const SPARKLE_ICON = (
   </svg>
 );
 
-const COMMON_QUESTIONS = [
-  "Как открыть счёт без PESEL?",
-  "Какие документы нужны?",
-  "Сколько дней занимает открытие?",
-  "Можно ли открыть онлайн?",
-];
-
 // Fixed display order: first 4 are the featured banks BankCardGrid shows by
 // default, the rest appear under "Другие банки". Anything not in this list
 // (there shouldn't be any, once prune-banks.sql has been run) sorts last.
@@ -99,12 +92,12 @@ export default function BanksPage() {
 
       <Reveal delay={60} className="mt-10">
         {profile?.citizenship && (
-          <p className="mb-3 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+          <p className="mb-3 text-xs text-text-muted">{t.guideCard.citizenshipNote}</p>
         )}
         <BankCardGrid
           guides={visibleBanks}
           loading={loading}
-          emptyText="Пока нет данных по банкам."
+          emptyText={t.banks.emptyText}
           searchPlaceholder={t.guideCard.searchBanks}
         />
       </Reveal>
@@ -115,10 +108,10 @@ export default function BanksPage() {
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
             </span>
-            <p className="text-[15px] font-bold text-white">Частые вопросы про открытие счёта</p>
+            <p className="text-[15px] font-bold text-white">{t.banks.faqHeading}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {COMMON_QUESTIONS.map((q) => (
+            {t.banks.faqQuestions.map((q) => (
               <button
                 key={q}
                 type="button"
@@ -129,7 +122,7 @@ export default function BanksPage() {
               </button>
             ))}
           </div>
-          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
+          <p className="mt-3.5 text-xs text-white/40">{t.banks.faqCaption}</p>
         </div>
       </Reveal>
     </div>

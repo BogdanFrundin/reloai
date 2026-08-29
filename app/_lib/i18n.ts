@@ -417,6 +417,10 @@ export type Dictionary = {
     openAccountAt: string;
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
     howToOpenLabel: string;
+    emptyText: string;
+    faqHeading: string;
+    faqCaption: string;
+    faqQuestions: [string, string, string, string];
   };
   medicine: {
     title: string;
@@ -467,6 +471,11 @@ export type Dictionary = {
       travel: { name: string; provider: string; price: string; desc: string };
     };
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
+    emptyText: string;
+    aiPromptHeading: string;
+    aiPromptSubtitle: string;
+    aiPromptCta: string;
+    aiPromptQuestion: string;
   };
   work: {
     title: string;
@@ -639,6 +648,7 @@ export type Dictionary = {
     classicAccount: string;
     moreDetails: string;
     allTag: string;
+    citizenshipNote: string;
     loading: string;
     searchGeneric: string;
     searchBanks: string;
@@ -1727,6 +1737,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "How to open an account?",
+      emptyText: "No bank data yet.",
+      faqHeading: "Common questions about opening an account",
+      faqCaption: "Clicking a question opens a chat with a ready-made AI answer",
+      faqQuestions: [
+        "How do I open an account without PESEL?",
+        "What documents do I need?",
+        "How many days does it take to open?",
+        "Can I open it online?",
+      ],
     },
     medicine: {
       title: "Medicine in Poland",
@@ -1828,6 +1847,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "How do I get travel insurance?",
         },
       },
+      emptyText: "No insurance data yet.",
+      aiPromptHeading: "Not sure what to choose?",
+      aiPromptSubtitle: "Ask the AI — it will take your situation into account and suggest what fits you best",
+      aiPromptCta: "Ask",
+      aiPromptQuestion:
+        "What should I choose — public NFZ insurance or private? Take into account my situation: whether I'm formally employed, whether I need fast access to doctors, and whether budget matters.",
     },
     work: {
       title: "Work in Poland",
@@ -2172,6 +2197,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Classic account",
       moreDetails: "More details",
       allTag: "All",
+      citizenshipNote: "Showing guides relevant to your citizenship.",
       loading: "Loading…",
       searchGeneric: "Search",
       searchBanks: "Search banks",
@@ -3327,6 +3353,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "Как открыть счёт?",
+      emptyText: "Пока нет данных по банкам.",
+      faqHeading: "Частые вопросы про открытие счёта",
+      faqCaption: "Клик по вопросу сразу открывает чат с готовым ответом от ИИ",
+      faqQuestions: [
+        "Как открыть счёт без PESEL?",
+        "Какие документы нужны?",
+        "Сколько дней занимает открытие?",
+        "Можно ли открыть онлайн?",
+      ],
     },
     medicine: {
       title: "Медицина в Польше",
@@ -3428,6 +3463,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Как оформить туристическую страховку?",
         },
       },
+      emptyText: "Пока нет данных по страховкам.",
+      aiPromptHeading: "Не знаете, что выбрать?",
+      aiPromptSubtitle: "Спросите ИИ — он учтёт вашу ситуацию и подскажет, что подойдёт именно вам",
+      aiPromptCta: "Спросить",
+      aiPromptQuestion:
+        "Что мне выбрать — государственную страховку NFZ или частную? Учти мою ситуацию: работаю ли я официально, нужен ли быстрый доступ к врачам, важен ли бюджет.",
     },
     work: {
       title: "Работа в Польше",
@@ -3772,6 +3813,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Классический счёт",
       moreDetails: "Подробнее",
       allTag: "Все",
+      citizenshipNote: "Показаны гайды, актуальные для вашего гражданства.",
       loading: "Загрузка…",
       searchGeneric: "Поиск",
       searchBanks: "Поиск банка",
@@ -4924,6 +4966,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "Hisobni qanday ochish mumkin?",
+      emptyText: "Banklar bo'yicha hali ma'lumot yo'q.",
+      faqHeading: "Hisob ochish haqida tez-tez so'raladigan savollar",
+      faqCaption: "Savolga bosish darhol tayyor AI javobi bilan chatni ochadi",
+      faqQuestions: [
+        "PESELsiz hisobni qanday ochaman?",
+        "Qanday hujjatlar kerak?",
+        "Ochish necha kun davom etadi?",
+        "Onlayn ochish mumkinmi?",
+      ],
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -5025,6 +5076,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Sayohat sug'urtasini qanday rasmiylashtiraman?",
         },
       },
+      emptyText: "Sug'urtalar bo'yicha hali ma'lumot yo'q.",
+      aiPromptHeading: "Nimani tanlashni bilmayapsizmi?",
+      aiPromptSubtitle: "AI'dan so'rang — u vaziyatingizni hisobga olib, aynan sizga mos variantni taklif qiladi",
+      aiPromptCta: "So'rash",
+      aiPromptQuestion:
+        "Nimani tanlashim kerak — davlat NFZ sug'urtasi yoki xususiymi? Vaziyatimni hisobga oling: rasman ishlaydiganmanmi, shifokorlarga tez kirish kerakmi, byudjet muhimmi.",
     },
     work: {
       title: "Polshada ish",
@@ -5369,6 +5426,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Klassik hisob",
       moreDetails: "Batafsil",
       allTag: "Barchasi",
+      citizenshipNote: "Sizning fuqaroligingizga tegishli qo'llanmalar ko'rsatilmoqda.",
       loading: "Yuklanmoqda…",
       searchGeneric: "Qidiruv",
       searchBanks: "Bank qidirish",
@@ -6518,6 +6576,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "Hesap nasıl açılır?",
+      emptyText: "Bankalar hakkında henüz veri yok.",
+      faqHeading: "Hesap açma hakkında sık sorulan sorular",
+      faqCaption: "Bir soruya tıklamak, hazır yapay zeka yanıtıyla sohbeti hemen açar",
+      faqQuestions: [
+        "PESEL olmadan nasıl hesap açarım?",
+        "Hangi belgeler gerekli?",
+        "Açılış kaç gün sürer?",
+        "Online açabilir miyim?",
+      ],
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -6619,6 +6686,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Seyahat sigortasını nasıl yaptırırım?",
         },
       },
+      emptyText: "Sigortalar hakkında henüz veri yok.",
+      aiPromptHeading: "Ne seçeceğinizi bilmiyor musunuz?",
+      aiPromptSubtitle: "Yapay zekaya sorun — durumunuzu dikkate alarak size en uygun olanı önerecek",
+      aiPromptCta: "Sor",
+      aiPromptQuestion:
+        "Neyi seçmeliyim — devlet NFZ sigortası mı yoksa özel mi? Durumumu dikkate al: resmi olarak çalışıyor muyum, doktora hızlı erişim gerekli mi, bütçe önemli mi.",
     },
     work: {
       title: "Polonya'da İş",
@@ -6963,6 +7036,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Klasik hesap",
       moreDetails: "Daha fazla",
       allTag: "Tümü",
+      citizenshipNote: "Vatandaşlığınıza uygun rehberler gösteriliyor.",
       loading: "Yükleniyor…",
       searchGeneric: "Ara",
       searchBanks: "Banka ara",
@@ -8112,6 +8186,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "Чӣ тавр ҳисоб кушоем?",
+      emptyText: "Дар бораи бонкҳо ҳанӯз маълумот нест.",
+      faqHeading: "Саволҳои маъмул дар бораи кушодани ҳисоб",
+      faqCaption: "Клик ба савол якбора чатро бо ҷавоби омодаи AI мекушояд",
+      faqQuestions: [
+        "Чӣ тавр бе PESEL ҳисоб кушоям?",
+        "Кадом ҳуҷҷатҳо лозиманд?",
+        "Кушодан чанд рӯз вақт мегирад?",
+        "Оё онлайн кушодан мумкин аст?",
+      ],
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -8213,6 +8296,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Чӣ тавр суғуртаи сайёҳӣ бигирам?",
         },
       },
+      emptyText: "Дар бораи суғурта ҳанӯз маълумот нест.",
+      aiPromptHeading: "Намедонед чиро интихоб кунед?",
+      aiPromptSubtitle: "Аз AI бипурсед — он вазъи шуморо ба назар гирифта, чизи мувофиқро пешниҳод мекунад",
+      aiPromptCta: "Пурсидан",
+      aiPromptQuestion:
+        "Ман чиро интихоб кунам — суғуртаи давлатии NFZ ё хусусӣ? Вазъи маро ба назар гир: оё ман расман кор мекунам, оё дастрасии зуд ба духтур лозим аст, оё буҷет муҳим аст.",
     },
     work: {
       title: "Кор дар Полша",
@@ -8557,6 +8646,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Ҳисоби классикӣ",
       moreDetails: "Муфассалтар",
       allTag: "Ҳама",
+      citizenshipNote: "Дастурҳои марбут ба шаҳрвандии шумо нишон дода мешаванд.",
       loading: "Боргузорӣ…",
       searchGeneric: "Ҷустуҷӯ",
       searchBanks: "Ҷустуҷӯи бонк",
@@ -9710,6 +9800,15 @@ export const dictionaries: Record<Lang, Dictionary> = {
         },
       },
       howToOpenLabel: "Як відкрити рахунок?",
+      emptyText: "Поки немає даних по банках.",
+      faqHeading: "Часті питання про відкриття рахунку",
+      faqCaption: "Клік по питанню одразу відкриває чат із готовою відповіддю від ШІ",
+      faqQuestions: [
+        "Як відкрити рахунок без PESEL?",
+        "Які документи потрібні?",
+        "Скільки днів займає відкриття?",
+        "Чи можна відкрити онлайн?",
+      ],
     },
     medicine: {
       title: "Медицина в Польщі",
@@ -9811,6 +9910,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Як оформити туристичне страхування?",
         },
       },
+      emptyText: "Поки немає даних по страховках.",
+      aiPromptHeading: "Не знаєте, що обрати?",
+      aiPromptSubtitle: "Запитайте ШІ — він врахує вашу ситуацію і підкаже, що підійде саме вам",
+      aiPromptCta: "Запитати",
+      aiPromptQuestion:
+        "Що мені обрати — державне страхування NFZ чи приватне? Врахуй мою ситуацію: чи працюю я офіційно, чи потрібен швидкий доступ до лікарів, чи важливий бюджет.",
     },
     work: {
       title: "Робота в Польщі",
@@ -10155,6 +10260,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Класичний рахунок",
       moreDetails: "Детальніше",
       allTag: "Усі",
+      citizenshipNote: "Показані гайди, актуальні для вашого громадянства.",
       loading: "Завантаження…",
       searchGeneric: "Пошук",
       searchBanks: "Пошук банку",
