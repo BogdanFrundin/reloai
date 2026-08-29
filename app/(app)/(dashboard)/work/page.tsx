@@ -297,13 +297,6 @@ const SPARKLE_ICON = (
   </svg>
 );
 
-const CONTRACT_QUESTIONS = [
-  "Что мне выбрать: трудовой договор или B2B?",
-  "Как перейти с B2B на трудовой договор?",
-  "Какие налоги я плачу при B2B?",
-  "Что теряю, если работаю без договора?",
-];
-
 function lookupSalary(query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return null;
@@ -325,7 +318,7 @@ function getSuggestions(query: string): string[] {
 
 export default function WorkPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   // No persistence on purpose — the profession search always starts blank
   // on every page load/refresh, per explicit request (previously it was
   // remembered across visits via localStorage, which read as a bug).
@@ -356,7 +349,7 @@ export default function WorkPage() {
   };
 
   const CONTRACT_TYPES = [
-    { key: "employment" as const, name: t.work.employmentSubtitle, subtitle: t.work.employmentSubtitle === "Трудовой договор" ? "Со всеми гарантиями работника" : "Full employment benefits", features: t.work.employmentFeatures },
+    { key: "employment" as const, name: t.work.employmentSubtitle, subtitle: t.work.employmentFullSubtitle, features: t.work.employmentFeatures },
     { key: "b2b" as const, name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
   ];
 
@@ -410,8 +403,8 @@ export default function WorkPage() {
           </div>
           {profession && !result && (
             <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
-              <p className="text-sm font-semibold text-red-300">Такой профессии нет в базе</p>
-              <p className="mt-1 text-xs text-red-300/70">Попробуйте одну из этих профессий:</p>
+              <p className="text-sm font-semibold text-red-300">{t.work.notFoundHeading}</p>
+              <p className="mt-1 text-xs text-red-300/70">{t.work.notFoundTryThese}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {POPULAR_PROFESSIONS.map((name) => (
                   <button
@@ -431,10 +424,10 @@ export default function WorkPage() {
             <div className="mt-4 transition-[opacity,transform] duration-300 ease-[var(--ease-out-strong)] starting:opacity-0 starting:translate-y-2">
               <p className="text-sm font-medium text-text-secondary">{t.work.averageSalary}</p>
               <p className="mt-2 bg-gradient-to-br from-text-primary to-text-muted bg-clip-text text-3xl font-bold text-transparent">
-                {result.pln.toLocaleString("ru-RU")} PLN / месяц
+                {result.pln.toLocaleString(lang)} PLN / {t.work.perMonth}
               </p>
               <p className="mt-1 text-lg font-semibold text-accent-bright">
-                ≈ €{result.eur.toLocaleString("ru-RU")} / месяц
+                ≈ €{result.eur.toLocaleString(lang)} / {t.work.perMonth}
               </p>
               <p className="mt-3 text-xs text-text-muted">{t.work.salaryNote}</p>
 
@@ -537,10 +530,10 @@ export default function WorkPage() {
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
             </span>
-            <p className="text-[15px] font-bold text-white">Не уверены, что выбрать? Спросите ИИ</p>
+            <p className="text-[15px] font-bold text-white">{t.work.faqHeading}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {CONTRACT_QUESTIONS.map((q) => (
+            {t.work.faqQuestions.map((q) => (
               <button
                 key={q}
                 type="button"
@@ -551,7 +544,7 @@ export default function WorkPage() {
               </button>
             ))}
           </div>
-          <p className="mt-3.5 text-xs text-white/40">Клик по вопросу сразу открывает чат с готовым ответом от ИИ</p>
+          <p className="mt-3.5 text-xs text-white/40">{t.work.faqCaption}</p>
         </div>
       </Reveal>
     </div>

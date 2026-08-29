@@ -499,6 +499,13 @@ export type Dictionary = {
     b2bFeatures: [string, string, string];
     jobSiteDescs: { pracuj: string; nofluff: string; linkedin: string };
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
+    notFoundHeading: string;
+    notFoundTryThese: string;
+    perMonth: string;
+    employmentFullSubtitle: string;
+    faqHeading: string;
+    faqCaption: string;
+    faqQuestions: [string, string, string, string];
   };
   community: {
     title: string;
@@ -1964,6 +1971,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "How do I find a job on LinkedIn?",
         },
       },
+      notFoundHeading: "This profession isn't in our database",
+      notFoundTryThese: "Try one of these professions:",
+      perMonth: "month",
+      employmentFullSubtitle: "Full employment benefits",
+      faqHeading: "Not sure what to choose? Ask the AI",
+      faqCaption: "Clicking a question opens a chat with a ready-made AI answer",
+      faqQuestions: [
+        "What should I choose: an employment contract or B2B?",
+        "How do I switch from B2B to an employment contract?",
+        "What taxes do I pay under B2B?",
+        "What do I lose if I work without a contract?",
+      ],
     },
     community: {
       title: "Communities",
@@ -3605,6 +3624,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Как искать работу на LinkedIn?",
         },
       },
+      notFoundHeading: "Такой профессии нет в базе",
+      notFoundTryThese: "Попробуйте одну из этих профессий:",
+      perMonth: "месяц",
+      employmentFullSubtitle: "Со всеми гарантиями работника",
+      faqHeading: "Не уверены, что выбрать? Спросите ИИ",
+      faqCaption: "Клик по вопросу сразу открывает чат с готовым ответом от ИИ",
+      faqQuestions: [
+        "Что мне выбрать: трудовой договор или B2B?",
+        "Как перейти с B2B на трудовой договор?",
+        "Какие налоги я плачу при B2B?",
+        "Что теряю, если работаю без договора?",
+      ],
     },
     community: {
       title: "Сообщества",
@@ -5243,6 +5274,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "LinkedIn'da ishni qanday izlayman?",
         },
       },
+      notFoundHeading: "Bu kasb bazamizda yo'q",
+      notFoundTryThese: "Ushbu kasblardan birini sinab ko'ring:",
+      perMonth: "oy",
+      employmentFullSubtitle: "Xodimning barcha kafolatlari bilan",
+      faqHeading: "Nimani tanlashni bilmayapsizmi? AI'dan so'rang",
+      faqCaption: "Savolga bosish darhol tayyor AI javobi bilan chatni ochadi",
+      faqQuestions: [
+        "Nimani tanlashim kerak: mehnat shartnomasi yoki B2B?",
+        "B2B'dan mehnat shartnomasiga qanday o'taman?",
+        "B2B'da qanday soliqlar to'layman?",
+        "Shartnomasiz ishlasam nimani yo'qotaman?",
+      ],
     },
     community: {
       title: "Jamiyatlar",
@@ -6878,6 +6921,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "LinkedIn'de işi nasıl ararım?",
         },
       },
+      notFoundHeading: "Bu meslek veritabanımızda yok",
+      notFoundTryThese: "Şu mesleklerden birini deneyin:",
+      perMonth: "ay",
+      employmentFullSubtitle: "Tüm çalışan haklarıyla",
+      faqHeading: "Ne seçeceğinizi bilmiyor musunuz? Yapay zekaya sorun",
+      faqCaption: "Bir soruya tıklamak, hazır yapay zeka yanıtıyla sohbeti hemen açar",
+      faqQuestions: [
+        "Neyi seçmeliyim: iş sözleşmesi mi yoksa B2B mi?",
+        "B2B'den iş sözleşmesine nasıl geçerim?",
+        "B2B'de hangi vergileri öderim?",
+        "Sözleşmesiz çalışırsam neyi kaybederim?",
+      ],
     },
     community: {
       title: "Topluluklar",
@@ -8513,6 +8568,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Чӣ тавр дар LinkedIn кор ҷустуҷӯ кунам?",
         },
       },
+      notFoundHeading: "Ин касб дар пойгоҳи мо нест",
+      notFoundTryThese: "Яке аз ин касбҳоро санҷед:",
+      perMonth: "моҳ",
+      employmentFullSubtitle: "Бо ҳамаи кафолатҳои корманд",
+      faqHeading: "Намедонед чиро интихоб кунед? Аз AI бипурсед",
+      faqCaption: "Клик ба савол якбора чатро бо ҷавоби омодаи AI мекушояд",
+      faqQuestions: [
+        "Ман чиро интихоб кунам: шартномаи меҳнатӣ ё B2B?",
+        "Чӣ тавр аз B2B ба шартномаи меҳнатӣ гузарам?",
+        "Ман дар B2B кадом андозҳоро месупорам?",
+        "Агар бе шартнома кор кунам, чиро аз даст медиҳам?",
+      ],
     },
     community: {
       title: "Ҷамъиятҳо",
@@ -10152,6 +10219,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
           aiQuestion: "Як шукати роботу на LinkedIn?",
         },
       },
+      notFoundHeading: "Такої професії немає в базі",
+      notFoundTryThese: "Спробуйте одну з цих професій:",
+      perMonth: "місяць",
+      employmentFullSubtitle: "З усіма гарантіями працівника",
+      faqHeading: "Не знаєте, що обрати? Запитайте ШІ",
+      faqCaption: "Клік по питанню одразу відкриває чат із готовою відповіддю від ШІ",
+      faqQuestions: [
+        "Що мені обрати: трудовий договір чи B2B?",
+        "Як перейти з B2B на трудовий договір?",
+        "Які податки я сплачую при B2B?",
+        "Що я втрачаю, якщо працюю без договору?",
+      ],
     },
     community: {
       title: "Спільноти",
