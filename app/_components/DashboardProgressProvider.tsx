@@ -16,6 +16,7 @@ import {
 } from "../_lib/checklist";
 import { generatedPlanToPhases, isGeneratedRoadmapPlan } from "../_lib/generatedRoadmap";
 import { buildDocumentRoadmap, documentRoadmapToPhases, type DocumentRoadmapSection } from "../_lib/documentRoadmap";
+import { localizeDocumentGuides } from "../_lib/localizeGuide";
 import type { DocumentGuide } from "./DocumentGuideList";
 
 type DashboardProgressValue = {
@@ -159,13 +160,13 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
       .then(({ data, error }) => {
         if (!active) return;
         if (error) console.error("Failed to load document guides:", error);
-        setGuides((data as DocumentGuide[]) ?? []);
+        setGuides(localizeDocumentGuides((data as DocumentGuide[]) ?? [], lang));
         setDocumentGuidesLoading(false);
       });
     return () => {
       active = false;
     };
-  }, []);
+  }, [lang]);
 
   // Steps in an AI-generated plan aren't tied to any real action elsewhere
   // in the app (document upload, biometric booking, etc.), so they're
