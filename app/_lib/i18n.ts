@@ -771,6 +771,23 @@ export type Dictionary = {
     };
     actionLabel: string;
     premiumLabel: string;
+    pageTitle: string;
+    pageSubtitle: string;
+    newChat: string;
+    emptyHistory: string;
+    todayLabel: string;
+    thisWeekLabel: string;
+    olderLabel: string;
+    deleteChatAria: string;
+    assistantName: string;
+    online: string;
+    greetingHeading: string;
+    greetingSubtitle: string;
+    defaultChatTitle: string;
+    deleteModalTitle: string;
+    deleteModalBody: string;
+    deleteConfirm: string;
+    deleteCancel: string;
   };
   demo: {
     bannerText: string;
@@ -2370,6 +2387,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Do this in ReloAI →",
       premiumLabel: "Available in Premium →",
+      pageTitle: "AI Assistant",
+      pageSubtitle: "Your personal relocation assistant",
+      newChat: "New chat",
+      emptyHistory: "History is empty",
+      todayLabel: "Today",
+      thisWeekLabel: "This week",
+      olderLabel: "Earlier",
+      deleteChatAria: "Delete chat",
+      assistantName: "ReloAI assistant",
+      online: "Online",
+      greetingHeading: "How can I help?",
+      greetingSubtitle: "Ask a question about relocating — or pick one of the examples below.",
+      defaultChatTitle: "New chat",
+      deleteModalTitle: "Delete this chat?",
+      deleteModalBody: "This action cannot be undone. The conversation will be permanently deleted.",
+      deleteConfirm: "Delete",
+      deleteCancel: "Cancel",
     },
     demo: {
       bannerText: "You are in preview mode. Register to save your progress and access all features.",
@@ -3994,6 +4028,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Сделать это в ReloAI →",
       premiumLabel: "Доступно в Premium →",
+      pageTitle: "AI Ассистент",
+      pageSubtitle: "Ваш персональный помощник по переезду",
+      newChat: "Новый чат",
+      emptyHistory: "История пуста",
+      todayLabel: "Сегодня",
+      thisWeekLabel: "На этой неделе",
+      olderLabel: "Ранее",
+      deleteChatAria: "Удалить чат",
+      assistantName: "ReloAI ассистент",
+      online: "Онлайн",
+      greetingHeading: "Чем могу помочь?",
+      greetingSubtitle: "Задайте вопрос о переезде — или выберите один из примеров ниже.",
+      defaultChatTitle: "Новый чат",
+      deleteModalTitle: "Удалить этот чат?",
+      deleteModalBody: "Это действие нельзя отменить. Переписка будет удалена безвозвратно.",
+      deleteConfirm: "Удалить",
+      deleteCancel: "Отмена",
     },
     demo: {
       bannerText: "Вы находитесь в режиме предпросмотра. Зарегистрируйтесь, чтобы сохранить прогресс и получить доступ ко всем функциям.",
@@ -5613,6 +5664,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Buni ReloAI'da bajarish →",
       premiumLabel: "Premium'da mavjud →",
+      pageTitle: "AI Yordamchi",
+      pageSubtitle: "Sizning shaxsiy ko'chish yordamchingiz",
+      newChat: "Yangi chat",
+      emptyHistory: "Tarix bo'sh",
+      todayLabel: "Bugun",
+      thisWeekLabel: "Shu hafta",
+      olderLabel: "Oldinroq",
+      deleteChatAria: "Chatni o'chirish",
+      assistantName: "ReloAI yordamchisi",
+      online: "Onlayn",
+      greetingHeading: "Nima bilan yordam bera olaman?",
+      greetingSubtitle: "Ko'chish haqida savol bering — yoki quyidagi misollardan birini tanlang.",
+      defaultChatTitle: "Yangi chat",
+      deleteModalTitle: "Bu chatni o'chirasizmi?",
+      deleteModalBody: "Bu amalni bekor qilib bo'lmaydi. Yozishmalar butunlay o'chiriladi.",
+      deleteConfirm: "O'chirish",
+      deleteCancel: "Bekor qilish",
     },
     demo: {
       bannerText: "Siz ko'rib chiqish rejimidasiz. Jarayoningizni saqlash va barcha funksiyalardan foydalanish uchun ro'yxatdan o'ting.",
@@ -7231,6 +7299,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Bunu ReloAI'da yap →",
       premiumLabel: "Premium'da mevcut →",
+      pageTitle: "Yapay Zeka Asistanı",
+      pageSubtitle: "Kişisel taşınma asistanınız",
+      newChat: "Yeni sohbet",
+      emptyHistory: "Geçmiş boş",
+      todayLabel: "Bugün",
+      thisWeekLabel: "Bu hafta",
+      olderLabel: "Daha önce",
+      deleteChatAria: "Sohbeti sil",
+      assistantName: "ReloAI asistanı",
+      online: "Çevrimiçi",
+      greetingHeading: "Nasıl yardımcı olabilirim?",
+      greetingSubtitle: "Taşınma hakkında bir soru sorun — veya aşağıdaki örneklerden birini seçin.",
+      defaultChatTitle: "Yeni sohbet",
+      deleteModalTitle: "Bu sohbeti silmek istiyor musunuz?",
+      deleteModalBody: "Bu işlem geri alınamaz. Yazışma kalıcı olarak silinecek.",
+      deleteConfirm: "Sil",
+      deleteCancel: "İptal",
     },
     demo: {
       bannerText: "Önizleme modundasınız. İlerlemenizi kaydetmek ve tüm özelliklere erişmek için kayıt olun.",
@@ -8849,6 +8934,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Инро дар ReloAI иҷро кунед →",
       premiumLabel: "Дар Premium дастрас аст →",
+      pageTitle: "Ёрдамчии AI",
+      pageSubtitle: "Ёрдамчии шахсии кӯчидани шумо",
+      newChat: "Чати нав",
+      emptyHistory: "Таърих холӣ аст",
+      todayLabel: "Имрӯз",
+      thisWeekLabel: "Ин ҳафта",
+      olderLabel: "Пештар",
+      deleteChatAria: "Нест кардани чат",
+      assistantName: "Ёрдамчии ReloAI",
+      online: "Онлайн",
+      greetingHeading: "Чӣ тавр кӯмак карда метавонам?",
+      greetingSubtitle: "Дар бораи кӯчидан савол диҳед — ё яке аз мисолҳои зерро интихоб кунед.",
+      defaultChatTitle: "Чати нав",
+      deleteModalTitle: "Ин чатро нест мекунед?",
+      deleteModalBody: "Ин амалро бекор кардан мумкин нест. Мукотиба бебозгашт нест карда мешавад.",
+      deleteConfirm: "Нест кардан",
+      deleteCancel: "Бекор кардан",
     },
     demo: {
       bannerText: "Шумо дар реҷаи пешнамоиш ҳастед. Барои нигоҳ доштани пешрафт ва дастрасӣ ба ҳамаи хусусиятҳо бақайд гиред.",
@@ -10473,6 +10575,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       actionLabel: "Зробити це в ReloAI →",
       premiumLabel: "Доступно в Premium →",
+      pageTitle: "AI Асистент",
+      pageSubtitle: "Ваш особистий помічник з переїзду",
+      newChat: "Новий чат",
+      emptyHistory: "Історія порожня",
+      todayLabel: "Сьогодні",
+      thisWeekLabel: "На цьому тижні",
+      olderLabel: "Раніше",
+      deleteChatAria: "Видалити чат",
+      assistantName: "ReloAI асистент",
+      online: "Онлайн",
+      greetingHeading: "Чим можу допомогти?",
+      greetingSubtitle: "Задайте питання про переїзд — або оберіть один із прикладів нижче.",
+      defaultChatTitle: "Новий чат",
+      deleteModalTitle: "Видалити цей чат?",
+      deleteModalBody: "Цю дію не можна скасувати. Переписку буде видалено безповоротно.",
+      deleteConfirm: "Видалити",
+      deleteCancel: "Скасувати",
     },
     demo: {
       bannerText: "Ви перебуваєте в режимі попереднього перегляду. Зареєструйтеся, щоб зберегти прогрес і отримати доступ до всіх функцій.",

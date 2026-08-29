@@ -57,11 +57,14 @@ function truncateTitle(text: string): string {
   return trimmed.length > TITLE_MAX_LENGTH ? `${trimmed.slice(0, TITLE_MAX_LENGTH).trimEnd()}…` : trimmed;
 }
 
-function formatSessionDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+function formatSessionDate(iso: string, lang: string): string {
+  return new Date(iso).toLocaleDateString(lang, { day: "numeric", month: "short" });
 }
 
-function groupSessionsByDate(sessions: ChatSession[]): { label: string; sessions: ChatSession[] }[] {
+function groupSessionsByDate(
+  sessions: ChatSession[],
+  labels: { todayLabel: string; thisWeekLabel: string; olderLabel: string },
+): { label: string; sessions: ChatSession[] }[] {
   const now = new Date();
   const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
   const weekAgo = startOfToday - 6 * 24 * 60 * 60 * 1000;
@@ -75,9 +78,9 @@ function groupSessionsByDate(sessions: ChatSession[]): { label: string; sessions
     else older.push(s);
   }
   return [
-    { label: "Сегодня", sessions: today },
-    { label: "На этой неделе", sessions: thisWeek },
-    { label: "Ранее", sessions: older },
+    { label: labels.todayLabel, sessions: today },
+    { label: labels.thisWeekLabel, sessions: thisWeek },
+    { label: labels.olderLabel, sessions: older },
   ].filter((g) => g.sessions.length > 0);
 }
 
@@ -241,7 +244,7 @@ function DashboardAiContent() {
     }
 
     const firstUserMessage = allMessages.find((m) => m.from === "user");
-    const title = firstUserMessage ? truncateTitle(firstUserMessage.text) : "Новый чат";
+    const title = firstUserMessage ? truncateTitle(firstUserMessage.text) : t.aiChat.defaultChatTitle;
 
     const { data, error } = await supabase
       .from("chat_sessions")
@@ -370,8 +373,8 @@ function DashboardAiContent() {
   return (
     <div className="flex h-full flex-col">
       <div className="pb-4">
-        <h1 className="text-xl font-bold tracking-tight text-text-primary">AI Ассистент</h1>
-        <p className="text-sm text-text-muted">Ваш персональный помощник по переезду</p>
+        <h1 className="text-xl font-bold tracking-tight text-text-primary">{t.aiChat.pageTitle}</h1>
+        <p className="text-sm text-text-muted">{t.aiChat.pageSubtitle}</p>
       </div>
 
       <div className="flex min-h-0 flex-1 gap-4">
@@ -385,14 +388,14 @@ function DashboardAiContent() {
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
-              Новый чат
+              {t.aiChat.newChat}
             </button>
           </div>
           <div className="flex-1 overflow-y-auto p-2">
             {sessions.length === 0 ? (
-              <p className="px-2 py-3 text-xs text-text-muted">История пуста</p>
+              <p className="px-2 py-3 text-xs text-text-muted">{t.aiChat.emptyHistory}</p>
             ) : (
-              groupSessionsByDate(sessions).map((group, groupIndex) => (
+              groupSessionsByDate(sessions, t.aiChat).map((group, groupIndex) => (
                 <div key={group.label}>
                   <p
                     className={`px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-text-muted ${
@@ -414,12 +417,12 @@ function DashboardAiContent() {
                           }`}
                         >
                           <p className="truncate text-sm font-medium">{session.title}</p>
-                          <p className="mt-0.5 text-xs text-text-muted">{formatSessionDate(session.created_at)}</p>
+                          <p className="mt-0.5 text-xs text-text-muted">{formatSessionDate(session.created_at, lang)}</p>
                         </button>
                         <button
                           type="button"
                           onClick={(event) => requestDeleteSession(event, session.id)}
-                          aria-label="Удалить чат"
+                          aria-label={t.aiChat.deleteChatAria}
                           className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-text-muted transition-colors duration-150 hover:bg-red-500/15 hover:text-red-400"
                         >
                           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -453,13 +456,13 @@ function DashboardAiContent() {
               <span className="relative">{SPARKLE_ICON}</span>
             </span>
             <div>
-              <p className="text-sm font-semibold tracking-tight text-text-primary">ReloAI ассистент</p>
+              <p className="text-sm font-semibold tracking-tight text-text-primary">{t.aiChat.assistantName}</p>
               <p className="flex items-center gap-1.5 text-xs text-text-muted">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 motion-reduce:animate-none" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 </span>
-                Онлайн
+                {t.aiChat.online}
               </p>
             </div>
           </div>
@@ -475,9 +478,9 @@ function DashboardAiContent() {
               </span>
               <div>
                 <h2 className="bg-gradient-to-br from-text-primary to-text-secondary bg-clip-text text-2xl font-bold text-transparent">
-                  Чем могу помочь?
+                  {t.aiChat.greetingHeading}
                 </h2>
-                <p className="mt-2 text-sm text-text-muted">Задайте вопрос о переезде — или выберите один из примеров ниже.</p>
+                <p className="mt-2 text-sm text-text-muted">{t.aiChat.greetingSubtitle}</p>
               </div>
               <div className="grid w-full max-w-xl gap-2.5 sm:grid-cols-2">
                 {t.aiChat.quickReplies.map((reply) => (
@@ -583,10 +586,10 @@ function DashboardAiContent() {
         open={deleteTargetSessionId !== null}
         onClose={() => setDeleteTargetSessionId(null)}
         onConfirm={confirmDeleteSession}
-        title="Удалить этот чат?"
-        body="Это действие нельзя отменить. Переписка будет удалена безвозвратно."
-        confirmLabel="Удалить"
-        cancelLabel="Отмена"
+        title={t.aiChat.deleteModalTitle}
+        body={t.aiChat.deleteModalBody}
+        confirmLabel={t.aiChat.deleteConfirm}
+        cancelLabel={t.aiChat.deleteCancel}
       />
     </div>
   );
