@@ -439,11 +439,7 @@ export default function DocumentsPage() {
     showAutoCompleteToast();
     syncDocumentStatus(updated);
     syncProgress(next);
-    createNotification({
-      title: "Документ загружен и отправлен на проверку",
-      message: "Мы уведомим вас, как только он будет проверен.",
-      type: "document",
-    });
+    createNotification({ type: "document" });
   }
 
   async function handleView(doc: DocumentItem) {

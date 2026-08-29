@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import { useLanguage } from "./LanguageProvider";
 import { NAV_ICONS } from "./NavIcons";
-import { routeForNotification, formatTimeAgo, type NotificationRow } from "../_lib/notifications";
+import { routeForNotification, formatTimeAgo, getNotificationText, type NotificationRow } from "../_lib/notifications";
 import { supabase } from "../../lib/supabase";
 
 const POLL_INTERVAL_MS = 60000;
@@ -156,27 +156,30 @@ export default function NotificationBell() {
             <p className="px-3 py-6 text-center text-sm text-text-muted">{n.empty}</p>
           ) : (
             <div className="max-h-96 space-y-1 overflow-y-auto">
-              {notifications.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="menuitem"
-                  onClick={() => handleSelect(item)}
-                  className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover ${
-                    item.read ? "opacity-60" : "bg-accent/[0.05]"
-                  }`}
-                >
-                  <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary">
-                    {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm leading-snug text-text-secondary">{item.title}</p>
-                    {item.message && <p className="mt-0.5 text-xs leading-snug text-text-muted">{item.message}</p>}
-                    <p className="mt-1 text-xs text-text-muted">{formatTimeAgo(item.created_at, lang)}</p>
-                  </div>
-                  {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
-                </button>
-              ))}
+              {notifications.map((item) => {
+                const { title, message } = getNotificationText(item, t);
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="menuitem"
+                    onClick={() => handleSelect(item)}
+                    className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover ${
+                      item.read ? "opacity-60" : "bg-accent/[0.05]"
+                    }`}
+                  >
+                    <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-subtle bg-surface-1 text-text-secondary">
+                      {NOTIFICATION_ICONS[item.type] ?? BELL_ICON}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm leading-snug text-text-secondary">{title}</p>
+                      {message && <p className="mt-0.5 text-xs leading-snug text-text-muted">{message}</p>}
+                      <p className="mt-1 text-xs text-text-muted">{formatTimeAgo(item.created_at, lang)}</p>
+                    </div>
+                    {!item.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent-bright" />}
+                  </button>
+                );
+              })}
             </div>
           )}
 

@@ -238,6 +238,16 @@ export type Dictionary = {
     title: string;
     markAllRead: string;
     empty: string;
+    registrationTitle: string;
+    registrationMessage: string;
+    welcomeTitle: string;
+    welcomeMessage: string;
+    checklistTitle: string;
+    checklistMessage: string;
+    inactivityTitle: string;
+    inactivityMessage: string;
+    documentTitle: string;
+    documentMessage: string;
   };
   sidebar: {
     documents: string;
@@ -1481,6 +1491,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Notifications",
       markAllRead: "Mark all as read",
       empty: "No notifications yet",
+      registrationTitle: "Thanks for signing up! 🎉",
+      registrationMessage: "Congratulations, you've successfully registered with ReloAI.",
+      welcomeTitle: "Questionnaire completed! 🎉",
+      welcomeMessage: "You've successfully filled in your questionnaire and chosen a relocation plan ({route}). You can change this data anytime in your profile settings.",
+      checklistTitle: "Roadmap updated ✅",
+      checklistMessage: "You've recreated your relocation plan ({route}). Progress on the new roadmap will start fresh — you can view and change your previous questionnaire data in profile settings.",
+      inactivityTitle: "Don't forget about your relocation plan",
+      inactivityMessage: "Come back to continue where you left off.",
+      documentTitle: "Document uploaded and sent for review",
+      documentMessage: "We'll notify you as soon as it's reviewed.",
     },
     sidebar: {
       documents: "Documents",
@@ -3136,6 +3156,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Уведомления",
       markAllRead: "Отметить все как прочитанные",
       empty: "Пока нет уведомлений",
+      registrationTitle: "Спасибо за регистрацию! 🎉",
+      registrationMessage: "Поздравляем, вы успешно зарегистрировались в ReloAI.",
+      welcomeTitle: "Анкета заполнена! 🎉",
+      welcomeMessage: "Вы успешно заполнили данные анкеты и выбрали план релокации ({route}). Вы можете изменить эти данные в любой момент в настройках профиля.",
+      checklistTitle: "Дорожная карта обновлена ✅",
+      checklistMessage: "Вы пересоздали план релокации ({route}). Прогресс по новой дорожной карте начнётся заново — прежние данные анкеты можно посмотреть и изменить в настройках профиля.",
+      inactivityTitle: "Не забывайте о вашем плане переезда",
+      inactivityMessage: "Вернитесь, чтобы продолжить с того места, где остановились.",
+      documentTitle: "Документ загружен и отправлен на проверку",
+      documentMessage: "Мы уведомим вас, как только он будет проверен.",
     },
     sidebar: {
       documents: "Документы",
@@ -4788,6 +4818,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Bildirishnomalar",
       markAllRead: "Barchasini o'qilgan deb belgilash",
       empty: "Hozircha bildirishnomalar yo'q",
+      registrationTitle: "Ro'yxatdan o'tganingiz uchun rahmat! 🎉",
+      registrationMessage: "Tabriklaymiz, siz ReloAI'da muvaffaqiyatli ro'yxatdan o'tdingiz.",
+      welcomeTitle: "Anketa to'ldirildi! 🎉",
+      welcomeMessage: "Siz anketa ma'lumotlarini muvaffaqiyatli to'ldirdingiz va ko'chish rejasini tanladingiz ({route}). Bu ma'lumotlarni istalgan vaqtda profil sozlamalarida o'zgartirishingiz mumkin.",
+      checklistTitle: "Yo'l xaritasi yangilandi ✅",
+      checklistMessage: "Siz ko'chish rejasini ({route}) qayta yaratdingiz. Yangi yo'l xaritasi bo'yicha jarayon qaytadan boshlanadi — oldingi anketa ma'lumotlarini profil sozlamalarida ko'rish va o'zgartirish mumkin.",
+      inactivityTitle: "Ko'chish rejangizni unutmang",
+      inactivityMessage: "To'xtagan joyingizdan davom etish uchun qayting.",
+      documentTitle: "Hujjat yuklandi va tekshiruvga yuborildi",
+      documentMessage: "Tekshirilishi bilanoq sizga xabar beramiz.",
     },
     sidebar: {
       documents: "Hujjatlar",
@@ -6437,6 +6477,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Bildirimler",
       markAllRead: "Tümünü okundu olarak işaretle",
       empty: "Henüz bildirim yok",
+      registrationTitle: "Kaydolduğunuz için teşekkürler! 🎉",
+      registrationMessage: "Tebrikler, ReloAI'a başarıyla kaydoldunuz.",
+      welcomeTitle: "Anket tamamlandı! 🎉",
+      welcomeMessage: "Anket verilerinizi başarıyla doldurdunuz ve bir taşınma planı seçtiniz ({route}). Bu verileri istediğiniz zaman profil ayarlarından değiştirebilirsiniz.",
+      checklistTitle: "Yol haritası güncellendi ✅",
+      checklistMessage: "Taşınma planınızı ({route}) yeniden oluşturdunuz. Yeni yol haritasındaki ilerleme sıfırdan başlayacak — önceki anket verilerinizi profil ayarlarından görüntüleyip değiştirebilirsiniz.",
+      inactivityTitle: "Taşınma planınızı unutmayın",
+      inactivityMessage: "Kaldığınız yerden devam etmek için geri dönün.",
+      documentTitle: "Belge yüklendi ve incelemeye gönderildi",
+      documentMessage: "İncelenir incelenmez size haber vereceğiz.",
     },
     sidebar: {
       documents: "Belgeler",
@@ -8086,6 +8136,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Огоҳиномаҳо",
       markAllRead: "Ҳамаро хондашуда қайд кунед",
       empty: "Ҳанӯз огоҳиномае нест",
+      registrationTitle: "Барои бақайдгирӣ ташаккур! 🎉",
+      registrationMessage: "Табрик мегӯем, шумо бомуваффақият дар ReloAI бақайд гирифта шудед.",
+      welcomeTitle: "Анкета пур карда шуд! 🎉",
+      welcomeMessage: "Шумо маълумоти анкетаро бомуваффақият пур кардед ва нақшаи муҳоҷиратро интихоб кардед ({route}). Шумо метавонед ин маълумотро дар ҳар лаҳза дар танзимоти профил тағйир диҳед.",
+      checklistTitle: "Харитаи роҳ навсозӣ шуд ✅",
+      checklistMessage: "Шумо нақшаи муҳоҷиратро ({route}) аз нав сохтед. Пешрафт аз рӯи харитаи нави роҳ аз нав оғоз мешавад — маълумоти пешинаи анкетаро дар танзимоти профил дидан ва тағйир додан мумкин аст.",
+      inactivityTitle: "Дар бораи нақшаи муҳоҷирати худ фаромӯш накунед",
+      inactivityMessage: "Барои идома додан аз ҷое, ки монда будед, баргардед.",
+      documentTitle: "Ҳуҷҷат бор карда шуд ва барои санҷиш фиристода шуд",
+      documentMessage: "Ба зудӣ баъд аз санҷиш ба шумо хабар медиҳем.",
     },
     sidebar: {
       documents: "Ҳуҷҷатҳо",
@@ -9739,6 +9799,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Сповіщення",
       markAllRead: "Позначити всі як прочитані",
       empty: "Поки що немає сповіщень",
+      registrationTitle: "Дякуємо за реєстрацію! 🎉",
+      registrationMessage: "Вітаємо, ви успішно зареєструвалися в ReloAI.",
+      welcomeTitle: "Анкету заповнено! 🎉",
+      welcomeMessage: "Ви успішно заповнили дані анкети та обрали план переїзду ({route}). Ви можете змінити ці дані будь-коли в налаштуваннях профілю.",
+      checklistTitle: "Дорожню карту оновлено ✅",
+      checklistMessage: "Ви перестворили план переїзду ({route}). Прогрес за новою дорожньою картою почнеться заново — попередні дані анкети можна переглянути та змінити в налаштуваннях профілю.",
+      inactivityTitle: "Не забувайте про свій план переїзду",
+      inactivityMessage: "Поверніться, щоб продовжити з того місця, де зупинилися.",
+      documentTitle: "Документ завантажено та надіслано на перевірку",
+      documentMessage: "Ми повідомимо вас, щойно він буде перевірений.",
     },
     sidebar: {
       documents: "Документи",

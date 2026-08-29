@@ -1,16 +1,50 @@
 import { supabase } from "../../lib/supabase";
+import type { Dictionary } from "./i18n";
 
 export type NotificationType = "welcome" | "checklist" | "document" | "inactivity" | "registration";
 
 export type NotificationRow = {
   id: string;
   user_id: string;
-  title: string;
-  message: string;
+  // Legacy rows created before the type+params rework store real text here
+  // directly (in whatever language was active when they were created).
+  // Rows created since then leave these null and are rendered from
+  // `params` + the current UI language via getNotificationText() instead.
+  title: string | null;
+  message: string | null;
+  params: Record<string, unknown> | null;
   type: string;
   read: boolean;
   created_at: string;
 };
+
+// Renders a notification's title/message in the current UI language. Known
+// types are always rendered live from the i18n dictionary (so switching
+// languages updates old notifications too, same as the rest of the site);
+// unrecognized types or rows without params fall back to whatever text was
+// stored on the row at creation time.
+export function getNotificationText(
+  item: Pick<NotificationRow, "type" | "params" | "title" | "message">,
+  t: Dictionary,
+): { title: string; message: string } {
+  const n = t.notifications;
+  const route = typeof item.params?.route === "string" ? item.params.route : "";
+
+  switch (item.type) {
+    case "registration":
+      return { title: n.registrationTitle, message: n.registrationMessage };
+    case "welcome":
+      return { title: n.welcomeTitle, message: n.welcomeMessage.replace("{route}", route) };
+    case "checklist":
+      return { title: n.checklistTitle, message: n.checklistMessage.replace("{route}", route) };
+    case "inactivity":
+      return { title: n.inactivityTitle, message: n.inactivityMessage };
+    case "document":
+      return { title: n.documentTitle, message: n.documentMessage };
+    default:
+      return { title: item.title ?? "", message: item.message ?? "" };
+  }
+}
 
 // Where clicking a notification of this type should navigate to.
 const NOTIFICATION_ROUTES: Record<NotificationType, string> = {
@@ -26,15 +60,19 @@ export function routeForNotification(type: string): string {
 }
 
 type CreateNotificationInput = {
-  title: string;
-  message: string;
   type: NotificationType;
+  // e.g. { route: route.name } for welcome/checklist — see getNotificationText().
+  params?: Record<string, unknown>;
 };
 
 // Fire-and-forget: notifications are a side effect of the real action
 // (finishing onboarding, checking off a step, uploading a document) and
-// must never block or fail that action.
-export async function createNotification({ title, message, type }: CreateNotificationInput): Promise<void> {
+// must never block or fail that action. Title/message are no longer sent
+// from here — they're rendered client-side from `type` + `params` in the
+// user's current language (see getNotificationText above), so a
+// notification always displays in whatever language the user has selected
+// right now, not the language that was active when it was created.
+export async function createNotification({ type, params }: CreateNotificationInput): Promise<void> {
   try {
     const { data } = await supabase.auth.getSession();
     const token = data.session?.access_token;
@@ -46,7 +84,7 @@ export async function createNotification({ title, message, type }: CreateNotific
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, message, type }),
+      body: JSON.stringify({ type, params: params ?? {} }),
     });
   } catch (err) {
     console.error("Failed to create notification:", err);

@@ -73,11 +73,7 @@ export default function RegisterPage() {
       return;
     }
 
-    createNotification({
-      title: "Спасибо за регистрацию! 🎉",
-      message: "Поздравляем, вы успешно зарегистрировались в ReloAI.",
-      type: "registration",
-    });
+    createNotification({ type: "registration" });
     fireConfetti();
     setTimeout(() => router.push("/onboarding"), 900);
   }

@@ -8,9 +8,8 @@ const supabaseAnonKey =
 const ALLOWED_TYPES = ["welcome", "checklist", "document", "inactivity", "registration"] as const;
 
 type CreateNotificationBody = {
-  title?: string;
-  message?: string;
   type?: string;
+  params?: Record<string, unknown>;
 };
 
 export async function POST(request: Request) {
@@ -21,10 +20,10 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json()) as CreateNotificationBody;
-  const { title, message, type } = body;
+  const { type, params } = body;
 
-  if (!title || !type || !(ALLOWED_TYPES as readonly string[]).includes(type)) {
-    return NextResponse.json({ error: "title and a valid type are required" }, { status: 400 });
+  if (!type || !(ALLOWED_TYPES as readonly string[]).includes(type)) {
+    return NextResponse.json({ error: "a valid type is required" }, { status: 400 });
   }
 
   // Scope this client to the caller's own session so RLS's
@@ -42,9 +41,8 @@ export async function POST(request: Request) {
     .from("notifications")
     .insert({
       user_id: userData.user.id,
-      title,
-      message: message ?? "",
       type,
+      params: params ?? {},
     })
     .select()
     .single();

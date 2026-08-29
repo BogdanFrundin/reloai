@@ -67,16 +67,8 @@ export async function applySelectedRoute({
     // The "welcome / thanks for registering" notification already fired
     // once at account creation (see app/register/page.tsx) -- this one is
     // about finishing the onboarding questionnaire, not registering.
-    createNotification({
-      title: "Анкета заполнена! 🎉",
-      message: `Вы успешно заполнили данные анкеты и выбрали план релокации (${route.name}). Вы можете изменить эти данные в любой момент в настройках профиля.`,
-      type: "welcome",
-    });
+    createNotification({ type: "welcome", params: { route: route.name } });
   } else {
-    createNotification({
-      title: "Дорожная карта обновлена ✅",
-      message: `Вы пересоздали план релокации (${route.name}). Прогресс по новой дорожной карте начнётся заново — прежние данные анкеты можно посмотреть и изменить в настройках профиля.`,
-      type: "checklist",
-    });
+    createNotification({ type: "checklist", params: { route: route.name } });
   }
 }

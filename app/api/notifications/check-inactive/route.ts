@@ -61,9 +61,8 @@ export async function GET(request: Request) {
   const { error: insertError } = await supabase.from("notifications").insert(
     toNotify.map((profile) => ({
       user_id: profile.id,
-      title: "Не забывайте о вашем плане переезда",
-      message: "Вернитесь, чтобы продолжить с того места, где остановились.",
       type: "inactivity",
+      params: {},
     })),
   );
 
