@@ -8,6 +8,7 @@ export type CurrencyCode = "PLN" | "USD" | "EUR" | "RUB" | "UAH" | "GBP" | "TRY"
 export type Currency = {
   code: CurrencyCode;
   symbol: string;
+  // Fallback / Russian name, kept for callers that haven't switched to getCurrencyName(code, lang) yet.
   name: string;
   // ISO country code for the flag icon (flagcdn.com), "eu" for the EU flag.
   flag: string;
@@ -24,6 +25,47 @@ export const CURRENCIES: Currency[] = [
   { code: "UZS", symbol: "so'm", name: "Узбекистан (Сум)", flag: "uz" },
   { code: "TJS", symbol: "смн", name: "Таджикистан (Сомони)", flag: "tj" },
 ];
+
+// Hand-maintained per-language currency labels (same reasoning as COUNTRY_NAMES in
+// countries.ts -- these are UI labels, not something we want left in Russian when the
+// site language is switched).
+const CURRENCY_NAMES: Record<string, Record<CurrencyCode, string>> = {
+  ru: {
+    PLN: "Польша (Злотый)", USD: "США (Доллар)", EUR: "Евро", RUB: "Россия (Рубль)",
+    UAH: "Украина (Гривна)", GBP: "Великобритания (Фунт)", TRY: "Турция (Лира)",
+    UZS: "Узбекистан (Сум)", TJS: "Таджикистан (Сомони)",
+  },
+  en: {
+    PLN: "Poland (Zloty)", USD: "USA (Dollar)", EUR: "Euro", RUB: "Russia (Ruble)",
+    UAH: "Ukraine (Hryvnia)", GBP: "UK (Pound)", TRY: "Turkey (Lira)",
+    UZS: "Uzbekistan (Som)", TJS: "Tajikistan (Somoni)",
+  },
+  uz: {
+    PLN: "Polsha (Zlotiy)", USD: "AQSh (Dollar)", EUR: "Yevro", RUB: "Rossiya (Rubl)",
+    UAH: "Ukraina (Grivna)", GBP: "Buyuk Britaniya (Funt)", TRY: "Turkiya (Lira)",
+    UZS: "O'zbekiston (So'm)", TJS: "Tojikiston (Somoni)",
+  },
+  tr: {
+    PLN: "Polonya (Zloti)", USD: "ABD (Dolar)", EUR: "Euro", RUB: "Rusya (Ruble)",
+    UAH: "Ukrayna (Grivna)", GBP: "Birleşik Krallık (Sterlin)", TRY: "Türkiye (Lira)",
+    UZS: "Özbekistan (Som)", TJS: "Tacikistan (Somoni)",
+  },
+  tg: {
+    PLN: "Полша (Злоти)", USD: "ИМА (Доллар)", EUR: "Евро", RUB: "Русия (Рубл)",
+    UAH: "Украина (Гривна)", GBP: "Британияи Кабир (Фунт)", TRY: "Туркия (Лира)",
+    UZS: "Узбекистон (Сум)", TJS: "Тоҷикистон (Сомонӣ)",
+  },
+  uk: {
+    PLN: "Польща (Злотий)", USD: "США (Долар)", EUR: "Євро", RUB: "Росія (Рубль)",
+    UAH: "Україна (Гривня)", GBP: "Велика Британія (Фунт)", TRY: "Туреччина (Ліра)",
+    UZS: "Узбекистан (Сум)", TJS: "Таджикистан (Сомоні)",
+  },
+};
+
+export function getCurrencyName(code: CurrencyCode, lang: string): string {
+  const table = CURRENCY_NAMES[lang] ?? CURRENCY_NAMES.en;
+  return table[code] ?? CURRENCY_NAMES.en[code] ?? code;
+}
 
 export const DEFAULT_CURRENCY: CurrencyCode = "PLN";
 

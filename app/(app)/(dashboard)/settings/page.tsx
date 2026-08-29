@@ -12,7 +12,7 @@ import { useAuth } from "../../../_components/AuthProvider";
 import { useTheme } from "../../../_components/ThemeProvider";
 import { useCurrency } from "../../../_components/CurrencyProvider";
 import { LANGUAGES, type Lang } from "../../../_lib/i18n";
-import { CURRENCIES } from "../../../_lib/currency";
+import { CURRENCIES, getCurrencyName } from "../../../_lib/currency";
 import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
@@ -186,10 +186,8 @@ export default function SettingsPage() {
         {/* Currency */}
         <Reveal delay={75}>
           <div id="currency-section" className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">Валюта</p>
-            <p className="mt-1 text-xs text-text-muted">
-              В какой валюте показывать цены на сайте (курс к злотому обновляется автоматически).
-            </p>
+            <p className="text-sm font-semibold text-text-primary">{s.currencySection}</p>
+            <p className="mt-1 text-xs text-text-muted">{s.currencyDesc}</p>
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {CURRENCIES.map((c) => (
                 <button
@@ -204,13 +202,13 @@ export default function SettingsPage() {
                 >
                   <Image
                     src={getFlagUrl(c.flag, "sm")}
-                    alt={c.name}
+                    alt={getCurrencyName(c.code, lang)}
                     width={24}
                     height={18}
                     className="flex-shrink-0 rounded-sm"
                     unoptimized
                   />
-                  <span className="min-w-0 flex-1 truncate text-left">{c.name}</span>
+                  <span className="min-w-0 flex-1 truncate text-left">{getCurrencyName(c.code, lang)}</span>
                   <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
                 </button>
               ))}

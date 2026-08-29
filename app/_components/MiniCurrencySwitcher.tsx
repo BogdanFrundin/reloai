@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CURRENCIES } from "../_lib/currency";
+import { CURRENCIES, getCurrencyName } from "../_lib/currency";
 import { useCurrency } from "./CurrencyProvider";
+import { useLanguage } from "./LanguageProvider";
 import { pressScale } from "../_lib/motion";
 
 export default function MiniCurrencySwitcher() {
   const { currency, setCurrency } = useCurrency();
+  const { lang, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = CURRENCIES.find((c) => c.code === currency) ?? CURRENCIES[0];
@@ -28,7 +30,7 @@ export default function MiniCurrencySwitcher() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Валюта"
+        aria-label={t.settings.currencySection}
         className={`flex items-center gap-1.5 rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-accent/40 hover:bg-surface-hover ${pressScale}`}
       >
         {current.symbol}
@@ -63,7 +65,7 @@ export default function MiniCurrencySwitcher() {
                   c.code === currency ? "font-semibold text-accent-bright" : "text-text-secondary"
                 }`}
               >
-                <span>{c.name}</span>
+                <span>{getCurrencyName(c.code, lang)}</span>
                 <span className="text-text-muted">{c.symbol}</span>
               </button>
             </li>

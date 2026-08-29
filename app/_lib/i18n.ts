@@ -258,6 +258,8 @@ export type Dictionary = {
     subtitle: string;
     languageSection: string;
     languageDesc: string;
+    currencySection: string;
+    currencyDesc: string;
     saving: string;
     themeSection: string;
     themeDesc: string;
@@ -1499,6 +1501,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Manage how ReloAI looks and behaves.",
       languageSection: "Language",
       languageDesc: "ReloAI will speak with you in this language.",
+      currencySection: "Currency",
+      currencyDesc: "Which currency to show prices in on the site (the rate against the zloty updates automatically).",
       saving: "(saving…)",
       themeSection: "Appearance",
       themeDesc: "Choose how ReloAI looks on your device.",
@@ -3152,6 +3156,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Управляйте оформлением и поведением ReloAI.",
       languageSection: "Язык",
       languageDesc: "ReloAI будет общаться с вами на этом языке.",
+      currencySection: "Валюта",
+      currencyDesc: "В какой валюте показывать цены на сайте (курс к злотому обновляется автоматически).",
       saving: "(сохранение…)",
       themeSection: "Оформление",
       themeDesc: "Выберите, как ReloAI выглядит на вашем устройстве.",
@@ -4802,6 +4808,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "ReloAI qanday ko'rinishi va ishlashini boshqaring.",
       languageSection: "Til",
       languageDesc: "ReloAI siz bilan shu tilda gaplashadi.",
+      currencySection: "Valyuta",
+      currencyDesc: "Saytda narxlar qaysi valyutada ko'rsatilsin (zlotiyga kursi avtomatik yangilanadi).",
       saving: "(saqlanmoqda…)",
       themeSection: "Ko'rinish",
       themeDesc: "ReloAI qurilmangizda qanday ko'rinishini tanlang.",
@@ -6449,6 +6457,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "ReloAI'nin görünümünü ve davranışını yönetin.",
       languageSection: "Dil",
       languageDesc: "ReloAI sizinle bu dilde konuşacak.",
+      currencySection: "Para birimi",
+      currencyDesc: "Sitede fiyatların hangi para biriminde gösterileceği (zlotiye karşı kur otomatik güncellenir).",
       saving: "(kaydediliyor…)",
       themeSection: "Görünüm",
       themeDesc: "ReloAI'nin cihazınızda nasıl görüneceğini seçin.",
@@ -8096,6 +8106,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Намуд ва рафтори ReloAI-ро идора кунед.",
       languageSection: "Забон",
       languageDesc: "ReloAI бо шумо ба ин забон гап мезанад.",
+      currencySection: "Асъор",
+      currencyDesc: "Дар кадом асъор нархҳо дар сайт нишон дода шаванд (қурб нисбат ба злотӣ ба таври худкор навсозӣ мешавад).",
       saving: "(захира мешавад…)",
       themeSection: "Намуди зоҳирӣ",
       themeDesc: "Интихоб кунед, ки ReloAI дар дастгоҳи шумо чӣ гуна намоён шавад.",
@@ -9747,6 +9759,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitle: "Керуйте виглядом і поведінкою ReloAI.",
       languageSection: "Мова",
       languageDesc: "ReloAI спілкуватиметься з вами цією мовою.",
+      currencySection: "Валюта",
+      currencyDesc: "У якій валюті показувати ціни на сайті (курс до злотого оновлюється автоматично).",
       saving: "(збереження…)",
       themeSection: "Вигляд",
       themeDesc: "Оберіть, як ReloAI виглядає на вашому пристрої.",
