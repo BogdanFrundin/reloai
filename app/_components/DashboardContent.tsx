@@ -59,13 +59,17 @@ const SPARKLE_ICON = (
   </svg>
 );
 
-function motivationalMessage(percent: number, hasSteps: boolean): string {
-  if (!hasSteps) return "Выберите маршрут — и здесь появится ваш личный план переезда.";
-  if (percent >= 100) return "Все документы оформлены. Вы полностью готовы к переезду!";
-  if (percent >= 66) return "Вы почти у цели — совсем немного осталось до полной легализации.";
-  if (percent >= 33) return "Больше трети пути пройдено. Так держать!";
-  if (percent > 0) return "Отличное начало! Каждый оформленный документ приближает вас к цели.";
-  return "Начните с первого шага — и весь путь станет понятнее.";
+function motivationalMessage(
+  percent: number,
+  hasSteps: boolean,
+  m: { noRoute: string; allDone: string; almostThere: string; thirdDone: string; goodStart: string; startFirst: string },
+): string {
+  if (!hasSteps) return m.noRoute;
+  if (percent >= 100) return m.allDone;
+  if (percent >= 66) return m.almostThere;
+  if (percent >= 33) return m.thirdDone;
+  if (percent > 0) return m.goodStart;
+  return m.startFirst;
 }
 
 const COUNTRY_INDEX: Record<string, number> = { Poland: 0, Germany: 1, Spain: 2 };
@@ -259,7 +263,7 @@ export default function DashboardContent() {
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
             </span>
-            <p className="text-sm font-medium text-text-primary">{motivationalMessage(progressPercent, totalCount > 0)}</p>
+            <p className="text-sm font-medium text-text-primary">{motivationalMessage(progressPercent, totalCount > 0, t.dashboard.motivational)}</p>
           </div>
         </Reveal>
       )}

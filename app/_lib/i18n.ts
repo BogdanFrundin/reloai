@@ -521,6 +521,14 @@ export type Dictionary = {
     docsReadyTemplate: string;
     currentPhasePrefix: string;
     allPhasesDone: string;
+    motivational: {
+      noRoute: string;
+      allDone: string;
+      almostThere: string;
+      thirdDone: string;
+      goodStart: string;
+      startFirst: string;
+    };
     timelineSections: {
       before_departure: string;
       first_week: string;
@@ -1961,6 +1969,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} of {total} documents ready",
       currentPhasePrefix: "Now: {phase}",
       allPhasesDone: "All phases complete",
+      motivational: {
+        noRoute: "Choose a route — and your personal relocation plan will appear here.",
+        allDone: "All documents are done. You're fully ready to relocate!",
+        almostThere: "You're almost there — just a little more to complete full legalization.",
+        thirdDone: "More than a third of the way done. Keep it up!",
+        goodStart: "Great start! Every document you complete brings you closer to your goal.",
+        startFirst: "Start with the first step — and the whole path will become clearer.",
+      },
       timelineSections: {
         before_departure: "Before departure",
         first_week: "First week",
@@ -3577,6 +3593,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} из {total} документов готово",
       currentPhasePrefix: "Сейчас: {phase}",
       allPhasesDone: "Все этапы завершены",
+      motivational: {
+        noRoute: "Выберите маршрут — и здесь появится ваш личный план переезда.",
+        allDone: "Все документы оформлены. Вы полностью готовы к переезду!",
+        almostThere: "Вы почти у цели — совсем немного осталось до полной легализации.",
+        thirdDone: "Больше трети пути пройдено. Так держать!",
+        goodStart: "Отличное начало! Каждый оформленный документ приближает вас к цели.",
+        startFirst: "Начните с первого шага — и весь путь станет понятнее.",
+      },
       timelineSections: {
         before_departure: "До отъезда",
         first_week: "Первая неделя",
@@ -5190,6 +5214,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{total} tadan {done} tasi hujjat tayyor",
       currentPhasePrefix: "Hozir: {phase}",
       allPhasesDone: "Barcha bosqichlar yakunlandi",
+      motivational: {
+        noRoute: "Marshrutni tanlang — va bu yerda shaxsiy ko'chish rejangiz paydo bo'ladi.",
+        allDone: "Barcha hujjatlar rasmiylashtirildi. Siz ko'chishga to'liq tayyorsiz!",
+        almostThere: "Siz maqsadga deyarli yetdingiz — to'liq legalizatsiyagacha ozgina qoldi.",
+        thirdDone: "Yo'lning uchdan biridan ko'prog'i bosib o'tildi. Shunday davom eting!",
+        goodStart: "Zo'r boshlanish! Rasmiylashtirilgan har bir hujjat sizni maqsadga yaqinlashtiradi.",
+        startFirst: "Birinchi qadamdan boshlang — va butun yo'l tushunarli bo'ladi.",
+      },
       timelineSections: {
         before_departure: "Jo'nashdan oldin",
         first_week: "Birinchi hafta",
@@ -6800,6 +6832,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{total} belgeden {done} hazır",
       currentPhasePrefix: "Şimdi: {phase}",
       allPhasesDone: "Tüm aşamalar tamamlandı",
+      motivational: {
+        noRoute: "Bir rota seçin — kişisel taşınma planınız burada görünecek.",
+        allDone: "Tüm belgeler tamamlandı. Taşınmaya tamamen hazırsınız!",
+        almostThere: "Hedefe neredeyse ulaştınız — tam yasallaşmaya çok az kaldı.",
+        thirdDone: "Yolun üçte birinden fazlası tamamlandı. Böyle devam edin!",
+        goodStart: "Harika bir başlangıç! Tamamladığınız her belge sizi hedefe yaklaştırıyor.",
+        startFirst: "İlk adımla başlayın — ve tüm yol daha anlaşılır hale gelecek.",
+      },
       timelineSections: {
         before_departure: "Gitmeden önce",
         first_week: "İlk hafta",
@@ -8410,6 +8450,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} аз {total} ҳуҷҷат тайёр",
       currentPhasePrefix: "Ҳозир: {phase}",
       allPhasesDone: "Ҳамаи марҳилаҳо ба анҷом расиданд",
+      motivational: {
+        noRoute: "Маршрутро интихоб кунед — ва дар ин ҷо нақшаи шахсии кӯчидани шумо пайдо мешавад.",
+        allDone: "Ҳамаи ҳуҷҷатҳо расмият гирифтанд. Шумо комилан барои кӯчидан омодаед!",
+        almostThere: "Шумо қариб ба ҳадаф расидед — то легализатсияи пурра каме монд.",
+        thirdDone: "Зиёда аз сеяки роҳ тай шудааст. Ҳамин тавр давом диҳед!",
+        goodStart: "Оғози аъло! Ҳар ҳуҷҷати расмиятгирифта шуморо ба ҳадаф наздиктар мекунад.",
+        startFirst: "Аз қадами аввал сар кунед — ва тамоми роҳ фаҳмотар мешавад.",
+      },
       timelineSections: {
         before_departure: "Пеш аз рафтан",
         first_week: "Ҳафтаи аввал",
@@ -10024,6 +10072,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       docsReadyTemplate: "{done} із {total} документів готово",
       currentPhasePrefix: "Зараз: {phase}",
       allPhasesDone: "Усі етапи завершено",
+      motivational: {
+        noRoute: "Оберіть маршрут — і тут з'явиться ваш особистий план переїзду.",
+        allDone: "Усі документи оформлено. Ви повністю готові до переїзду!",
+        almostThere: "Ви майже біля мети — зовсім трохи залишилось до повної легалізації.",
+        thirdDone: "Більше третини шляху пройдено. Так тримати!",
+        goodStart: "Чудовий початок! Кожен оформлений документ наближає вас до мети.",
+        startFirst: "Почніть із першого кроку — і весь шлях стане зрозумілішим.",
+      },
       timelineSections: {
         before_departure: "До від'їзду",
         first_week: "Перший тиждень",
