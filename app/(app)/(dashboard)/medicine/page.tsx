@@ -15,6 +15,9 @@ import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildGoogleMapsUrl } from "../../../_lib/mapsLink";
+import { getCityName } from "../../../_lib/cities";
+import { localizeClinics } from "../../../_lib/localizeClinic";
+import { getChosenCount, formatChosenCount } from "../../../_lib/chosenCount";
 
 const PHONE_ICON = (
   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -100,12 +103,15 @@ const SPARKLE_ICON_SM = (
 
 function ClinicCard({ clinic }: { clinic: Clinic }) {
   const router = useRouter();
+  const { t, lang } = useLanguage();
+  const med = t.medicine;
   const [open, setOpen] = useState(false);
   const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
   const subtitleParts = [clinic.address, clinic.district].filter(Boolean);
+  const chosenCount = formatChosenCount(getChosenCount(clinic.id), lang);
 
   function askAi() {
-    const question = `Расскажи подробнее про клинику "${clinic.name}" в городе ${clinic.city}: стоит ли выбрать её, какие плюсы и минусы, на что обратить внимание?`;
+    const question = med.askAiQuestionTemplate.replace("{name}", clinic.name).replace("{city}", clinic.city);
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
@@ -137,6 +143,12 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
             <p className="mt-1.5 line-clamp-1 text-xs text-white/50">{subtitleParts.join(" · ")}</p>
           )}
           {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+            </svg>
+            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+          </p>
         </div>
 
         {clinic.specializations && clinic.specializations.length > 0 && (
@@ -161,16 +173,16 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
           onClick={() => setOpen((prev) => !prev)}
           className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
-          {open ? "Скрыть" : "Подробнее"} →
+          {open ? t.dashboard.collapseBtn : med.learnMoreBtn} →
         </button>
         <button
           type="button"
           onClick={askAi}
-          aria-label={`Спросить ИИ про ${clinic.name}`}
+          aria-label={t.education.askAiAriaTemplate.replace("{name}", clinic.name)}
           className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
         >
           {SPARKLE_ICON_SM}
-          Спросить ИИ
+          {t.education.askAiBtn}
         </button>
       </div>
 
@@ -178,7 +190,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
           {clinic.required_docs && clinic.required_docs.length > 0 && (
             <p className="text-xs leading-relaxed text-white/60">
-              <span className="font-semibold text-white/80">Документы: </span>
+              <span className="font-semibold text-white/80">{t.education.documentsLabel}</span>
               {clinic.required_docs.join("; ")}
             </p>
           )}
@@ -189,7 +201,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
             rel="noopener noreferrer"
             className="inline-flex w-full items-center justify-center rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
           >
-            Показать на карте →
+            {t.education.showOnMapBtn}
           </a>
 
           <button
@@ -197,7 +209,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
             onClick={() => setOpen(false)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
           >
-            Свернуть
+            {t.dashboard.collapseBtn}
             <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
@@ -232,7 +244,7 @@ export default function MedicinePage() {
       .order("rating", { ascending: false, nullsFirst: false })
       .then(({ data }) => {
         if (!active) return;
-        setClinics((data as Clinic[]) ?? []);
+        setClinics(localizeClinics((data as Clinic[]) ?? [], lang));
         setCategory("all");
         setDistrict("all");
         setAiQuery("");
@@ -242,7 +254,7 @@ export default function MedicinePage() {
     return () => {
       active = false;
     };
-  }, [city]);
+  }, [city, lang]);
 
   const categories = useMemo(() => {
     const seen = new Set<string>();
@@ -359,10 +371,8 @@ export default function MedicinePage() {
               {SPARKLE_ICON}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-text-primary">Подбор клиники с ИИ</p>
-              <p className="mt-0.5 text-xs text-text-muted">
-                Опишите свою проблему или какой врач или клиника вам нужны — мы подберём подходящие варианты.
-              </p>
+              <p className="text-sm font-semibold text-text-primary">{t.medicine.aiPickHeading}</p>
+              <p className="mt-0.5 text-xs text-text-muted">{t.medicine.aiPickSubtitle}</p>
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 <input
                   value={aiQuery}
@@ -370,7 +380,7 @@ export default function MedicinePage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleAiSearch();
                   }}
-                  placeholder="Например: болит зуб, нужен стоматолог рядом с центром"
+                  placeholder={t.medicine.aiPickPlaceholder}
                   className="flex-1 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
                 />
                 <button
@@ -379,7 +389,7 @@ export default function MedicinePage() {
                   disabled={aiLoading || !aiQuery.trim()}
                   className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {aiLoading ? "Подбираем…" : "Найти"}
+                  {aiLoading ? t.education.findingBtn : t.education.findBtn}
                 </button>
               </div>
               {aiResult && (
@@ -390,7 +400,7 @@ export default function MedicinePage() {
                     onClick={resetAiSearch}
                     className="ml-auto flex-shrink-0 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:text-text-primary"
                   >
-                    Сбросить
+                    {t.education.resetBtn}
                   </button>
                 </div>
               )}
@@ -399,7 +409,7 @@ export default function MedicinePage() {
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <CitySelect value={city} onChange={setCity} label="Город" />
+          <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
           <div className="relative">
             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
               {SEARCH_ICON}
@@ -407,29 +417,29 @@ export default function MedicinePage() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Поиск по названию или району"
+              placeholder={t.medicine.searchPlaceholder}
               className="w-64 rounded-full border border-border-strong bg-surface-1 py-2 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
             />
           </div>
           <Dropdown
             value={category}
             onChange={setCategory}
-            options={[{ value: "all", label: "Все категории" }, ...categories.map((c) => ({ value: c, label: c }))]}
+            options={[{ value: "all", label: t.medicine.allCategoriesLabel }, ...categories.map((c) => ({ value: c, label: c }))]}
           />
           {districts.length > 0 && (
             <Dropdown
               value={district}
               onChange={setDistrict}
-              options={[{ value: "all", label: "Все районы" }, ...districts.map((d) => ({ value: d, label: d }))]}
+              options={[{ value: "all", label: t.medicine.allDistrictsLabel }, ...districts.map((d) => ({ value: d, label: d }))]}
             />
           )}
-          <span className="text-xs text-text-muted">{filtered.length} клиник</span>
+          <span className="text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
         </div>
 
         {loading ? (
-          <p className="mt-8 text-sm text-text-muted">Загрузка…</p>
+          <p className="mt-8 text-sm text-text-muted">{t.guideCard.loading}</p>
         ) : grouped.length === 0 ? (
-          <p className="mt-8 text-sm text-text-muted">Ничего не найдено для {city}.</p>
+          <p className="mt-8 text-sm text-text-muted">{t.medicine.notFoundText.replace("{city}", getCityName(city, lang))}</p>
         ) : (
           <div className="mt-6 space-y-10">
             {grouped.map(([cat, items]) => (

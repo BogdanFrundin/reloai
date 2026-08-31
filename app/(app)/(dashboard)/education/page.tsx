@@ -16,6 +16,7 @@ import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildGoogleMapsUrl } from "../../../_lib/mapsLink";
+import { getChosenCount, formatChosenCount } from "../../../_lib/chosenCount";
 
 type TabId = "courses" | "schools" | "kindergartens" | "universities";
 type FilterId = "all" | "государственный" | "частный";
@@ -120,10 +121,11 @@ function InfoRow({ label, value, showCurrencyHint }: { label: string; value: str
 function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const ed = t.education;
   const [open, setOpen] = useState(false);
   const cost = convertPlnText(row.cost, currency, rates);
+  const chosenCount = formatChosenCount(getChosenCount(row.id), lang);
   const notes = [...(row.highlights ?? []), ...(row.features ?? [])];
   const subtitleParts = [row.audience, row.languages && row.languages.length > 0 ? row.languages.join(", ") : null].filter(
     Boolean
@@ -154,6 +156,12 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
             <CurrencyHint />
           </div>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+            </svg>
+            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+          </p>
         </div>
 
         {row.programs && row.programs.length > 0 && (

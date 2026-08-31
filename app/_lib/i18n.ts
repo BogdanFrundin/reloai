@@ -29,6 +29,7 @@ export type Dictionary = {
     logoutConfirmTitle: string;
     logoutConfirmBody: string;
     cityLabel: string;
+    chosenByCountTemplate: string;
   };
   hero: {
     badge: string;
@@ -968,6 +969,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Log out of your account?",
       logoutConfirmBody: "Are you sure you want to log out?",
       cityLabel: "City",
+      chosenByCountTemplate: "{n}+ people already chose this via ReloAI",
     },
     hero: {
       badge: "Your AI relocation guide",
@@ -2705,6 +2707,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Выйти из аккаунта?",
       logoutConfirmBody: "Вы уверены, что хотите выйти?",
       cityLabel: "Город",
+      chosenByCountTemplate: "Уже выбрали {n}+ человек через ReloAI",
     },
     hero: {
       badge: "Ваш AI-гид по переезду",
@@ -4445,6 +4448,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Hisobdan chiqasizmi?",
       logoutConfirmBody: "Chiqishga ishonchingiz komilmi?",
       cityLabel: "Shahar",
+      chosenByCountTemplate: "ReloAI orqali {n}+ kishi allaqachon tanladi",
     },
     hero: {
       badge: "Sizning AI ko'chish yordamchingiz",
@@ -6180,6 +6184,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Hesaptan çıkış yapılsın mı?",
       logoutConfirmBody: "Çıkış yapmak istediğinizden emin misiniz?",
       cityLabel: "Şehir",
+      chosenByCountTemplate: "ReloAI ile {n}+ kişi zaten bunu seçti",
     },
     hero: {
       badge: "Yapay zeka destekli taşınma rehberiniz",
@@ -7914,6 +7919,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Аз ҳисоб мебароед?",
       logoutConfirmBody: "Оё мутмаин ҳастед, ки мехоҳед бароед?",
       cityLabel: "Шаҳр",
+      chosenByCountTemplate: "Тавассути ReloAI аллакай {n}+ нафар интихоб кардаанд",
     },
     hero: {
       badge: "Роҳнамои сунъии аз ҷониби AI барои кӯчиш",
@@ -9648,6 +9654,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmTitle: "Вийти з акаунту?",
       logoutConfirmBody: "Ви впевнені, що хочете вийти?",
       cityLabel: "Місто",
+      chosenByCountTemplate: "Уже обрали {n}+ людей через ReloAI",
     },
     hero: {
       badge: "Ваш AI-гід з переїзду",

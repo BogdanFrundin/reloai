@@ -13,6 +13,7 @@ import TextWithGlossary from "./TextWithGlossary";
 import { supabase } from "../../lib/supabase";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
+import { getChosenCount, formatChosenCount } from "../_lib/chosenCount";
 
 const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"] as const;
 
@@ -174,8 +175,9 @@ function BankCard({
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const gc = t.guideCard;
+  const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
@@ -237,6 +239,12 @@ function BankCard({
               <TextWithGlossary text={subtitle} />
             </p>
           )}
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+            </svg>
+            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+          </p>
         </div>
 
         {open && guide.description && (

@@ -20,6 +20,7 @@ import { supabase } from "../../../../lib/supabase";
 import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildOlxUrl, buildOtodomUrl } from "../../../_lib/housingSearchLinks";
 import { getCityName } from "../../../_lib/cities";
+import { getChosenCount, formatChosenCount } from "../../../_lib/chosenCount";
 
 const CITY_GENITIVE_RU: Record<string, string> = {
   "Варшава": "Варшавы",
@@ -90,9 +91,10 @@ function DistrictCard({
   onOpenSearch: (district: string) => void;
 }) {
   const { currency, rates } = useCurrency();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const priceLabel = districtPriceLabel(d, rooms, currency, rates);
   const description = d.description ? stripPricePrefix(d.description) : null;
+  const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
 
   return (
     <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
@@ -105,6 +107,12 @@ function DistrictCard({
           </div>
         )}
         {description && <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/50">{description}</p>}
+        <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+          <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+          </svg>
+          {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+        </p>
       </div>
       <button
         type="button"

@@ -9,6 +9,7 @@ import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
+import { getChosenCount, formatChosenCount } from "../_lib/chosenCount";
 
 const SCALE_ICON = (
   <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -142,12 +143,13 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
 function TopicCard({ guide }: { guide: DocumentGuide }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const [open, setOpen] = useState(false);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const visual = topicVisual(guide.name);
+  const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const cost = convertPlnText(guide.cost, currency, rates);
 
   function askAi() {
@@ -199,6 +201,12 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
               {guide.description}
             </p>
           )}
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+            </svg>
+            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+          </p>
         </div>
       </button>
 
