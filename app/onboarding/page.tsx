@@ -775,7 +775,10 @@ export default function OnboardingPage() {
 
           <div className="flex flex-1 flex-col justify-center py-12">
             <Reveal key={stepKey}>
-              <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{question}</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                {question}
+                {stepKey === "citizenship" && " 🌎"}
+              </h1>
               <p className="mt-3 text-text-muted">{subheading}</p>
 
               {stepKey === "language" && (
