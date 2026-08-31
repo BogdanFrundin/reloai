@@ -191,7 +191,7 @@ function BankCard({
   }
 
   return (
-    <div className="group relative flex min-h-[272px] flex-col self-start rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+    <div className="group relative flex h-full min-h-[272px] flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
       <button
         type="button"
         onClick={(event) => {
@@ -480,7 +480,7 @@ export default function BankCardGrid({
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <>
-          <div className="grid items-start gap-4 sm:grid-cols-2">
+          <div className="grid items-stretch gap-4 sm:grid-cols-2">
             {featured.map((g) => (
               <BankCard
                 key={g.id}
@@ -502,7 +502,7 @@ export default function BankCardGrid({
               </button>
 
               {showAll && (
-                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid w-full items-stretch gap-4 sm:grid-cols-2">
                   {rest.map((g) => (
                     <BankCard
                       key={g.id}
