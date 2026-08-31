@@ -113,7 +113,7 @@ export type Dictionary = {
       rating: number;
       quote: string;
       initials: string;
-      documentBadge?: string;
+      documentBadge?: { country: string; label: string };
     }[];
   };
   faq: {
@@ -469,6 +469,16 @@ export type Dictionary = {
     dentalNfz: string;
     dentalPrivate: string;
     dentalChains: string;
+    aiPickHeading: string;
+    aiPickSubtitle: string;
+    aiPickPlaceholder: string;
+    searchPlaceholder: string;
+    allCategoriesLabel: string;
+    allDistrictsLabel: string;
+    clinicsCountTemplate: string;
+    notFoundText: string;
+    askAiQuestionTemplate: string;
+    learnMoreBtn: string;
   };
   insurance: {
     title: string;
@@ -1174,6 +1184,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Got my PESEL in 2 days. Without ReloAI I would've spent a week just looking for information.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Mikhail S.",
@@ -1183,6 +1194,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "AI helped me figure out Anmeldung. Explained everything clearly and gave me office addresses.",
           initials: "MS",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Olga M.",
@@ -1192,6 +1204,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Started a business in Spain. The checklist saved me a month of work and €2,000 in lawyer fees.",
           initials: "OM",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Dmitry P.",
@@ -1201,6 +1214,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "The progress tracker really helps. I always know exactly what step I'm on.",
           initials: "DP",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Leyla R.",
@@ -1210,6 +1224,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Found a job in Germany through the jobs section. The AI even wrote my cover letter.",
           initials: "LR",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Timur A.",
@@ -1219,6 +1234,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Got my NIE in 3 weeks. I thought it would take half a year.",
           initials: "TA",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Karina N.",
@@ -1228,6 +1244,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Moved with my family. Found a school for the kids and a Russian-speaking doctor.",
           initials: "KN",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Artyom V.",
@@ -1237,7 +1254,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — sorted it in 6 weeks following ReloAI's guide.",
           initials: "AV",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Zarina I.",
@@ -1247,6 +1264,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Opened an mBank account on the first try. The AI told me exactly which documents to bring.",
           initials: "ZI",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Bogdan F.",
@@ -1256,7 +1274,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Best relocation service out there. Saved me time and nerves.",
           initials: "BF",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Alexey K.",
@@ -1266,6 +1284,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Got my PESEL in 3 days — the AI told me all the documents I'd need in advance.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Nilufar R.",
@@ -1275,6 +1294,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Found an apartment in Warsaw in a week with ReloAI's help.",
           initials: "NR",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Dmitry V.",
@@ -1284,7 +1304,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Got my Blue Card without a lawyer, saved €2,000.",
           initials: "DV",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Malika S.",
@@ -1294,6 +1314,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Opened a PKO BP account on the first try, the AI prepared my document list.",
           initials: "MS",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Anna P.",
@@ -1303,7 +1324,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — every step laid out, sorted it in a month.",
           initials: "AP",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Aziz T.",
@@ -1313,6 +1334,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Got into university in Munich — the AI helped me gather the documents for my student visa.",
           initials: "AT",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Svetlana I.",
@@ -1322,6 +1344,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Moved with my husband and kids, found a kindergarten and school in two weeks.",
           initials: "SI",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Roman K.",
@@ -1331,6 +1354,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Started a sole proprietorship in Berlin, the checklist helped with all the paperwork.",
           initials: "RK",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Dinara Zh.",
@@ -1340,7 +1364,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Got into Warsaw University and received my student residence card with no issues.",
           initials: "DZ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Yulia N.",
@@ -1350,6 +1374,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Found a remote job and got my NIE in a month, all according to the guide.",
           initials: "YN",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -1882,6 +1907,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ covers basic treatment — fillings, extractions",
       dentalPrivate: "Private dentistry: 150–400 PLN per visit",
       dentalChains: "Recommended chains: Dental+, Medicover Stomatologia",
+      aiPickHeading: "AI-powered clinic matching",
+      aiPickSubtitle: "Describe your problem or what kind of doctor or clinic you need — we'll find matching options.",
+      aiPickPlaceholder: "E.g.: toothache, need a dentist near the center",
+      searchPlaceholder: "Search by name or district",
+      allCategoriesLabel: "All categories",
+      allDistrictsLabel: "All districts",
+      clinicsCountTemplate: "{count} clinics",
+      notFoundText: "Nothing found for {city}.",
+      askAiQuestionTemplate: 'Tell me more about the "{name}" clinic in {city}: is it worth choosing, what are the pros and cons, what should I pay attention to?',
+      learnMoreBtn: "Learn more",
     },
     insurance: {
       title: "Insurance in Poland",
@@ -2889,6 +2924,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Получила PESEL за 2 дня. Без ReloAI потратила бы неделю на поиски информации.",
           initials: "АК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Михаил С.",
@@ -2898,6 +2934,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "AI помог разобраться с Anmeldung. Объяснил всё на русском, дал адреса бюро.",
           initials: "МС",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Ольга М.",
@@ -2907,6 +2944,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Открыла бизнес в Испании. Чеклист сэкономил месяц работы и 2000 евро на юристе.",
           initials: "ОМ",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Дмитрий П.",
@@ -2916,6 +2954,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Прогресс-трекер очень помогает. Всегда знаю на каком шаге нахожусь.",
           initials: "ДП",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Лейла Р.",
@@ -2925,6 +2964,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Нашла работу в Германии через раздел вакансий. AI написал сопроводительное письмо.",
           initials: "ЛР",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Тимур А.",
@@ -2934,6 +2974,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "NIE получил за 3 недели. Раньше думал это займёт полгода.",
           initials: "ТА",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Карина Н.",
@@ -2943,6 +2984,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Переехала с семьёй. Нашли школу для детей и врача говорящего по-русски.",
           initials: "КН",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Артём В.",
@@ -2952,7 +2994,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — оформил за 6 недель по инструкции ReloAI.",
           initials: "АВ",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Зарина И.",
@@ -2962,6 +3004,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Открыла счёт в mBank с первого раза. AI подсказал какие документы взять.",
           initials: "ЗИ",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Богдан Ф.",
@@ -2971,7 +3014,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Лучший сервис для переезда. Сэкономил время и нервы.",
           initials: "БФ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Алексей К.",
@@ -2981,6 +3024,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Получил PESEL за 3 дня, AI подсказал все документы заранее.",
           initials: "АК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Нилуфар Р.",
@@ -2990,6 +3034,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Нашла жильё в Варшаве за неделю с помощью ReloAI.",
           initials: "НР",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Дмитрий В.",
@@ -2999,7 +3044,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Blue Card оформил без юриста, сэкономил €2000.",
           initials: "ДВ",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Малика С.",
@@ -3009,6 +3054,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Открыла счёт в PKO BP с первого раза, AI подготовил список документов.",
           initials: "МС",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Анна П.",
@@ -3018,7 +3064,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — всё по шагам, оформила за месяц.",
           initials: "АП",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Азиз Т.",
@@ -3028,6 +3074,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Поступил в университет в Мюнхене, AI помог собрать документы для студенческой визы.",
           initials: "АТ",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Светлана И.",
@@ -3037,6 +3084,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Переехала с мужем и детьми, нашли садик и школу за две недели.",
           initials: "СИ",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Роман К.",
@@ -3046,6 +3094,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Открыл ИП в Берлине, чеклист помог со всеми справками.",
           initials: "РК",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Динара Ж.",
@@ -3055,7 +3104,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Поступила в Варшавский университет, получила карту побыту студента без проблем.",
           initials: "ДЖ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Юлия Н.",
@@ -3065,6 +3114,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Нашла удалённую работу и оформила NIE за месяц, всё по инструкции.",
           initials: "ЮН",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -3597,6 +3647,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ покрывает базовое лечение — пломбы, удаление зубов",
       dentalPrivate: "Частная стоматология: 150–400 PLN за приём",
       dentalChains: "Рекомендуемые сети: Dental+, Medicover Stomatologia",
+      aiPickHeading: "Подбор клиники с ИИ",
+      aiPickSubtitle: "Опишите свою проблему или какой врач или клиника вам нужны — мы подберём подходящие варианты.",
+      aiPickPlaceholder: "Например: болит зуб, нужен стоматолог рядом с центром",
+      searchPlaceholder: "Поиск по названию или району",
+      allCategoriesLabel: "Все категории",
+      allDistrictsLabel: "Все районы",
+      clinicsCountTemplate: "{count} клиник",
+      notFoundText: "Ничего не найдено для {city}.",
+      askAiQuestionTemplate: 'Расскажи подробнее про клинику "{name}" в городе {city}: стоит ли выбрать её, какие плюсы и минусы, на что обратить внимание?',
+      learnMoreBtn: "Подробнее",
     },
     insurance: {
       title: "Страхование в Польше",
@@ -4601,6 +4661,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL'imni 2 kunda oldim. ReloAI bo'lmaganida ma'lumot qidirishga bir hafta sarflagan bo'lardim.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Mikhail S.",
@@ -4610,6 +4671,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "AI Anmeldungni tushunishimga yordam berdi. Hammasini tushuntirdi va idoralar manzilini berdi.",
           initials: "MS",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Olga M.",
@@ -4619,6 +4681,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ispaniyada biznes ochdim. Ro'yxat menga bir oy vaqt va 2000 yevro advokat xarajatini tejadi.",
           initials: "OM",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Dmitry P.",
@@ -4628,6 +4691,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Progress-trekeri juda yordam beradi. Doim qaysi bosqichda ekanligimni bilaman.",
           initials: "DP",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Leyla R.",
@@ -4637,6 +4701,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ish o'rinlari bo'limi orqali Germaniyadan ish topdim. AI hatto motivatsion xat ham yozib berdi.",
           initials: "LR",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Timur A.",
@@ -4646,6 +4711,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "NIE'ni 3 haftada oldim. Avval yarim yil ketadi deb o'ylagandim.",
           initials: "TA",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Karina N.",
@@ -4655,6 +4721,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Oila bilan ko'chib o'tdim. Bolalar uchun maktab va rus tilida gaplashadigan shifokor topdik.",
           initials: "KN",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Artyom V.",
@@ -4664,7 +4731,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — ReloAI qo'llanmasi bo'yicha 6 haftada rasmiylashtirdim.",
           initials: "AV",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Zarina I.",
@@ -4674,6 +4741,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "mBank'da birinchi urinishda hisob ochdim. AI qaysi hujjatlarni olib borish kerakligini aytdi.",
           initials: "ZI",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Bogdan F.",
@@ -4683,7 +4751,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ko'chish uchun eng yaxshi xizmat. Vaqt va asablarimni tejadim.",
           initials: "BF",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Alexey K.",
@@ -4693,6 +4761,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL'imni 3 kunda oldim — AI barcha kerakli hujjatlarni oldindan aytib berdi.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Nilufar R.",
@@ -4702,6 +4771,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "ReloAI yordamida Varshavada bir haftada kvartira topdim.",
           initials: "NR",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Dmitry V.",
@@ -4711,7 +4781,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Blue Card'ni advokatsiz rasmiylashtirdim, €2000 tejadim.",
           initials: "DV",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Malika S.",
@@ -4721,6 +4791,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PKO BP'da birinchi urinishda hisob ochdim, AI hujjatlar ro'yxatini tayyorladi.",
           initials: "MS",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Anna P.",
@@ -4730,7 +4801,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — barchasi qadam-baqadam, bir oyda rasmiylashtirdim.",
           initials: "AP",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Aziz T.",
@@ -4740,6 +4811,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Myunxendagi universitetga kirdim — AI talaba vizasi uchun hujjatlarni yig'ishga yordam berdi.",
           initials: "AT",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Svetlana I.",
@@ -4749,6 +4821,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Er va bolalarim bilan ko'chib o'tdim, ikki haftada bog'cha va maktab topdik.",
           initials: "SI",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Roman K.",
@@ -4758,6 +4831,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Berlinda yakka tartibdagi tadbirkorlik ochdim, ro'yxat barcha hujjatlar bilan yordam berdi.",
           initials: "RK",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Dinara Zh.",
@@ -4767,7 +4841,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Varshava universitetiga kirdim va talaba turar joy kartasini muammosiz oldim.",
           initials: "DZ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Yulia N.",
@@ -4777,6 +4851,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Masofaviy ish topdim va bir oyda NIE oldim, hammasi qo'llanma bo'yicha.",
           initials: "YN",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -5309,6 +5384,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ asosiy davolashni qoplaydi — plombalash, tish olish",
       dentalPrivate: "Xususiy stomatologiya: qabul uchun 150–400 PLN",
       dentalChains: "Tavsiya etilgan tarmoqlar: Dental+, Medicover Stomatologia",
+      aiPickHeading: "Klinikani AI bilan tanlash",
+      aiPickSubtitle: "Muammoingizni yoki qanday shifokor yoki klinika kerakligini tasvirlab bering — biz mos variantlarni topamiz.",
+      aiPickPlaceholder: "Masalan: tish og'riyapti, markazga yaqin stomatolog kerak",
+      searchPlaceholder: "Nomi yoki tuman bo'yicha qidirish",
+      allCategoriesLabel: "Barcha kategoriyalar",
+      allDistrictsLabel: "Barcha tumanlar",
+      clinicsCountTemplate: "{count} klinika",
+      notFoundText: "{city} uchun hech narsa topilmadi.",
+      askAiQuestionTemplate: '"{name}" klinikasi ({city}) haqida batafsil ayting: uni tanlash arziydimi, qanday afzallik va kamchiliklari bor, nimaga e\'tibor berish kerak?',
+      learnMoreBtn: "Batafsil",
     },
     insurance: {
       title: "Polshada sug'urta",
@@ -6310,6 +6395,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL'imi 2 günde aldım. ReloAI olmasaydı bilgi aramak için bir hafta harcardım.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Mikhail S.",
@@ -6319,6 +6405,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Yapay zeka Anmeldung konusunda yardımcı oldu. Her şeyi açıkladı ve büro adreslerini verdi.",
           initials: "MS",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Olga M.",
@@ -6328,6 +6415,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "İspanya'da bir işletme açtım. Kontrol listesi bir aylık iş ve 2000 avro avukat ücreti tasarrufu sağladı.",
           initials: "OM",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Dmitry P.",
@@ -6337,6 +6425,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "İlerleme takipçisi gerçekten çok yardımcı oluyor. Hangi adımda olduğumu her zaman biliyorum.",
           initials: "DP",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Leyla R.",
@@ -6346,6 +6435,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "İş ilanları bölümü sayesinde Almanya'da iş buldum. Yapay zeka ön yazımı bile yazdı.",
           initials: "LR",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Timur A.",
@@ -6355,6 +6445,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "NIE'mi 3 haftada aldım. Yarım yıl süreceğini düşünüyordum.",
           initials: "TA",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Karina N.",
@@ -6364,6 +6455,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ailemle taşındım. Çocuklar için okul ve Rusça konuşan bir doktor bulduk.",
           initials: "KN",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Artyom V.",
@@ -6373,7 +6465,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — ReloAI rehberini takip ederek 6 haftada hallettim.",
           initials: "AV",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Zarina I.",
@@ -6383,6 +6475,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "mBank'ta ilk denemede hesap açtım. Yapay zeka hangi belgeleri getirmem gerektiğini söyledi.",
           initials: "ZI",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Bogdan F.",
@@ -6392,7 +6485,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Taşınma için en iyi hizmet. Zamandan ve sinirden tasarruf ettim.",
           initials: "BF",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Alexey K.",
@@ -6402,6 +6495,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL'imi 3 günde aldım — yapay zeka gereken tüm belgeleri önceden söyledi.",
           initials: "AK",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Nilufar R.",
@@ -6411,6 +6505,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "ReloAI'nin yardımıyla Varşova'da bir haftada daire buldum.",
           initials: "NR",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Dmitry V.",
@@ -6420,7 +6515,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Blue Card'ımı avukatsız çıkardım, €2000 tasarruf ettim.",
           initials: "DV",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Malika S.",
@@ -6430,6 +6525,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PKO BP'de ilk denemede hesap açtım, yapay zeka belge listesini hazırladı.",
           initials: "MS",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Anna P.",
@@ -6439,7 +6535,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — adım adım anlatıldı, bir ayda hallettim.",
           initials: "AP",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Aziz T.",
@@ -6449,6 +6545,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Münih'te üniversiteye girdim — yapay zeka öğrenci vizesi için belgeleri toplamama yardım etti.",
           initials: "AT",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Svetlana I.",
@@ -6458,6 +6555,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Eşim ve çocuklarımla taşındım, iki haftada kreş ve okul bulduk.",
           initials: "SI",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Roman K.",
@@ -6467,6 +6565,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Berlin'de şahıs şirketi açtım, kontrol listesi tüm evraklarda yardımcı oldu.",
           initials: "RK",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Dinara Zh.",
@@ -6476,7 +6575,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Varşova Üniversitesi'ne girdim ve öğrenci ikamet kartımı sorunsuzca aldım.",
           initials: "DZ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Yulia N.",
@@ -6486,6 +6585,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Uzaktan iş buldum ve bir ayda NIE aldım, her şey rehbere göre.",
           initials: "YN",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -7018,6 +7118,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ temel tedaviyi karşılar — dolgu, çekim",
       dentalPrivate: "Özel diş hekimliği: randevu başına 150–400 PLN",
       dentalChains: "Önerilen zincirler: Dental+, Medicover Stomatologia",
+      aiPickHeading: "Yapay zeka ile klinik seçimi",
+      aiPickSubtitle: "Sorununuzu veya nasıl bir doktor ya da klinik gerektiğini tarif edin — size uygun seçenekleri bulalım.",
+      aiPickPlaceholder: "Örn: diş ağrısı var, merkeze yakın diş hekimi lazım",
+      searchPlaceholder: "İsme veya semte göre ara",
+      allCategoriesLabel: "Tüm kategoriler",
+      allDistrictsLabel: "Tüm semtler",
+      clinicsCountTemplate: "{count} klinik",
+      notFoundText: "{city} için bir şey bulunamadı.",
+      askAiQuestionTemplate: '"{name}" kliniği ({city}) hakkında daha fazla bilgi ver: seçmeye değer mi, artıları ve eksileri neler, nelere dikkat etmeli?',
+      learnMoreBtn: "Daha fazla",
     },
     insurance: {
       title: "Polonya'da Sigorta",
@@ -8019,6 +8129,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL-ро дар 2 рӯз гирифтам. Бе ReloAI як ҳафта барои ҷустуҷӯи маълумот сарф мекардам.",
           initials: "АК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Михаил С.",
@@ -8028,6 +8139,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "AI ба фаҳмидани Anmeldung кӯмак кард. Ҳама чизро фаҳмонд ва суроғаи идораҳоро дод.",
           initials: "МС",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Ольга М.",
@@ -8037,6 +8149,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Дар Испания бизнес кушодам. Рӯйхат як моҳ вақт ва 2000 евро ҳаққи ҳуқуқшиносро сарфа кард.",
           initials: "ОМ",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Дмитрий П.",
@@ -8046,6 +8159,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Пайгирии пешравӣ хеле кӯмак мекунад. Ҳамеша медонам, ки дар кадом қадам ҳастам.",
           initials: "ДП",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Лейла Р.",
@@ -8055,6 +8169,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Тавассути бахши ҷойҳои корӣ дар Олмон кор ёфтам. AI ҳатто мактуби ҳамроҳиро навишт.",
           initials: "ЛР",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Тимур А.",
@@ -8064,6 +8179,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "NIE-ро дар 3 ҳафта гирифтам. Пештар фикр мекардам, ки ним сол вақт мегирад.",
           initials: "ТА",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Карина Н.",
@@ -8073,6 +8189,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Бо оила кӯчидам. Барои кӯдакон мактаб ва духтури русзабонро ёфтем.",
           initials: "КН",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Артём В.",
@@ -8082,7 +8199,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — тибқи дастури ReloAI дар 6 ҳафта расмӣ кардам.",
           initials: "АВ",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Зарина И.",
@@ -8092,6 +8209,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Дар mBank аз бори аввал ҳисоб кушодам. AI гуфт, ки кадом ҳуҷҷатҳоро гирам.",
           initials: "ЗИ",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Богдан Ф.",
@@ -8101,7 +8219,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Беҳтарин хидмат барои кӯчидан. Вақт ва асабамро сарфа кард.",
           initials: "БФ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Алексей К.",
@@ -8111,6 +8229,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "PESEL-ро дар 3 рӯз гирифтам, AI ҳамаи ҳуҷҷатҳоро пешакӣ гуфт.",
           initials: "АК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Нилуфар Р.",
@@ -8120,6 +8239,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Бо кӯмаки ReloAI дар Варшава дар як ҳафта хона ёфтам.",
           initials: "НР",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Дмитрий В.",
@@ -8129,7 +8249,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Blue Card-ро бе ҳуқуқшинос гирифтам, 2000 евро сарфа кардам.",
           initials: "ДВ",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Малика С.",
@@ -8139,6 +8259,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Дар PKO BP аз бори аввал ҳисоб кушодам, AI рӯйхати ҳуҷҷатҳоро омода кард.",
           initials: "МС",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Анна П.",
@@ -8148,7 +8269,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — ҳама қадам ба қадам, дар як моҳ расмӣ кардам.",
           initials: "АП",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Азиз Т.",
@@ -8158,6 +8279,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ба донишгоҳи Мюнхен дохил шудам — AI дар ҷамъоварии ҳуҷҷатҳо барои визаи донишҷӯӣ кӯмак кард.",
           initials: "АТ",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Светлана И.",
@@ -8167,6 +8289,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Бо шавҳар ва фарзандон кӯчидам, дар ду ҳафта боғча ва мактаб ёфтем.",
           initials: "СИ",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Роман К.",
@@ -8176,6 +8299,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Дар Берлин соҳибкории инфиродӣ кушодам, рӯйхат бо ҳамаи справкаҳо кӯмак кард.",
           initials: "РК",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Динара Ж.",
@@ -8185,7 +8309,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Ба Донишгоҳи Варшава дохил шудам ва корти иқомати донишҷӯиро бе мушкилот гирифтам.",
           initials: "ДЖ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Юлия Н.",
@@ -8195,6 +8319,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Кори дурдастӣ ёфтам ва NIE-ро дар як моҳ гирифтам, ҳама тибқи дастур.",
           initials: "ЮН",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -8727,6 +8852,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ табобати асосиро фаро мегирад — пломба, кашидани дандон",
       dentalPrivate: "Дандонпизишкии хусусӣ: 150–400 PLN барои қабул",
       dentalChains: "Шабакаҳои тавсияшуда: Dental+, Medicover Stomatologia",
+      aiPickHeading: "Интихоби клиника бо ёрии ЗҲ",
+      aiPickSubtitle: "Мушкилии худ ё чӣ гуна духтур ё клиника лозим бударо тавсиф кунед — мо вариантҳои мувофиқро меёбем.",
+      aiPickPlaceholder: "Масалан: дандон дард мекунад, дандонпизишки наздики марказ лозим аст",
+      searchPlaceholder: "Ҷустуҷӯ аз рӯи ном ё ноҳия",
+      allCategoriesLabel: "Ҳамаи категорияҳо",
+      allDistrictsLabel: "Ҳамаи ноҳияҳо",
+      clinicsCountTemplate: "{count} клиника",
+      notFoundText: "Барои {city} чизе ёфт нашуд.",
+      askAiQuestionTemplate: 'Дар бораи клиникаи "{name}" дар {city} бештар нақл кунед: оё интихоби он арзанда аст, чӣ бартарӣ ва камбудӣ дорад, ба чӣ бояд диққат дод?',
+      learnMoreBtn: "Бештар",
     },
     insurance: {
       title: "Суғурта дар Полша",
@@ -9732,6 +9867,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Отримала PESEL за 2 дні. Без ReloAI витратила б тиждень на пошук інформації.",
           initials: "АК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Михайло С.",
@@ -9741,6 +9877,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "AI допоміг розібратися з Anmeldung. Пояснив усе зрозуміло, дав адреси бюро.",
           initials: "МС",
+          documentBadge: { country: "de", label: "Anmeldung" },
         },
         {
           name: "Ольга М.",
@@ -9750,6 +9887,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Відкрила бізнес в Іспанії. Чеклист заощадив місяць роботи і 2000 євро на юристі.",
           initials: "ОМ",
+          documentBadge: { country: "es", label: "Alta de Autónomo" },
         },
         {
           name: "Дмитро П.",
@@ -9759,6 +9897,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Прогрес-трекер дуже допомагає. Завжди знаю, на якому кроці перебуваю.",
           initials: "ДП",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Лейла Р.",
@@ -9768,6 +9907,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Знайшла роботу в Німеччині через розділ вакансій. AI написав супровідний лист.",
           initials: "ЛР",
+          documentBadge: { country: "de", label: "Anschreiben" },
         },
         {
           name: "Тимур А.",
@@ -9777,6 +9917,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "NIE отримав за 3 тижні. Раніше думав, що це займе півроку.",
           initials: "ТА",
+          documentBadge: { country: "es", label: "NIE" },
         },
         {
           name: "Карина Н.",
@@ -9786,6 +9927,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Переїхала з сім'єю. Знайшли школу для дітей і лікаря, що розмовляє російською.",
           initials: "КН",
+          documentBadge: { country: "de", label: "Familiennachzug" },
         },
         {
           name: "Артем В.",
@@ -9795,7 +9937,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Digital Nomad Visa — оформив за 6 тижнів за інструкцією ReloAI.",
           initials: "АВ",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Заріна І.",
@@ -9805,6 +9947,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Відкрила рахунок у mBank з першого разу. AI підказав, які документи взяти.",
           initials: "ЗІ",
+          documentBadge: { country: "pl", label: "mBank" },
         },
         {
           name: "Богдан Ф.",
@@ -9814,7 +9957,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Найкращий сервіс для переїзду. Заощадив час і нерви.",
           initials: "БФ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Олексій К.",
@@ -9824,6 +9967,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Отримав PESEL за 3 дні — AI заздалегідь підказав усі документи.",
           initials: "ОК",
+          documentBadge: { country: "pl", label: "PESEL" },
         },
         {
           name: "Нілуфар Р.",
@@ -9833,6 +9977,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Знайшла квартиру у Варшаві за тиждень за допомогою ReloAI.",
           initials: "НР",
+          documentBadge: { country: "pl", label: "Wynajem mieszkania" },
         },
         {
           name: "Дмитро В.",
@@ -9842,7 +9987,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Оформив Blue Card без юриста, заощадив €2000.",
           initials: "ДВ",
-          documentBadge: "🇩🇪 Blue Card",
+          documentBadge: { country: "de", label: "Blue Card" },
         },
         {
           name: "Маліка С.",
@@ -9852,6 +9997,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Відкрила рахунок у PKO BP з першого разу, AI підготував список документів.",
           initials: "МС",
+          documentBadge: { country: "pl", label: "PKO BP" },
         },
         {
           name: "Анна П.",
@@ -9861,7 +10007,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Digital Nomad Visa — усе покроково, оформила за місяць.",
           initials: "АП",
-          documentBadge: "🇪🇸 Digital Nomad Visa",
+          documentBadge: { country: "es", label: "Digital Nomad Visa" },
         },
         {
           name: "Азіз Т.",
@@ -9871,6 +10017,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Вступив до університету в Мюнхені — AI допоміг зібрати документи для студентської візи.",
           initials: "АТ",
+          documentBadge: { country: "de", label: "Studentenvisum" },
         },
         {
           name: "Світлана І.",
@@ -9880,6 +10027,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Переїхала з чоловіком і дітьми, знайшли садочок і школу за два тижні.",
           initials: "СІ",
+          documentBadge: { country: "pl", label: "Przedszkole i szkoła" },
         },
         {
           name: "Роман К.",
@@ -9889,6 +10037,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Відкрив ФОП у Берліні, чекліст допоміг з усіма довідками.",
           initials: "РК",
+          documentBadge: { country: "de", label: "Gewerbeanmeldung" },
         },
         {
           name: "Дінара Ж.",
@@ -9898,7 +10047,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 5,
           quote: "Вступила до Варшавського університету, отримала студентську карту побиту без проблем.",
           initials: "ДЖ",
-          documentBadge: "🇵🇱 Karta Pobytu",
+          documentBadge: { country: "pl", label: "Karta Pobytu" },
         },
         {
           name: "Юлія Н.",
@@ -9908,6 +10057,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
           rating: 4,
           quote: "Знайшла віддалену роботу й оформила NIE за місяць, усе за інструкцією.",
           initials: "ЮН",
+          documentBadge: { country: "es", label: "NIE" },
         },
       ],
     },
@@ -10440,6 +10590,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
       dentalNfz: "NFZ покриває базове лікування — пломби, видалення зубів",
       dentalPrivate: "Приватна стоматологія: 150–400 злотих за прийом",
       dentalChains: "Рекомендовані мережі: Dental+, Medicover Stomatologia",
+      aiPickHeading: "Підбір клініки з ШІ",
+      aiPickSubtitle: "Опишіть свою проблему або якого лікаря чи клініку вам потрібно — ми підберемо відповідні варіанти.",
+      aiPickPlaceholder: "Наприклад: болить зуб, потрібен стоматолог поруч із центром",
+      searchPlaceholder: "Пошук за назвою або районом",
+      allCategoriesLabel: "Всі категорії",
+      allDistrictsLabel: "Всі райони",
+      clinicsCountTemplate: "{count} клінік",
+      notFoundText: "Нічого не знайдено для {city}.",
+      askAiQuestionTemplate: 'Розкажи детальніше про клініку "{name}" у місті {city}: чи варто її обрати, які плюси й мінуси, на що звернути увагу?',
+      learnMoreBtn: "Детальніше",
     },
     insurance: {
       title: "Страхування в Польщі",

@@ -6,6 +6,7 @@ import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
 import { pressScale } from "../_lib/motion";
 import { REVIEW_AVATARS } from "../_lib/reviewAvatars";
+import { getFlagUrl } from "../_lib/flags";
 
 const AUTO_SCROLL_MS = 4000;
 
@@ -85,10 +86,15 @@ export default function Reviews() {
 
                   {review.documentBadge && (
                     <span className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-border-subtle bg-surface-1 px-3 py-1.5 text-xs text-text-muted">
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m-7 5h8a2 2 0 002-2V7a2 2 0 00-2-2H9.5L6 8.5V19a2 2 0 002 2z" />
-                      </svg>
-                      {review.documentBadge}
+                      <Image
+                        src={getFlagUrl(review.documentBadge.country, "sm")}
+                        alt={review.documentBadge.country}
+                        width={16}
+                        height={12}
+                        className="h-3 w-4 flex-shrink-0 rounded-[2px] object-cover"
+                        unoptimized
+                      />
+                      {review.documentBadge.label}
                     </span>
                   )}
 
