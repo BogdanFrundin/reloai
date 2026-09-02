@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { DEFAULT_LANG, LANGUAGES, dictionaries, type Lang } from "../../_lib/i18n";
 import { getCountryName } from "../../_lib/countries";
+import { fixRussianKeyboardLayout } from "../../_lib/keyboardLayout";
 
 const SYSTEM_PROMPT =
-  "You are ReloAI assistant helping people relocate to Poland, Germany and Spain. Answer questions about documents, housing, banks, medicine, work. Be concise, helpful and friendly. Always respond in the same language the user writes in. For Poland focus on: PESEL, Karta Pobytu, ZUS, NFZ, mBank, PKO BP. For Germany: Anmeldung, Aufenthaltstitel, TK insurance. For Spain: NIE, empadronamiento, Seguridad Social. Format answers as a short intro sentence followed by bullet points, one per line, each starting with '- '. Keep each bullet short and actionable. Use relevant emoji naturally throughout the answer — one at the start of the intro sentence, and one at the start of most bullet points, picked to match that bullet's topic (e.g. 🎓 for university/education, 🏠 for housing, 💰 for cost, 📋 for documents, 🏥 for healthcare, ⏱️ for timing). Keep it tasteful, not excessive.";
+  "You are ReloAI assistant helping people relocate to Poland, Germany and Spain. Answer questions about documents, housing, banks, medicine, work. Be concise, helpful and friendly. Always respond in the same language the user writes in. For Poland focus on: PESEL, Karta Pobytu, ZUS, NFZ, mBank, PKO BP. For Germany: Anmeldung, Aufenthaltstitel, TK insurance. For Spain: NIE, empadronamiento, Seguridad Social. Format answers as a short intro sentence followed by bullet points, one per line, each starting with '- '. Keep each bullet short and actionable. Use relevant emoji naturally throughout the answer — one at the start of the intro sentence, and one at the start of most bullet points, picked to match that bullet's topic (e.g. 🎓 for university/education, 🏠 for housing, 💰 for cost, 📋 for documents, 🏥 for healthcare, ⏱️ for timing). Keep it tasteful, not excessive. Some users accidentally type Russian text while their keyboard is still set to the English/Latin layout, producing Latin gibberish that spells real Russian words phonetically-by-key-position (e.g. 'ghbdtn' means 'привет'). If a user message looks like this, silently read it as the intended Russian and answer normally in Russian -- never comment on the typo unless asked.";
 
 // Facts about the ReloAI site itself (pages, flows, pricing) so the
 // assistant can answer questions like "how do I register on this site" or
@@ -120,14 +121,19 @@ export async function POST(request: Request) {
 
   if (!apiKey) {
     const lastUserMessage = [...messages].reverse().find((message) => message.from === "user");
-    return NextResponse.json({ reply: getMockReply(lastUserMessage?.text ?? "", lang) });
+    return NextResponse.json({
+      reply: getMockReply(fixRussianKeyboardLayout(lastUserMessage?.text ?? ""), lang),
+    });
   }
 
   const openaiMessages = [
     { role: "system", content: SYSTEM_PROMPT + SITE_KNOWLEDGE + buildProfileContext(profile ?? null) },
     ...messages.map((message) => ({
       role: message.from === "user" ? "user" : "assistant",
-      content: message.text,
+      // Correct for users who typed Russian with the keyboard stuck on an
+      // English layout (e.g. "ghbdtn" -> "привет") before sending to the
+      // model, so it understands the intended message instead of gibberish.
+      content: message.from === "user" ? fixRussianKeyboardLayout(message.text) : message.text,
     })),
   ];
 
