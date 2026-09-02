@@ -273,10 +273,12 @@ export default function MedicinePage() {
     const list: string[] = [];
     for (const c of clinics) {
       const d = c.district?.trim();
-      // Some rows have junk in the district column (e.g. "Более 40 отделений
-      // по Варшаве") instead of an actual district name -- skip anything
-      // that isn't a plain place name.
-      if (!d || /\d/.test(d) || seen.has(d)) continue;
+      // Some rows have junk in the district column (e.g. "несколько филиалов
+      // в Кракове", "разные районы города") instead of an actual district
+      // name -- skip anything that isn't a plain place name. Real Polish
+      // district names are always Latin script, so any Cyrillic in the
+      // value is a reliable sign it's junk, not a place.
+      if (!d || /\d/.test(d) || /[а-яёіїєґ]/i.test(d) || seen.has(d)) continue;
       seen.add(d);
       list.push(d);
     }
