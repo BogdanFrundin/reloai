@@ -137,7 +137,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
   }
 
   return (
-    <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+    <div className="group relative flex flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -461,13 +461,18 @@ export default function EducationPage() {
         </div>
       )}
 
+      {/* items-start (not items-stretch) below: each card's "Подробнее"
+          panel can have wildly different amounts of content (programs,
+          docs, notes), so forcing every card in a row to match the tallest
+          one just left short cards with a big empty gap at the bottom --
+          letting each size to its own content looks proportional. */}
       <div className="mt-6">
         {loading ? (
           <p className="py-14 text-center text-sm text-text-muted">{t.guideCard.loading}</p>
         ) : items.length > 0 ? (
-          <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((row, i) => (
-              <Reveal key={row.id} delay={i * 40} className="h-full">
+              <Reveal key={row.id} delay={i * 40}>
                 <EduCard row={row} icon={TAB_ICONS[activeTab]} />
               </Reveal>
             ))}
