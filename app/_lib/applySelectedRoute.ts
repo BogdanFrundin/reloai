@@ -29,7 +29,20 @@ export async function applySelectedRoute({
   // below, so the notification wording matches what actually happened.
   const isFirstOnboarding = !profile?.selected_route;
 
-  await supabase.from("profiles").update({ selected_route: route, route_steps: route.steps ?? [] }).eq("id", userId);
+  const { error: saveError } = await supabase
+    .from("profiles")
+    .update({ selected_route: route, route_steps: route.steps ?? [] })
+    .eq("id", userId);
+  if (saveError) {
+    // This used to be fire-and-forget -- a failed write (bad RLS policy,
+    // schema drift, etc.) would silently leave selected_route unset while
+    // the rest of this function carried on as if it had saved, which is
+    // exactly the "I picked a route but /profile still says none chosen"
+    // bug this is fixing. Surface it so the caller's catch block shows the
+    // real error instead of pretending the save worked.
+    console.error("Failed to save selected_route:", saveError);
+    throw saveError;
+  }
 
   // Generate the user's real, personalized step-by-step plan right now (not
   // just the 3-option route summary) so it's already sitting on their
