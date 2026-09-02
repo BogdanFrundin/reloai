@@ -117,14 +117,17 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="group flex items-center gap-2">
+        {/* Plain <a>, not next/link's <Link> -- this needs a real full-page reload
+            that scrolls back to the top even when you're already on "/",
+            which client-side routing won't do on its own. */}
+        <a href="/" className="group flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-bright text-white font-bold shadow-[0_0_20px_-4px_var(--accent)] transition-transform duration-200 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105">
             R
           </span>
           <span className="text-lg font-semibold tracking-tight text-text-primary">
             ReloAI
           </span>
-        </Link>
+        </a>
 
         <div className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (
