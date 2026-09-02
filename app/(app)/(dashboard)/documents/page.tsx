@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../../../_components/Reveal";
 import RegisterPromptModal from "../../../_components/RegisterPromptModal";
 import SectionCompleteModal from "../../../_components/SectionCompleteModal";
+import AllDocumentsCompleteModal from "../../../_components/AllDocumentsCompleteModal";
 import DeleteConfirmModal from "../../../_components/DeleteConfirmModal";
 import UpgradeModal from "../../../_components/UpgradeModal";
 import DocumentUploadModal from "../../../_components/DocumentUploadModal";
@@ -122,6 +123,14 @@ const CATEGORY_TO_STEP: Record<string, string> = {
 function isCategoryComplete(docs: DocumentItem[], category: DocumentItem["category"]): boolean {
   const inCategory = docs.filter((doc) => doc.category === category && doc.status !== "locked");
   return inCategory.length > 0 && inCategory.every((doc) => doc.status !== "missing");
+}
+
+// Matches the definition used by the progress bar at the top of the page
+// (verifiedCount / totalCount) -- only counts docs that are fully approved,
+// not just "not missing" (pending review doesn't count as 100% yet).
+function isAllComplete(docs: DocumentItem[]): boolean {
+  const relevant = docs.filter((doc) => doc.status !== "locked");
+  return relevant.length > 0 && relevant.every((doc) => doc.status === "verified");
 }
 
 function DocumentRow({
@@ -279,6 +288,7 @@ export default function DocumentsPage() {
   const [promptOpen, setPromptOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [sectionCompleteOpen, setSectionCompleteOpen] = useState(false);
+  const [allCompleteOpen, setAllCompleteOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -290,6 +300,25 @@ export default function DocumentsPage() {
   // in DashboardProgressProvider from document_guides — the same source the
   // dashboard roadmap page reads — so both pages always agree.
   const { documentRoadmap, allGuides, documentGuidesLoading, completed, toggleStepCompletion } = useDashboardProgress();
+
+  // Deep-links from the dashboard roadmap ("Open" next to a step) point at
+  // /documents#guide-<id>. The guide list below renders from async-fetched
+  // data, so the target element doesn't exist yet at the moment Next.js
+  // would normally try to jump to the hash -- wait for guides to finish
+  // loading, then scroll to it ourselves and give it a brief highlight so
+  // it's obvious which row the button was pointing at.
+  useEffect(() => {
+    if (documentGuidesLoading) return;
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("animate-highlight-fade");
+    const clearHighlight = () => el.classList.remove("animate-highlight-fade");
+    el.addEventListener("animationend", clearHighlight, { once: true });
+    return () => el.removeEventListener("animationend", clearHighlight);
+  }, [documentGuidesLoading]);
 
   const guideCategories = useMemo(() => {
     const seen = new Set<string>();
@@ -433,7 +462,9 @@ export default function DocumentsPage() {
     const next = documents.map((d) => (d.id === id ? updated : d));
     setDocuments(next);
 
-    if (!isCategoryComplete(documents, doc.category) && isCategoryComplete(next, doc.category)) {
+    if (!isAllComplete(documents) && isAllComplete(next)) {
+      setAllCompleteOpen(true);
+    } else if (!isCategoryComplete(documents, doc.category) && isCategoryComplete(next, doc.category)) {
       setSectionCompleteOpen(true);
     }
     showAutoCompleteToast();
@@ -724,6 +755,7 @@ export default function DocumentsPage() {
       <RegisterPromptModal open={promptOpen} onClose={() => setPromptOpen(false)} />
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
       <SectionCompleteModal open={sectionCompleteOpen} onClose={() => setSectionCompleteOpen(false)} />
+      <AllDocumentsCompleteModal open={allCompleteOpen} onClose={() => setAllCompleteOpen(false)} />
       <DeleteConfirmModal
         open={deleteTargetId !== null}
         onClose={() => setDeleteTargetId(null)}

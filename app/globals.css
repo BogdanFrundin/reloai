@@ -168,6 +168,23 @@ body {
   animation: slide-up 0.4s var(--ease-out-strong) both;
 }
 
+/* Used to draw attention to a document/guide row that was deep-linked to
+   from elsewhere (e.g. the roadmap's "Open" button) -- holds a dim blue
+   wash for ~7s, then fades it back out over ~1.5s. */
+@keyframes highlight-fade {
+  0%,
+  82% {
+    background-color: var(--accent-light);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animate-highlight-fade {
+  animation: highlight-fade 8.5s ease-out forwards;
+}
+
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
