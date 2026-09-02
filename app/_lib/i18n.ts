@@ -385,6 +385,10 @@ export type Dictionary = {
     sectionCompleteHeading: string;
     sectionCompleteBody: string;
     sectionCompleteDismiss: string;
+    allCompleteHeading: string;
+    allCompleteBody: string;
+    allCompleteCta: string;
+    allCompleteDismiss: string;
     deleteConfirmTitle: string;
     deleteConfirmBody: string;
     cancelBtn: string;
@@ -1699,6 +1703,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Section complete!",
       sectionCompleteBody: "Move on to the next step.",
       sectionCompleteDismiss: "Continue",
+      allCompleteHeading: "🎉 Relocation plan complete!",
+      allCompleteBody: "All your documents are ready. You made it through the whole journey!",
+      allCompleteCta: "Go to dashboard",
+      allCompleteDismiss: "Close",
       deleteConfirmTitle: "Delete document?",
       deleteConfirmBody: "This action cannot be undone. The document will be permanently deleted.",
       cancelBtn: "Cancel",
@@ -3440,6 +3448,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Раздел завершён!",
       sectionCompleteBody: "Переходите к следующему шагу.",
       sectionCompleteDismiss: "Продолжить",
+      allCompleteHeading: "🎉 План переезда завершён!",
+      allCompleteBody: "Все документы готовы. Вы прошли весь путь!",
+      allCompleteCta: "На главную",
+      allCompleteDismiss: "Закрыть",
       deleteConfirmTitle: "Удалить документ?",
       deleteConfirmBody: "Это действие нельзя отменить. Документ будет удалён безвозвратно.",
       cancelBtn: "Отмена",
@@ -5178,6 +5190,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Bo'lim yakunlandi!",
       sectionCompleteBody: "Keyingi qadamga o'ting.",
       sectionCompleteDismiss: "Davom etish",
+      allCompleteHeading: "🎉 Ko'chish rejasi yakunlandi!",
+      allCompleteBody: "Barcha hujjatlaringiz tayyor. Siz butun yo'lni bosib o'tdingiz!",
+      allCompleteCta: "Bosh sahifaga",
+      allCompleteDismiss: "Yopish",
       deleteConfirmTitle: "Hujjatni o'chirasizmi?",
       deleteConfirmBody: "Bu amalni bekor qilib bo'lmaydi. Hujjat butunlay o'chiriladi.",
       cancelBtn: "Bekor qilish",
@@ -6913,6 +6929,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Bölüm tamamlandı!",
       sectionCompleteBody: "Sonraki adıma geçin.",
       sectionCompleteDismiss: "Devam et",
+      allCompleteHeading: "🎉 Taşınma planı tamamlandı!",
+      allCompleteBody: "Tüm belgeleriniz hazır. Bu yolu baştan sona tamamladınız!",
+      allCompleteCta: "Panele git",
+      allCompleteDismiss: "Kapat",
       deleteConfirmTitle: "Belge silinsin mi?",
       deleteConfirmBody: "Bu işlem geri alınamaz. Belge kalıcı olarak silinecektir.",
       cancelBtn: "İptal",
@@ -8648,6 +8668,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Бахш ба анҷом расид!",
       sectionCompleteBody: "Ба қадами навбатӣ гузаред.",
       sectionCompleteDismiss: "Идома",
+      allCompleteHeading: "🎉 Нақшаи кӯчиш ба анҷом расид!",
+      allCompleteBody: "Ҳамаи ҳуҷҷатҳои шумо омодаанд. Шумо тамоми масирро тай кардед!",
+      allCompleteCta: "Ба саҳифаи асосӣ",
+      allCompleteDismiss: "Пӯшидан",
       deleteConfirmTitle: "Ҳуҷҷат нест карда шавад?",
       deleteConfirmBody: "Ин амалро бекор кардан мумкин нест. Ҳуҷҷат абадӣ нест карда мешавад.",
       cancelBtn: "Бекор кардан",
@@ -10387,6 +10411,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       sectionCompleteHeading: "🎉 Розділ завершено!",
       sectionCompleteBody: "Переходьте до наступного кроку.",
       sectionCompleteDismiss: "Продовжити",
+      allCompleteHeading: "🎉 План переїзду завершено!",
+      allCompleteBody: "Усі документи готові. Ви пройшли весь шлях!",
+      allCompleteCta: "На головну",
+      allCompleteDismiss: "Закрити",
       deleteConfirmTitle: "Видалити документ?",
       deleteConfirmBody: "Цю дію не можна скасувати. Документ буде видалено безповоротно.",
       cancelBtn: "Скасувати",
