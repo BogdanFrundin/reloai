@@ -367,7 +367,7 @@ export default function MedicinePage() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 backdrop-blur-sm sm:p-5">
+        <div className="mt-4 rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 sm:p-5">
           <div className="flex items-start gap-3">
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
@@ -470,7 +470,7 @@ export default function MedicinePage() {
             label={t.helpButton.label}
           />
         </div>
-        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 sm:p-6">
           <ol className="space-y-4">
             {t.medicine.nfzSteps.map((step, index) => (
               <li key={step} className="flex items-start gap-4">
@@ -491,7 +491,7 @@ export default function MedicinePage() {
 
       <Reveal delay={130} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.emergencyTitle}</h2>
-        <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm sm:p-6">
+        <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
               {PHONE_ICON}
@@ -550,7 +550,7 @@ export default function MedicinePage() {
               href={`https://${site.url}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-start justify-between gap-3 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-colors duration-150 hover:border-accent/40 hover:bg-white/[0.05]"
+              className="group flex items-start justify-between gap-3 rounded-2xl border border-border-subtle bg-surface-1 p-5 transition-colors duration-150 hover:border-accent/40 hover:bg-white/[0.05]"
             >
               <div>
                 <p className="text-sm font-semibold text-accent-bright">{site.url}</p>
@@ -563,7 +563,7 @@ export default function MedicinePage() {
 
       <Reveal delay={190} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.medicine.dentalTitle}</h2>
-        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm sm:p-6">
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {TOOTH_ICON}
