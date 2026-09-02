@@ -274,6 +274,7 @@ export default function PhaseCard({
                 {(step.documentType === "documents" || step.linkToDocuments) && (
                   <Link
                     href={step.linkAnchor ? `/documents#${step.linkAnchor}` : "/documents"}
+                    scroll={false}
                     onClick={(event) => event.stopPropagation()}
                     className={
                       isNext
