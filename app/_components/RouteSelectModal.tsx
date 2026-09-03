@@ -64,12 +64,12 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="max-h-[95vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-6 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-8"
+        className="max-h-[95vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-4 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-5"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-text-primary">{t.onboarding.results.heading}</h2>
-            <p className="mt-1 text-sm text-text-muted">{t.profile.routeModalSubheading}</p>
+            <h2 className="text-lg font-bold text-text-primary">{t.onboarding.results.heading}</h2>
+            <p className="mt-0.5 text-xs text-text-muted">{t.profile.routeModalSubheading}</p>
           </div>
           <button
             type="button"
@@ -81,9 +81,9 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
           </button>
         </div>
 
-        {selectError && <p className="mt-4 text-sm text-red-400">{t.onboarding.results.selectError}</p>}
+        {selectError && <p className="mt-3 text-sm text-red-400">{t.onboarding.results.selectError}</p>}
 
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
           {routes.map((route) => (
             <RouteCard
               key={route.name}
