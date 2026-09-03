@@ -24,8 +24,9 @@ const INFO_ICON = (
 // the native `title` attribute, which only shows on mouse hover -- it does
 // nothing on click/tap, so on touch devices (and for anyone who clicks it
 // expecting something to happen) it just "doesn't work". This makes it an
-// actual toggleable popover, keeping `title` too as a hover fallback for
-// mouse users.
+// actual toggleable popover instead. No `title` attribute here -- with one,
+// clicking still triggers the browser's native hover tooltip a moment
+// later, showing both at once.
 function InfoTooltip({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
@@ -50,7 +51,6 @@ function InfoTooltip({ text }: { text: string }) {
     <span className="relative inline-flex" ref={ref}>
       <button
         type="button"
-        title={text}
         aria-expanded={open}
         aria-label={text}
         onClick={(event) => {
