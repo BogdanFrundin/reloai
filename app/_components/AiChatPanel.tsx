@@ -76,8 +76,24 @@ function detectAction(userText: string, plan: string | null | undefined): Messag
   return section ? { type: "section", href: SECTION_HREFS[section] } : undefined;
 }
 
+// The model is told not to use Markdown, but LLMs occasionally slip anyway
+// -- strip leftover syntax rather than showing raw '#'/'**' on screen, since
+// this UI only renders '- ' bullets specially and treats everything else as
+// plain text.
+function stripMarkdownSyntax(line: string): string {
+  return line
+    .replace(/^#{1,6}\s+/, "") // leading heading markers ("### Title" -> "Title")
+    .replace(/\*\*(.+?)\*\*/g, "$1") // **bold**
+    .replace(/__(.+?)__/g, "$1") // __bold__
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "$1") // *italic*
+    .replace(/`(.+?)`/g, "$1"); // `code`
+}
+
 function renderMessageBody(text: string): ReactNode {
-  const lines = text.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
+  const lines = text
+    .split("\n")
+    .map((line) => stripMarkdownSyntax(line.trim()))
+    .filter((line) => line.length > 0);
   const blocks: ReactNode[] = [];
   let bulletBuffer: string[] = [];
 

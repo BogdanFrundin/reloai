@@ -41,15 +41,51 @@ async function revealReply(
   return finalMessages;
 }
 
+// The model is told not to use Markdown, but LLMs occasionally slip anyway
+// -- strip leftover syntax rather than showing raw '#'/'**' on screen, since
+// this UI only renders '- ' bullets specially and treats everything else as
+// plain text.
+function stripMarkdownSyntax(line: string): string {
+  return line
+    .replace(/^#{1,6}\s+/, "") // leading heading markers ("### Title" -> "Title")
+    .replace(/\*\*(.+?)\*\*/g, "$1") // **bold**
+    .replace(/__(.+?)__/g, "$1") // __bold__
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "$1") // *italic*
+    .replace(/`(.+?)`/g, "$1"); // `code`
+}
+
 function renderMessageBody(text: string) {
-  const lines = text.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
-  return (
-    <div className="space-y-1.5">
-      {lines.map((line, i) => (
-        <p key={i}>{line}</p>
-      ))}
-    </div>
-  );
+  const lines = text
+    .split("\n")
+    .map((line) => stripMarkdownSyntax(line.trim()))
+    .filter((line) => line.length > 0);
+  const blocks: ReactNode[] = [];
+  let bulletBuffer: string[] = [];
+
+  function flushBullets() {
+    if (bulletBuffer.length === 0) return;
+    blocks.push(
+      <ul key={`ul-${blocks.length}`} className="list-disc space-y-1 pl-4">
+        {bulletBuffer.map((item, i) => (
+          <li key={i}>{item}</li>
+        ))}
+      </ul>,
+    );
+    bulletBuffer = [];
+  }
+
+  for (const line of lines) {
+    const bulletMatch = line.match(/^[-•*]\s+(.*)/);
+    if (bulletMatch) {
+      bulletBuffer.push(bulletMatch[1]);
+    } else {
+      flushBullets();
+      blocks.push(<p key={`p-${blocks.length}`}>{line}</p>);
+    }
+  }
+  flushBullets();
+
+  return <div className="space-y-1.5">{blocks}</div>;
 }
 
 function truncateTitle(text: string): string {
