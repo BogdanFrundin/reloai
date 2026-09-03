@@ -99,7 +99,7 @@ export function RouteCard({
           <p className="text-balance text-[10px] uppercase leading-tight tracking-wide text-white/35">
             {labels.results.approvalRate}
           </p>
-          <p className="mt-2 text-3xl font-extrabold leading-none text-accent-bright">{route.approval_rate}%</p>
+          <p className="mt-2 text-3xl font-semibold leading-none text-accent-bright">{route.approval_rate}%</p>
         </div>
         <div className="flex min-h-[104px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-1.5 py-3 text-center">
           <p className="text-balance text-[10px] uppercase leading-tight tracking-wide text-white/35">
@@ -133,16 +133,22 @@ export function RouteCard({
                 {step}
               </span>
             ))}
-            {!stepsExpanded && route.steps.length > 4 && (
+            {route.steps.length > 4 && (
               <button
                 type="button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  setStepsExpanded(true);
+                  setStepsExpanded((prev) => !prev);
                 }}
-                className="rounded-lg bg-white/[0.08] px-2 py-0.5 text-xs text-white/50 transition-colors duration-150 hover:bg-white/[0.15] hover:text-white/80"
+                className="flex items-center gap-1 rounded-lg bg-white/[0.08] px-2 py-0.5 text-xs text-white/50 transition-colors duration-150 hover:bg-white/[0.15] hover:text-white/80"
               >
-                +{route.steps.length - 4}
+                {stepsExpanded ? (
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 15l-6-6-6 6" />
+                  </svg>
+                ) : (
+                  `+${route.steps.length - 4}`
+                )}
               </button>
             )}
           </p>
