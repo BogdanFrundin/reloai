@@ -111,21 +111,27 @@ export function RouteCard({
         <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel} />
       </div>
 
-      {/* No fixed height here (used to be h-[116px] overflow-hidden, which
-          silently clipped mid-word for any route with more than ~4 steps --
-          e.g. a custom-generated route with 6-7 steps). Let it grow to fit
-          every step instead; the grid's items-stretch keeps cards in a row
-          the same height regardless. */}
+      {/* A route can have anywhere from 4 to 9+ steps, so showing every one
+          made cards wildly different heights (items-stretch just filled the
+          shorter cards with dead space instead). Cap the preview at 4 and
+          show a "+N" chip for the rest, same pattern as the program chips
+          on the education cards -- keeps all three cards in a row visually
+          even regardless of how long the underlying route actually is. */}
       {route.steps && route.steps.length > 0 && (
-        <div className="mt-4 rounded-2xl bg-white/[0.04] p-3.5">
+        <div className="mt-4 min-h-[92px] rounded-2xl bg-white/[0.04] p-3.5">
           <p className="text-xs text-white/40">{labels.results.steps}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-white/80">
-            {route.steps.map((step, index) => (
+            {route.steps.slice(0, 4).map((step, index) => (
               <span key={step} className="flex items-center gap-1.5">
                 {index > 0 && <span className="text-white/25">→</span>}
                 {step}
               </span>
             ))}
+            {route.steps.length > 4 && (
+              <span className="rounded-lg bg-white/[0.08] px-2 py-0.5 text-xs text-white/50">
+                +{route.steps.length - 4}
+              </span>
+            )}
           </p>
         </div>
       )}
