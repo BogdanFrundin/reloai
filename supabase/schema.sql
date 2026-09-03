@@ -14,6 +14,7 @@ create table public.profiles (
   citizenship text,
   citizenship_group text,
   ukraine_scenario text,
+  belarus_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -45,6 +46,7 @@ create table public.profiles (
 alter table public.profiles add column if not exists citizenship text;
 alter table public.profiles add column if not exists citizenship_group text;
 alter table public.profiles add column if not exists ukraine_scenario text;
+alter table public.profiles add column if not exists belarus_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -78,6 +80,14 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- (already in Poland, renewing/sorting out documents). Asked as its own onboarding step
 -- right after citizenship — see app/onboarding/page.tsx and app/_lib/routeEngine.ts, which
 -- generates a completely different route set per scenario.
+-- belarus_scenario is only meaningful when citizenship = "BY": "self" (relocating
+-- independently — visa D required for every goal, there's no visa-free entry at all for
+-- Belarus), "already_status" (already in Poland, holds a karta pobytu or valid visa D —
+-- goes through the normal renewal routes), or "already_no_status" (already in Poland on a
+-- short-stay visa C with no residence status yet — skips goal selection entirely and gets
+-- the Путь 1 / Путь 2 legalization-without-leaving routes instead). Asked as its own
+-- onboarding step right after citizenship — see app/onboarding/page.tsx and
+-- app/_lib/routeEngine.ts.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

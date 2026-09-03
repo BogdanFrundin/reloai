@@ -391,7 +391,564 @@ function specsForGroupA(goal: Goal, ukraineScenario: UkraineScenario | null | un
   }
 }
 
-function specsForGroupB(goal: Goal, hasJobOffer: boolean): RouteSpec[] {
+// Belarus (also citizenship_group B) gets its own branch for the same reason
+// Ukraine does: the source guide for Belarus is materially different from
+// the generic Group B rules — there is NO visa-free entry into Poland at all
+// for any goal (unlike some other Group B countries), oświadczenie is valid
+// for Belarusian citizens, and there's a genuinely different "already in
+// Poland" split: holders of a karta pobytu/visa D go through ordinary
+// renewal, but people who entered on a short-stay visa C with no residence
+// status yet get an entirely different "legalize without leaving" pair of
+// routes instead of the usual goal-based flow. See the "belarusScenario"
+// onboarding step and app/onboarding/page.tsx's computeStepOrder(), which
+// skips goal selection entirely for the no-status case.
+export type BelarusScenario = "self" | "already_status" | "already_no_status";
+
+// "Уже в Польше" + karta pobytu/visa D already held — ordinary renewal, and
+// (per the source guide) goal-independent just like Ukraine's "already" case.
+function specsForBelarusAlreadyStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше с картой побыту/визой D — продление и приведение в порядок документов", [
+    {
+      steps: ["Проверить срок карты побыту", "Подать на продление карты побыту"],
+      timeline: "1 день на подачу",
+      cost: "€80",
+      probability: 95,
+    },
+    {
+      steps: ["Проверить срок карты побыту", "Обновить мелдунок", "Декларация PIT", "Проверить NIP и ZUS"],
+      timeline: "1-2 недели",
+      cost: "€80-150",
+      probability: 90,
+    },
+    {
+      steps: [
+        "Проверить/продлить карту побыту",
+        "Обновить все данные",
+        "Декларация PIT",
+        "Нострификация диплома",
+        "Постоянная карта побыту",
+      ],
+      timeline: "3-12 месяцев",
+      cost: "€150-400",
+      probability: 85,
+    },
+  ]);
+}
+
+// "Уже в Польше" на туристической визе C, статуса ещё нет — легализация без
+// выезда. Источник даёт 2 реальных пути (не 3 уровня одного пути): Путь 1
+// (ИП, без выезда) и Путь 2 (работа по найму через работодателя, с выездом
+// за визой D). Оба уложены в 3 тира — быстрый/расширенный вариант Пути 1 и
+// Путь 2 как самый основательный (и самый долгий/дорогой) вариант — так это
+// остаётся goal-independent (выбор цели вообще пропускается для этой ветки).
+function specsForBelarusNoStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше без статуса (виза C) — легализация без выезда из страны", [
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)"],
+      timeline: "1-2 дня",
+      cost: "€0-50",
+      probability: 85,
+    },
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)", "NIP + карта побыту (бизнес)"],
+      timeline: "2-6 недель до истечения визы C",
+      cost: "€100-300",
+      probability: 80,
+    },
+    {
+      steps: [
+        "Работодатель регистрирует oświadczenie",
+        "Выезд за визой D (Минск/Брест/Гродно по региону)",
+        "Возвращение в Польшу и легализация (PESEL, ZUS, NFZ, карта побыту)",
+      ],
+      timeline: "5-9 недель (включая поездку)",
+      cost: "€200-400",
+      probability: 75,
+    },
+  ]);
+}
+
+const BY_SELF_SUITABLE_FOR: Record<Goal, string> = {
+  work: "Работа по найму — самостоятельный переезд из Беларуси",
+  study: "Обучение в польском университете — самостоятельный переезд из Беларуси",
+  business: "Открытие бизнеса — самостоятельный переезд из Беларуси",
+  family: "Воссоединение с семьёй — самостоятельный переезд из Беларуси",
+  remote: "Удалённая работа из Польши — самостоятельный переезд из Беларуси",
+  savings: "Переезд на собственные средства — самостоятельный переезд из Беларуси",
+  other: "Другие цели пребывания — самостоятельный переезд из Беларуси",
+};
+
+// "Переезжаю сам" (Сценарий 1). Безвизового въезда нет ни для одной цели —
+// виза D нужна всегда, поэтому (в отличие от общего Group B) её нет смысла
+// делать общим шагом с другими странами: пошлина ниже (60 EUR вместо 80),
+// консульство определяется по региону (Минск/Брест/Гродно), а банковский шаг
+// явно указывает ZEN.com/Wise, потому что Revolut требует NIP и может
+// отказывать держателям белорусских паспортов.
+function specsForBelarusSelf(goal: Goal, hasJobOffer: boolean): RouteSpec[] {
+  const suitableFor = BY_SELF_SUITABLE_FOR[goal];
+  switch (goal) {
+    case "work":
+      return hasJobOffer
+        ? threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Виза D (рабочая)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа без разрешения (oświadczenie)",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "3-5 месяцев",
+              cost: "€300-600",
+              probability: 82,
+            },
+            {
+              steps: [
+                "Виза D (рабочая)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа без разрешения (oświadczenie)",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "4-6 месяцев",
+              cost: "€400-800",
+              probability: 80,
+            },
+            {
+              steps: [
+                "Виза D (рабочая)",
+                "Страховка для визы",
+                "Апостиль",
+                "Перевод документов",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа без разрешения (oświadczenie)",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+                "Продление oświadczenia / zezwolenie na pracę",
+                "Нострификация диплома",
+              ],
+              timeline: "5-8 месяцев",
+              cost: "€500-1200",
+              probability: 75,
+            },
+          ])
+        : threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Виза D",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Поиск работы",
+              ],
+              timeline: "3-5 месяцев",
+              cost: "€300-600",
+              probability: 70,
+            },
+            {
+              steps: [
+                "Виза D",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Поиск работы",
+                "Работа без разрешения (oświadczenie)",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "5-8 месяцев",
+              cost: "€500-900",
+              probability: 65,
+            },
+            {
+              steps: [
+                "Виза D",
+                "Страховка для визы",
+                "Апостиль",
+                "Перевод документов",
+                "SIM карта",
+                "Аренда жилья",
+                "Мелдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Поиск работы",
+                "Работа без разрешения (oświadczenie)",
+                "NIP",
+                "ZUS",
+                "NFZ",
+                "Карта побыту",
+                "Нострификация диплома",
+              ],
+              timeline: "6-10 месяцев",
+              cost: "€700-1500",
+              probability: 60,
+            },
+          ]);
+    case "study":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+            "Нострификация диплома",
+            "Карта ISIC",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 80,
+        },
+      ]);
+    case "business":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (бизнес)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+          ],
+          timeline: "5-7 недель",
+          cost: "€150-350",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (бизнес)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€300-550",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (бизнес)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Счёт для бизнеса (mBank)",
+            "Регистрация ООО",
+            "NIP",
+            "REGON",
+            "VAT",
+            "Карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€600-1500",
+          probability: 75,
+        },
+      ]);
+    case "family":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D по Карте поляка (бесплатно)",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Карта побыту по Карте поляка",
+          ],
+          timeline: "2-3 месяца",
+          cost: "€100-250",
+          probability: 90,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+            "Документы детей школа/садик",
+            "Постоянная карта побыту",
+          ],
+          timeline: "4-6 месяцев",
+          cost: "€400-900",
+          probability: 78,
+        },
+      ]);
+    case "remote":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (на основании дохода)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "VAT",
+            "Карта побыту",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-700",
+          probability: 75,
+        },
+      ]);
+    case "savings":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (достаточные средства)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+          ],
+          timeline: "4-6 недель",
+          cost: "€200-350",
+          probability: 75,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€350-650",
+          probability: 70,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+            "NFZ (добровольно через ZUS)",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€550-1500",
+          probability: 65,
+        },
+      ]);
+    case "other":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: ["Виза D", "Страховка для визы", "SIM карта", "Аренда жилья", "Мелдунок", "PESEL", "Банк (ZEN.com/Wise)"],
+          timeline: "3-5 недель",
+          cost: "€100-200",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Виза D",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D",
+            "Страховка для визы",
+            "Апостиль",
+            "Перевод документов",
+            "SIM карта",
+            "Аренда жилья",
+            "Мелдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+            "NFZ",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 75,
+        },
+      ]);
+  }
+}
+
+function specsForBelarus(goal: Goal, hasJobOffer: boolean, belarusScenario: BelarusScenario | null | undefined): RouteSpec[] {
+  switch (belarusScenario) {
+    case "already_status":
+      return specsForBelarusAlreadyStatus();
+    case "already_no_status":
+      return specsForBelarusNoStatus();
+    case "self":
+    default:
+      // Same reasoning as Ukraine's default: an unanswered/older-account
+      // scenario defaults to "self" rather than one of the "already in
+      // Poland" branches, since defaulting to those would tell someone to
+      // renew a card or take a no-status shortcut they may not actually be
+      // eligible for.
+      return specsForBelarusSelf(goal, hasJobOffer);
+  }
+}
+
+function specsForGroupB(
+  goal: Goal,
+  hasJobOffer: boolean,
+  citizenship: string | null | undefined,
+  belarusScenario: BelarusScenario | null | undefined,
+): RouteSpec[] {
+  if (citizenship === "BY") {
+    return specsForBelarus(goal, hasJobOffer, belarusScenario);
+  }
   switch (goal) {
     case "work":
       return hasJobOffer
@@ -715,9 +1272,11 @@ function specsForGoal(
   citizenshipGroup: CitizenshipGroup | null | undefined,
   hasJobOffer: boolean,
   ukraineScenario: UkraineScenario | null | undefined,
+  citizenship: string | null | undefined,
+  belarusScenario: BelarusScenario | null | undefined,
 ): RouteSpec[] {
   return citizenshipGroup === "B"
-    ? specsForGroupB(goal, hasJobOffer)
+    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario)
     : citizenshipGroup === "C" || citizenshipGroup === "D"
       ? specsForGroupCD(goal)
       : specsForGroupA(goal, ukraineScenario);
@@ -821,14 +1380,24 @@ export function generateRoutes(input: {
   goals: string[] | null | undefined;
   hasJobOffer: boolean;
   ukraineScenario?: string | null;
+  citizenship?: string | null;
+  belarusScenario?: string | null;
 }): Route[] {
   const goals = normalizeGoals(input.goals);
   const ukraineScenario: UkraineScenario | null =
     input.ukraineScenario === "protection" || input.ukraineScenario === "self" || input.ukraineScenario === "already"
       ? input.ukraineScenario
       : null;
+  const belarusScenario: BelarusScenario | null =
+    input.belarusScenario === "self" ||
+    input.belarusScenario === "already_status" ||
+    input.belarusScenario === "already_no_status"
+      ? input.belarusScenario
+      : null;
 
-  const specsPerGoal = goals.map((goal) => specsForGoal(goal, input.citizenshipGroup, input.hasJobOffer, ukraineScenario));
+  const specsPerGoal = goals.map((goal) =>
+    specsForGoal(goal, input.citizenshipGroup, input.hasJobOffer, ukraineScenario, input.citizenship, belarusScenario),
+  );
   // threeTierSpecs() already guarantees exactly 3 tiers per goal — no
   // slice() needed, and none should ever be dropped here (that was the
   // source of the earlier "only 1 route" bug for citizenship groups C/D).

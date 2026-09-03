@@ -884,6 +884,7 @@ export type Dictionary = {
       language: { question: string; subheading: string };
       citizenship: { question: string; subheading: string };
       ukraineScenario: { question: string; subheading: string };
+      belarusScenario: { question: string; subheading: string };
       currentCountry: { question: string; subheading: string };
       destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
@@ -931,6 +932,7 @@ export type Dictionary = {
     };
     hasCarOptions: { yes: string; no: string };
     ukraineScenarioOptions: { protection: string; self: string; already: string };
+    belarusScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
     results: {
       heading: string;
       loading: string;
@@ -2606,6 +2608,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
         citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
         ukraineScenario: { question: "Which of these applies to you?", subheading: "Temporary protection and self-relocation follow very different legal tracks in Poland." },
+        belarusScenario: { question: "Which of these applies to you?", subheading: "There's no visa-free entry to Poland for Belarusian citizens at all — the right track depends on where you are in the process." },
         currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         goal: { question: "What's your main goal?", subheading: "You can pick more than one — this decides which pathways we'll analyze for you." },
@@ -2680,6 +2683,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "I have (or am applying for) temporary protection / UKR status",
         self: "I'm relocating on my own — not as a refugee",
         already: "I'm already in Poland and need to renew or sort out my documents",
+      },
+      belarusScenarioOptions: {
+        self: "I'm relocating on my own from Belarus",
+        alreadyStatus: "I'm already in Poland and hold a karta pobytu or valid visa D",
+        alreadyNoStatus: "I'm already in Poland on a short-stay visa C and don't have residence status yet",
       },
       results: {
         heading: "We found 3 relocation routes for you!",
@@ -4357,6 +4365,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
         citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
         ukraineScenario: { question: "Какой из вариантов вам подходит?", subheading: "Временная защита и самостоятельный переезд — совсем разные юридические пути в Польше." },
+        belarusScenario: { question: "Какой из вариантов вам подходит?", subheading: "Безвизового въезда в Польшу для граждан Беларуси нет вообще — нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
         currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         goal: { question: "Какова ваша основная цель?", subheading: "Можно выбрать сразу несколько — это определит, какие пути мы для вас проанализируем." },
@@ -4431,6 +4440,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "У меня есть (или оформляю) временная защита / статус UKR",
         self: "Переезжаю самостоятельно — не как беженец",
         already: "Уже в Польше, нужно продлить или привести в порядок документы",
+      },
+      belarusScenarioOptions: {
+        self: "Переезжаю самостоятельно из Беларуси",
+        alreadyStatus: "Уже в Польше, есть карта побыту или действующая виза D",
+        alreadyNoStatus: "Уже в Польше по краткосрочной визе C, статуса ещё нет",
       },
       results: {
         heading: "Мы нашли 3 маршрута переезда для вас!",
@@ -6103,6 +6117,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
         citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
         ukraineScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Vaqtinchalik himoya va mustaqil ko'chish Polshada butunlay boshqa huquqiy yo'llardir." },
+        belarusScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Belarus fuqarolari uchun Polshaga vizasiz kirish umuman yo'q — kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
         currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bir nechtasini tanlashingiz mumkin — bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
@@ -6173,6 +6188,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "Vaqtinchalik himoya / UKR statusim bor (yoki rasmiylashtiryapman)",
         self: "Mustaqil ko'chib o'tyapman — qochqin sifatida emas",
         already: "Allaqachon Polshadaman, hujjatlarni yangilash yoki tartibga solish kerak",
+      },
+      belarusScenarioOptions: {
+        self: "Belarusdan mustaqil ko'chib o'tyapman",
+        alreadyStatus: "Allaqachon Polshadaman, karta pobytu yoki amaldagi D vizam bor",
+        alreadyNoStatus: "Allaqachon Polshadaman, qisqa muddatli C vizasi bilan, hali statusim yo'q",
       },
       hasCarOptions: {
         yes: "Ha — o'z avtomobilimni olib boraman",
@@ -7848,6 +7868,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
         citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
         ukraineScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Geçici koruma ve kendi başına taşınma Polonya'da tamamen farklı hukuki yollardır." },
+        belarusScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Belarus vatandaşları için Polonya'ya vizesiz giriş hiç yok — doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
         currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Birden fazla seçebilirsiniz — bu, sizin için hangi yolları analiz edeceğimizi belirler." },
@@ -7922,6 +7943,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "Geçici koruma / UKR statüm var (ya da başvuruyorum)",
         self: "Kendi başıma taşınıyorum — mülteci olarak değil",
         already: "Zaten Polonya'dayım, belgelerimi yenilemem veya düzenlemem gerekiyor",
+      },
+      belarusScenarioOptions: {
+        self: "Belarus'tan kendi başıma taşınıyorum",
+        alreadyStatus: "Zaten Polonya'dayım, karta pobytu veya geçerli D vizem var",
+        alreadyNoStatus: "Zaten Polonya'dayım, kısa süreli C vizesiyle, henüz statüm yok",
       },
       results: {
         heading: "Sizin için 3 taşınma yolu bulduk!",
@@ -9593,6 +9619,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
         citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
         ukraineScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Ҳимояи муваққатӣ ва кӯчидани мустақилона роҳҳои комилан гуногуни ҳуқуқӣ дар Полша мебошанд." },
+        belarusScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Барои шаҳрвандони Беларус вуруди бидуни виза ба Полша тамоман вуҷуд надорад — роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
         currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Шумо метавонед якчанд ҳадафро интихоб кунед — ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
@@ -9667,6 +9694,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "Ман ҳимояи муваққатӣ / статуси UKR дорам (ё дархост карда истодаам)",
         self: "Мустақилона кӯчида истодаам — на ҳамчун гурезаи ҷангӣ",
         already: "Аллакай дар Полша ҳастам, лозим аст ҳуҷҷатҳоямро нав кунам ё тартиб диҳам",
+      },
+      belarusScenarioOptions: {
+        self: "Мустақилона аз Беларус кӯчида истодаам",
+        alreadyStatus: "Аллакай дар Полша ҳастам, карта побыту ё визаи D-и амалкунанда дорам",
+        alreadyNoStatus: "Аллакай дар Полша ҳастам бо визаи кӯтоҳмуддати C, статус ҳанӯз надорам",
       },
       results: {
         heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем!",
@@ -11344,6 +11376,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         language: { question: "Оберіть мову", subheading: "ReloAI спілкуватиметься з вами цією мовою." },
         citizenship: { question: "Яке у вас громадянство?", subheading: "Допоможе визначити відповідну візову категорію." },
         ukraineScenario: { question: "Який із варіантів вам підходить?", subheading: "Тимчасовий захист і самостійний переїзд — зовсім різні юридичні шляхи в Польщі." },
+        belarusScenario: { question: "Який із варіантів вам підходить?", subheading: "Безвізового в'їзду до Польщі для громадян Білорусі немає взагалі — потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
         currentCountry: { question: "У якій країні ви зараз перебуваєте?", subheading: "Дозволить адаптувати наступні кроки під ваше поточне місцезнаходження." },
         destination: { question: "Куди ви переїжджаєте?", subheading: "Ми адаптуємо ваш план під цю країну." },
         goal: { question: "Яка ваша основна мета?", subheading: "Можна обрати декілька — це визначить, які шляхи ми для вас проаналізуємо." },
@@ -11418,6 +11451,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         protection: "У мене є (або оформлюю) тимчасовий захист / статус UKR",
         self: "Переїжджаю самостійно — не як біженець",
         already: "Вже в Польщі, потрібно продовжити або привести в порядок документи",
+      },
+      belarusScenarioOptions: {
+        self: "Переїжджаю самостійно з Білорусі",
+        alreadyStatus: "Вже в Польщі, є карта побиту або чинна віза D",
+        alreadyNoStatus: "Вже в Польщі за короткостроковою візою C, статусу ще немає",
       },
       results: {
         heading: "Ми знайшли 3 маршрути переїзду для вас!",

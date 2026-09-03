@@ -37,6 +37,8 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
         goals: profile.goals?.length ? profile.goals : profile.goal ? [profile.goal] : null,
         hasJobOffer: profile.job_offer === "yes",
         ukraineScenario: profile.ukraine_scenario,
+        citizenship: profile.citizenship,
+        belarusScenario: profile.belarus_scenario,
       })
     : [];
 

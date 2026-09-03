@@ -33,6 +33,7 @@ type RouteRequestBody = {
   job_offer?: string;
   has_job_offer?: boolean;
   ukraine_scenario?: string;
+  belarus_scenario?: string;
 };
 
 // Deterministic, rule-based route generation — see app/_lib/routeEngine.ts.
@@ -46,6 +47,13 @@ export async function POST(request: Request) {
   const hasJobOffer = body.has_job_offer ?? body.job_offer === "yes";
 
   const goals = body.goals?.length ? body.goals : body.goal ? [body.goal] : [];
-  const routes = generateRoutes({ citizenshipGroup: group, goals, hasJobOffer, ukraineScenario: body.ukraine_scenario });
+  const routes = generateRoutes({
+    citizenshipGroup: group,
+    goals,
+    hasJobOffer,
+    ukraineScenario: body.ukraine_scenario,
+    citizenship: body.citizenship,
+    belarusScenario: body.belarus_scenario,
+  });
   return NextResponse.json({ routes } satisfies RouteEngineResult);
 }
