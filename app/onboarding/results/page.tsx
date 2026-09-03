@@ -72,6 +72,7 @@ export default function OnboardingResultsPage() {
           citizenshipGroup: profile.citizenship_group as CitizenshipGroup | null,
           goals: profile.goals?.length ? profile.goals : profile.goal ? [profile.goal] : null,
           hasJobOffer: profile.job_offer === "yes",
+          ukraineScenario: profile.ukraine_scenario,
         })
       : null;
 

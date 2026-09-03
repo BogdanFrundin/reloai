@@ -883,6 +883,7 @@ export type Dictionary = {
     steps: {
       language: { question: string; subheading: string };
       citizenship: { question: string; subheading: string };
+      ukraineScenario: { question: string; subheading: string };
       currentCountry: { question: string; subheading: string };
       destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
@@ -929,6 +930,7 @@ export type Dictionary = {
       exploring: string;
     };
     hasCarOptions: { yes: string; no: string };
+    ukraineScenarioOptions: { protection: string; self: string; already: string };
     results: {
       heading: string;
       loading: string;
@@ -2603,6 +2605,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Choose your language", subheading: "ReloAI will speak with you in this language." },
         citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
+        ukraineScenario: { question: "Which of these applies to you?", subheading: "Temporary protection and self-relocation follow very different legal tracks in Poland." },
         currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         goal: { question: "What's your main goal?", subheading: "You can pick more than one — this decides which pathways we'll analyze for you." },
@@ -2672,6 +2675,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       hasCarOptions: {
         yes: "Yes — bringing my own car",
         no: "No — no car",
+      },
+      ukraineScenarioOptions: {
+        protection: "I have (or am applying for) temporary protection / UKR status",
+        self: "I'm relocating on my own — not as a refugee",
+        already: "I'm already in Poland and need to renew or sort out my documents",
       },
       results: {
         heading: "We found 3 relocation routes for you!",
@@ -4348,6 +4356,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Выберите язык", subheading: "ReloAI будет общаться с вами на этом языке." },
         citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
+        ukraineScenario: { question: "Какой из вариантов вам подходит?", subheading: "Временная защита и самостоятельный переезд — совсем разные юридические пути в Польше." },
         currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         goal: { question: "Какова ваша основная цель?", subheading: "Можно выбрать сразу несколько — это определит, какие пути мы для вас проанализируем." },
@@ -4417,6 +4426,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       hasCarOptions: {
         yes: "Да — везу свой автомобиль",
         no: "Нет — автомобиля нет",
+      },
+      ukraineScenarioOptions: {
+        protection: "У меня есть (или оформляю) временная защита / статус UKR",
+        self: "Переезжаю самостоятельно — не как беженец",
+        already: "Уже в Польше, нужно продлить или привести в порядок документы",
       },
       results: {
         heading: "Мы нашли 3 маршрута переезда для вас!",
@@ -6088,6 +6102,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Tilni tanlang", subheading: "ReloAI siz bilan shu tilda gaplashadi." },
         citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
+        ukraineScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Vaqtinchalik himoya va mustaqil ko'chish Polshada butunlay boshqa huquqiy yo'llardir." },
         currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bir nechtasini tanlashingiz mumkin — bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
@@ -6153,6 +6168,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         months6: "6 oy ichida",
         year1: "Bir yil ichida",
         exploring: "Shunchaki variantlarni o'rganyapman",
+      },
+      ukraineScenarioOptions: {
+        protection: "Vaqtinchalik himoya / UKR statusim bor (yoki rasmiylashtiryapman)",
+        self: "Mustaqil ko'chib o'tyapman — qochqin sifatida emas",
+        already: "Allaqachon Polshadaman, hujjatlarni yangilash yoki tartibga solish kerak",
       },
       hasCarOptions: {
         yes: "Ha — o'z avtomobilimni olib boraman",
@@ -7827,6 +7847,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Dilinizi seçin", subheading: "ReloAI sizinle bu dilde konuşacak." },
         citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
+        ukraineScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Geçici koruma ve kendi başına taşınma Polonya'da tamamen farklı hukuki yollardır." },
         currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Birden fazla seçebilirsiniz — bu, sizin için hangi yolları analiz edeceğimizi belirler." },
@@ -7896,6 +7917,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       hasCarOptions: {
         yes: "Evet — kendi arabamı getiriyorum",
         no: "Hayır — arabam yok",
+      },
+      ukraineScenarioOptions: {
+        protection: "Geçici koruma / UKR statüm var (ya da başvuruyorum)",
+        self: "Kendi başıma taşınıyorum — mülteci olarak değil",
+        already: "Zaten Polonya'dayım, belgelerimi yenilemem veya düzenlemem gerekiyor",
       },
       results: {
         heading: "Sizin için 3 taşınma yolu bulduk!",
@@ -9566,6 +9592,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Забони худро интихоб кунед", subheading: "ReloAI бо шумо ба ин забон гап мезанад." },
         citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
+        ukraineScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Ҳимояи муваққатӣ ва кӯчидани мустақилона роҳҳои комилан гуногуни ҳуқуқӣ дар Полша мебошанд." },
         currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Шумо метавонед якчанд ҳадафро интихоб кунед — ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
@@ -9635,6 +9662,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       hasCarOptions: {
         yes: "Ҳа — мошини худро мебарам",
         no: "Не — мошин надорам",
+      },
+      ukraineScenarioOptions: {
+        protection: "Ман ҳимояи муваққатӣ / статуси UKR дорам (ё дархост карда истодаам)",
+        self: "Мустақилона кӯчида истодаам — на ҳамчун гурезаи ҷангӣ",
+        already: "Аллакай дар Полша ҳастам, лозим аст ҳуҷҷатҳоямро нав кунам ё тартиб диҳам",
       },
       results: {
         heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем!",
@@ -11311,6 +11343,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       steps: {
         language: { question: "Оберіть мову", subheading: "ReloAI спілкуватиметься з вами цією мовою." },
         citizenship: { question: "Яке у вас громадянство?", subheading: "Допоможе визначити відповідну візову категорію." },
+        ukraineScenario: { question: "Який із варіантів вам підходить?", subheading: "Тимчасовий захист і самостійний переїзд — зовсім різні юридичні шляхи в Польщі." },
         currentCountry: { question: "У якій країні ви зараз перебуваєте?", subheading: "Дозволить адаптувати наступні кроки під ваше поточне місцезнаходження." },
         destination: { question: "Куди ви переїжджаєте?", subheading: "Ми адаптуємо ваш план під цю країну." },
         goal: { question: "Яка ваша основна мета?", subheading: "Можна обрати декілька — це визначить, які шляхи ми для вас проаналізуємо." },
@@ -11380,6 +11413,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       hasCarOptions: {
         yes: "Так — везу свій автомобіль",
         no: "Ні — автомобіля немає",
+      },
+      ukraineScenarioOptions: {
+        protection: "У мене є (або оформлюю) тимчасовий захист / статус UKR",
+        self: "Переїжджаю самостійно — не як біженець",
+        already: "Вже в Польщі, потрібно продовжити або привести в порядок документи",
       },
       results: {
         heading: "Ми знайшли 3 маршрути переїзду для вас!",

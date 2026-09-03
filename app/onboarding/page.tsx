@@ -27,6 +27,13 @@ type Option = {
 type Answers = {
   language?: string;
   citizenship?: string;
+  // Only asked (and only meaningful) when citizenship === "UA" — see
+  // computeStepOrder(). Determines which of the 3 very different Ukraine
+  // legal tracks routeEngine.ts should generate: "protection" (temporary
+  // protection / UKR status), "self" (relocating independently, NOT a
+  // refugee — gets a regular PESEL, not PESEL UKR), or "already" (already
+  // in Poland, needs to renew/sort out existing documents).
+  ukraineScenario?: string;
   currentCountry?: string;
   destination?: string;
   // Multi-select: a user can pick more than one goal (e.g. "Бизнес" +
@@ -52,6 +59,7 @@ type ProfileFields = {
   language?: string;
   citizenship?: string;
   citizenship_group?: string | null;
+  ukraine_scenario?: string | null;
   current_country?: string;
   country?: string;
   // goal always mirrors goals[0] — kept in sync for every place that still
@@ -79,6 +87,7 @@ type ProfileFields = {
 const ALL_STEP_KEYS = [
   "language",
   "citizenship",
+  "ukraineScenario",
   "currentCountry",
   "destination",
   "goal",
@@ -96,6 +105,7 @@ const ALL_STEP_KEYS = [
 type StepKey = (typeof ALL_STEP_KEYS)[number];
 
 type DynamicStepKey =
+  | "ukraineScenario"
   | "jobOffer"
   | "universityAccepted"
   | "studyLevel"
@@ -108,6 +118,7 @@ type DynamicStepKey =
   | "hasCar";
 
 const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
+  "ukraineScenario",
   "jobOffer",
   "universityAccepted",
   "studyLevel",
@@ -129,6 +140,7 @@ function isDynamicStep(key: StepKey): key is DynamicStepKey {
 // already_admitted answers (see ProfileFields) instead of introducing
 // duplicate columns.
 const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
+  ukraineScenario: "ukraineScenario",
   jobOffer: "jobOffer",
   universityAccepted: "alreadyAdmitted",
   studyLevel: "studyLevel",
@@ -142,6 +154,7 @@ const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
 };
 
 const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
+  ukraineScenario: "ukraine_scenario",
   jobOffer: "job_offer",
   universityAccepted: "already_admitted",
   studyLevel: "study_level",
@@ -180,8 +193,14 @@ function stepsForGoal(goal: string): StepKey[] {
   }
 }
 
-function computeStepOrder(goals: string[] | undefined): StepKey[] {
-  const base: StepKey[] = ["language", "citizenship", "currentCountry", "destination", "goal"];
+function computeStepOrder(goals: string[] | undefined, citizenship: string | undefined): StepKey[] {
+  // The Ukraine scenario question only makes sense (and only exists in
+  // routeEngine.ts) for citizenship === "UA" — temporary protection vs.
+  // self-relocation vs. already-in-Poland are Ukraine-specific legal tracks,
+  // not something any other citizenship needs to answer.
+  const base: StepKey[] = citizenship === "UA"
+    ? ["language", "citizenship", "ukraineScenario", "currentCountry", "destination", "goal"]
+    : ["language", "citizenship", "currentCountry", "destination", "goal"];
   const dynamic = (goals ?? []).flatMap(stepsForGoal);
 
   return [...base, ...dynamic, "timeline", "hasCar"];
@@ -261,6 +280,18 @@ const CLOCK_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75v5.25l3.5 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
+// Shield — represents the legal-protection status (temporary protection /
+// UKR), distinct from the other icons reused for the other two options.
+const SHIELD_ICON = (
+  <svg {...ICON_PROPS}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 3l7 3v5.5c0 4.5-3 8.5-7 9.5-4-1-7-5-7-9.5V6l7-3z"
+    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
+  </svg>
+);
 const CAR_ICON = (
   <svg {...ICON_PROPS}>
     <path
@@ -320,6 +351,7 @@ export default function OnboardingPage() {
       willRegisterIp: profile.will_register_ip ?? undefined,
       timeline: profile.timeline ?? undefined,
       hasCar: profile.has_car ?? undefined,
+      ukraineScenario: profile.ukraine_scenario ?? undefined,
     };
     const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
       (ALL_STEP_KEYS as readonly string[]).includes(key),
@@ -331,7 +363,7 @@ export default function OnboardingPage() {
 
       // Resolve the resume index against the step order this user's actual
       // goal(s) produce, not the order at the time this effect happens to run.
-      const resumeStepOrder = computeStepOrder(restoredAnswers.goals);
+      const resumeStepOrder = computeStepOrder(restoredAnswers.goals, restoredAnswers.citizenship);
       const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
     }
@@ -339,7 +371,7 @@ export default function OnboardingPage() {
     setHydrated(true);
   }, [profile, hydrated]);
 
-  const STEP_ORDER = computeStepOrder(answers.goals);
+  const STEP_ORDER = computeStepOrder(answers.goals, answers.citizenship);
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
   const isLast = stepIndex === STEP_ORDER.length - 1;
@@ -434,6 +466,7 @@ export default function OnboardingPage() {
       fields.citizenship = a.citizenship;
       fields.citizenship_group = citizenshipGroup(a.citizenship) ?? null;
     }
+    if (a.ukraineScenario) fields.ukraine_scenario = a.ukraineScenario;
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
     if (a.goals && a.goals.length > 0) {
@@ -643,6 +676,12 @@ export default function OnboardingPage() {
 
   function dynamicStepOptions(key: DynamicStepKey): Option[] {
     switch (key) {
+      case "ukraineScenario":
+        return [
+          { id: "protection", label: t.onboarding.ukraineScenarioOptions.protection, icon: SHIELD_ICON },
+          { id: "self", label: t.onboarding.ukraineScenarioOptions.self, icon: WORK_ICON },
+          { id: "already", label: t.onboarding.ukraineScenarioOptions.already, icon: CLOCK_ICON },
+        ];
       case "jobOffer":
         return binaryOptions(t.onboarding.jobOfferOptions);
       case "universityAccepted":

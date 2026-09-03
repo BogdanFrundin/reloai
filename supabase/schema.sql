@@ -13,6 +13,7 @@ create table public.profiles (
   city text,
   citizenship text,
   citizenship_group text,
+  ukraine_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -43,6 +44,7 @@ create table public.profiles (
 -- Safe to re-run against a database created before these columns existed.
 alter table public.profiles add column if not exists citizenship text;
 alter table public.profiles add column if not exists citizenship_group text;
+alter table public.profiles add column if not exists ukraine_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -71,6 +73,11 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- citizenship_group is the derived "A"/"B"/"C"/"D" bucket for that citizenship code (see
 -- app/_lib/citizenshipGroups.ts), saved alongside citizenship so route generation and the
 -- document filtering matrix don't need to recompute it on every read.
+-- ukraine_scenario is only meaningful when citizenship = "UA": "protection" (temporary
+-- protection / UKR status), "self" (relocating independently, not a refugee), or "already"
+-- (already in Poland, renewing/sorting out documents). Asked as its own onboarding step
+-- right after citizenship — see app/onboarding/page.tsx and app/_lib/routeEngine.ts, which
+-- generates a completely different route set per scenario.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

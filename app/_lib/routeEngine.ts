@@ -117,139 +117,277 @@ function threeTierSpecs(suitableFor: string, tiers: [TierInput, TierInput, TierI
   }));
 }
 
-function specsForGroupA(goal: Goal): RouteSpec[] {
+// Ukraine (citizenship_group A) splits into 3 legal tracks that share almost
+// nothing in common — see the "ukraineScenario" onboarding step and the
+// August-2026-corrected source guide this was built from. Getting the wrong
+// one wrong is a real-world problem, not a cosmetic one: PESEL UKR is only
+// available to temporary-protection holders, self-relocating Ukrainians who
+// request it get rejected and have to start over with a regular PESEL, and
+// Revolut has required NIP + karta pobytu since 22.02.2026 (ZEN.com and Wise
+// are the only options that work from day one).
+export type UkraineScenario = "protection" | "self" | "already";
+
+// Scenario 1 — temporary protection / UKR status. One route regardless of
+// goal (the source guide is explicit: "Один маршрут для всех целей"), so the
+// 3 tiers here differ only by how much of the timeline they cover, not by
+// what the user is trying to do in Poland.
+function specsForUkraineProtection(): RouteSpec[] {
+  return threeTierSpecs("Временная защита — беженцы со статусом UKR", [
+    {
+      steps: ["SIM карта", "Временная защита", "PESEL UKR", "Мелдунок", "Банк (ZEN.com/Wise)"],
+      timeline: "1 неделя",
+      cost: "€0-30",
+      probability: 97,
+    },
+    {
+      steps: [
+        "SIM карта",
+        "Временная защита",
+        "PESEL UKR",
+        "Мелдунок",
+        "Банк (ZEN.com/Wise)",
+        "Работа без разрешения",
+        "NFZ страховка",
+        "NIP",
+      ],
+      timeline: "2-4 недели",
+      cost: "€0-100",
+      probability: 95,
+    },
+    {
+      steps: [
+        "SIM карта",
+        "Временная защита",
+        "PESEL UKR",
+        "Мелдунок",
+        "Банк (ZEN.com/Wise)",
+        "Работа без разрешения",
+        "NFZ страховка",
+        "NIP",
+        "Карта побыту или CUKR",
+        "Декларация PIT",
+      ],
+      timeline: "1-3 месяца",
+      cost: "€0-150",
+      probability: 90,
+    },
+  ]);
+}
+
+// Scenario 3 — already in Poland, needs to renew or sort out existing
+// documents. Also goal-independent — the source guide frames all 3 tiers as
+// "urgent renewal" / "get everything in order" / "go for the permanent
+// card", not as separate work/study/business paths.
+function specsForUkraineAlready(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше — продление и приведение в порядок документов", [
+    {
+      steps: ["Проверить срок карты побыту", "Подать на продление карты побыту"],
+      timeline: "1-2 недели",
+      cost: "€60-80",
+      probability: 95,
+    },
+    {
+      steps: [
+        "Проверить срок карты побыту",
+        "Подать на продление или карту CUKR",
+        "Обновить мелдунок",
+        "Проверить статус UKR / CUKR",
+        "Декларация PIT",
+        "Проверить NIP и ZUS",
+      ],
+      timeline: "2-6 недель",
+      cost: "€60-150",
+      probability: 90,
+    },
+    {
+      steps: [
+        "Проверить срок карты побыту",
+        "Обновить все данные",
+        "Декларация PIT",
+        "Нострификация диплома",
+        "Постоянная карта побыту",
+      ],
+      timeline: "3-12 месяцев",
+      cost: "€150-400",
+      probability: 85,
+    },
+  ]);
+}
+
+// Scenario 2 — relocating independently, NOT a refugee. Gets a REGULAR
+// PESEL (not PESEL UKR), has a 90-day visa-free window in which the karta
+// pobytu application must be filed, and needs ZEN.com/Wise instead of
+// Revolut on day one — same as every other goal-based group, split per goal.
+const UA_SELF_COMMON_STEPS = ["SIM карта", "Аренда жилья", "Мелдунок", "PESEL обычный", "Банк (ZEN.com/Wise)"];
+
+const UA_SELF_SUITABLE_FOR: Record<Goal, string> = {
+  work: "Работа по найму — самостоятельный переезд, не беженец",
+  study: "Обучение в польском университете — самостоятельный переезд",
+  business: "Открытие бизнеса — самостоятельный переезд",
+  family: "Воссоединение с семьёй — самостоятельный переезд",
+  remote: "Удалённая работа из Польши — самостоятельный переезд",
+  savings: "Переезд на собственные средства — самостоятельный переезд",
+  other: "Другие цели пребывания — самостоятельный переезд",
+};
+
+function specsForUkraineSelf(goal: Goal): RouteSpec[] {
+  const suitableFor = UA_SELF_SUITABLE_FOR[goal];
   switch (goal) {
     case "work":
-      return threeTierSpecs("Работа по найму", [
-        { steps: ["PESEL UKR", "Мелдунок", "Банк (Revolut)", "Работа"], timeline: "1-2 недели", cost: "€0-50", probability: 95 },
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS, "Работа без разрешения", "NFZ страховка"], timeline: "1-2 недели", cost: "€0-50", probability: 95 },
         {
-          steps: ["Временная защита", "PESEL UKR", "Мелдунок", "Банк", "Работа", "NFZ страховка", "Карта побыту"],
+          steps: [...UA_SELF_COMMON_STEPS, "Частная страховка", "Работа без разрешения", "NFZ", "NIP", "Карта побыту"],
           timeline: "1-3 месяца",
           cost: "€100-300",
-          probability: 90,
+          probability: 88,
         },
         {
           steps: [
-            "Временная защита",
-            "PESEL UKR",
-            "Мелдунок",
-            "Банк",
-            "Работа",
+            ...UA_SELF_COMMON_STEPS,
+            "Частная страховка",
+            "Работа без разрешения",
             "NFZ",
+            "NIP",
+            "ZUS",
             "Карта побыту",
             "Нострификация диплома",
             "Постоянная карта побыту",
           ],
           timeline: "3-12 месяцев",
           cost: "€200-600",
-          probability: 85,
-        },
-      ]);
-    case "business":
-      return threeTierSpecs("Самозанятость и бизнес", [
-        { steps: ["PESEL UKR", "Мелдунок", "Банк", "Регистрация ИП", "NIP"], timeline: "2-4 недели", cost: "€50-200", probability: 92 },
-        {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Регистрация ИП", "NIP", "ZUS", "Карта побыту"],
-          timeline: "1-3 месяца",
-          cost: "€150-400",
-          probability: 88,
-        },
-        {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Регистрация ООО", "NIP", "REGON", "VAT", "ZUS", "Карта побыту"],
-          timeline: "2-4 месяца",
-          cost: "€500-1500",
           probability: 82,
         },
       ]);
     case "study":
-      return threeTierSpecs("Обучение в польском университете", [
-        { steps: ["Зачисление в университет", "PESEL UKR", "Мелдунок", "Банк"], timeline: "2-4 недели", cost: "€50-150", probability: 92 },
+      return threeTierSpecs(suitableFor, [
+        { steps: ["Зачисление в университет", ...UA_SELF_COMMON_STEPS], timeline: "2-4 недели", cost: "€50-150", probability: 92 },
         {
-          steps: ["Зачисление в университет", "PESEL UKR", "Мелдунок", "Банк", "Студенческая карта побыту"],
-          timeline: "1-2 месяца",
+          steps: [
+            "Зачисление в университет",
+            ...UA_SELF_COMMON_STEPS,
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+          ],
+          timeline: "1-3 месяца",
           cost: "€100-300",
           probability: 88,
         },
         {
           steps: [
             "Зачисление в университет",
-            "PESEL UKR",
-            "Мелдунок",
-            "Банк",
+            ...UA_SELF_COMMON_STEPS,
+            "Частная страховка",
             "Студенческая карта побыту",
             "NFZ",
             "Нострификация диплома",
-            "ISIC карта",
+            "Карта ISIC",
           ],
           timeline: "2-4 месяца",
           cost: "€200-500",
           probability: 85,
         },
       ]);
-    case "family":
-      return threeTierSpecs("Воссоединение с семьёй", [
-        { steps: ["PESEL UKR", "Мелдунок", "Банк", "Карта побыту семья"], timeline: "1-3 месяца", cost: "€50-200", probability: 88 },
+    case "business":
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS, "Регистрация ИП", "NIP"], timeline: "2-4 недели", cost: "€50-200", probability: 92 },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту семья", "NFZ"],
+          steps: [...UA_SELF_COMMON_STEPS, "Регистрация ИП", "NIP", "ZUS", "Карта побыту"],
+          timeline: "1-3 месяца",
+          cost: "€150-400",
+          probability: 88,
+        },
+        {
+          steps: [...UA_SELF_COMMON_STEPS, "Счёт для бизнеса", "Регистрация ООО", "NIP", "REGON", "VAT", "ZUS", "Карта побыту"],
+          timeline: "2-4 месяца",
+          cost: "€500-1500",
+          probability: 80,
+        },
+      ]);
+    case "family":
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS, "Карта побыту семья"], timeline: "1-3 месяца", cost: "€50-200", probability: 88 },
+        {
+          steps: [...UA_SELF_COMMON_STEPS, "Частная страховка", "Карта побыту семья", "NFZ"],
           timeline: "2-4 месяца",
           cost: "€150-400",
           probability: 85,
         },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту семья", "NFZ", "Постоянная карта побыту"],
+          steps: [
+            ...UA_SELF_COMMON_STEPS,
+            "Частная страховка",
+            "Карта побыту семья",
+            "NFZ",
+            "Документы детей школа/садик",
+            "Постоянная карта побыту",
+          ],
           timeline: "3-12 месяцев",
           cost: "€300-800",
           probability: 82,
         },
       ]);
     case "remote":
-      return threeTierSpecs("Удалённая работа из Польши", [
-        { steps: ["PESEL UKR", "Мелдунок", "Банк", "Работа удалённо"], timeline: "1-2 недели", cost: "€0-100", probability: 93 },
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS, "Работа удалённо"], timeline: "1-2 недели", cost: "€0-100", probability: 93 },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Регистрация ИП", "NIP", "ZUS", "Карта побыту"],
+          steps: [...UA_SELF_COMMON_STEPS, "Регистрация ИП", "NIP", "ZUS", "Карта побыту"],
           timeline: "1-3 месяца",
           cost: "€100-400",
           probability: 88,
         },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Регистрация ИП", "NIP", "ZUS", "VAT", "Карта побыту", "Постоянная карта побыту"],
+          steps: [...UA_SELF_COMMON_STEPS, "Регистрация ИП", "NIP", "ZUS", "VAT", "Карта побыту", "Постоянная карта побыту"],
           timeline: "2-6 месяцев",
           cost: "€200-700",
           probability: 85,
         },
       ]);
     case "savings":
-      return threeTierSpecs("Переезд на собственные средства", [
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS, "Частная страховка"], timeline: "1-2 недели", cost: "€100-300", probability: 80 },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту средства"],
+          steps: [...UA_SELF_COMMON_STEPS, "Частная страховка", "Карта побыту достаточные средства"],
           timeline: "1-3 месяца",
-          cost: "€200-500",
-          probability: 80,
-        },
-        {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту средства", "NFZ"],
-          timeline: "2-4 месяца",
           cost: "€300-700",
           probability: 75,
         },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту средства", "NFZ", "Постоянная карта побыту"],
+          steps: [...UA_SELF_COMMON_STEPS, "Частная страховка", "Карта побыту достаточные средства", "NFZ", "Постоянная карта побыту"],
           timeline: "3-12 месяцев",
           cost: "€500-1500",
           probability: 70,
         },
       ]);
     case "other":
-      return threeTierSpecs("Другие цели пребывания", [
-        { steps: ["PESEL UKR", "Мелдунок", "Банк"], timeline: "1-2 недели", cost: "€0-50", probability: 90 },
-        { steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка"], timeline: "2-4 недели", cost: "€50-150", probability: 85 },
+      return threeTierSpecs(suitableFor, [
+        { steps: [...UA_SELF_COMMON_STEPS], timeline: "1-2 недели", cost: "€0-50", probability: 90 },
+        { steps: [...UA_SELF_COMMON_STEPS, "Частная страховка"], timeline: "1-2 месяца", cost: "€100-300", probability: 85 },
         {
-          steps: ["PESEL UKR", "Мелдунок", "Банк", "Частная страховка", "Карта побыту"],
+          steps: [...UA_SELF_COMMON_STEPS, "Частная страховка", "Карта побыту"],
           timeline: "1-3 месяца",
           cost: "€100-400",
           probability: 80,
         },
       ]);
+  }
+}
+
+function specsForGroupA(goal: Goal, ukraineScenario: UkraineScenario | null | undefined): RouteSpec[] {
+  switch (ukraineScenario) {
+    case "protection":
+      return specsForUkraineProtection();
+    case "already":
+      return specsForUkraineAlready();
+    case "self":
+    default:
+      // No answer yet (older accounts from before this question existed, or
+      // the step was skipped) defaults to "self" rather than "protection" —
+      // PESEL UKR is only for confirmed temporary-protection holders, so
+      // defaulting there for an unknown status would risk telling someone
+      // to apply for a status they don't actually have.
+      return specsForUkraineSelf(goal);
   }
 }
 
@@ -572,12 +710,17 @@ function specsForGroupCD(goal: Goal): RouteSpec[] {
   ]);
 }
 
-function specsForGoal(goal: Goal, citizenshipGroup: CitizenshipGroup | null | undefined, hasJobOffer: boolean): RouteSpec[] {
+function specsForGoal(
+  goal: Goal,
+  citizenshipGroup: CitizenshipGroup | null | undefined,
+  hasJobOffer: boolean,
+  ukraineScenario: UkraineScenario | null | undefined,
+): RouteSpec[] {
   return citizenshipGroup === "B"
     ? specsForGroupB(goal, hasJobOffer)
     : citizenshipGroup === "C" || citizenshipGroup === "D"
       ? specsForGroupCD(goal)
-      : specsForGroupA(goal);
+      : specsForGroupA(goal, ukraineScenario);
 }
 
 // --- Multi-goal merging -----------------------------------------------
@@ -677,10 +820,15 @@ export function generateRoutes(input: {
   citizenshipGroup: CitizenshipGroup | null | undefined;
   goals: string[] | null | undefined;
   hasJobOffer: boolean;
+  ukraineScenario?: string | null;
 }): Route[] {
   const goals = normalizeGoals(input.goals);
+  const ukraineScenario: UkraineScenario | null =
+    input.ukraineScenario === "protection" || input.ukraineScenario === "self" || input.ukraineScenario === "already"
+      ? input.ukraineScenario
+      : null;
 
-  const specsPerGoal = goals.map((goal) => specsForGoal(goal, input.citizenshipGroup, input.hasJobOffer));
+  const specsPerGoal = goals.map((goal) => specsForGoal(goal, input.citizenshipGroup, input.hasJobOffer, ukraineScenario));
   // threeTierSpecs() already guarantees exactly 3 tiers per goal — no
   // slice() needed, and none should ever be dropped here (that was the
   // source of the earlier "only 1 route" bug for citizenship groups C/D).

@@ -15,6 +15,10 @@ export type Profile = {
   city: string | null;
   citizenship: string | null;
   citizenship_group: string | null;
+  // Only meaningful for citizenship === "UA" — which of the 3 Ukraine legal
+  // tracks the user is on. See app/_lib/routeEngine.ts and
+  // app/onboarding/page.tsx's "ukraineScenario" step.
+  ukraine_scenario: string | null;
   current_country: string | null;
   goal: string | null;
   // Full multi-select set from onboarding (see app/onboarding/page.tsx) —
