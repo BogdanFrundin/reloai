@@ -111,8 +111,13 @@ export function RouteCard({
         <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel} />
       </div>
 
+      {/* No fixed height here (used to be h-[116px] overflow-hidden, which
+          silently clipped mid-word for any route with more than ~4 steps --
+          e.g. a custom-generated route with 6-7 steps). Let it grow to fit
+          every step instead; the grid's items-stretch keeps cards in a row
+          the same height regardless. */}
       {route.steps && route.steps.length > 0 && (
-        <div className="mt-4 h-[116px] overflow-hidden rounded-2xl bg-white/[0.04] p-3.5">
+        <div className="mt-4 rounded-2xl bg-white/[0.04] p-3.5">
           <p className="text-xs text-white/40">{labels.results.steps}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-white/80">
             {route.steps.map((step, index) => (

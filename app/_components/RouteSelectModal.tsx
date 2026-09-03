@@ -64,7 +64,7 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-6 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-8"
+        className="max-h-[95vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-6 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-8"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
