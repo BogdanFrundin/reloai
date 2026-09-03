@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
@@ -19,6 +19,60 @@ const INFO_ICON = (
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 11v5m0-8h.01" />
   </svg>
 );
+
+// The (i) next to "Государственная страховка NFZ" used to rely purely on
+// the native `title` attribute, which only shows on mouse hover -- it does
+// nothing on click/tap, so on touch devices (and for anyone who clicks it
+// expecting something to happen) it just "doesn't work". This makes it an
+// actual toggleable popover, keeping `title` too as a hover fallback for
+// mouse users.
+function InfoTooltip({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <span className="relative inline-flex" ref={ref}>
+      <button
+        type="button"
+        title={text}
+        aria-expanded={open}
+        aria-label={text}
+        onClick={(event) => {
+          event.stopPropagation();
+          setOpen((prev) => !prev);
+        }}
+        className="cursor-pointer text-white/40 transition-colors duration-150 hover:text-white/70"
+      >
+        {INFO_ICON}
+      </button>
+      {open && (
+        <span
+          role="tooltip"
+          onClick={(event) => event.stopPropagation()}
+          className="absolute left-1/2 top-full z-20 mt-2 w-56 -translate-x-1/2 rounded-xl border border-border-strong bg-panel p-3 text-xs font-normal leading-relaxed text-text-secondary shadow-xl shadow-black/40"
+        >
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
 
 const SPARKLE_ICON = (
   <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -143,9 +197,7 @@ export default function InsurancePage() {
           <div className="rounded-[28px] bg-[#1c1f26] p-6">
             <p className="inline-flex items-center gap-1.5 text-[15px] font-bold text-accent-bright">
               {t.insurance.nfzLabel}
-              <span title={t.insurance.nfzTooltip} className="cursor-help text-white/40">
-                {INFO_ICON}
-              </span>
+              <InfoTooltip text={t.insurance.nfzTooltip} />
             </p>
             <div className="mt-4 space-y-3.5 border-t border-white/10 pt-4">
               {t.insurance.rows.map((row) => (
