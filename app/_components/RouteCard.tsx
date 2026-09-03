@@ -5,6 +5,7 @@
 // component instead of a re-approximation of it.
 "use client";
 
+import { useState } from "react";
 import type { Dictionary } from "../_lib/i18n";
 import type { Route } from "../api/route/route";
 
@@ -48,6 +49,8 @@ export function RouteCard({
   labels: Dictionary["onboarding"];
   isCurrentSelection?: boolean;
 }) {
+  const [stepsExpanded, setStepsExpanded] = useState(false);
+
   const speedLabel =
     route.speed === "fast"
       ? labels.results.speedFast
@@ -98,11 +101,14 @@ export function RouteCard({
           </p>
           <p className="mt-2 text-3xl font-extrabold leading-none text-accent-bright">{route.approval_rate}%</p>
         </div>
-        <div className="flex min-h-[104px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-2 py-3 text-center">
+        <div className="flex min-h-[104px] flex-col items-center justify-center rounded-2xl bg-white/[0.05] px-1.5 py-3 text-center">
           <p className="text-balance text-[10px] uppercase leading-tight tracking-wide text-white/35">
             {labels.results.timeline}
           </p>
-          <p className="text-balance mt-2 text-2xl font-extrabold leading-tight text-white">{route.timeline}</p>
+          {/* text-xl, not text-2xl like the approval-rate number -- longer
+              strings like "3-5 месяцев" were pushing right up against the
+              edges of this narrower half of the box. */}
+          <p className="text-balance mt-2 text-xl font-extrabold leading-tight text-white">{route.timeline}</p>
         </div>
       </div>
 
@@ -112,25 +118,32 @@ export function RouteCard({
       </div>
 
       {/* A route can have anywhere from 4 to 9+ steps, so showing every one
-          made cards wildly different heights (items-stretch just filled the
-          shorter cards with dead space instead). Cap the preview at 4 and
-          show a "+N" chip for the rest, same pattern as the program chips
-          on the education cards -- keeps all three cards in a row visually
-          even regardless of how long the underlying route actually is. */}
+          by default made cards wildly different heights (items-stretch just
+          filled the shorter cards with dead space instead). Cap the preview
+          at 4 and make the "+N" chip a real toggle -- clicking it reveals
+          the rest in place, same idea as the program chips on the education
+          cards but actually openable instead of a dead-end label. */}
       {route.steps && route.steps.length > 0 && (
         <div className="mt-4 min-h-[92px] rounded-2xl bg-white/[0.04] p-3.5">
           <p className="text-xs text-white/40">{labels.results.steps}</p>
           <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-sm font-medium text-white/80">
-            {route.steps.slice(0, 4).map((step, index) => (
+            {(stepsExpanded ? route.steps : route.steps.slice(0, 4)).map((step, index) => (
               <span key={step} className="flex items-center gap-1.5">
                 {index > 0 && <span className="text-white/25">→</span>}
                 {step}
               </span>
             ))}
-            {route.steps.length > 4 && (
-              <span className="rounded-lg bg-white/[0.08] px-2 py-0.5 text-xs text-white/50">
+            {!stepsExpanded && route.steps.length > 4 && (
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setStepsExpanded(true);
+                }}
+                className="rounded-lg bg-white/[0.08] px-2 py-0.5 text-xs text-white/50 transition-colors duration-150 hover:bg-white/[0.15] hover:text-white/80"
+              >
                 +{route.steps.length - 4}
-              </span>
+              </button>
             )}
           </p>
         </div>
