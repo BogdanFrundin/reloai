@@ -2050,6 +2050,564 @@ function specsForTurkey(
   }
 }
 
+// Kazakhstan is also citizenship_group B, and shares the same "no visa-free
+// entry at all, no oświadczenie access" profile as Turkey and Uzbekistan —
+// every goal needs visa D, and the WORK goal needs the full zezwolenie na
+// pracę. The distinctive Kazakhstan wrinkle is different from Turkey's: there
+// is no VFS Global — applications go directly to the Astana embassy or
+// Almaty consulate general by region — but a high-demand lottery (жеребьёвка)
+// can gate the appointment slot, and visa D processing itself runs a minimum
+// 30 working days, longer than most other countries covered. That's folded
+// into the step lists and timelines below rather than left as a
+// document_guides-only note, since it affects every single visa-requiring
+// route.
+export type KazakhstanScenario = "self" | "already_status" | "already_no_status";
+
+function specsForKazakhstanAlreadyStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше с картой побыту/визой D — продление и приведение в порядок документов", [
+    {
+      steps: ["Проверить срок карты побыту", "Подать на продление карты побыту"],
+      timeline: "1 день на подачу",
+      cost: "€80",
+      probability: 95,
+    },
+    {
+      steps: ["Проверить срок карты побыту", "Обновить мельдунок", "Декларация PIT", "Проверить NIP и ZUS"],
+      timeline: "1-2 недели",
+      cost: "€80-150",
+      probability: 90,
+    },
+    {
+      steps: [
+        "Проверить/продлить карту побыту",
+        "Обновить все данные",
+        "Декларация PIT",
+        "Нострификация диплома",
+        "Постоянная карта побыту",
+      ],
+      timeline: "3-12 месяцев",
+      cost: "€150-400",
+      probability: 85,
+    },
+  ]);
+}
+
+// "Уже в Польше" на туристической визе C, статуса ещё нет. Источник прямо
+// отмечает, что эта ветка встречается для Казахстана ЧАЩЕ, чем у
+// Молдовы/Грузии, поскольку у Казахстана нет безвизового въезда вообще.
+// Путь 2 здесь медленнее, чем у Турции — из-за минимум 30 рабочих дней на
+// рассмотрение визы D плюс возможная жеребьёвка на запись.
+function specsForKazakhstanNoStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше без статуса (виза C) — легализация без выезда из страны", [
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)"],
+      timeline: "1-2 дня",
+      cost: "€0-50",
+      probability: 85,
+    },
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)", "NIP + карта побыту (бизнес)"],
+      timeline: "2-6 недель до истечения визы C",
+      cost: "€100-300",
+      probability: 80,
+    },
+    {
+      steps: [
+        "Работодатель подаёт на zezwolenie na pracę",
+        "Выезд за визой D в Казахстан (Астана или Алматы по региону, возможна жеребьёвка на запись)",
+        "Возвращение в Польшу и легализация (PESEL, ZUS, NFZ, карта побыту)",
+      ],
+      timeline: "4-6 месяцев (включая ожидание zezwolenia и поездку)",
+      cost: "€500-800",
+      probability: 65,
+    },
+  ]);
+}
+
+const KZ_SELF_SUITABLE_FOR: Record<Goal, string> = {
+  work: "Работа по найму — самостоятельный переезд из Казахстана",
+  study: "Обучение в польском университете — самостоятельный переезд из Казахстана",
+  business: "Открытие бизнеса — самостоятельный переезд из Казахстана",
+  family: "Воссоединение с семьёй — самостоятельный переезд из Казахстана",
+  remote: "Удалённая работа из Польши — самостоятельный переезд из Казахстана",
+  savings: "Переезд на собственные средства — самостоятельный переезд из Казахстана",
+  other: "Другие цели пребывания — самостоятельный переезд из Казахстана",
+};
+
+// "Переезжаю сам" (Сценарий 1). Безвизового въезда нет ни для одной цели —
+// виза D нужна всегда, подаётся напрямую в консульство своего региона
+// (Астана или Алматы), но рассмотрение занимает от 30 рабочих дней, а при
+// высоком спросе запись идёт через жеребьёвку. Для работы нужен zezwolenie
+// na pracę (oświadczenie недоступен).
+function specsForKazakhstanSelf(goal: Goal, hasJobOffer: boolean): RouteSpec[] {
+  const suitableFor = KZ_SELF_SUITABLE_FOR[goal];
+  switch (goal) {
+    case "work":
+      return hasJobOffer
+        ? threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "5-8 месяцев (включая ожидание записи и zezwolenia)",
+              cost: "€400-700",
+              probability: 70,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€500-900",
+              probability: 68,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+                "Продление zezwolenia na pracę",
+                "Нострификация диплома",
+                "Постоянная карта побыту",
+              ],
+              // Источник даёт для "Полный" тот же диапазон 5-8 мес., что и для
+              // "Быстрый" — при том что здесь на 3 шага больше сверх
+              // "Стандартного" (6-9 мес.), включая продление zezwolenia
+              // (1-2 мес.) и нострификацию (2-4 мес.). Это внутреннее
+              // противоречие в документе — та же ошибка, что и в гайдах для
+              // Узбекистана и Турции; здесь используется реалистичная оценка
+              // длиннее "Стандартного", а не скопированная как есть.
+              timeline: "7-11 месяцев",
+              cost: "€500-1200",
+              probability: 75,
+            },
+          ])
+        : threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Казахстане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€400-700",
+              probability: 56,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Казахстане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "7-10 месяцев",
+              cost: "€500-900",
+              probability: 53,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Казахстане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача напрямую в консульство региона — Астана/Алматы)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NIP",
+                "ZUS",
+                "NFZ",
+                "Карта побыту",
+                "Нострификация диплома",
+              ],
+              timeline: "8-12 месяцев",
+              cost: "€700-1500",
+              probability: 48,
+            },
+          ]);
+    case "study":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+            "Нострификация диплома",
+            "Карта ISIC",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 80,
+        },
+      ]);
+    case "business":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (бизнес, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+          ],
+          timeline: "5-7 недель",
+          cost: "€150-350",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (бизнес, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€300-550",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (бизнес, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Счёт для бизнеса (mBank)",
+            "Регистрация ООО",
+            "NIP",
+            "REGON",
+            "VAT",
+            "Карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€600-1500",
+          probability: 75,
+        },
+      ]);
+    case "family":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D по Карте поляка (бесплатно, подача напрямую в консульство региона — Астана/Алматы)",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Карта побыту по Карте поляка",
+          ],
+          timeline: "2-3 месяца",
+          cost: "€100-250",
+          probability: 90,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+            "Документы детей школа/садик",
+            "Постоянная карта побыту",
+          ],
+          timeline: "4-6 месяцев",
+          cost: "€400-900",
+          probability: 78,
+        },
+      ]);
+    case "remote":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (на основании дохода, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "VAT",
+            "Карта побыту",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-700",
+          probability: 75,
+        },
+      ]);
+    case "savings":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (достаточные средства, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+          ],
+          timeline: "4-6 недель",
+          cost: "€200-350",
+          probability: 75,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€350-650",
+          probability: 70,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства, подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+            "NFZ (добровольно через ZUS)",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€550-1500",
+          probability: 65,
+        },
+      ]);
+    case "other":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "2-4 недели",
+          cost: "€100-200",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Виза D (подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (подача напрямую в консульство региона — Астана/Алматы)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+            "NFZ",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 75,
+        },
+      ]);
+  }
+}
+
+function specsForKazakhstan(
+  goal: Goal,
+  hasJobOffer: boolean,
+  kazakhstanScenario: KazakhstanScenario | null | undefined,
+): RouteSpec[] {
+  switch (kazakhstanScenario) {
+    case "already_status":
+      return specsForKazakhstanAlreadyStatus();
+    case "already_no_status":
+      return specsForKazakhstanNoStatus();
+    case "self":
+    default:
+      return specsForKazakhstanSelf(goal, hasJobOffer);
+  }
+}
+
 function specsForGroupB(
   goal: Goal,
   hasJobOffer: boolean,
@@ -2057,7 +2615,11 @@ function specsForGroupB(
   belarusScenario: BelarusScenario | null | undefined,
   uzbekistanScenario: UzbekistanScenario | null | undefined,
   turkeyScenario: TurkeyScenario | null | undefined,
+  kazakhstanScenario: KazakhstanScenario | null | undefined,
 ): RouteSpec[] {
+  if (citizenship === "KZ") {
+    return specsForKazakhstan(goal, hasJobOffer, kazakhstanScenario);
+  }
   if (citizenship === "TR") {
     return specsForTurkey(goal, hasJobOffer, turkeyScenario);
   }
@@ -3356,9 +3918,10 @@ function specsForGoal(
   moldovaScenario: MoldovaScenario | null | undefined,
   uzbekistanScenario: UzbekistanScenario | null | undefined,
   turkeyScenario: TurkeyScenario | null | undefined,
+  kazakhstanScenario: KazakhstanScenario | null | undefined,
 ): RouteSpec[] {
   return citizenshipGroup === "B"
-    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario, turkeyScenario)
+    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario, turkeyScenario, kazakhstanScenario)
     : citizenshipGroup === "C" || citizenshipGroup === "D"
       ? specsForGroupCD(goal, hasJobOffer, citizenship, georgiaScenario, moldovaScenario)
       : specsForGroupA(goal, ukraineScenario);
@@ -3468,6 +4031,7 @@ export function generateRoutes(input: {
   moldovaScenario?: string | null;
   uzbekistanScenario?: string | null;
   turkeyScenario?: string | null;
+  kazakhstanScenario?: string | null;
 }): Route[] {
   const goals = normalizeGoals(input.goals);
   const ukraineScenario: UkraineScenario | null =
@@ -3504,6 +4068,12 @@ export function generateRoutes(input: {
     input.turkeyScenario === "already_no_status"
       ? input.turkeyScenario
       : null;
+  const kazakhstanScenario: KazakhstanScenario | null =
+    input.kazakhstanScenario === "self" ||
+    input.kazakhstanScenario === "already_status" ||
+    input.kazakhstanScenario === "already_no_status"
+      ? input.kazakhstanScenario
+      : null;
 
   const specsPerGoal = goals.map((goal) =>
     specsForGoal(
@@ -3517,6 +4087,7 @@ export function generateRoutes(input: {
       moldovaScenario,
       uzbekistanScenario,
       turkeyScenario,
+      kazakhstanScenario,
     ),
   );
   // threeTierSpecs() already guarantees exactly 3 tiers per goal — no

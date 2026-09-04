@@ -79,6 +79,7 @@ export default function OnboardingResultsPage() {
           moldovaScenario: profile.moldova_scenario,
           uzbekistanScenario: profile.uzbekistan_scenario,
           turkeyScenario: profile.turkey_scenario,
+          kazakhstanScenario: profile.kazakhstan_scenario,
         })
       : null;
 

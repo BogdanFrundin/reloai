@@ -19,6 +19,7 @@ create table public.profiles (
   moldova_scenario text,
   uzbekistan_scenario text,
   turkey_scenario text,
+  kazakhstan_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -55,6 +56,7 @@ alter table public.profiles add column if not exists georgia_scenario text;
 alter table public.profiles add column if not exists moldova_scenario text;
 alter table public.profiles add column if not exists uzbekistan_scenario text;
 alter table public.profiles add column if not exists turkey_scenario text;
+alter table public.profiles add column if not exists kazakhstan_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -144,6 +146,19 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- so travelers arrive on short-stay visa C far more routinely). Asked as its own
 -- onboarding step right after citizenship — see app/onboarding/page.tsx and
 -- app/_lib/routeEngine.ts.
+-- kazakhstan_scenario is only meaningful when citizenship = "KZ": "self" (relocating
+-- independently — visa D required for every goal, there's no visa-free entry at all;
+-- the WORK goal needs a full zezwolenie na pracę since Kazakhstan never had oświadczenie
+-- access. Unlike Turkey, applications go directly to the Astana embassy or Almaty
+-- consulate general by region — no VFS Global — but a high-demand lottery
+-- (жеребьёвка) can gate the appointment slot, and visa D processing itself runs a
+-- minimum 30 working days, longer than most other countries covered), "already_status"
+-- (already in Poland, holds a karta pobytu or valid visa D — ordinary renewal), or
+-- "already_no_status" (already in Poland on a short-stay visa C with no residence
+-- status yet — skips goal selection entirely and gets the Путь 1 / Путь 2
+-- legalization-without-leaving routes; Путь 2 is slower here than Turkey's equivalent
+-- because of that 30+ working day visa processing floor). Asked as its own onboarding
+-- step right after citizenship — see app/onboarding/page.tsx and app/_lib/routeEngine.ts.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

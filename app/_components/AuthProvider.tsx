@@ -39,6 +39,10 @@ export type Profile = {
   // "already_no_status". See app/_lib/routeEngine.ts and
   // app/onboarding/page.tsx's "turkeyScenario" step.
   turkey_scenario: string | null;
+  // Only meaningful for citizenship === "KZ" — "self" / "already_status" /
+  // "already_no_status". See app/_lib/routeEngine.ts and
+  // app/onboarding/page.tsx's "kazakhstanScenario" step.
+  kazakhstan_scenario: string | null;
   current_country: string | null;
   goal: string | null;
   // Full multi-select set from onboarding (see app/onboarding/page.tsx) —
