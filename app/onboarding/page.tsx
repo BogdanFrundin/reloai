@@ -129,6 +129,10 @@ const ALL_STEP_KEYS = [
   "turkeyScenario",
   "kazakhstanScenario",
   "tajikistanScenario",
+  // Shared follow-up step for any of the 7 scenario steps above's "already
+  // in Poland" branch — see needsScenarioStatus()/SCENARIO_*_BY_CITIZENSHIP
+  // below and the big comment on computeStepOrder().
+  "scenarioStatus",
   "currentCountry",
   "destination",
   "goal",
@@ -154,6 +158,7 @@ type DynamicStepKey =
   | "turkeyScenario"
   | "kazakhstanScenario"
   | "tajikistanScenario"
+  | "scenarioStatus"
   | "jobOffer"
   | "universityAccepted"
   | "studyLevel"
@@ -174,6 +179,7 @@ const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
   "turkeyScenario",
   "kazakhstanScenario",
   "tajikistanScenario",
+  "scenarioStatus",
   "jobOffer",
   "universityAccepted",
   "studyLevel",
@@ -190,10 +196,40 @@ function isDynamicStep(key: StepKey): key is DynamicStepKey {
   return (DYNAMIC_STEP_KEYS as readonly string[]).includes(key);
 }
 
+// Which country each of the 7 "XScenario" answers/DB columns belongs to —
+// used by the shared "scenarioStatus" step (see below) to figure out, at
+// runtime, which field it should actually be reading/writing, since that
+// one step is reused across all 7 citizenships instead of being duplicated
+// per country like the XScenario steps themselves.
+const SCENARIO_ANSWER_FIELD_BY_CITIZENSHIP: Partial<Record<string, keyof Answers>> = {
+  BY: "belarusScenario",
+  GE: "georgiaScenario",
+  MD: "moldovaScenario",
+  UZ: "uzbekistanScenario",
+  TR: "turkeyScenario",
+  KZ: "kazakhstanScenario",
+  TJ: "tajikistanScenario",
+};
+const SCENARIO_DB_FIELD_BY_CITIZENSHIP: Partial<Record<string, keyof ProfileFields>> = {
+  BY: "belarus_scenario",
+  GE: "georgia_scenario",
+  MD: "moldova_scenario",
+  UZ: "uzbekistan_scenario",
+  TR: "turkey_scenario",
+  KZ: "kazakhstan_scenario",
+  TJ: "tajikistan_scenario",
+};
+
 // Maps each dynamic step to the Answers field it reads/writes. jobOffer and
 // universityAccepted deliberately reuse the existing job_offer /
 // already_admitted answers (see ProfileFields) instead of introducing
 // duplicate columns.
+//
+// "scenarioStatus"'s entry here is a placeholder, never actually read: its
+// real target field depends on citizenship (see SCENARIO_ANSWER_FIELD_BY_
+// CITIZENSHIP above), so isStepAnswered() and selectDynamicAnswer() both
+// special-case this key before falling through to the generic table lookup.
+// It's only present so the Record<DynamicStepKey, ...> type stays total.
 const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
   ukraineScenario: "ukraineScenario",
   belarusScenario: "belarusScenario",
@@ -203,6 +239,7 @@ const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
   turkeyScenario: "turkeyScenario",
   kazakhstanScenario: "kazakhstanScenario",
   tajikistanScenario: "tajikistanScenario",
+  scenarioStatus: "belarusScenario",
   jobOffer: "jobOffer",
   universityAccepted: "alreadyAdmitted",
   studyLevel: "studyLevel",
@@ -224,6 +261,8 @@ const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
   turkeyScenario: "turkey_scenario",
   kazakhstanScenario: "kazakhstan_scenario",
   tajikistanScenario: "tajikistan_scenario",
+  // Placeholder — see the comment on DYNAMIC_STEP_ANSWER_FIELD above.
+  scenarioStatus: "belarus_scenario",
   jobOffer: "job_offer",
   universityAccepted: "already_admitted",
   studyLevel: "study_level",
@@ -298,37 +337,69 @@ function computeStepOrder(
     (citizenship === "KZ" && kazakhstanScenario === "already_no_status") ||
     (citizenship === "TJ" && tajikistanScenario === "already_no_status");
 
+  // Per the ТЗ "Логика Уже в Польше" spec: the XScenario step itself is now
+  // just a 2-way choice (self vs. "already in Poland" — see
+  // dynamicStepOptions()'s XScenario cases). Only once "already" (or one of
+  // the two values it resolves into) has been picked do we insert the
+  // shared "scenarioStatus" follow-up ("do you already hold a karta pobytu
+  // or valid visa D?"), which is what actually resolves the final
+  // already_status / already_no_status value.
+  function needsScenarioStatus(v?: string): boolean {
+    return v === "already" || v === "already_status" || v === "already_no_status";
+  }
+
   let base: StepKey[];
   if (citizenship === "UA") {
     base = ["language", "citizenship", "ukraineScenario", "currentCountry", "destination", "goal"];
   } else if (citizenship === "BY") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(belarusScenario)
+      ? ["belarusScenario", "scenarioStatus"]
+      : ["belarusScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "belarusScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "belarusScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "GE") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(georgiaScenario)
+      ? ["georgiaScenario", "scenarioStatus"]
+      : ["georgiaScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "georgiaScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "georgiaScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "MD") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(moldovaScenario)
+      ? ["moldovaScenario", "scenarioStatus"]
+      : ["moldovaScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "moldovaScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "moldovaScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "UZ") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(uzbekistanScenario)
+      ? ["uzbekistanScenario", "scenarioStatus"]
+      : ["uzbekistanScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "uzbekistanScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "uzbekistanScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "TR") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(turkeyScenario)
+      ? ["turkeyScenario", "scenarioStatus"]
+      : ["turkeyScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "turkeyScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "turkeyScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "KZ") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(kazakhstanScenario)
+      ? ["kazakhstanScenario", "scenarioStatus"]
+      : ["kazakhstanScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "kazakhstanScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "kazakhstanScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else if (citizenship === "TJ") {
+    const scenarioSteps: StepKey[] = needsScenarioStatus(tajikistanScenario)
+      ? ["tajikistanScenario", "scenarioStatus"]
+      : ["tajikistanScenario"];
     base = skipGoal
-      ? ["language", "citizenship", "tajikistanScenario", "currentCountry", "destination"]
-      : ["language", "citizenship", "tajikistanScenario", "currentCountry", "destination", "goal"];
+      ? ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination"]
+      : ["language", "citizenship", ...scenarioSteps, "currentCountry", "destination", "goal"];
   } else {
     base = ["language", "citizenship", "currentCountry", "destination", "goal"];
   }
@@ -553,6 +624,16 @@ export default function OnboardingPage() {
         return !!a.destination;
       case "goal":
         return !!a.goals && a.goals.length > 0;
+      case "scenarioStatus": {
+        // Shared step — look up which country's *Scenario field is actually
+        // in play, then only count it as answered once that field holds one
+        // of the two RESOLVED values. The generic fallback below would
+        // return true prematurely here, since the first XScenario step
+        // already makes that field truthy the moment "already" is picked.
+        const field = SCENARIO_ANSWER_FIELD_BY_CITIZENSHIP[a.citizenship ?? ""];
+        const value = field ? a[field] : undefined;
+        return value === "already_status" || value === "already_no_status";
+      }
       default:
         return !!a[DYNAMIC_STEP_ANSWER_FIELD[key]];
     }
@@ -611,26 +692,28 @@ export default function OnboardingPage() {
   }
 
   function selectDynamicAnswer(key: DynamicStepKey, value: string) {
-    const answerField = DYNAMIC_STEP_ANSWER_FIELD[key];
-    const dbField = DYNAMIC_STEP_DB_FIELD[key];
+    // "scenarioStatus" is shared across all 7 XScenario citizenships (see
+    // ТЗ "Логика Уже в Польше") — resolve which Answers/ProfileFields field
+    // it actually targets from the currently-selected citizenship instead
+    // of the generic (placeholder) DYNAMIC_STEP_*_FIELD table entries.
+    const answerField: keyof Answers =
+      key === "scenarioStatus"
+        ? (SCENARIO_ANSWER_FIELD_BY_CITIZENSHIP[answers.citizenship ?? ""] ?? "belarusScenario")
+        : DYNAMIC_STEP_ANSWER_FIELD[key];
+    const dbField: keyof ProfileFields =
+      key === "scenarioStatus"
+        ? (SCENARIO_DB_FIELD_BY_CITIZENSHIP[answers.citizenship ?? ""] ?? "belarus_scenario")
+        : DYNAMIC_STEP_DB_FIELD[key];
     const fields: ProfileFields = { [dbField]: value } as ProfileFields;
 
-    // Belarus's, Georgia's, and Moldova's "already in Poland, no status yet"
-    // branches skip goal selection entirely (see computeStepOrder()) —
+    // The shared "scenarioStatus" step's "no" answer (already_no_status)
+    // skips goal selection entirely (see computeStepOrder()) —
     // routeEngine.ts's specsForBelarusNoStatus() / specsForGeorgiaNoStatus() /
-    // specsForMoldovaNoStatus() don't need a goal, but other parts of the app
-    // (e.g. onboarding/results/page.tsx's profileIncomplete check) still
-    // require profile.goal to be non-null, so default it here rather than
-    // asking a question that has no real answer for this branch.
-    const skipsGoal =
-      (key === "belarusScenario" ||
-        key === "georgiaScenario" ||
-        key === "moldovaScenario" ||
-        key === "uzbekistanScenario" ||
-        key === "turkeyScenario" ||
-        key === "kazakhstanScenario" ||
-        key === "tajikistanScenario") &&
-      value === "already_no_status";
+    // specsForMoldovaNoStatus() / etc. don't need a goal, but other parts of
+    // the app (e.g. onboarding/results/page.tsx's profileIncomplete check)
+    // still require profile.goal to be non-null, so default it here rather
+    // than asking a question that has no real answer for this branch.
+    const skipsGoal = key === "scenarioStatus" && value === "already_no_status";
     if (skipsGoal) {
       fields.goals = ["other"];
       fields.goal = "other";
@@ -873,44 +956,46 @@ export default function OnboardingPage() {
       case "belarusScenario":
         return [
           { id: "self", label: t.onboarding.belarusScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.belarusScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.belarusScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.belarusScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "georgiaScenario":
         return [
           { id: "self", label: t.onboarding.georgiaScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.georgiaScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.georgiaScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.georgiaScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "moldovaScenario":
         return [
           { id: "self", label: t.onboarding.moldovaScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.moldovaScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.moldovaScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.moldovaScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "uzbekistanScenario":
         return [
           { id: "self", label: t.onboarding.uzbekistanScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.uzbekistanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.uzbekistanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.uzbekistanScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "turkeyScenario":
         return [
           { id: "self", label: t.onboarding.turkeyScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.turkeyScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.turkeyScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.turkeyScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "kazakhstanScenario":
         return [
           { id: "self", label: t.onboarding.kazakhstanScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.kazakhstanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.kazakhstanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.kazakhstanScenarioOptions.already, icon: SHIELD_ICON },
         ];
       case "tajikistanScenario":
         return [
           { id: "self", label: t.onboarding.tajikistanScenarioOptions.self, icon: WORK_ICON },
-          { id: "already_status", label: t.onboarding.tajikistanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
-          { id: "already_no_status", label: t.onboarding.tajikistanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+          { id: "already", label: t.onboarding.tajikistanScenarioOptions.already, icon: SHIELD_ICON },
+        ];
+      // Shared follow-up for any of the 7 XScenario steps' "already" branch
+      // — ids are the actual already_status/already_no_status values
+      // stored in the resolved *_scenario column (see selectDynamicAnswer's
+      // scenarioStatus special-case), not generic "yes"/"no".
+      case "scenarioStatus":
+        return [
+          { id: "already_status", label: t.onboarding.scenarioStatusOptions.yes, icon: YES_ICON },
+          { id: "already_no_status", label: t.onboarding.scenarioStatusOptions.no, icon: NO_ICON },
         ];
       case "jobOffer":
         return binaryOptions(t.onboarding.jobOfferOptions);
