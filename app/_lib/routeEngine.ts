@@ -1493,13 +1493,574 @@ function specsForUzbekistan(
   }
 }
 
+// Turkey is also citizenship_group B, and shares the same "no visa-free
+// entry at all, no oświadczenie access" profile as Uzbekistan — every goal
+// needs visa D, and the WORK goal needs the full zezwolenie na pracę. The
+// distinctive Turkey wrinkle isn't a queue like Uzbekistan's Tashkent
+// appointment backlog — it's that applications can't be submitted directly
+// at the embassy/consulate at all: everything goes through VFS Global in
+// the applicant's consular district (Ankara district → VFS Ankara/Antalya;
+// Istanbul district → VFS Istanbul/Izmir/Gaziantep/Trabzon). That's folded
+// into the step lists below rather than left as a document_guides-only note,
+// since it affects every single visa-requiring route.
+export type TurkeyScenario = "self" | "already_status" | "already_no_status";
+
+function specsForTurkeyAlreadyStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше с картой побыту/визой D — продление и приведение в порядок документов", [
+    {
+      steps: ["Проверить срок карты побыту", "Подать на продление карты побыту"],
+      timeline: "1 день на подачу",
+      cost: "€80",
+      probability: 95,
+    },
+    {
+      steps: ["Проверить срок карты побыту", "Обновить мельдунок", "Декларация PIT", "Проверить NIP и ZUS"],
+      timeline: "1-2 недели",
+      cost: "€80-150",
+      probability: 90,
+    },
+    {
+      steps: [
+        "Проверить/продлить карту побыту",
+        "Обновить все данные",
+        "Декларация PIT",
+        "Нострификация диплома",
+        "Постоянная карта побыту",
+      ],
+      timeline: "3-12 месяцев",
+      cost: "€150-400",
+      probability: 85,
+    },
+  ]);
+}
+
+// "Уже в Польше" на туристической визе C, статуса ещё нет. Источник прямо
+// отмечает, что эта ветка встречается для Турции ЧАЩЕ, чем у Молдовы/Грузии,
+// поскольку у Турции нет безвизового въезда вообще — приезжают почти всегда
+// по визе C. Путь 2 — как и у Узбекистана, самый медленный из-за отсутствия
+// oświadczenie: полное zezwolenie na pracę (1-3 месяца) плюс обязательный
+// выезд за визой D через VFS Global.
+function specsForTurkeyNoStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше без статуса (виза C) — легализация без выезда из страны", [
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)"],
+      timeline: "1-2 дня",
+      cost: "€0-50",
+      probability: 85,
+    },
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)", "NIP + карта побыту (бизнес)"],
+      timeline: "2-6 недель до истечения визы C",
+      cost: "€100-300",
+      probability: 80,
+    },
+    {
+      steps: [
+        "Работодатель подаёт на zezwolenie na pracę",
+        "Выезд за визой D в Турцию (подача только через VFS Global по консульскому округу)",
+        "Возвращение в Польшу и легализация (PESEL, ZUS, NFZ, карта побыту)",
+      ],
+      timeline: "3-6 месяцев (включая ожидание zezwolenia и поездку)",
+      cost: "€500-800",
+      probability: 70,
+    },
+  ]);
+}
+
+const TR_SELF_SUITABLE_FOR: Record<Goal, string> = {
+  work: "Работа по найму — самостоятельный переезд из Турции",
+  study: "Обучение в польском университете — самостоятельный переезд из Турции",
+  business: "Открытие бизнеса — самостоятельный переезд из Турции",
+  family: "Воссоединение с семьёй — самостоятельный переезд из Турции",
+  remote: "Удалённая работа из Польши — самостоятельный переезд из Турции",
+  savings: "Переезд на собственные средства — самостоятельный переезд из Турции",
+  other: "Другие цели пребывания — самостоятельный переезд из Турции",
+};
+
+// "Переезжаю сам" (Сценарий 1). Безвизового въезда нет ни для одной цели —
+// виза D нужна всегда, и подаётся только через VFS Global по консульскому
+// округу (Анкара или Стамбул), напрямую в посольство/консульство не
+// принимают. Для работы нужен zezwolenie na pracę (oświadczenie недоступен).
+function specsForTurkeySelf(goal: Goal, hasJobOffer: boolean): RouteSpec[] {
+  const suitableFor = TR_SELF_SUITABLE_FOR[goal];
+  switch (goal) {
+    case "work":
+      return hasJobOffer
+        ? threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "5-8 месяцев (включая ожидание записи и zezwolenia)",
+              cost: "€400-700",
+              probability: 72,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€500-900",
+              probability: 68,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+                "Продление zezwolenia na pracę",
+                "Нострификация диплома",
+                "Постоянная карта побыту",
+              ],
+              // Источник даёт для "Полный" тот же диапазон 5-8 мес., что и для
+              // "Быстрый" — при том что здесь на 3 шага больше сверх
+              // "Стандартного" (6-9 мес.), включая продление zezwolenia
+              // (1-2 мес.) и нострификацию (2-4 мес.). Это внутреннее
+              // противоречие в документе — та же ошибка, что и в гайде для
+              // Узбекистана; здесь используется реалистичная оценка длиннее
+              // "Стандартного", а не скопированная как есть.
+              timeline: "7-11 месяцев",
+              cost: "€500-1200",
+              probability: 75,
+            },
+          ])
+        : threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Турции)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€400-700",
+              probability: 58,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Турции)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "7-10 месяцев",
+              cost: "€500-900",
+              probability: 55,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Турции)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Виза D (рабочая, на основании zezwolenia, подача через VFS Global по консульскому округу)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NIP",
+                "ZUS",
+                "NFZ",
+                "Карта побыту",
+                "Нострификация диплома",
+              ],
+              timeline: "8-12 месяцев",
+              cost: "€700-1500",
+              probability: 50,
+            },
+          ]);
+    case "study":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Виза D (студенческая, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+            "Нострификация диплома",
+            "Карта ISIC",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 80,
+        },
+      ]);
+    case "business":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (бизнес, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+          ],
+          timeline: "5-7 недель",
+          cost: "€150-350",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (бизнес, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€300-550",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (бизнес, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Счёт для бизнеса (mBank)",
+            "Регистрация ООО",
+            "NIP",
+            "REGON",
+            "VAT",
+            "Карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€600-1500",
+          probability: 75,
+        },
+      ]);
+    case "family":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D по Карте поляка (бесплатно, подача через VFS Global по консульскому округу)",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Карта побыту по Карте поляка",
+          ],
+          timeline: "2-3 месяца",
+          cost: "€100-250",
+          probability: 90,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (воссоединение семьи, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+            "Документы детей школа/садик",
+            "Постоянная карта побыту",
+          ],
+          timeline: "4-6 месяцев",
+          cost: "€400-900",
+          probability: 78,
+        },
+      ]);
+    case "remote":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (на основании дохода, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Виза D (на основании дохода, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "VAT",
+            "Карта побыту",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-700",
+          probability: 75,
+        },
+      ]);
+    case "savings":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (достаточные средства, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+          ],
+          timeline: "4-6 недель",
+          cost: "€200-350",
+          probability: 75,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€350-650",
+          probability: 70,
+        },
+        {
+          steps: [
+            "Виза D (достаточные средства, подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+            "NFZ (добровольно через ZUS)",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€550-1500",
+          probability: 65,
+        },
+      ]);
+    case "other":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Виза D (подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "2-4 недели",
+          cost: "€100-200",
+          probability: 85,
+        },
+        {
+          steps: [
+            "Виза D (подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 80,
+        },
+        {
+          steps: [
+            "Виза D (подача через VFS Global по консульскому округу)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+            "NFZ",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 75,
+        },
+      ]);
+  }
+}
+
+function specsForTurkey(
+  goal: Goal,
+  hasJobOffer: boolean,
+  turkeyScenario: TurkeyScenario | null | undefined,
+): RouteSpec[] {
+  switch (turkeyScenario) {
+    case "already_status":
+      return specsForTurkeyAlreadyStatus();
+    case "already_no_status":
+      return specsForTurkeyNoStatus();
+    case "self":
+    default:
+      return specsForTurkeySelf(goal, hasJobOffer);
+  }
+}
+
 function specsForGroupB(
   goal: Goal,
   hasJobOffer: boolean,
   citizenship: string | null | undefined,
   belarusScenario: BelarusScenario | null | undefined,
   uzbekistanScenario: UzbekistanScenario | null | undefined,
+  turkeyScenario: TurkeyScenario | null | undefined,
 ): RouteSpec[] {
+  if (citizenship === "TR") {
+    return specsForTurkey(goal, hasJobOffer, turkeyScenario);
+  }
   if (citizenship === "UZ") {
     return specsForUzbekistan(goal, hasJobOffer, uzbekistanScenario);
   }
@@ -2794,9 +3355,10 @@ function specsForGoal(
   georgiaScenario: GeorgiaScenario | null | undefined,
   moldovaScenario: MoldovaScenario | null | undefined,
   uzbekistanScenario: UzbekistanScenario | null | undefined,
+  turkeyScenario: TurkeyScenario | null | undefined,
 ): RouteSpec[] {
   return citizenshipGroup === "B"
-    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario)
+    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario, turkeyScenario)
     : citizenshipGroup === "C" || citizenshipGroup === "D"
       ? specsForGroupCD(goal, hasJobOffer, citizenship, georgiaScenario, moldovaScenario)
       : specsForGroupA(goal, ukraineScenario);
@@ -2905,6 +3467,7 @@ export function generateRoutes(input: {
   georgiaScenario?: string | null;
   moldovaScenario?: string | null;
   uzbekistanScenario?: string | null;
+  turkeyScenario?: string | null;
 }): Route[] {
   const goals = normalizeGoals(input.goals);
   const ukraineScenario: UkraineScenario | null =
@@ -2935,6 +3498,12 @@ export function generateRoutes(input: {
     input.uzbekistanScenario === "already_no_status"
       ? input.uzbekistanScenario
       : null;
+  const turkeyScenario: TurkeyScenario | null =
+    input.turkeyScenario === "self" ||
+    input.turkeyScenario === "already_status" ||
+    input.turkeyScenario === "already_no_status"
+      ? input.turkeyScenario
+      : null;
 
   const specsPerGoal = goals.map((goal) =>
     specsForGoal(
@@ -2947,6 +3516,7 @@ export function generateRoutes(input: {
       georgiaScenario,
       moldovaScenario,
       uzbekistanScenario,
+      turkeyScenario,
     ),
   );
   // threeTierSpecs() already guarantees exactly 3 tiers per goal — no

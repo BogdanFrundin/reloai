@@ -18,6 +18,7 @@ create table public.profiles (
   georgia_scenario text,
   moldova_scenario text,
   uzbekistan_scenario text,
+  turkey_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -53,6 +54,7 @@ alter table public.profiles add column if not exists belarus_scenario text;
 alter table public.profiles add column if not exists georgia_scenario text;
 alter table public.profiles add column if not exists moldova_scenario text;
 alter table public.profiles add column if not exists uzbekistan_scenario text;
+alter table public.profiles add column if not exists turkey_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -129,6 +131,19 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- covered so far because it stacks the zezwolenie na pracę wait with the Tashkent
 -- appointment queue). Asked as its own onboarding step right after citizenship — see
 -- app/onboarding/page.tsx and app/_lib/routeEngine.ts.
+-- turkey_scenario is only meaningful when citizenship = "TR": "self" (relocating
+-- independently — visa D required for every goal, there's no visa-free entry at all;
+-- the WORK goal needs a full zezwolenie na pracę since Turkey never had oświadczenie
+-- access, and every visa application must go through VFS Global in the applicant's
+-- consular district — Ankara or Istanbul — direct embassy/consulate submission isn't
+-- allowed), "already_status" (already in Poland, holds a karta pobytu or valid visa D —
+-- ordinary renewal), or "already_no_status" (already in Poland on a short-stay visa C
+-- with no residence status yet — skips goal selection entirely and gets the Путь 1 /
+-- Путь 2 legalization-without-leaving routes; this branch is expected to be hit more
+-- often for Turkey than for Moldova/Georgia since Turkey has no visa-free entry at all,
+-- so travelers arrive on short-stay visa C far more routinely). Asked as its own
+-- onboarding step right after citizenship — see app/onboarding/page.tsx and
+-- app/_lib/routeEngine.ts.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

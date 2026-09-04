@@ -42,6 +42,7 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
         georgiaScenario: profile.georgia_scenario,
         moldovaScenario: profile.moldova_scenario,
         uzbekistanScenario: profile.uzbekistan_scenario,
+        turkeyScenario: profile.turkey_scenario,
       })
     : [];
 
