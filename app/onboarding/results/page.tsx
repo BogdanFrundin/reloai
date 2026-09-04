@@ -76,6 +76,8 @@ export default function OnboardingResultsPage() {
           citizenship: profile.citizenship,
           belarusScenario: profile.belarus_scenario,
           georgiaScenario: profile.georgia_scenario,
+          moldovaScenario: profile.moldova_scenario,
+          uzbekistanScenario: profile.uzbekistan_scenario,
         })
       : null;
 

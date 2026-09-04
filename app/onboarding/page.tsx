@@ -46,6 +46,12 @@ type Answers = {
   // computeStepOrder(). Same 3-way shape as belarusScenario: "self", "already_status",
   // or "already_no_status".
   georgiaScenario?: string;
+  // Only asked (and only meaningful) when citizenship === "MD" — see
+  // computeStepOrder(). Same 3-way shape as belarusScenario/georgiaScenario.
+  moldovaScenario?: string;
+  // Only asked (and only meaningful) when citizenship === "UZ" — see
+  // computeStepOrder(). Same 3-way shape as belarusScenario/georgiaScenario/moldovaScenario.
+  uzbekistanScenario?: string;
   currentCountry?: string;
   destination?: string;
   // Multi-select: a user can pick more than one goal (e.g. "Бизнес" +
@@ -74,6 +80,8 @@ type ProfileFields = {
   ukraine_scenario?: string | null;
   belarus_scenario?: string | null;
   georgia_scenario?: string | null;
+  moldova_scenario?: string | null;
+  uzbekistan_scenario?: string | null;
   current_country?: string;
   country?: string;
   // goal always mirrors goals[0] — kept in sync for every place that still
@@ -104,6 +112,8 @@ const ALL_STEP_KEYS = [
   "ukraineScenario",
   "belarusScenario",
   "georgiaScenario",
+  "moldovaScenario",
+  "uzbekistanScenario",
   "currentCountry",
   "destination",
   "goal",
@@ -124,6 +134,8 @@ type DynamicStepKey =
   | "ukraineScenario"
   | "belarusScenario"
   | "georgiaScenario"
+  | "moldovaScenario"
+  | "uzbekistanScenario"
   | "jobOffer"
   | "universityAccepted"
   | "studyLevel"
@@ -139,6 +151,8 @@ const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
   "ukraineScenario",
   "belarusScenario",
   "georgiaScenario",
+  "moldovaScenario",
+  "uzbekistanScenario",
   "jobOffer",
   "universityAccepted",
   "studyLevel",
@@ -163,6 +177,8 @@ const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
   ukraineScenario: "ukraineScenario",
   belarusScenario: "belarusScenario",
   georgiaScenario: "georgiaScenario",
+  moldovaScenario: "moldovaScenario",
+  uzbekistanScenario: "uzbekistanScenario",
   jobOffer: "jobOffer",
   universityAccepted: "alreadyAdmitted",
   studyLevel: "studyLevel",
@@ -179,6 +195,8 @@ const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
   ukraineScenario: "ukraine_scenario",
   belarusScenario: "belarus_scenario",
   georgiaScenario: "georgia_scenario",
+  moldovaScenario: "moldova_scenario",
+  uzbekistanScenario: "uzbekistan_scenario",
   jobOffer: "job_offer",
   universityAccepted: "already_admitted",
   studyLevel: "study_level",
@@ -222,24 +240,30 @@ function computeStepOrder(
   citizenship: string | undefined,
   belarusScenario?: string,
   georgiaScenario?: string,
+  moldovaScenario?: string,
+  uzbekistanScenario?: string,
 ): StepKey[] {
   // The Ukraine scenario question only makes sense (and only exists in
   // routeEngine.ts) for citizenship === "UA" — temporary protection vs.
   // self-relocation vs. already-in-Poland are Ukraine-specific legal tracks,
   // not something any other citizenship needs to answer. Same idea for
-  // Belarus's belarusScenario and Georgia's georgiaScenario questions.
+  // Belarus's belarusScenario, Georgia's georgiaScenario, and Moldova's
+  // moldovaScenario questions.
   //
-  // Belarus's and Georgia's "already in Poland, no status yet" branch is the
-  // one case that skips goal selection entirely — the source guides are
-  // explicit that this question doesn't depend on what the user is trying to
-  // do in Poland, it's "легализация без выезда" regardless of goal (see
-  // specsForBelarusNoStatus() / specsForGeorgiaNoStatus() in routeEngine.ts).
-  // selectDynamicAnswer() defaults answers.goals to ["other"] the moment this
-  // branch is picked, so profile.goal still ends up non-null for the rest of
-  // the app even though the user is never asked.
+  // Belarus's, Georgia's, and Moldova's "already in Poland, no status yet"
+  // branch is the one case that skips goal selection entirely — the source
+  // guides are explicit that this question doesn't depend on what the user
+  // is trying to do in Poland, it's "легализация без выезда" regardless of
+  // goal (see specsForBelarusNoStatus() / specsForGeorgiaNoStatus() /
+  // specsForMoldovaNoStatus() in routeEngine.ts). selectDynamicAnswer()
+  // defaults answers.goals to ["other"] the moment this branch is picked, so
+  // profile.goal still ends up non-null for the rest of the app even though
+  // the user is never asked.
   const skipGoal =
     (citizenship === "BY" && belarusScenario === "already_no_status") ||
-    (citizenship === "GE" && georgiaScenario === "already_no_status");
+    (citizenship === "GE" && georgiaScenario === "already_no_status") ||
+    (citizenship === "MD" && moldovaScenario === "already_no_status") ||
+    (citizenship === "UZ" && uzbekistanScenario === "already_no_status");
 
   let base: StepKey[];
   if (citizenship === "UA") {
@@ -252,6 +276,14 @@ function computeStepOrder(
     base = skipGoal
       ? ["language", "citizenship", "georgiaScenario", "currentCountry", "destination"]
       : ["language", "citizenship", "georgiaScenario", "currentCountry", "destination", "goal"];
+  } else if (citizenship === "MD") {
+    base = skipGoal
+      ? ["language", "citizenship", "moldovaScenario", "currentCountry", "destination"]
+      : ["language", "citizenship", "moldovaScenario", "currentCountry", "destination", "goal"];
+  } else if (citizenship === "UZ") {
+    base = skipGoal
+      ? ["language", "citizenship", "uzbekistanScenario", "currentCountry", "destination"]
+      : ["language", "citizenship", "uzbekistanScenario", "currentCountry", "destination", "goal"];
   } else {
     base = ["language", "citizenship", "currentCountry", "destination", "goal"];
   }
@@ -408,6 +440,8 @@ export default function OnboardingPage() {
       ukraineScenario: profile.ukraine_scenario ?? undefined,
       belarusScenario: profile.belarus_scenario ?? undefined,
       georgiaScenario: profile.georgia_scenario ?? undefined,
+      moldovaScenario: profile.moldova_scenario ?? undefined,
+      uzbekistanScenario: profile.uzbekistan_scenario ?? undefined,
     };
     const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
       (ALL_STEP_KEYS as readonly string[]).includes(key),
@@ -424,6 +458,8 @@ export default function OnboardingPage() {
         restoredAnswers.citizenship,
         restoredAnswers.belarusScenario,
         restoredAnswers.georgiaScenario,
+        restoredAnswers.moldovaScenario,
+        restoredAnswers.uzbekistanScenario,
       );
       const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
@@ -432,7 +468,14 @@ export default function OnboardingPage() {
     setHydrated(true);
   }, [profile, hydrated]);
 
-  const STEP_ORDER = computeStepOrder(answers.goals, answers.citizenship, answers.belarusScenario, answers.georgiaScenario);
+  const STEP_ORDER = computeStepOrder(
+    answers.goals,
+    answers.citizenship,
+    answers.belarusScenario,
+    answers.georgiaScenario,
+    answers.moldovaScenario,
+    answers.uzbekistanScenario,
+  );
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
   const isLast = stepIndex === STEP_ORDER.length - 1;
@@ -518,15 +561,19 @@ export default function OnboardingPage() {
     const dbField = DYNAMIC_STEP_DB_FIELD[key];
     const fields: ProfileFields = { [dbField]: value } as ProfileFields;
 
-    // Belarus's and Georgia's "already in Poland, no status yet" branches
-    // skip goal selection entirely (see computeStepOrder()) — routeEngine.ts's
-    // specsForBelarusNoStatus() / specsForGeorgiaNoStatus() don't need a goal,
-    // but other parts of the app (e.g. onboarding/results/page.tsx's
-    // profileIncomplete check) still require profile.goal to be non-null, so
-    // default it here rather than asking a question that has no real answer
-    // for this branch.
+    // Belarus's, Georgia's, and Moldova's "already in Poland, no status yet"
+    // branches skip goal selection entirely (see computeStepOrder()) —
+    // routeEngine.ts's specsForBelarusNoStatus() / specsForGeorgiaNoStatus() /
+    // specsForMoldovaNoStatus() don't need a goal, but other parts of the app
+    // (e.g. onboarding/results/page.tsx's profileIncomplete check) still
+    // require profile.goal to be non-null, so default it here rather than
+    // asking a question that has no real answer for this branch.
     const skipsGoal =
-      (key === "belarusScenario" || key === "georgiaScenario") && value === "already_no_status";
+      (key === "belarusScenario" ||
+        key === "georgiaScenario" ||
+        key === "moldovaScenario" ||
+        key === "uzbekistanScenario") &&
+      value === "already_no_status";
     if (skipsGoal) {
       fields.goals = ["other"];
       fields.goal = "other";
@@ -546,6 +593,8 @@ export default function OnboardingPage() {
     if (a.ukraineScenario) fields.ukraine_scenario = a.ukraineScenario;
     if (a.belarusScenario) fields.belarus_scenario = a.belarusScenario;
     if (a.georgiaScenario) fields.georgia_scenario = a.georgiaScenario;
+    if (a.moldovaScenario) fields.moldova_scenario = a.moldovaScenario;
+    if (a.uzbekistanScenario) fields.uzbekistan_scenario = a.uzbekistanScenario;
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
     if (a.goals && a.goals.length > 0) {
@@ -772,6 +821,18 @@ export default function OnboardingPage() {
           { id: "self", label: t.onboarding.georgiaScenarioOptions.self, icon: WORK_ICON },
           { id: "already_status", label: t.onboarding.georgiaScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
           { id: "already_no_status", label: t.onboarding.georgiaScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+        ];
+      case "moldovaScenario":
+        return [
+          { id: "self", label: t.onboarding.moldovaScenarioOptions.self, icon: WORK_ICON },
+          { id: "already_status", label: t.onboarding.moldovaScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
+          { id: "already_no_status", label: t.onboarding.moldovaScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+        ];
+      case "uzbekistanScenario":
+        return [
+          { id: "self", label: t.onboarding.uzbekistanScenarioOptions.self, icon: WORK_ICON },
+          { id: "already_status", label: t.onboarding.uzbekistanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
+          { id: "already_no_status", label: t.onboarding.uzbekistanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
         ];
       case "jobOffer":
         return binaryOptions(t.onboarding.jobOfferOptions);

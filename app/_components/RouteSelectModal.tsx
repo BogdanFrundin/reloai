@@ -40,6 +40,8 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
         citizenship: profile.citizenship,
         belarusScenario: profile.belarus_scenario,
         georgiaScenario: profile.georgia_scenario,
+        moldovaScenario: profile.moldova_scenario,
+        uzbekistanScenario: profile.uzbekistan_scenario,
       })
     : [];
 

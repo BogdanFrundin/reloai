@@ -35,6 +35,8 @@ type RouteRequestBody = {
   ukraine_scenario?: string;
   belarus_scenario?: string;
   georgia_scenario?: string;
+  moldova_scenario?: string;
+  uzbekistan_scenario?: string;
 };
 
 // Deterministic, rule-based route generation — see app/_lib/routeEngine.ts.
@@ -56,6 +58,8 @@ export async function POST(request: Request) {
     citizenship: body.citizenship,
     belarusScenario: body.belarus_scenario,
     georgiaScenario: body.georgia_scenario,
+    moldovaScenario: body.moldova_scenario,
+    uzbekistanScenario: body.uzbekistan_scenario,
   });
   return NextResponse.json({ routes } satisfies RouteEngineResult);
 }

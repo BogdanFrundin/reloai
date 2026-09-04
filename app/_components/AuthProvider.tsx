@@ -27,6 +27,14 @@ export type Profile = {
   // "already_no_status". See app/_lib/routeEngine.ts and
   // app/onboarding/page.tsx's "georgiaScenario" step.
   georgia_scenario: string | null;
+  // Only meaningful for citizenship === "MD" — "self" / "already_status" /
+  // "already_no_status". See app/_lib/routeEngine.ts and
+  // app/onboarding/page.tsx's "moldovaScenario" step.
+  moldova_scenario: string | null;
+  // Only meaningful for citizenship === "UZ" — "self" / "already_status" /
+  // "already_no_status". See app/_lib/routeEngine.ts and
+  // app/onboarding/page.tsx's "uzbekistanScenario" step.
+  uzbekistan_scenario: string | null;
   current_country: string | null;
   goal: string | null;
   // Full multi-select set from onboarding (see app/onboarding/page.tsx) —
