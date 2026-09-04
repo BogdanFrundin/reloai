@@ -2608,6 +2608,592 @@ function specsForKazakhstan(
   }
 }
 
+// Tajikistan is also citizenship_group B, and shares the same "no visa-free
+// entry at all, no oświadczenie access" profile as the rest of this group —
+// every goal needs visa D, and the WORK goal needs the full zezwolenie na
+// pracę. The defining wrinkle, unique among every Group B country covered so
+// far: Poland has NO diplomatic mission in Tajikistan at all — the Polish
+// ambassador in Tashkent, Uzbekistan is also accredited to Tajikistan, so
+// EVERY single visa (C or D) has to be filed in person in Tashkent. That
+// means a separate international trip to Uzbekistan just to reach the
+// application stage — even for the "self" relocation track, not just the
+// "already in Poland, no status" Путь 2 branch — plus Tajik citizens need to
+// separately check Uzbekistan's own entry rules for them before that trip.
+// This is folded into the step lists and timelines below rather than left
+// as a document_guides-only note, since it affects every visa-requiring
+// route.
+export type TajikistanScenario = "self" | "already_status" | "already_no_status";
+
+function specsForTajikistanAlreadyStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше с картой побыту/визой D — продление и приведение в порядок документов", [
+    {
+      steps: ["Проверить срок карты побыту", "Подать на продление карты побыту"],
+      timeline: "1 день на подачу",
+      cost: "€80",
+      probability: 95,
+    },
+    {
+      steps: ["Проверить срок карты побыту", "Обновить мельдунок", "Декларация PIT", "Проверить NIP и ZUS"],
+      timeline: "1-2 недели",
+      cost: "€80-150",
+      probability: 90,
+    },
+    {
+      steps: [
+        "Проверить/продлить карту побыту",
+        "Обновить все данные",
+        "Декларация PIT",
+        "Нострификация диплома",
+        "Постоянная карта побыту",
+      ],
+      timeline: "3-12 месяцев",
+      cost: "€150-400",
+      probability: 85,
+    },
+  ]);
+}
+
+// "Уже в Польше" на туристической визе C, статуса ещё нет. Источник прямо
+// отмечает, что эта ветка встречается для Таджикистана ЧАЩЕ, чем у
+// Молдовы/Грузии, поскольку у Таджикистана нет безвизового въезда вообще.
+// Путь 2 здесь самый медленный среди всех покрытых стран Group B: помимо
+// минимум 1-3 месяцев на zezwolenie na pracę, виза D получается ТОЛЬКО в
+// Ташкенте — отдельная поездка в другую страну, а не домой.
+function specsForTajikistanNoStatus(): RouteSpec[] {
+  return threeTierSpecs("Уже в Польше без статуса (виза C) — легализация без выезда из страны", [
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)"],
+      timeline: "1-2 дня",
+      cost: "€0-50",
+      probability: 85,
+    },
+    {
+      steps: ["PESEL", "Регистрация ИП (JDG)", "NIP + карта побыту (бизнес)"],
+      timeline: "2-6 недель до истечения визы C",
+      cost: "€100-300",
+      probability: 80,
+    },
+    {
+      steps: [
+        "Работодатель подаёт на zezwolenie na pracę",
+        "Выезд за визой D в Ташкент, Узбекистан (у Польши нет посольства в Таджикистане — консульский округ обслуживается из Ташкента)",
+        "Возвращение в Польшу и легализация (PESEL, ZUS, NFZ, карта побыту)",
+      ],
+      timeline: "4-7 месяцев (включая ожидание zezwolenia и поездку в Ташкент)",
+      cost: "€500-800",
+      probability: 65,
+    },
+  ]);
+}
+
+const TJ_SELF_SUITABLE_FOR: Record<Goal, string> = {
+  work: "Работа по найму — самостоятельный переезд из Таджикистана",
+  study: "Обучение в польском университете — самостоятельный переезд из Таджикистана",
+  business: "Открытие бизнеса — самостоятельный переезд из Таджикистана",
+  family: "Воссоединение с семьёй — самостоятельный переезд из Таджикистана",
+  remote: "Удалённая работа из Польши — самостоятельный переезд из Таджикистана",
+  savings: "Переезд на собственные средства — самостоятельный переезд из Таджикистана",
+  other: "Другие цели пребывания — самостоятельный переезд из Таджикистана",
+};
+
+// "Переезжаю сам" (Сценарий 1). Безвизового въезда нет ни для одной цели —
+// виза D нужна всегда, и подаётся ТОЛЬКО в Ташкенте (Узбекистан), так как
+// у Польши нет посольства в Таджикистане — консульский округ обслуживается
+// оттуда же. Для работы нужен zezwolenie na pracę (oświadczenie недоступен).
+function specsForTajikistanSelf(goal: Goal, hasJobOffer: boolean): RouteSpec[] {
+  const suitableFor = TJ_SELF_SUITABLE_FOR[goal];
+  switch (goal) {
+    case "work":
+      return hasJobOffer
+        ? threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "5-8 месяцев (включая ожидание записи, zezwolenia и поездку в Ташкент)",
+              cost: "€400-700",
+              probability: 68,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€500-900",
+              probability: 66,
+            },
+            {
+              steps: [
+                "Zezwolenie na pracę",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "Работа по найму",
+                "NIP",
+                "Частная страховка",
+                "NFZ",
+                "Карта побыту",
+                "Продление zezwolenia na pracę",
+                "Нострификация диплома",
+                "Постоянная карта побыту",
+              ],
+              // Источник даёт для "Полный" тот же диапазон 5-8 мес., что и для
+              // "Быстрый" — при том что здесь на 3 шага больше сверх
+              // "Стандартного" (6-9 мес.), включая продление zezwolenia
+              // (1-2 мес.) и нострификацию (2-4 мес.). Это внутреннее
+              // противоречие в документе — та же ошибка, что и в гайдах для
+              // Узбекистана, Турции и Казахстана; здесь используется
+              // реалистичная оценка длиннее "Стандартного", а не
+              // скопированная как есть.
+              timeline: "7-11 месяцев",
+              cost: "€500-1200",
+              probability: 73,
+            },
+          ])
+        : threeTierSpecs(suitableFor, [
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Таджикистане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+              ],
+              timeline: "6-9 месяцев",
+              cost: "€400-700",
+              probability: 55,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Таджикистане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NFZ",
+                "Карта побыту",
+              ],
+              timeline: "7-10 месяцев",
+              cost: "€500-900",
+              probability: 52,
+            },
+            {
+              steps: [
+                "Поиск работы (дистанционно, находясь в Таджикистане)",
+                "Zezwolenie na pracę (после нахождения работодателя)",
+                "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+                "Виза D (рабочая, на основании zezwolenia, подача только лично в Ташкенте)",
+                "Страховка для визы",
+                "SIM карта",
+                "Аренда жилья",
+                "Мельдунок",
+                "PESEL",
+                "Банк (ZEN.com/Wise)",
+                "NIP",
+                "ZUS",
+                "NFZ",
+                "Карта побыту",
+                "Нострификация диплома",
+              ],
+              timeline: "8-12 месяцев",
+              cost: "€700-1500",
+              probability: 48,
+            },
+          ]);
+    case "study":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Зачисление в университет",
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (студенческая, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 82,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (студенческая, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 82,
+        },
+        {
+          steps: [
+            "Зачисление в университет",
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (студенческая, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Студенческая карта побыту",
+            "NFZ",
+            "Нострификация диплома",
+            "Карта ISIC",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 78,
+        },
+      ]);
+    case "business":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (бизнес, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+          ],
+          timeline: "5-7 недель",
+          cost: "€150-350",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (бизнес, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€300-550",
+          probability: 76,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (бизнес, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Счёт для бизнеса (mBank)",
+            "Регистрация ООО",
+            "NIP",
+            "REGON",
+            "VAT",
+            "Карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€600-1500",
+          probability: 73,
+        },
+      ]);
+    case "family":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D по Карте поляка (бесплатно, подача только лично в Ташкенте)",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Карта побыту по Карте поляка",
+          ],
+          timeline: "2-3 месяца",
+          cost: "€100-250",
+          probability: 88,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (воссоединение семьи, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€250-450",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (воссоединение семьи, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту семья",
+            "Документы детей школа/садик",
+            "Постоянная карта побыту",
+          ],
+          timeline: "4-6 месяцев",
+          cost: "€400-900",
+          probability: 76,
+        },
+      ]);
+    case "remote":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (на основании дохода, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+          ],
+          timeline: "4-6 недель",
+          cost: "€150-300",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (на основании дохода, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 76,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (на основании дохода, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (Wise + ZEN.com)",
+            "Регистрация ИП",
+            "NIP",
+            "ZUS",
+            "VAT",
+            "Карта побыту",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-700",
+          probability: 73,
+        },
+      ]);
+    case "savings":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (достаточные средства, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+          ],
+          timeline: "4-6 недель",
+          cost: "€200-350",
+          probability: 73,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (достаточные средства, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€350-650",
+          probability: 68,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (достаточные средства, подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту (средства)",
+            "NFZ (добровольно через ZUS)",
+            "Постоянная карта побыту",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€550-1500",
+          probability: 63,
+        },
+      ]);
+    case "other":
+      return threeTierSpecs(suitableFor, [
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+          ],
+          timeline: "2-4 недели",
+          cost: "€100-200",
+          probability: 83,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+          ],
+          timeline: "2-4 месяца",
+          cost: "€250-450",
+          probability: 78,
+        },
+        {
+          steps: [
+            "Поездка в Ташкент за визой D (у Польши нет посольства в Таджикистане)",
+            "Виза D (подача только лично в Ташкенте)",
+            "Страховка для визы",
+            "SIM карта",
+            "Аренда жилья",
+            "Мельдунок",
+            "PESEL",
+            "Банк (ZEN.com/Wise)",
+            "Частная страховка",
+            "Карта побыту",
+            "NFZ",
+          ],
+          timeline: "3-5 месяцев",
+          cost: "€350-650",
+          probability: 73,
+        },
+      ]);
+  }
+}
+
+function specsForTajikistan(
+  goal: Goal,
+  hasJobOffer: boolean,
+  tajikistanScenario: TajikistanScenario | null | undefined,
+): RouteSpec[] {
+  switch (tajikistanScenario) {
+    case "already_status":
+      return specsForTajikistanAlreadyStatus();
+    case "already_no_status":
+      return specsForTajikistanNoStatus();
+    case "self":
+    default:
+      return specsForTajikistanSelf(goal, hasJobOffer);
+  }
+}
+
 function specsForGroupB(
   goal: Goal,
   hasJobOffer: boolean,
@@ -2616,7 +3202,11 @@ function specsForGroupB(
   uzbekistanScenario: UzbekistanScenario | null | undefined,
   turkeyScenario: TurkeyScenario | null | undefined,
   kazakhstanScenario: KazakhstanScenario | null | undefined,
+  tajikistanScenario: TajikistanScenario | null | undefined,
 ): RouteSpec[] {
+  if (citizenship === "TJ") {
+    return specsForTajikistan(goal, hasJobOffer, tajikistanScenario);
+  }
   if (citizenship === "KZ") {
     return specsForKazakhstan(goal, hasJobOffer, kazakhstanScenario);
   }
@@ -3919,9 +4509,10 @@ function specsForGoal(
   uzbekistanScenario: UzbekistanScenario | null | undefined,
   turkeyScenario: TurkeyScenario | null | undefined,
   kazakhstanScenario: KazakhstanScenario | null | undefined,
+  tajikistanScenario: TajikistanScenario | null | undefined,
 ): RouteSpec[] {
   return citizenshipGroup === "B"
-    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario, turkeyScenario, kazakhstanScenario)
+    ? specsForGroupB(goal, hasJobOffer, citizenship, belarusScenario, uzbekistanScenario, turkeyScenario, kazakhstanScenario, tajikistanScenario)
     : citizenshipGroup === "C" || citizenshipGroup === "D"
       ? specsForGroupCD(goal, hasJobOffer, citizenship, georgiaScenario, moldovaScenario)
       : specsForGroupA(goal, ukraineScenario);
@@ -4032,6 +4623,7 @@ export function generateRoutes(input: {
   uzbekistanScenario?: string | null;
   turkeyScenario?: string | null;
   kazakhstanScenario?: string | null;
+  tajikistanScenario?: string | null;
 }): Route[] {
   const goals = normalizeGoals(input.goals);
   const ukraineScenario: UkraineScenario | null =
@@ -4074,6 +4666,12 @@ export function generateRoutes(input: {
     input.kazakhstanScenario === "already_no_status"
       ? input.kazakhstanScenario
       : null;
+  const tajikistanScenario: TajikistanScenario | null =
+    input.tajikistanScenario === "self" ||
+    input.tajikistanScenario === "already_status" ||
+    input.tajikistanScenario === "already_no_status"
+      ? input.tajikistanScenario
+      : null;
 
   const specsPerGoal = goals.map((goal) =>
     specsForGoal(
@@ -4088,6 +4686,7 @@ export function generateRoutes(input: {
       uzbekistanScenario,
       turkeyScenario,
       kazakhstanScenario,
+      tajikistanScenario,
     ),
   );
   // threeTierSpecs() already guarantees exactly 3 tiers per goal — no

@@ -890,6 +890,7 @@ export type Dictionary = {
       uzbekistanScenario: { question: string; subheading: string };
       turkeyScenario: { question: string; subheading: string };
       kazakhstanScenario: { question: string; subheading: string };
+      tajikistanScenario: { question: string; subheading: string };
       currentCountry: { question: string; subheading: string };
       destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
@@ -943,6 +944,7 @@ export type Dictionary = {
     uzbekistanScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
     turkeyScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
     kazakhstanScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
+    tajikistanScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
     results: {
       heading: string;
       loading: string;
@@ -2624,6 +2626,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Which of these applies to you?", subheading: "There's no visa-free entry to Poland for Uzbekistan citizens at all, and the work goal needs a full zezwolenie na pracę (not the fast oświadczenie track) — plus a long wait for a visa appointment in Tashkent. The right track depends on where you are in the process." },
         turkeyScenario: { question: "Which of these applies to you?", subheading: "There's no visa-free entry to Poland for Turkish citizens at all, and the work goal needs a full zezwolenie na pracę (not the fast oświadczenie track) — every visa application also has to go through VFS Global in your consular district (Ankara or Istanbul), not the embassy directly. The right track depends on where you are in the process." },
         kazakhstanScenario: { question: "Which of these applies to you?", subheading: "There's no visa-free entry to Poland for Kazakhstan citizens at all, and the work goal needs a full zezwolenie na pracę (not the fast oświadczenie track) — applications go directly to the embassy in Astana or consulate in Almaty (no VFS Global), but a high-demand lottery can gate the appointment and processing itself takes a minimum 30 working days. The right track depends on where you are in the process." },
+        tajikistanScenario: { question: "Which of these applies to you?", subheading: "Poland has no diplomatic mission in Tajikistan at all — every visa (Schengen C or national D), for every goal, has to be filed in person in Tashkent, Uzbekistan, since the Polish ambassador there is also accredited to Tajikistan. The work goal also needs a full zezwolenie na pracę (oświadczenie was never available to Tajik citizens). The right track depends on where you are in the process." },
         currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         goal: { question: "What's your main goal?", subheading: "You can pick more than one — this decides which pathways we'll analyze for you." },
@@ -2726,6 +2729,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "I'm relocating on my own from Kazakhstan",
+        alreadyStatus: "I'm already in Poland and hold a karta pobytu or valid visa D",
+        alreadyNoStatus: "I'm already in Poland on a short-stay visa C and don't have residence status yet",
+      },
+      tajikistanScenarioOptions: {
+        self: "I'm relocating on my own from Tajikistan",
         alreadyStatus: "I'm already in Poland and hold a karta pobytu or valid visa D",
         alreadyNoStatus: "I'm already in Poland on a short-stay visa C and don't have residence status yet",
       },
@@ -4411,6 +4419,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Какой из вариантов вам подходит?", subheading: "Безвизового въезда в Польшу для граждан Узбекистана нет вообще, а для цели «работа» нужно полное zezwolenie na pracę (без быстрой процедуры oświadczenie) — плюс долгое ожидание записи на визу в Ташкенте. Нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
         turkeyScenario: { question: "Какой из вариантов вам подходит?", subheading: "Безвизового въезда в Польшу для граждан Турции нет вообще, а для цели «работа» нужно полное zezwolenie na pracę (без быстрой процедуры oświadczenie) — при этом любая виза подаётся только через VFS Global по консульскому округу (Анкара или Стамбул), напрямую в посольство не принимают. Нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
         kazakhstanScenario: { question: "Какой из вариантов вам подходит?", subheading: "Безвизового въезда в Польшу для граждан Казахстана нет вообще, а для цели «работа» нужно полное zezwolenie na pracę (без быстрой процедуры oświadczenie) — документы подаются напрямую в посольство в Астане или консульство в Алматы (визового центра нет), но при высоком спросе запись идёт через жеребьёвку, а само рассмотрение занимает от 30 рабочих дней. Нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
+        tajikistanScenario: { question: "Какой из вариантов вам подходит?", subheading: "У Польши вообще нет дипломатического представительства в Таджикистане — любая виза (шенгенская C или национальная D), для любой цели, подаётся лично только в Ташкенте, Узбекистан, так как польский посол там аккредитован и на Таджикистан тоже. Для цели «работа» нужно полное zezwolenie na pracę — процедура oświadczenie для граждан Таджикистана никогда не была доступна. Нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
         currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         goal: { question: "Какова ваша основная цель?", subheading: "Можно выбрать сразу несколько — это определит, какие пути мы для вас проанализируем." },
@@ -4513,6 +4522,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "Переезжаю самостоятельно из Казахстана",
+        alreadyStatus: "Уже в Польше, есть карта побыту или действующая виза D",
+        alreadyNoStatus: "Уже в Польше по краткосрочной визе C, статуса ещё нет",
+      },
+      tajikistanScenarioOptions: {
+        self: "Переезжаю самостоятельно из Таджикистана",
         alreadyStatus: "Уже в Польше, есть карта побыту или действующая виза D",
         alreadyNoStatus: "Уже в Польше по краткосрочной визе C, статуса ещё нет",
       },
@@ -6193,6 +6207,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "O'zbekiston fuqarolari uchun Polshaga vizasiz kirish umuman yo'q, \"ish\" maqsadi uchun esa tezkor oświadczenie tartibisiz to'liq zezwolenie na pracę kerak — bundan tashqari Toshkentda viza uchun uzoq navbat kutish kerak. Kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
         turkeyScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Turkiya fuqarolari uchun Polshaga vizasiz kirish umuman yo'q, \"ish\" maqsadi uchun esa tezkor oświadczenie tartibisiz to'liq zezwolenie na pracę kerak — har qanday viza faqat konsullik okrugingizdagi VFS Global orqali topshiriladi (Ankara yoki Istanbul), elchixonaga bevosita emas. Kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
         kazakhstanScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Qozog'iston fuqarolari uchun Polshaga vizasiz kirish umuman yo'q, \"ish\" maqsadi uchun esa tezkor oświadczenie tartibisiz to'liq zezwolenie na pracę kerak — hujjatlar bevosita Astanadagi elchixona yoki Almatidagi konsullikka topshiriladi (VFS Global yo'q), lekin yuqori talab bo'lganda qur'a orqali navbat belgilanadi va ko'rib chiqish kamida 30 ish kuni davom etadi. Kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
+        tajikistanScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Polshaning Tojikistonda umuman diplomatik vakolatxonasi yo'q — har qanday viza (Shengen C yoki milliy D), har qanday maqsad uchun, faqat shaxsan Toshkentda, O'zbekistonda topshiriladi, chunki u yerdagi Polsha elchisi Tojikistonga ham akkreditatsiya qilingan. \"Ish\" maqsadi uchun ham to'liq zezwolenie na pracę kerak — Tojikiston fuqarolari uchun oświadczenie tartibi hech qachon mavjud bo'lmagan. Kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
         currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bir nechtasini tanlashingiz mumkin — bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
@@ -6291,6 +6306,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "Qozog'istondan mustaqil ko'chib o'tyapman",
+        alreadyStatus: "Allaqachon Polshadaman, karta pobytu yoki amaldagi D vizam bor",
+        alreadyNoStatus: "Allaqachon Polshadaman qisqa muddatli C vizasi bilan, hali statusim yo'q",
+      },
+      tajikistanScenarioOptions: {
+        self: "Tojikistondan mustaqil ko'chib o'tyapman",
         alreadyStatus: "Allaqachon Polshadaman, karta pobytu yoki amaldagi D vizam bor",
         alreadyNoStatus: "Allaqachon Polshadaman qisqa muddatli C vizasi bilan, hali statusim yo'q",
       },
@@ -7974,6 +7994,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Özbekistan vatandaşları için Polonya'ya vizesiz giriş hiç yok, \"iş\" amacı için ise hızlı oświadczenie süreci değil tam zezwolenie na pracę gerekiyor — ayrıca Taşkent'te vize randevusu için uzun bir bekleme var. Doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
         turkeyScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Türk vatandaşları için Polonya'ya vizesiz giriş hiç yok, \"iş\" amacı için ise hızlı oświadczenie süreci değil tam zezwolenie na pracę gerekiyor — ayrıca her vize başvurusu doğrudan büyükelçilikte değil, konsolosluk bölgenizdeki (Ankara veya İstanbul) VFS Global üzerinden yapılıyor. Doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
         kazakhstanScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Kazakistan vatandaşları için Polonya'ya vizesiz giriş hiç yok, \"iş\" amacı için ise hızlı oświadczenie süreci değil tam zezwolenie na pracę gerekiyor — başvurular doğrudan Astana'daki büyükelçiliğe veya Almatı'daki konsolosluğa yapılıyor (VFS Global yok), ancak yoğun talepte randevu kura ile belirlenebiliyor ve değerlendirme en az 30 iş günü sürüyor. Doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
+        tajikistanScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Polonya'nın Tacikistan'da hiç diplomatik temsilciliği yok — her vize (Schengen C veya ulusal D), her amaç için, sadece şahsen Taşkent'te, Özbekistan'da başvurulabiliyor, çünkü oradaki Polonya büyükelçisi Tacikistan için de akredite. \"İş\" amacı için de tam zezwolenie na pracę gerekiyor — Tacikistan vatandaşları için oświadczenie süreci hiçbir zaman mevcut olmadı. Doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
         currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Birden fazla seçebilirsiniz — bu, sizin için hangi yolları analiz edeceğimizi belirler." },
@@ -8076,6 +8097,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "Kazakistan'dan kendi başıma taşınıyorum",
+        alreadyStatus: "Zaten Polonya'dayım, karta pobytu veya geçerli D vizem var",
+        alreadyNoStatus: "Zaten Polonya'dayım kısa süreli C vizesiyle, henüz statüm yok",
+      },
+      tajikistanScenarioOptions: {
+        self: "Tacikistan'dan kendi başıma taşınıyorum",
         alreadyStatus: "Zaten Polonya'dayım, karta pobytu veya geçerli D vizem var",
         alreadyNoStatus: "Zaten Polonya'dayım kısa süreli C vizesiyle, henüz statüm yok",
       },
@@ -9755,6 +9781,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Барои шаҳрвандони Ӯзбекистон вуруди бидуни виза ба Полша тамоман вуҷуд надорад, барои мақсади «кор» бошад zezwolenie na pracę пурра лозим аст (бе бақайдгирии зуди oświadczenie) — ба ғайр аз ин дар Тошканд навбати дарозмуддат барои сабти ном ба виза лозим аст. Роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
         turkeyScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Барои шаҳрвандони Туркия вуруди бидуни виза ба Полша тамоман вуҷуд надорад, барои мақсади «кор» бошад zezwolenie na pracę пурра лозим аст (бе бақайдгирии зуди oświadczenie) — ба ғайр аз ин ҳар аризаи виза танҳо тавассути VFS Global дар ноҳияи консулии шумо (Анкара ё Истамбул) супорида мешавад, на бевосита ба сафорат. Роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
         kazakhstanScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Барои шаҳрвандони Қазоқистон вуруди бидуни виза ба Полша тамоман вуҷуд надорад, барои мақсади «кор» бошад zezwolenie na pracę пурра лозим аст (бе бақайдгирии зуди oświadczenie) — ҳуҷҷатҳо бевосита ба сафорат дар Астана ё консулгарӣ дар Алмаато супорида мешаванд (VFS Global нест), аммо ҳангоми талаботи баланд сабти навбат тавассути қуръа муайян мешавад ва баррасӣ на камтар аз 30 рӯзи корӣ давом мекунад. Роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
+        tajikistanScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Полша дар Тоҷикистон умуман намояндагии дипломатӣ надорад — ҳар як виза (шенгении C ё миллии D), барои ҳар мақсад, танҳо шахсан дар Тошканд, Ӯзбекистон супорида мешавад, зеро сафири Полша дар он ҷо ба Тоҷикистон низ аккредита шудааст. Барои мақсади «кор» низ zezwolenie na pracę пурра лозим аст — тартиби oświadczenie барои шаҳрвандони Тоҷикистон ҳеҷ гоҳ дастрас набуд. Роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
         currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Шумо метавонед якчанд ҳадафро интихоб кунед — ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
@@ -9857,6 +9884,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "Мустақилона аз Қазоқистон кӯчида истодаам",
+        alreadyStatus: "Аллакай дар Полша ҳастам, карта побыту ё визаи D-и амалкунанда дорам",
+        alreadyNoStatus: "Аллакай дар Полша ҳастам бо визаи кӯтоҳмуддати C, статус ҳанӯз надорам",
+      },
+      tajikistanScenarioOptions: {
+        self: "Мустақилона аз Тоҷикистон кӯчида истодаам",
         alreadyStatus: "Аллакай дар Полша ҳастам, карта побыту ё визаи D-и амалкунанда дорам",
         alreadyNoStatus: "Аллакай дар Полша ҳастам бо визаи кӯтоҳмуддати C, статус ҳанӯз надорам",
       },
@@ -11542,6 +11574,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         uzbekistanScenario: { question: "Який із варіантів вам підходить?", subheading: "Безвізового в'їзду до Польщі для громадян Узбекистану немає взагалі, а для мети «робота» потрібне повне zezwolenie na pracę (без швидкої процедури oświadczenie) — плюс тривале очікування запису на візу в Ташкенті. Потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
         turkeyScenario: { question: "Який із варіантів вам підходить?", subheading: "Безвізового в'їзду до Польщі для громадян Туреччини немає взагалі, а для мети «робота» потрібне повне zezwolenie na pracę (без швидкої процедури oświadczenie) — до того ж будь-яка віза подається лише через VFS Global у вашому консульському окрузі (Анкара або Стамбул), а не напряму в посольство. Потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
         kazakhstanScenario: { question: "Який із варіантів вам підходить?", subheading: "Безвізового в'їзду до Польщі для громадян Казахстану немає взагалі, а для мети «робота» потрібне повне zezwolenie na pracę (без швидкої процедури oświadczenie) — документи подаються напряму в посольство в Астані або консульство в Алмати (візового центру немає), але за високого попиту запис відбувається через жеребкування, а сам розгляд триває від 30 робочих днів. Потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
+        tajikistanScenario: { question: "Який із варіантів вам підходить?", subheading: "Польща взагалі не має дипломатичного представництва в Таджикистані — будь-яка віза (шенгенська C чи національна D), для будь-якої мети, подається особисто лише в Ташкенті, Узбекистан, оскільки польський посол там акредитований і на Таджикистан. Для мети «робота» також потрібне повне zezwolenie na pracę — процедура oświadczenie для громадян Таджикистану ніколи не була доступна. Потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
         currentCountry: { question: "У якій країні ви зараз перебуваєте?", subheading: "Дозволить адаптувати наступні кроки під ваше поточне місцезнаходження." },
         destination: { question: "Куди ви переїжджаєте?", subheading: "Ми адаптуємо ваш план під цю країну." },
         goal: { question: "Яка ваша основна мета?", subheading: "Можна обрати декілька — це визначить, які шляхи ми для вас проаналізуємо." },
@@ -11644,6 +11677,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       kazakhstanScenarioOptions: {
         self: "Переїжджаю самостійно з Казахстану",
+        alreadyStatus: "Вже в Польщі, є карта побиту або чинна віза D",
+        alreadyNoStatus: "Вже в Польщі за короткостроковою візою C, статусу ще немає",
+      },
+      tajikistanScenarioOptions: {
+        self: "Переїжджаю самостійно з Таджикистану",
         alreadyStatus: "Вже в Польщі, є карта побиту або чинна віза D",
         alreadyNoStatus: "Вже в Польщі за короткостроковою візою C, статусу ще немає",
       },

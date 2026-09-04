@@ -44,6 +44,7 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
         uzbekistanScenario: profile.uzbekistan_scenario,
         turkeyScenario: profile.turkey_scenario,
         kazakhstanScenario: profile.kazakhstan_scenario,
+        tajikistanScenario: profile.tajikistan_scenario,
       })
     : [];
 

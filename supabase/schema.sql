@@ -20,6 +20,7 @@ create table public.profiles (
   uzbekistan_scenario text,
   turkey_scenario text,
   kazakhstan_scenario text,
+  tajikistan_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -57,6 +58,7 @@ alter table public.profiles add column if not exists moldova_scenario text;
 alter table public.profiles add column if not exists uzbekistan_scenario text;
 alter table public.profiles add column if not exists turkey_scenario text;
 alter table public.profiles add column if not exists kazakhstan_scenario text;
+alter table public.profiles add column if not exists tajikistan_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -159,6 +161,20 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- legalization-without-leaving routes; Путь 2 is slower here than Turkey's equivalent
 -- because of that 30+ working day visa processing floor). Asked as its own onboarding
 -- step right after citizenship — see app/onboarding/page.tsx and app/_lib/routeEngine.ts.
+-- tajikistan_scenario is only meaningful when citizenship = "TJ": "self" (relocating
+-- independently — visa D required for every goal, there's no visa-free entry at all;
+-- the WORK goal needs a full zezwolenie na pracę since Tajikistan never had oświadczenie
+-- access. The defining wrinkle here, unique among all Group B countries covered:
+-- Poland has NO diplomatic mission in Tajikistan at all — the Polish ambassador in
+-- Tashkent, Uzbekistan is also accredited to Tajikistan, so EVERY visa (C or D) has to
+-- be filed in person in Tashkent, meaning a separate international trip just to reach
+-- the application stage, on top of Uzbekistan's own entry-rule check for Tajik
+-- citizens), "already_status" (already in Poland, holds a karta pobytu or valid visa D
+-- — ordinary renewal), or "already_no_status" (already in Poland on a short-stay visa C
+-- with no residence status yet — skips goal selection entirely and gets the Путь 1 /
+-- Путь 2 legalization-without-leaving routes; Путь 2 requires flying to Tashkent for
+-- the visa D, same as Сценарий 1's self track). Asked as its own onboarding step right
+-- after citizenship — see app/onboarding/page.tsx and app/_lib/routeEngine.ts.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

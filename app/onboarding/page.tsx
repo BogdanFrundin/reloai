@@ -58,6 +58,9 @@ type Answers = {
   // Only asked (and only meaningful) when citizenship === "KZ" — see
   // computeStepOrder(). Same 3-way shape as belarusScenario/georgiaScenario/moldovaScenario/uzbekistanScenario/turkeyScenario.
   kazakhstanScenario?: string;
+  // Only asked (and only meaningful) when citizenship === "TJ" — see
+  // computeStepOrder(). Same 3-way shape as belarusScenario/georgiaScenario/moldovaScenario/uzbekistanScenario/turkeyScenario/kazakhstanScenario.
+  tajikistanScenario?: string;
   currentCountry?: string;
   destination?: string;
   // Multi-select: a user can pick more than one goal (e.g. "Бизнес" +
@@ -90,6 +93,7 @@ type ProfileFields = {
   uzbekistan_scenario?: string | null;
   turkey_scenario?: string | null;
   kazakhstan_scenario?: string | null;
+  tajikistan_scenario?: string | null;
   current_country?: string;
   country?: string;
   // goal always mirrors goals[0] — kept in sync for every place that still
@@ -124,6 +128,7 @@ const ALL_STEP_KEYS = [
   "uzbekistanScenario",
   "turkeyScenario",
   "kazakhstanScenario",
+  "tajikistanScenario",
   "currentCountry",
   "destination",
   "goal",
@@ -148,6 +153,7 @@ type DynamicStepKey =
   | "uzbekistanScenario"
   | "turkeyScenario"
   | "kazakhstanScenario"
+  | "tajikistanScenario"
   | "jobOffer"
   | "universityAccepted"
   | "studyLevel"
@@ -167,6 +173,7 @@ const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
   "uzbekistanScenario",
   "turkeyScenario",
   "kazakhstanScenario",
+  "tajikistanScenario",
   "jobOffer",
   "universityAccepted",
   "studyLevel",
@@ -195,6 +202,7 @@ const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
   uzbekistanScenario: "uzbekistanScenario",
   turkeyScenario: "turkeyScenario",
   kazakhstanScenario: "kazakhstanScenario",
+  tajikistanScenario: "tajikistanScenario",
   jobOffer: "jobOffer",
   universityAccepted: "alreadyAdmitted",
   studyLevel: "studyLevel",
@@ -215,6 +223,7 @@ const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
   uzbekistanScenario: "uzbekistan_scenario",
   turkeyScenario: "turkey_scenario",
   kazakhstanScenario: "kazakhstan_scenario",
+  tajikistanScenario: "tajikistan_scenario",
   jobOffer: "job_offer",
   universityAccepted: "already_admitted",
   studyLevel: "study_level",
@@ -262,6 +271,7 @@ function computeStepOrder(
   uzbekistanScenario?: string,
   turkeyScenario?: string,
   kazakhstanScenario?: string,
+  tajikistanScenario?: string,
 ): StepKey[] {
   // The Ukraine scenario question only makes sense (and only exists in
   // routeEngine.ts) for citizenship === "UA" — temporary protection vs.
@@ -285,7 +295,8 @@ function computeStepOrder(
     (citizenship === "MD" && moldovaScenario === "already_no_status") ||
     (citizenship === "UZ" && uzbekistanScenario === "already_no_status") ||
     (citizenship === "TR" && turkeyScenario === "already_no_status") ||
-    (citizenship === "KZ" && kazakhstanScenario === "already_no_status");
+    (citizenship === "KZ" && kazakhstanScenario === "already_no_status") ||
+    (citizenship === "TJ" && tajikistanScenario === "already_no_status");
 
   let base: StepKey[];
   if (citizenship === "UA") {
@@ -314,6 +325,10 @@ function computeStepOrder(
     base = skipGoal
       ? ["language", "citizenship", "kazakhstanScenario", "currentCountry", "destination"]
       : ["language", "citizenship", "kazakhstanScenario", "currentCountry", "destination", "goal"];
+  } else if (citizenship === "TJ") {
+    base = skipGoal
+      ? ["language", "citizenship", "tajikistanScenario", "currentCountry", "destination"]
+      : ["language", "citizenship", "tajikistanScenario", "currentCountry", "destination", "goal"];
   } else {
     base = ["language", "citizenship", "currentCountry", "destination", "goal"];
   }
@@ -474,6 +489,7 @@ export default function OnboardingPage() {
       uzbekistanScenario: profile.uzbekistan_scenario ?? undefined,
       turkeyScenario: profile.turkey_scenario ?? undefined,
       kazakhstanScenario: profile.kazakhstan_scenario ?? undefined,
+      tajikistanScenario: profile.tajikistan_scenario ?? undefined,
     };
     const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
       (ALL_STEP_KEYS as readonly string[]).includes(key),
@@ -494,6 +510,7 @@ export default function OnboardingPage() {
         restoredAnswers.uzbekistanScenario,
         restoredAnswers.turkeyScenario,
         restoredAnswers.kazakhstanScenario,
+        restoredAnswers.tajikistanScenario,
       );
       const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
@@ -511,6 +528,7 @@ export default function OnboardingPage() {
     answers.uzbekistanScenario,
     answers.turkeyScenario,
     answers.kazakhstanScenario,
+    answers.tajikistanScenario,
   );
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
@@ -610,7 +628,8 @@ export default function OnboardingPage() {
         key === "moldovaScenario" ||
         key === "uzbekistanScenario" ||
         key === "turkeyScenario" ||
-        key === "kazakhstanScenario") &&
+        key === "kazakhstanScenario" ||
+        key === "tajikistanScenario") &&
       value === "already_no_status";
     if (skipsGoal) {
       fields.goals = ["other"];
@@ -635,6 +654,7 @@ export default function OnboardingPage() {
     if (a.uzbekistanScenario) fields.uzbekistan_scenario = a.uzbekistanScenario;
     if (a.turkeyScenario) fields.turkey_scenario = a.turkeyScenario;
     if (a.kazakhstanScenario) fields.kazakhstan_scenario = a.kazakhstanScenario;
+    if (a.tajikistanScenario) fields.tajikistan_scenario = a.tajikistanScenario;
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
     if (a.goals && a.goals.length > 0) {
@@ -885,6 +905,12 @@ export default function OnboardingPage() {
           { id: "self", label: t.onboarding.kazakhstanScenarioOptions.self, icon: WORK_ICON },
           { id: "already_status", label: t.onboarding.kazakhstanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
           { id: "already_no_status", label: t.onboarding.kazakhstanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+        ];
+      case "tajikistanScenario":
+        return [
+          { id: "self", label: t.onboarding.tajikistanScenarioOptions.self, icon: WORK_ICON },
+          { id: "already_status", label: t.onboarding.tajikistanScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
+          { id: "already_no_status", label: t.onboarding.tajikistanScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
         ];
       case "jobOffer":
         return binaryOptions(t.onboarding.jobOfferOptions);
