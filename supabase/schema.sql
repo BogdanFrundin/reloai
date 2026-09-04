@@ -15,6 +15,7 @@ create table public.profiles (
   citizenship_group text,
   ukraine_scenario text,
   belarus_scenario text,
+  georgia_scenario text,
   current_country text,
   goal text,
   goals text[],
@@ -47,6 +48,7 @@ alter table public.profiles add column if not exists citizenship text;
 alter table public.profiles add column if not exists citizenship_group text;
 alter table public.profiles add column if not exists ukraine_scenario text;
 alter table public.profiles add column if not exists belarus_scenario text;
+alter table public.profiles add column if not exists georgia_scenario text;
 alter table public.profiles add column if not exists current_country text;
 alter table public.profiles add column if not exists city text;
 alter table public.profiles add column if not exists goals text[];
@@ -88,6 +90,17 @@ alter table public.profiles add column if not exists document_profile jsonb;
 -- the Путь 1 / Путь 2 legalization-without-leaving routes instead). Asked as its own
 -- onboarding step right after citizenship — see app/onboarding/page.tsx and
 -- app/_lib/routeEngine.ts.
+-- georgia_scenario is only meaningful when citizenship = "GE": "self" (relocating
+-- independently — since 15.08.2026 the WORK goal specifically requires visa D + a full
+-- zezwolenie na pracę, because oświadczenie stopped covering Georgia on 1.12.2025; every
+-- other goal stays visa-free for 90 days), "already_status" (already in Poland, holds a
+-- karta pobytu or valid visa D — ordinary renewal), or "already_no_status" (already in
+-- Poland on the visa-free 90-day entry with no residence status yet — skips goal selection
+-- entirely and gets the Путь 1 / Путь 2 legalization-without-leaving routes, where Georgia's
+-- Путь 2 is notably slower than other Group B countries' because it needs the full
+-- zezwolenie na pracę rather than oświadczenie). Note Georgia is citizenship_group D, not B
+-- — see app/_lib/citizenshipGroups.ts and app/_lib/routeEngine.ts's specsForGroupCD().
+-- Asked as its own onboarding step right after citizenship — see app/onboarding/page.tsx.
 -- skipped_steps stores the keys of onboarding steps the user skipped (see STEP_ORDER in
 -- app/onboarding/page.tsx), so the questionnaire can be resumed and completed later.
 -- route stores the RouteEngineResult from AI analysis: { routes: Route[], ... } — see app/api/route/route.ts.

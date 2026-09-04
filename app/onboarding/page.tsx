@@ -42,6 +42,10 @@ type Answers = {
   // short-stay visa C with no residence status yet — skips goal selection
   // and gets the Путь 1 / Путь 2 legalization-without-leaving routes).
   belarusScenario?: string;
+  // Only asked (and only meaningful) when citizenship === "GE" — see
+  // computeStepOrder(). Same 3-way shape as belarusScenario: "self", "already_status",
+  // or "already_no_status".
+  georgiaScenario?: string;
   currentCountry?: string;
   destination?: string;
   // Multi-select: a user can pick more than one goal (e.g. "Бизнес" +
@@ -69,6 +73,7 @@ type ProfileFields = {
   citizenship_group?: string | null;
   ukraine_scenario?: string | null;
   belarus_scenario?: string | null;
+  georgia_scenario?: string | null;
   current_country?: string;
   country?: string;
   // goal always mirrors goals[0] — kept in sync for every place that still
@@ -98,6 +103,7 @@ const ALL_STEP_KEYS = [
   "citizenship",
   "ukraineScenario",
   "belarusScenario",
+  "georgiaScenario",
   "currentCountry",
   "destination",
   "goal",
@@ -117,6 +123,7 @@ type StepKey = (typeof ALL_STEP_KEYS)[number];
 type DynamicStepKey =
   | "ukraineScenario"
   | "belarusScenario"
+  | "georgiaScenario"
   | "jobOffer"
   | "universityAccepted"
   | "studyLevel"
@@ -131,6 +138,7 @@ type DynamicStepKey =
 const DYNAMIC_STEP_KEYS: readonly DynamicStepKey[] = [
   "ukraineScenario",
   "belarusScenario",
+  "georgiaScenario",
   "jobOffer",
   "universityAccepted",
   "studyLevel",
@@ -154,6 +162,7 @@ function isDynamicStep(key: StepKey): key is DynamicStepKey {
 const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
   ukraineScenario: "ukraineScenario",
   belarusScenario: "belarusScenario",
+  georgiaScenario: "georgiaScenario",
   jobOffer: "jobOffer",
   universityAccepted: "alreadyAdmitted",
   studyLevel: "studyLevel",
@@ -169,6 +178,7 @@ const DYNAMIC_STEP_ANSWER_FIELD: Record<DynamicStepKey, keyof Answers> = {
 const DYNAMIC_STEP_DB_FIELD: Record<DynamicStepKey, keyof ProfileFields> = {
   ukraineScenario: "ukraine_scenario",
   belarusScenario: "belarus_scenario",
+  georgiaScenario: "georgia_scenario",
   jobOffer: "job_offer",
   universityAccepted: "already_admitted",
   studyLevel: "study_level",
@@ -211,22 +221,25 @@ function computeStepOrder(
   goals: string[] | undefined,
   citizenship: string | undefined,
   belarusScenario?: string,
+  georgiaScenario?: string,
 ): StepKey[] {
   // The Ukraine scenario question only makes sense (and only exists in
   // routeEngine.ts) for citizenship === "UA" — temporary protection vs.
   // self-relocation vs. already-in-Poland are Ukraine-specific legal tracks,
   // not something any other citizenship needs to answer. Same idea for
-  // Belarus's belarusScenario question.
+  // Belarus's belarusScenario and Georgia's georgiaScenario questions.
   //
-  // Belarus's "already in Poland, no status yet" branch is the one case
-  // that skips goal selection entirely — the source guide is explicit that
-  // this question doesn't depend on what the user is trying to do in
-  // Poland, it's "легализация без выезда" regardless of goal (see
-  // specsForBelarusNoStatus() in routeEngine.ts). selectDynamicAnswer()
-  // defaults answers.goals to ["other"] the moment this branch is picked,
-  // so profile.goal still ends up non-null for the rest of the app even
-  // though the user is never asked.
-  const skipGoal = citizenship === "BY" && belarusScenario === "already_no_status";
+  // Belarus's and Georgia's "already in Poland, no status yet" branch is the
+  // one case that skips goal selection entirely — the source guides are
+  // explicit that this question doesn't depend on what the user is trying to
+  // do in Poland, it's "легализация без выезда" regardless of goal (see
+  // specsForBelarusNoStatus() / specsForGeorgiaNoStatus() in routeEngine.ts).
+  // selectDynamicAnswer() defaults answers.goals to ["other"] the moment this
+  // branch is picked, so profile.goal still ends up non-null for the rest of
+  // the app even though the user is never asked.
+  const skipGoal =
+    (citizenship === "BY" && belarusScenario === "already_no_status") ||
+    (citizenship === "GE" && georgiaScenario === "already_no_status");
 
   let base: StepKey[];
   if (citizenship === "UA") {
@@ -235,6 +248,10 @@ function computeStepOrder(
     base = skipGoal
       ? ["language", "citizenship", "belarusScenario", "currentCountry", "destination"]
       : ["language", "citizenship", "belarusScenario", "currentCountry", "destination", "goal"];
+  } else if (citizenship === "GE") {
+    base = skipGoal
+      ? ["language", "citizenship", "georgiaScenario", "currentCountry", "destination"]
+      : ["language", "citizenship", "georgiaScenario", "currentCountry", "destination", "goal"];
   } else {
     base = ["language", "citizenship", "currentCountry", "destination", "goal"];
   }
@@ -390,6 +407,7 @@ export default function OnboardingPage() {
       hasCar: profile.has_car ?? undefined,
       ukraineScenario: profile.ukraine_scenario ?? undefined,
       belarusScenario: profile.belarus_scenario ?? undefined,
+      georgiaScenario: profile.georgia_scenario ?? undefined,
     };
     const restoredSkipped = (profile.skipped_steps ?? []).filter((key): key is StepKey =>
       (ALL_STEP_KEYS as readonly string[]).includes(key),
@@ -401,7 +419,12 @@ export default function OnboardingPage() {
 
       // Resolve the resume index against the step order this user's actual
       // goal(s) produce, not the order at the time this effect happens to run.
-      const resumeStepOrder = computeStepOrder(restoredAnswers.goals, restoredAnswers.citizenship, restoredAnswers.belarusScenario);
+      const resumeStepOrder = computeStepOrder(
+        restoredAnswers.goals,
+        restoredAnswers.citizenship,
+        restoredAnswers.belarusScenario,
+        restoredAnswers.georgiaScenario,
+      );
       const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
       if (resumeIndex !== -1) setStep(resumeIndex);
     }
@@ -409,7 +432,7 @@ export default function OnboardingPage() {
     setHydrated(true);
   }, [profile, hydrated]);
 
-  const STEP_ORDER = computeStepOrder(answers.goals, answers.citizenship, answers.belarusScenario);
+  const STEP_ORDER = computeStepOrder(answers.goals, answers.citizenship, answers.belarusScenario, answers.georgiaScenario);
   const stepIndex = Math.min(step, STEP_ORDER.length - 1);
   const stepKey: StepKey = STEP_ORDER[stepIndex];
   const isLast = stepIndex === STEP_ORDER.length - 1;
@@ -495,13 +518,15 @@ export default function OnboardingPage() {
     const dbField = DYNAMIC_STEP_DB_FIELD[key];
     const fields: ProfileFields = { [dbField]: value } as ProfileFields;
 
-    // Belarus's "already in Poland, no status yet" branch skips goal
-    // selection entirely (see computeStepOrder()) — routeEngine.ts's
-    // specsForBelarusNoStatus() doesn't need a goal, but other parts of the
-    // app (e.g. onboarding/results/page.tsx's profileIncomplete check) still
-    // require profile.goal to be non-null, so default it here rather than
-    // asking a question that has no real answer for this branch.
-    const skipsGoal = key === "belarusScenario" && value === "already_no_status";
+    // Belarus's and Georgia's "already in Poland, no status yet" branches
+    // skip goal selection entirely (see computeStepOrder()) — routeEngine.ts's
+    // specsForBelarusNoStatus() / specsForGeorgiaNoStatus() don't need a goal,
+    // but other parts of the app (e.g. onboarding/results/page.tsx's
+    // profileIncomplete check) still require profile.goal to be non-null, so
+    // default it here rather than asking a question that has no real answer
+    // for this branch.
+    const skipsGoal =
+      (key === "belarusScenario" || key === "georgiaScenario") && value === "already_no_status";
     if (skipsGoal) {
       fields.goals = ["other"];
       fields.goal = "other";
@@ -520,6 +545,7 @@ export default function OnboardingPage() {
     }
     if (a.ukraineScenario) fields.ukraine_scenario = a.ukraineScenario;
     if (a.belarusScenario) fields.belarus_scenario = a.belarusScenario;
+    if (a.georgiaScenario) fields.georgia_scenario = a.georgiaScenario;
     if (a.currentCountry) fields.current_country = a.currentCountry;
     if (a.destination) fields.country = a.destination;
     if (a.goals && a.goals.length > 0) {
@@ -740,6 +766,12 @@ export default function OnboardingPage() {
           { id: "self", label: t.onboarding.belarusScenarioOptions.self, icon: WORK_ICON },
           { id: "already_status", label: t.onboarding.belarusScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
           { id: "already_no_status", label: t.onboarding.belarusScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
+        ];
+      case "georgiaScenario":
+        return [
+          { id: "self", label: t.onboarding.georgiaScenarioOptions.self, icon: WORK_ICON },
+          { id: "already_status", label: t.onboarding.georgiaScenarioOptions.alreadyStatus, icon: CLOCK_ICON },
+          { id: "already_no_status", label: t.onboarding.georgiaScenarioOptions.alreadyNoStatus, icon: SHIELD_ICON },
         ];
       case "jobOffer":
         return binaryOptions(t.onboarding.jobOfferOptions);

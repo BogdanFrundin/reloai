@@ -885,6 +885,7 @@ export type Dictionary = {
       citizenship: { question: string; subheading: string };
       ukraineScenario: { question: string; subheading: string };
       belarusScenario: { question: string; subheading: string };
+      georgiaScenario: { question: string; subheading: string };
       currentCountry: { question: string; subheading: string };
       destination: { question: string; subheading: string };
       goal: { question: string; subheading: string };
@@ -933,6 +934,7 @@ export type Dictionary = {
     hasCarOptions: { yes: string; no: string };
     ukraineScenarioOptions: { protection: string; self: string; already: string };
     belarusScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
+    georgiaScenarioOptions: { self: string; alreadyStatus: string; alreadyNoStatus: string };
     results: {
       heading: string;
       loading: string;
@@ -2609,6 +2611,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "What is your citizenship?", subheading: "Helps us point you to the right visa category." },
         ukraineScenario: { question: "Which of these applies to you?", subheading: "Temporary protection and self-relocation follow very different legal tracks in Poland." },
         belarusScenario: { question: "Which of these applies to you?", subheading: "There's no visa-free entry to Poland for Belarusian citizens at all — the right track depends on where you are in the process." },
+        georgiaScenario: { question: "Which of these applies to you?", subheading: "Since August 2026 the work goal needs a visa and work permit — every other goal still gets 90 days visa-free. The right track depends on where you are in the process." },
         currentCountry: { question: "Which country are you currently in?", subheading: "Lets us tailor next steps to where you are right now." },
         destination: { question: "Where are you moving?", subheading: "We'll tailor your roadmap to this country." },
         goal: { question: "What's your main goal?", subheading: "You can pick more than one — this decides which pathways we'll analyze for you." },
@@ -2688,6 +2691,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "I'm relocating on my own from Belarus",
         alreadyStatus: "I'm already in Poland and hold a karta pobytu or valid visa D",
         alreadyNoStatus: "I'm already in Poland on a short-stay visa C and don't have residence status yet",
+      },
+      georgiaScenarioOptions: {
+        self: "I'm relocating on my own from Georgia",
+        alreadyStatus: "I'm already in Poland and hold a karta pobytu or valid visa D",
+        alreadyNoStatus: "I'm already in Poland visa-free (90 days) and don't have residence status yet",
       },
       results: {
         heading: "We found 3 relocation routes for you!",
@@ -4366,6 +4374,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "Какое у вас гражданство?", subheading: "Поможет определить подходящую визовую категорию." },
         ukraineScenario: { question: "Какой из вариантов вам подходит?", subheading: "Временная защита и самостоятельный переезд — совсем разные юридические пути в Польше." },
         belarusScenario: { question: "Какой из вариантов вам подходит?", subheading: "Безвизового въезда в Польшу для граждан Беларуси нет вообще — нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
+        georgiaScenario: { question: "Какой из вариантов вам подходит?", subheading: "С августа 2026 для цели «работа» нужны виза и разрешение на работу — для остальных целей сохранён безвизовый въезд на 90 дней. Нужный маршрут зависит от того, на каком этапе вы уже находитесь." },
         currentCountry: { question: "В какой стране вы сейчас находитесь?", subheading: "Позволит адаптировать следующие шаги под ваше текущее местоположение." },
         destination: { question: "Куда вы переезжаете?", subheading: "Мы адаптируем ваш план под эту страну." },
         goal: { question: "Какова ваша основная цель?", subheading: "Можно выбрать сразу несколько — это определит, какие пути мы для вас проанализируем." },
@@ -4445,6 +4454,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "Переезжаю самостоятельно из Беларуси",
         alreadyStatus: "Уже в Польше, есть карта побыту или действующая виза D",
         alreadyNoStatus: "Уже в Польше по краткосрочной визе C, статуса ещё нет",
+      },
+      georgiaScenarioOptions: {
+        self: "Переезжаю самостоятельно из Грузии",
+        alreadyStatus: "Уже в Польше, есть карта побыту или действующая виза D",
+        alreadyNoStatus: "Уже в Польше по безвизу (90 дней), статуса ещё нет",
       },
       results: {
         heading: "Мы нашли 3 маршрута переезда для вас!",
@@ -6118,6 +6132,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "Fuqaroligingiz qaysi davlatga tegishli?", subheading: "Bu to'g'ri viza toifasini aniqlashga yordam beradi." },
         ukraineScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Vaqtinchalik himoya va mustaqil ko'chish Polshada butunlay boshqa huquqiy yo'llardir." },
         belarusScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "Belarus fuqarolari uchun Polshaga vizasiz kirish umuman yo'q — kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
+        georgiaScenario: { question: "Bularning qaysi biri sizga tegishli?", subheading: "2026-yil avgustidan boshlab \"ish\" maqsadi uchun viza va ish ruxsatnomasi kerak — boshqa barcha maqsadlar uchun 90 kunlik vizasiz kirish saqlanib qolgan. Kerakli yo'l qaysi bosqichda ekaningizga bog'liq." },
         currentCountry: { question: "Hozir qaysi davlatdasiz?", subheading: "Keyingi qadamlarni hozirgi joylashuvingizga moslashtirishga yordam beradi." },
         destination: { question: "Qayerga ko'chib o'tyapsiz?", subheading: "Yo'l xaritangizni shu davlatga moslashtiramiz." },
         goal: { question: "Asosiy maqsadingiz nima?", subheading: "Bir nechtasini tanlashingiz mumkin — bu siz uchun qaysi yo'llarni tahlil qilishimizni belgilaydi." },
@@ -6193,6 +6208,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "Belarusdan mustaqil ko'chib o'tyapman",
         alreadyStatus: "Allaqachon Polshadaman, karta pobytu yoki amaldagi D vizam bor",
         alreadyNoStatus: "Allaqachon Polshadaman, qisqa muddatli C vizasi bilan, hali statusim yo'q",
+      },
+      georgiaScenarioOptions: {
+        self: "Gruziyadan mustaqil ko'chib o'tyapman",
+        alreadyStatus: "Allaqachon Polshadaman, karta pobytu yoki amaldagi D vizam bor",
+        alreadyNoStatus: "Allaqachon Polshadaman vizasiz (90 kun), hali statusim yo'q",
       },
       hasCarOptions: {
         yes: "Ha — o'z avtomobilimni olib boraman",
@@ -7869,6 +7889,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "Vatandaşlığınız nedir?", subheading: "Doğru vize kategorisini belirlememize yardımcı olur." },
         ukraineScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Geçici koruma ve kendi başına taşınma Polonya'da tamamen farklı hukuki yollardır." },
         belarusScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Belarus vatandaşları için Polonya'ya vizesiz giriş hiç yok — doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
+        georgiaScenario: { question: "Bunlardan hangisi size uyuyor?", subheading: "Ağustos 2026'dan itibaren \"iş\" amacı için vize ve çalışma izni gerekiyor — diğer tüm amaçlar için 90 günlük vizesiz giriş korunuyor. Doğru yol, sürecin hangi aşamasında olduğunuza bağlı." },
         currentCountry: { question: "Şu anda hangi ülkedesiniz?", subheading: "Sonraki adımları bulunduğunuz yere göre uyarlamamızı sağlar." },
         destination: { question: "Nereye taşınıyorsunuz?", subheading: "Yol haritanızı bu ülkeye göre uyarlayacağız." },
         goal: { question: "Ana hedefiniz nedir?", subheading: "Birden fazla seçebilirsiniz — bu, sizin için hangi yolları analiz edeceğimizi belirler." },
@@ -7948,6 +7969,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "Belarus'tan kendi başıma taşınıyorum",
         alreadyStatus: "Zaten Polonya'dayım, karta pobytu veya geçerli D vizem var",
         alreadyNoStatus: "Zaten Polonya'dayım, kısa süreli C vizesiyle, henüz statüm yok",
+      },
+      georgiaScenarioOptions: {
+        self: "Gürcistan'dan kendi başıma taşınıyorum",
+        alreadyStatus: "Zaten Polonya'dayım, karta pobytu veya geçerli D vizem var",
+        alreadyNoStatus: "Zaten Polonya'dayım vizesiz (90 gün), henüz statüm yok",
       },
       results: {
         heading: "Sizin için 3 taşınma yolu bulduk!",
@@ -9620,6 +9646,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "Шаҳрвандии шумо кадом аст?", subheading: "Ба муайян кардани категорияи дурусти раводид кӯмак мекунад." },
         ukraineScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Ҳимояи муваққатӣ ва кӯчидани мустақилона роҳҳои комилан гуногуни ҳуқуқӣ дар Полша мебошанд." },
         belarusScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Барои шаҳрвандони Беларус вуруди бидуни виза ба Полша тамоман вуҷуд надорад — роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
+        georgiaScenario: { question: "Кадоме аз инҳо ба шумо мувофиқ аст?", subheading: "Аз августи соли 2026 барои мақсади «кор» виза ва иҷозати кор лозим аст — барои дигар мақсадҳо вуруди бидуни виза барои 90 рӯз нигоҳ дошта шудааст. Роҳи дуруст ба марҳилае, ки шумо дар он ҳастед, вобаста аст." },
         currentCountry: { question: "Ҳозир дар кадом кишвар ҳастед?", subheading: "Имкон медиҳад қадамҳои навбатиро мувофиқи ҷойгиршавии ҳозираи шумо мутобиқ кунем." },
         destination: { question: "Ба куҷо мекӯчед?", subheading: "Мо нақшаи роҳи шуморо ба ин кишвар мутобиқ мекунем." },
         goal: { question: "Ҳадафи асосии шумо чист?", subheading: "Шумо метавонед якчанд ҳадафро интихоб кунед — ин муайян мекунад, ки кадом роҳҳоро барои шумо таҳлил мекунем." },
@@ -9699,6 +9726,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "Мустақилона аз Беларус кӯчида истодаам",
         alreadyStatus: "Аллакай дар Полша ҳастам, карта побыту ё визаи D-и амалкунанда дорам",
         alreadyNoStatus: "Аллакай дар Полша ҳастам бо визаи кӯтоҳмуддати C, статус ҳанӯз надорам",
+      },
+      georgiaScenarioOptions: {
+        self: "Мустақилона аз Гурҷистон кӯчида истодаам",
+        alreadyStatus: "Аллакай дар Полша ҳастам, карта побыту ё визаи D-и амалкунанда дорам",
+        alreadyNoStatus: "Аллакай дар Полша ҳастам бидуни виза (90 рӯз), статус ҳанӯз надорам",
       },
       results: {
         heading: "Мо 3 роҳи кӯчидан барои шумо ёфтем!",
@@ -11377,6 +11409,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         citizenship: { question: "Яке у вас громадянство?", subheading: "Допоможе визначити відповідну візову категорію." },
         ukraineScenario: { question: "Який із варіантів вам підходить?", subheading: "Тимчасовий захист і самостійний переїзд — зовсім різні юридичні шляхи в Польщі." },
         belarusScenario: { question: "Який із варіантів вам підходить?", subheading: "Безвізового в'їзду до Польщі для громадян Білорусі немає взагалі — потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
+        georgiaScenario: { question: "Який із варіантів вам підходить?", subheading: "З серпня 2026 для мети «робота» потрібні віза та дозвіл на роботу — для решти цілей збережено безвізовий в'їзд на 90 днів. Потрібний шлях залежить від того, на якому етапі ви вже перебуваєте." },
         currentCountry: { question: "У якій країні ви зараз перебуваєте?", subheading: "Дозволить адаптувати наступні кроки під ваше поточне місцезнаходження." },
         destination: { question: "Куди ви переїжджаєте?", subheading: "Ми адаптуємо ваш план під цю країну." },
         goal: { question: "Яка ваша основна мета?", subheading: "Можна обрати декілька — це визначить, які шляхи ми для вас проаналізуємо." },
@@ -11456,6 +11489,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
         self: "Переїжджаю самостійно з Білорусі",
         alreadyStatus: "Вже в Польщі, є карта побиту або чинна віза D",
         alreadyNoStatus: "Вже в Польщі за короткостроковою візою C, статусу ще немає",
+      },
+      georgiaScenarioOptions: {
+        self: "Переїжджаю самостійно з Грузії",
+        alreadyStatus: "Вже в Польщі, є карта побиту або чинна віза D",
+        alreadyNoStatus: "Вже в Польщі безвізово (90 днів), статусу ще немає",
       },
       results: {
         heading: "Ми знайшли 3 маршрути переїзду для вас!",
