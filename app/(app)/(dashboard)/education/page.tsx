@@ -149,6 +149,13 @@ const EDU_LOGOS: Record<string, string> = {
   "swps university": "swps-university",
   "collegium civitas": "collegium-civitas",
   "vistula university": "vistula-university",
+  pjatk: "pjatk",
+  "university of ecology and management": "wsge",
+  wsge: "wsge",
+  "warsaw management university": "wsm-warsaw-management",
+  "menedżerska akademia nauk stosowanych": "wsm-warsaw-management",
+  "menedzerska akademia nauk stosowanych": "wsm-warsaw-management",
+  "collegium humanum": "collegium-humanum",
 };
 
 function findEduLogo(name: string): string | null {
