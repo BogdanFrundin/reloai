@@ -555,6 +555,18 @@ const EDU_LOGOS: Record<string, string> = {
   "edukacji i terapii": "wseit-poznan",
   "księcia mieszka i w poznaniu": "ansm-poznan",
   "ksiecia mieszka i w poznaniu": "ansm-poznan",
+  "polish is my love": "polish-is-my-love-szczecin",
+  "centrum języków obcych effekt": "effekt-cjo-szczecin",
+  "centrum jezykow obcych effekt": "effekt-cjo-szczecin",
+  "open mind": "openmind-szczecin",
+  "szkoła językowa fokus": "fokus-szczecin",
+  "szkola jezykowa fokus": "fokus-szczecin",
+  "presto language": "presto-language-szczecin",
+  "language universe": "universe-languages-szczecin",
+  "angielski nie gryzie": "angielski-nie-gryzie-szczecin",
+  "nr 3 „pentliczek”": "pentliczek-szczecin",
+  "nr 32": "przedszkole-32-szczecin",
+  "nr 51": "przedszkole-51-szczecin",
 };
 
 function findEduLogo(name: string): string | null {
