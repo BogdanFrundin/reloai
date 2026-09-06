@@ -91,6 +91,68 @@ type Clinic = {
 const clinicIconBadgeClass =
   "flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright";
 
+const CLINIC_DEFAULT_ICON = (
+  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
+  </svg>
+);
+
+// Real brand logos, cropped down to just the icon mark (or a tight wordmark
+// crop for brands with no separate icon) and saved locally under
+// public/images/logos/clinics/. Keyed by a lowercase substring of clinic.name
+// so both "Centrum Medyczne X" and "X Centrum Medyczne" orderings match.
+// This is a first batch (~15 brands); more will be added as logos come in —
+// clinics with no match here just keep the generic category icon below.
+const CLINIC_LOGOS: Record<string, string> = {
+  "mri diagnostyka": "mri-diagnostyka",
+  radiologica: "radiologica",
+  medicover: "medicover",
+  luxmed: "luxmed",
+  "lux med": "luxmed",
+  "centrum medyczne damiana": "damiana",
+  "enel-med": "enelmed",
+  "enel med": "enelmed",
+  "cmp centrum medyczne": "cmp",
+  "centrum medyczne cmp": "cmp",
+  "pzu zdrowie": "pzu-zdrowie",
+  "life medical": "life-medical",
+  swissmed: "swissmed",
+  scanmed: "scanmed",
+  polmed: "polmed",
+  "diagnostyka+": "diagnostyka-plus",
+  alab: "alab",
+  synevo: "synevo",
+};
+
+function findClinicLogo(name: string): string | null {
+  const lower = name.toLowerCase();
+  for (const [key, slug] of Object.entries(CLINIC_LOGOS)) {
+    if (lower.includes(key)) return slug;
+  }
+  return null;
+}
+
+function ClinicAvatar({ name }: { name: string }) {
+  const slug = findClinicLogo(name);
+  const [failed, setFailed] = useState(false);
+
+  if (slug && !failed) {
+    return (
+      <span className="flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-white/95 p-1">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/images/logos/clinics/${slug}.png`}
+          alt={name}
+          className="h-full w-full object-contain"
+          onError={() => setFailed(true)}
+        />
+      </span>
+    );
+  }
+  return <span className={clinicIconBadgeClass}>{CLINIC_DEFAULT_ICON}</span>;
+}
+
 const SPARKLE_ICON_SM = (
   <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
     <path
@@ -128,12 +190,7 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         className="flex w-full flex-1 flex-col items-start gap-4 text-left"
       >
         <div className="flex w-full items-center justify-between gap-2">
-          <span className={clinicIconBadgeClass}>
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 5.5A2.5 2.5 0 017 3h10a2.5 2.5 0 012.5 2.5v13A2.5 2.5 0 0117 21H7a2.5 2.5 0 01-2.5-2.5v-13z" />
-            </svg>
-          </span>
+          <ClinicAvatar name={clinic.name} />
           {clinic.rating != null && <StarRating rating={clinic.rating} />}
         </div>
 
