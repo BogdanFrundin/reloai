@@ -244,6 +244,21 @@ const EDU_LOGOS: Record<string, string> = {
   "link school of polish": "link-school-of-polish",
   fishkoi: "fishkoi-polish",
   "polish dream": "polish-dream",
+  "po polsku": "po-polsku-centrum",
+  wisła: "wisla-centrum-jezykowe",
+  wisla: "wisla-centrum-jezykowe",
+  polishstreet: "polishstreet",
+  inpolish: "inpolish-academy",
+  polskikraj: "polskikraj",
+  "spoko polish": "spoko-polish",
+  "witaj wrocław": "witaj-wroclaw",
+  "witaj wroclaw": "witaj-wroclaw",
+  "polish world": "polish-world",
+  "kultury i języka polskiego": "centrum-kultury-jezyka-polskiego",
+  "kultury i jezyka polskiego": "centrum-kultury-jezyka-polskiego",
+  "języka polskiego i kultury": "centrum-kultury-jezyka-polskiego",
+  "jezyka polskiego i kultury": "centrum-kultury-jezyka-polskiego",
+  "ab polonia": "ab-polonia",
 };
 
 function findEduLogo(name: string): string | null {
