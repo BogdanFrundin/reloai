@@ -85,6 +85,10 @@ const BANK_DOMAINS: Record<string, string> = {
   "velobank": "velobank.pl",
   "revolut": "revolut.com",
   "n26": "n26.com",
+  "erste": "erstebank.com",
+  "plus bank": "plusbank.pl",
+  "toyota bank": "toyotabank.pl",
+  "volkswagen bank": "vwbank.pl",
 };
 
 function findLogoDomain(name: string): string | null {
@@ -95,12 +99,29 @@ function findLogoDomain(name: string): string | null {
   return null;
 }
 
+// Real brand logos, saved locally under public/images/logos/banks/, take
+// priority over the fetched favicons below (sharper, on-brand, no dependency
+// on an external service). The slug is derived from the bank's domain so we
+// don't need a second name-keyed map to keep in sync with BANK_DOMAINS —
+// "pkobp.pl" -> "pkobp.png", "credit-agricole.pl" -> "creditagricole.png".
+// If a bank has no local file yet, the <img> below 404s and onError just
+// cascades straight to the favicon fetch, so this is safe to ship before
+// every logo file exists.
+function bankLogoSlug(domain: string): string {
+  return domain.split(".")[0].replace(/[^a-z0-9]/gi, "").toLowerCase();
+}
+
+function localLogoSrc(domain: string): string {
+  return `/images/logos/banks/${bankLogoSlug(domain)}.png`;
+}
+
 // Clearbit's free logo API gets silently blocked by common ad-blocker filter
 // lists (its domain is tagged as a tracker), which made every logo fall back
 // to initials regardless of whether we had a domain mapped. Google's favicon
 // service and DuckDuckGo's icon service are effectively never blocked, so we
 // try those in order before giving up to initials.
-function logoSrc(domain: string, stage: 0 | 1 | 2): string {
+function logoSrc(domain: string, stage: -1 | 0 | 1): string {
+  if (stage === -1) return localLogoSrc(domain);
   return stage === 0
     ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
     : `https://icons.duckduckgo.com/ip3/${domain}.ico`;
@@ -108,7 +129,7 @@ function logoSrc(domain: string, stage: 0 | 1 | 2): string {
 
 function BankAvatar({ name }: { name: string }) {
   const domain = findLogoDomain(name);
-  const [stage, setStage] = useState<0 | 1 | 2>(0);
+  const [stage, setStage] = useState<-1 | 0 | 1 | 2>(-1);
   const initials = name
     .replace(/^Bank\s+/i, "")
     .split(/\s+/)
@@ -122,10 +143,10 @@ function BankAvatar({ name }: { name: string }) {
       <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/95 p-1.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={logoSrc(domain, stage)}
+          src={logoSrc(domain, stage === 2 ? 1 : stage)}
           alt={name}
           className="h-full w-full object-contain"
-          onError={() => setStage((prev) => (prev === 0 ? 1 : 2))}
+          onError={() => setStage((prev) => (prev === -1 ? 0 : prev === 0 ? 1 : 2))}
         />
       </div>
     );
