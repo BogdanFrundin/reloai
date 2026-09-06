@@ -178,6 +178,9 @@ const CLINIC_LOGOS: Record<string, string> = {
   "orto neuro": "orto-neuro",
   "magic smile": "magic-smile",
   dentestetica: "dentestetica",
+  carolina: "carolina",
+  smartheart: "smartheart",
+  tomma: "tomma",
 };
 
 function findClinicLogo(name: string): string | null {
