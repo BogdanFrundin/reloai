@@ -162,6 +162,22 @@ const CLINIC_LOGOS: Record<string, string> = {
   "warsaw dental academy": "warsaw-dental-academy",
   "astra dent": "astra-dent",
   "adm dental": "adm-clinic",
+  "weiss klinik": "weiss-klinik",
+  "instytut oka": "instytut-oka",
+  "american heart": "american-heart",
+  persona: "persona",
+  neurovitalis: "neurovitalis",
+  venomedica: "venomedica",
+  helimed: "helimed",
+  "garden clinic": "garden-clinic",
+  "bałtycka": "baltycka",
+  baltycka: "baltycka",
+  endocare: "endocare",
+  euromedicare: "euromedicare",
+  nuvamed: "nuvamed",
+  "orto neuro": "orto-neuro",
+  "magic smile": "magic-smile",
+  dentestetica: "dentestetica",
 };
 
 function findClinicLogo(name: string): string | null {
