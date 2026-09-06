@@ -289,6 +289,16 @@ const EDU_LOGOS: Record<string, string> = {
   koralik: "koralik-lublin",
   "lubelskie skrzaty": "felin-lubelskie-skrzaty",
   felin: "felin-lubelskie-skrzaty",
+  "niepubliczne przedszkole skrzat": "przedszkole-skrzat-lublin",
+  "przedszkole skrzat": "przedszkole-skrzat-lublin",
+  zamoyskiego: "ii-lo-zamoyskiego-lublin",
+  "ix liceum": "ix-lo-kopernika-lublin",
+  "kopernika w lublinie": "ix-lo-kopernika-lublin",
+  biskupiak: "biskupiak-lublin",
+  zselektryk: "zselektryk-lublin",
+  kleeberga: "zs-chemicznych-kleeberga-lublin",
+  "transportowo-komunikacyjnych": "zstk-lublin",
+  klonowic: "klonowic-lublin",
 };
 
 function findEduLogo(name: string): string | null {
