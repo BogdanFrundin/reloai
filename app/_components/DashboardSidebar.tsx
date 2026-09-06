@@ -136,7 +136,7 @@ export default function DashboardSidebar({
           )}
         </div>
 
-        <nav className="scrollbar-hide flex flex-1 flex-col justify-between gap-2 overflow-y-auto px-3 py-1.5">
+        <nav className="scrollbar-hide flex-1 space-y-4 overflow-y-auto px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1">
             <Link
               href="/home"
