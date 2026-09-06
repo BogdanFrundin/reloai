@@ -388,6 +388,18 @@ const EDU_LOGOS: Record<string, string> = {
   "wsb merito gdańsk": "wsb-merito-gdansk",
   "wsb merito gdansk": "wsb-merito-gdansk",
   "ateneum": "ateneum-gdansk",
+  "gdańska wyższa szkoła humanistyczna": "gwsh-gdansk",
+  "gdanska wyzsza szkola humanistyczna": "gwsh-gdansk",
+  "powiślańska szkoła wyższa": "pans-gdansk",
+  "powislanska szkola wyzsza": "pans-gdansk",
+  "wyższa szkoła turystyki i hotelarstwa": "wstih-gdansk",
+  "wyzsza szkola turystyki i hotelarstwa": "wstih-gdansk",
+  "gdańska akademia medyczna nauk stosowanych": "gdanska-akademia-medyczna",
+  "gdanska akademia medyczna nauk stosowanych": "gdanska-akademia-medyczna",
+  "wyższa szkoła zdrowia w gdańsku": "gdanska-akademia-medyczna",
+  "wyzsza szkola zdrowia w gdansku": "gdanska-akademia-medyczna",
+  "społeczna akademia nauk": "spoleczna-akademia-nauk-gdansk",
+  "spoleczna akademia nauk": "spoleczna-akademia-nauk-gdansk",
 };
 
 function findEduLogo(name: string): string | null {
