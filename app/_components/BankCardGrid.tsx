@@ -89,6 +89,7 @@ const BANK_DOMAINS: Record<string, string> = {
   "plus bank": "plusbank.pl",
   "toyota bank": "toyotabank.pl",
   "volkswagen bank": "vwbank.pl",
+  "bank pocztowy": "pocztowy.pl",
 };
 
 function findLogoDomain(name: string): string | null {
