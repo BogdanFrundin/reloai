@@ -299,6 +299,16 @@ const EDU_LOGOS: Record<string, string> = {
   kleeberga: "zs-chemicznych-kleeberga-lublin",
   "transportowo-komunikacyjnych": "zstk-lublin",
   klonowic: "klonowic-lublin",
+  "montessori niepubliczna": "montessori-sp-lublin",
+  umcs: "umcs-lublin",
+  "medical university of lublin": "medical-university-lublin",
+  "politechnika lubelska": "politechnika-lubelska",
+  "catholic university of lublin": "kul-lublin",
+  "uniwersytet przyrodniczy w lublinie": "uniwersytet-przyrodniczy-lublin",
+  wsei: "wsei-lublin",
+  "vincent pol": "vincent-pol-university-lublin",
+  wspa: "wspa-lublin",
+  ansim: "ansim-lublin",
 };
 
 function findEduLogo(name: string): string | null {
