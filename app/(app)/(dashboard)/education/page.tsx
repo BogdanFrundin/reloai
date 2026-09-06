@@ -281,6 +281,14 @@ const EDU_LOGOS: Record<string, string> = {
   "żłobek ziarenko": "ziarenko-lublin",
   "zlobek ziarenko": "ziarenko-lublin",
   "przedszkole ziarenko": "ziarenko-lublin",
+  "mistrzowie zabawy": "mistrzowie-zabawy-lublin",
+  nazaretanek: "nazaretanek-kalwaria",
+  "zielona wieża": "zielona-wieza-wlochy",
+  "zielona wieza": "zielona-wieza-wlochy",
+  dzwoneczek: "dzwoneczek-lublin",
+  koralik: "koralik-lublin",
+  "lubelskie skrzaty": "felin-lubelskie-skrzaty",
+  felin: "felin-lubelskie-skrzaty",
 };
 
 function findEduLogo(name: string): string | null {
