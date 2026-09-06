@@ -136,7 +136,7 @@ export default function DashboardSidebar({
           )}
         </div>
 
-        <nav className="scrollbar-hide flex-1 space-y-3 overflow-y-auto px-3 py-1.5">
+        <nav className="scrollbar-hide flex-1 space-y-5 overflow-y-auto px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1.5">
             <Link
               href="/home"
@@ -196,7 +196,7 @@ export default function DashboardSidebar({
 
           <div>
             <p className="px-3 text-[11px] font-semibold tracking-wider text-text-muted">{d.servicesSection}</p>
-            <div className="mt-1 space-y-1">
+            <div className="mt-2 space-y-1.5">
               {SERVICES_ORDER.map((key) => {
                 const href = SERVICE_HREFS[key];
                 const isActive = pathname === href;
@@ -206,7 +206,7 @@ export default function DashboardSidebar({
                     key={key}
                     href={href}
                     onClick={onClose}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-1.5 text-[13px] font-medium transition-colors duration-150 ${
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
                       isActive ? "bg-accent/10 text-accent-bright" : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
                     }`}
                   >
@@ -219,7 +219,7 @@ export default function DashboardSidebar({
           </div>
         </nav>
 
-        <div className="space-y-0.5 border-t border-border-subtle p-2">
+        <div className="space-y-1 border-t border-border-subtle p-3">
           <Link
             href="/profile"
             onClick={onClose}
