@@ -48,6 +48,68 @@ type EduRow = {
 const iconBadgeClass =
   "flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright";
 
+// Real brand logos, cropped down to just the icon mark (or a tight wordmark
+// crop for brands with no separate icon) and saved locally under
+// public/images/logos/education/. Keyed by a lowercase substring of row.name,
+// same pattern as BANK_DOMAINS in BankCardGrid.tsx and CLINIC_LOGOS in
+// medicine/page.tsx. Falls back to the generic per-tab category icon below
+// when nothing matches or the file 404s.
+const EDU_LOGOS: Record<string, string> = {
+  "lingua nova": "lingua-nova",
+  "edu & more": "edu-and-more",
+  "edu&more": "edu-and-more",
+  "dialogue club": "dialogue-club",
+  "polish linguistic institute": "polski-instytut-jezykowy",
+  "polski instytut językowy": "polski-instytut-jezykowy",
+  "polski instytut jezykowy": "polski-instytut-jezykowy",
+  "lingua polonica": "lingua-polonica",
+  together: "together-polish",
+  "institute of polish for foreigners": "iko",
+  "academy of language": "academy-of-language",
+  "international school of languages warsaw": "islw",
+  islw: "islw",
+  "speakpro academy": "speakpro-academy",
+  "school of english agnieszka": "school-of-english-agnieszka",
+  słowianka: "slowianka",
+  slowianka: "slowianka",
+  prima: "prima-polsko-turecka",
+  pygmalion: "pygmalion",
+  "english for you": "english-for-you",
+  "spox school": "spox-school",
+  "lemon language school": "lemon-szkola",
+  "bla-bla school": "bla-bla-school",
+  "the british school warsaw": "british-school-warsaw",
+  "monnet international school": "monnet-international",
+};
+
+function findEduLogo(name: string): string | null {
+  const lower = name.toLowerCase();
+  for (const [key, slug] of Object.entries(EDU_LOGOS)) {
+    if (lower.includes(key)) return slug;
+  }
+  return null;
+}
+
+function EduAvatar({ name, icon }: { name: string; icon: ReactNode }) {
+  const slug = findEduLogo(name);
+  const [failed, setFailed] = useState(false);
+
+  if (slug && !failed) {
+    return (
+      <span className="flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-xl bg-white/95 p-1">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/images/logos/education/${slug}.png`}
+          alt={name}
+          className="h-full w-full object-contain"
+          onError={() => setFailed(true)}
+        />
+      </span>
+    );
+  }
+  return <span className={iconBadgeClass}>{icon}</span>;
+}
+
 const TAB_ICONS: Record<TabId, ReactNode> = {
   courses: (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -145,7 +207,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
         className="flex w-full flex-1 flex-col items-start gap-4 text-left"
       >
         <div className="flex w-full items-center justify-between gap-2">
-          <span className={iconBadgeClass}>{icon}</span>
+          <EduAvatar name={row.name} icon={icon} />
           <OwnershipBadge ownership={row.ownership} t={t} />
         </div>
 
