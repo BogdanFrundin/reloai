@@ -14,7 +14,7 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
-import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus } from "../../../_lib/documents";
+import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, getRelevantDocuments, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 import DocumentRoadmapList from "../../../_components/DocumentRoadmapList";
 import DocumentGuideList from "../../../_components/DocumentGuideList";
 import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
@@ -22,20 +22,10 @@ import { useDashboardProgress } from "../../../_components/DashboardProgressProv
 type Category = "all" | DocumentItem["category"];
 type Status = DocStatus;
 
-const TABS: Category[] = [
-  "all",
-  "passport",
-  "pesel",
-  "workPermit",
-  "insurance",
-  "bank",
-  "biometric",
-  "address",
-  "residencePermit",
-  "taxId",
-  "employment",
-  "business",
-];
+// Canonical display order for categories. Which of these are actually shown
+// as tabs is computed per-user inside the component (see visibleCategories)
+// from the personalized catalog, so someone whose goal doesn't need e.g.
+// "business" documents never sees an empty "Бизнес" tab.
 const CATEGORIES: DocumentItem["category"][] = [
   "passport",
   "pesel",
@@ -70,8 +60,6 @@ const STATUS_BORDER_CLASS: Record<Status, string> = {
   missing: "border-l-border-strong",
   locked: "border-l-accent/40",
 };
-
-const INITIAL_DOCUMENTS: DocumentItem[] = DOCUMENT_CATALOG;
 
 const LOCK_ICON = (
   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -284,7 +272,23 @@ export default function DocumentsPage() {
   const { user, profile } = useAuth();
   const demoMode = !user;
   const [activeTab, setActiveTab] = useState<Category>("all");
-  const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
+
+  // Which of the 18 fixed catalog documents are actually relevant to this
+  // user, based on their onboarding goal(s) and job-offer answer — e.g. a
+  // "family" relocation shouldn't see "Разрешение на работу", and someone
+  // still job-hunting shouldn't see "Письмо от работодателя". Falls back to
+  // the full catalog when we don't know the goal yet (demo mode / onboarding
+  // not finished), same conservative default as guideAppliesTo() uses for
+  // the DB-driven guide list below.
+  const relevantCatalog = useMemo(
+    () =>
+      getRelevantDocuments(DOCUMENT_CATALOG, {
+        goals: profile?.goals?.length ? profile.goals : profile?.goal ? [profile.goal] : null,
+        jobOffer: profile?.job_offer ?? null,
+      }),
+    [profile?.goals, profile?.goal, profile?.job_offer],
+  );
+  const [documents, setDocuments] = useState<DocumentItem[]>(relevantCatalog);
   const [promptOpen, setPromptOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [sectionCompleteOpen, setSectionCompleteOpen] = useState(false);
@@ -343,10 +347,14 @@ export default function DocumentsPage() {
 
   useEffect(() => {
     if (!user) {
-      setDocuments(INITIAL_DOCUMENTS);
+      setDocuments(relevantCatalog);
       return;
     }
     let active = true;
+    // Show the personalized baseline immediately (all "missing"/"locked"),
+    // then merge in whatever's actually been saved for the docs that are
+    // still relevant.
+    setDocuments(relevantCatalog);
 
     supabase
       .from("documents")
@@ -372,7 +380,7 @@ export default function DocumentsPage() {
     return () => {
       active = false;
     };
-  }, [user]);
+  }, [user, relevantCatalog]);
 
   const STATUS_BADGE: Record<Status, { label: string; className: string }> = {
     verified: { label: t.documents.status.verified, className: STATUS_BADGE_CLASS.verified },
@@ -506,7 +514,24 @@ export default function DocumentsPage() {
   const missingCount = relevantDocs.filter((doc) => doc.status === "missing").length;
   const progressPercent = totalCount === 0 ? 0 : Math.round((verifiedCount / totalCount) * 100);
 
-  const categoriesToRender = activeTab === "all" ? CATEGORIES : [activeTab as DocumentItem["category"]];
+  // Only show tabs for categories that actually have a relevant document for
+  // this user (see relevantCatalog above) — e.g. no "Бизнес" tab for someone
+  // relocating for family reasons.
+  const visibleCategories = useMemo(() => {
+    const present = new Set(relevantCatalog.map((d) => d.category));
+    return CATEGORIES.filter((c) => present.has(c));
+  }, [relevantCatalog]);
+  const visibleTabs: Category[] = ["all", ...visibleCategories];
+
+  // If the goal changes (or finishes loading) and the currently-selected tab
+  // is no longer relevant, fall back to "all" instead of showing an empty page.
+  useEffect(() => {
+    if (activeTab !== "all" && !visibleCategories.includes(activeTab as DocumentItem["category"])) {
+      setActiveTab("all");
+    }
+  }, [visibleCategories, activeTab]);
+
+  const categoriesToRender = activeTab === "all" ? visibleCategories : [activeTab as DocumentItem["category"]];
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -551,7 +576,7 @@ export default function DocumentsPage() {
 
       <Reveal delay={80}>
         <div className="mt-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {TABS.map((tab) => (
+          {visibleTabs.map((tab) => (
             <button
               key={tab}
               type="button"
