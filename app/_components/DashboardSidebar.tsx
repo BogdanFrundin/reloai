@@ -98,11 +98,11 @@ export default function DashboardSidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-[220px] lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
+        className={`scrollbar-hide fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col overflow-y-auto border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-[220px] lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="px-5 py-3">
+        <div className="px-5 py-4">
           <div className="flex items-center justify-between gap-2">
             <Link href="/home" onClick={onClose} className="flex min-w-0 items-center gap-2">
               <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
@@ -119,10 +119,10 @@ export default function DashboardSidebar({
               {BACK_ARROW_ICON}
             </Link>
           </div>
-          <p className="mt-1 text-xs text-text-muted">{d.tagline}</p>
+          <p className="mt-2 text-xs text-text-muted">{d.tagline}</p>
 
           {countryEntry && (
-            <div className="mt-2 flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-1">
+            <div className="mt-2.5 flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-1.5">
               <Image
                 src={getFlagUrl(COUNTRY_FLAG_CODE[country] ?? "pl", "sm")}
                 alt={countryEntry.name}
@@ -136,7 +136,7 @@ export default function DashboardSidebar({
           )}
         </div>
 
-        <nav className="scrollbar-hide flex-1 space-y-4 overflow-y-auto px-3 py-1.5">
+        <nav className="space-y-4 px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1">
             <Link
               href="/home"
