@@ -308,7 +308,7 @@ const EDU_LOGOS: Record<string, string> = {
   "politechnika lubelska": "politechnika-lubelska",
   "catholic university of lublin": "kul-lublin",
   "uniwersytet przyrodniczy w lublinie": "uniwersytet-przyrodniczy-lublin",
-  wsei: "wsei-lublin",
+  "wsei w lublinie": "wsei-lublin",
   "vincent pol": "vincent-pol-university-lublin",
   wspa: "wspa-lublin",
   ansim: "ansim-lublin",
@@ -740,6 +740,17 @@ const EDU_LOGOS: Record<string, string> = {
   ignatianum: "ignatianum-krakow",
   "swps kraków": "swps-krakow",
   "swps krakow": "swps-krakow",
+  "andrzeja frycza modrzewskiego": "frycza-modrzewskiego-krakow",
+  "promocji zdrowia": "kwspz-krakow",
+  "józefa dietla": "dietla-krakow",
+  "jozefa dietla": "dietla-krakow",
+  "szkoła europejska im. ks. józefa tischnera": "wse-tischnera-krakow",
+  "szkola europejska im. ks. jozefa tischnera": "wse-tischnera-krakow",
+  "krakowskie szkoły artystyczne": "ksa-krakow",
+  "krakowskie szkoly artystyczne": "ksa-krakow",
+  "ekonomii i informatyki w krakowie": "wsei-krakow",
+  "bezpieczeństwa publicznego i indywidualnego": "apeiron-krakow",
+  "bezpieczenstwa publicznego i indywidualnego": "apeiron-krakow",
 };
 
 function findEduLogo(name: string): string | null {
