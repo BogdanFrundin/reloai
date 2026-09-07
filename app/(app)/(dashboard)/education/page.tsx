@@ -738,6 +738,8 @@ const EDU_LOGOS: Record<string, string> = {
   "uniwersytet papieski jana pawła ii": "upjpii-krakow",
   "uniwersytet papieski jana pawla ii": "upjpii-krakow",
   ignatianum: "ignatianum-krakow",
+  "swps kraków": "swps-krakow",
+  "swps krakow": "swps-krakow",
 };
 
 function findEduLogo(name: string): string | null {
