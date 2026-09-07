@@ -615,6 +615,17 @@ const EDU_LOGOS: Record<string, string> = {
   "pomorski uniwersytet medyczny": "pum-szczecin",
   "maritime university of szczecin": "mus-szczecin",
   "akademia morska w szczecinie": "mus-szczecin",
+  "linguacity": "linguacity-katowice",
+  "project school": "project-school-katowice",
+  "lingua house": "lingua-house-katowice",
+  "business english academy": "business-english-academy-katowice",
+  "hi there": "hi-there-katowice",
+  "deru": "deru-katowice",
+  "nr 16": "przedszkole-16-katowice",
+  "nr 88": "przedszkole-88-katowice",
+  "przedszkole nr 4": "przedszkole-4-katowice",
+  "ps 69": "ps-69-katowice",
+  "nr 39 im. tajemniczego ogrodu": "przedszkole-39-katowice",
 };
 
 function findEduLogo(name: string): string | null {
