@@ -751,6 +751,15 @@ const EDU_LOGOS: Record<string, string> = {
   "ekonomii i informatyki w krakowie": "wsei-krakow",
   "bezpieczeństwa publicznego i indywidualnego": "apeiron-krakow",
   "bezpieczenstwa publicznego i indywidualnego": "apeiron-krakow",
+  uksw: "uksw-wroclaw",
+  "akademia wychowania fizycznego we wrocławiu": "awf-wroclaw",
+  "akademia wychowania fizycznego we wroclawiu": "awf-wroclaw",
+  "łazarski": "lazarski-wroclaw",
+  "lazarski": "lazarski-wroclaw",
+  "ziarenko happy home": "ziarenko-happy-home-wroclaw",
+  "oxford international preschool": "oxford-preschool-katowice",
+  "uniwersytet ekonomiczny we wrocławiu": "ue-wroclaw",
+  "uniwersytet ekonomiczny we wroclawiu": "ue-wroclaw",
 };
 
 function findEduLogo(name: string): string | null {
