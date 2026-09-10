@@ -105,11 +105,26 @@ function findLogoDomain(name: string): string | null {
 // on an external service). The slug is derived from the bank's domain so we
 // don't need a second name-keyed map to keep in sync with BANK_DOMAINS —
 // "pkobp.pl" -> "pkobp.png", "credit-agricole.pl" -> "creditagricole.png".
-// If a bank has no local file yet, the <img> below 404s and onError just
-// cascades straight to the favicon fetch, so this is safe to ship before
-// every logo file exists.
+// LOCAL_LOGO_SLUGS lists which slugs actually have a file on disk, so banks
+// without one skip straight to the favicon fetch instead of firing a
+// guaranteed 404 first — keep this set in sync with public/images/logos/banks/.
+const LOCAL_LOGO_SLUGS = new Set([
+  "aionbank",
+  "bnpparibas",
+  "creditagricole",
+  "erstebank",
+  "plusbank",
+  "pocztowy",
+  "toyotabank",
+  "vwbank",
+]);
+
 function bankLogoSlug(domain: string): string {
   return domain.split(".")[0].replace(/[^a-z0-9]/gi, "").toLowerCase();
+}
+
+function hasLocalLogo(domain: string): boolean {
+  return LOCAL_LOGO_SLUGS.has(bankLogoSlug(domain));
 }
 
 function localLogoSrc(domain: string): string {
@@ -130,7 +145,7 @@ function logoSrc(domain: string, stage: -1 | 0 | 1): string {
 
 function BankAvatar({ name }: { name: string }) {
   const domain = findLogoDomain(name);
-  const [stage, setStage] = useState<-1 | 0 | 1 | 2>(-1);
+  const [stage, setStage] = useState<-1 | 0 | 1 | 2>(() => (domain && hasLocalLogo(domain) ? -1 : 0));
   const initials = name
     .replace(/^Bank\s+/i, "")
     .split(/\s+/)

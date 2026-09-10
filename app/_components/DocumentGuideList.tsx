@@ -111,9 +111,21 @@ const GOAL_FIELD: Record<string, keyof GuideFilterFlags> = {
 // set at all (not yet migrated) stays visible to everyone, same as before.
 export function guideAppliesTo(guide: GuideFilterFlags, ctx: GuideFilterContext): boolean {
   // Legacy per-country override (still used by guides added before the matrix).
+  const countries = guide.countries;
   if (ctx.citizenship) {
-    const countries = guide.countries;
     if (countries && ctx.citizenship in countries && countries[ctx.citizenship] === false) return false;
+  } else if (countries) {
+    // No citizenship known yet (unauthenticated/demo preview, or a profile
+    // still mid-onboarding). A guide whose countries map is true for at most
+    // one citizenship (e.g. "bank account specifics for Tajikistan citizens",
+    // "PESEL со статусом UKR") is inherently written for a single
+    // nationality -- showing every such single-country variant at once to an
+    // unknown visitor is worse than showing none, so hold these back until
+    // we know who's asking. Broadly-applicable guides (true for most
+    // non-EU/EEA citizenships, e.g. the work-visa guides) are unaffected
+    // since they're true for many more than one country.
+    const trueCount = Object.values(countries).filter((v) => v === true).length;
+    if (trueCount > 0 && trueCount <= 1) return false;
   }
 
   const hasGroupData = guide.group_a || guide.group_b || guide.group_c || guide.group_d;
