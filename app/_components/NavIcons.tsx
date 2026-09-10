@@ -49,7 +49,7 @@ export const NAV_ICONS: Record<MainKey | OtherKey, ReactNode> = {
   ),
   community: (
     <svg {...ICON_PROPS}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-1a4 4 0 00-4-4h-1m-7 5H1v-1a4 4 0 014-4h1m6-4a3 3 0 10-3-3m9 3a3 3 0 10-3-3M9 12a3 3 0 100-6 3 3 0 000 6z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5.5A2.5 2.5 0 015.5 3h13A2.5 2.5 0 0121 5.5v8a2.5 2.5 0 01-2.5 2.5H9l-4 4v-4H5.5A2.5 2.5 0 013 13.5v-8z" />
     </svg>
   ),
 };
