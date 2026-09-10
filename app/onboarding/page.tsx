@@ -583,7 +583,14 @@ export default function OnboardingPage() {
         restoredAnswers.kazakhstanScenario,
         restoredAnswers.tajikistanScenario,
       );
-      const resumeIndex = resumeStepOrder.findIndex((key) => restoredSkipped.includes(key));
+      // Resume at the first step that's either explicitly skipped or simply
+      // never answered — not just the first skipped one. A user who closed
+      // the tab mid-flow without ever clicking "Skip" has an empty
+      // restoredSkipped, which used to leave this at -1 and dump them back
+      // on step 0 (language) despite having already answered several steps.
+      const resumeIndex = resumeStepOrder.findIndex(
+        (key) => restoredSkipped.includes(key) || !isStepAnswered(key, restoredAnswers),
+      );
       if (resumeIndex !== -1) setStep(resumeIndex);
     }
 
