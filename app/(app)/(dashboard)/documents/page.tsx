@@ -280,7 +280,12 @@ export default function DocumentsPage() {
   // the full catalog when we don't know the goal yet (demo mode / onboarding
   // not finished), same conservative default as guideAppliesTo() uses for
   // the DB-driven guide list below.
+  // The React Compiler babel plugin isn't enabled for this build (see
+  // next.config.ts), so this is a lint-only diagnostic about a component
+  // shape the compiler can't verify; the manual useMemo below still runs and
+  // memoizes correctly at runtime.
   const relevantCatalog = useMemo(
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
     () =>
       getRelevantDocuments(DOCUMENT_CATALOG, {
         goals: profile?.goals?.length ? profile.goals : profile?.goal ? [profile.goal] : null,
@@ -347,6 +352,10 @@ export default function DocumentsPage() {
 
   useEffect(() => {
     if (!user) {
+      // Resyncs `documents` to the catalog whenever it changes (e.g. goal
+      // edited); there's no user to fetch saved statuses for, so this is the
+      // final value.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDocuments(relevantCatalog);
       return;
     }
@@ -524,14 +533,13 @@ export default function DocumentsPage() {
   const visibleTabs: Category[] = ["all", ...visibleCategories];
 
   // If the goal changes (or finishes loading) and the currently-selected tab
-  // is no longer relevant, fall back to "all" instead of showing an empty page.
-  useEffect(() => {
-    if (activeTab !== "all" && !visibleCategories.includes(activeTab as DocumentItem["category"])) {
-      setActiveTab("all");
-    }
-  }, [visibleCategories, activeTab]);
+  // is no longer relevant, fall back to "all" instead of showing an empty
+  // page — derived at render time rather than corrected via an effect, so
+  // there's no extra render/state write in between.
+  const effectiveTab: Category =
+    activeTab !== "all" && !visibleCategories.includes(activeTab as DocumentItem["category"]) ? "all" : activeTab;
 
-  const categoriesToRender = activeTab === "all" ? visibleCategories : [activeTab as DocumentItem["category"]];
+  const categoriesToRender = effectiveTab === "all" ? visibleCategories : [effectiveTab as DocumentItem["category"]];
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -545,116 +553,7 @@ export default function DocumentsPage() {
       </Reveal>
 
       <Reveal delay={40}>
-        <div className="mt-6 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-semibold text-text-primary">
-              {t.documents.progressSummary
-                .replace("{completed}", String(verifiedCount))
-                .replace("{total}", String(totalCount))}
-            </p>
-            <span className="text-sm font-semibold text-accent-bright">{progressPercent}%</span>
-          </div>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border-subtle">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
-              ✅ {verifiedCount} {t.documents.status.verified}
-            </span>
-            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-400">
-              🔄 {pendingCount} {t.documents.status.pending}
-            </span>
-            <span className="rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-medium text-text-muted">
-              ❌ {missingCount} {t.documents.status.missing}
-            </span>
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal delay={80}>
-        <div className="mt-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {visibleTabs.map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setActiveTab(tab)}
-              className={`flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
-                activeTab === tab
-                  ? "border-accent/50 bg-accent/10 text-accent-bright"
-                  : "border-border-subtle bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
-              }`}
-            >
-              {t.documents.tabs[tab]}
-            </button>
-          ))}
-        </div>
-      </Reveal>
-
-      <div className="mt-8 space-y-8">
-        {categoriesToRender.map((category, index) => {
-          const docsInCategory = documents.filter((doc) => doc.category === category);
-          if (docsInCategory.length === 0) return null;
-
-          return (
-            <Reveal key={category} delay={120 + index * 40}>
-              <section>
-                {activeTab === "all" && (
-                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
-                    <span>{CATEGORY_EMOJI[category]}</span>
-                    <span>{t.documents.tabs[category]}</span>
-                  </h2>
-                )}
-                <div>
-                  {docsInCategory.map((doc) => {
-                    const name = t.documents.docNames[doc.nameKey];
-                    const hint = t.documents.docHints[doc.nameKey];
-                    const guideText = t.documents.uploadGuides[doc.nameKey];
-
-                    if (doc.status === "locked") {
-                      return (
-                        <LockedRow
-                          key={doc.id}
-                          name={name}
-                          hint={hint}
-                          lockedLabel={STATUS_BADGE.locked.label}
-                          demoMode={demoMode}
-                          onDemoBlocked={() => setPromptOpen(true)}
-                          onUpgradeClick={() => setUpgradeOpen(true)}
-                        />
-                      );
-                    }
-
-                    return (
-                      <DocumentRow
-                        key={doc.id}
-                        doc={doc}
-                        name={name}
-                        hint={hint}
-                        guideText={guideText}
-                        badge={STATUS_BADGE[doc.status]}
-                        viewLabel={t.documents.viewBtn}
-                        uploadLabel={t.documents.uploadBtn}
-                        deleteLabel={t.documents.deleteBtn}
-                        onUpload={handleUpload}
-                        onView={handleView}
-                        onDelete={(id) => setDeleteTargetId(id)}
-                        demoMode={demoMode}
-                        onDemoBlocked={() => setPromptOpen(true)}
-                      />
-                    );
-                  })}
-                </div>
-              </section>
-            </Reveal>
-          );
-        })}
-      </div>
-
-      <Reveal delay={160}>
-        <div className="mt-12">
+        <div className="mt-6">
           <h2 className="text-xl font-bold tracking-tight text-text-primary">Вероятно нужные документы</h2>
           <p className="mt-1 text-sm text-text-muted">
             Подобраны под ваш маршрут, цель переезда и гражданство — пошаговые инструкции.
@@ -749,7 +648,116 @@ export default function DocumentsPage() {
         </div>
       </Reveal>
 
-      <Reveal delay={180}>
+      <Reveal delay={120}>
+        <div className="mt-12 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm font-semibold text-text-primary">
+              {t.documents.progressSummary
+                .replace("{completed}", String(verifiedCount))
+                .replace("{total}", String(totalCount))}
+            </p>
+            <span className="text-sm font-semibold text-accent-bright">{progressPercent}%</span>
+          </div>
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border-subtle">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400">
+              ✅ {verifiedCount} {t.documents.status.verified}
+            </span>
+            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-400">
+              🔄 {pendingCount} {t.documents.status.pending}
+            </span>
+            <span className="rounded-full border border-border-strong bg-surface-1 px-3 py-1.5 text-xs font-medium text-text-muted">
+              ❌ {missingCount} {t.documents.status.missing}
+            </span>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={160}>
+        <div className="mt-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {visibleTabs.map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              className={`flex-shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-150 ${
+                effectiveTab === tab
+                  ? "border-accent/50 bg-accent/10 text-accent-bright"
+                  : "border-border-subtle bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
+              }`}
+            >
+              {t.documents.tabs[tab]}
+            </button>
+          ))}
+        </div>
+      </Reveal>
+
+      <div className="mt-8 space-y-8">
+        {categoriesToRender.map((category, index) => {
+          const docsInCategory = documents.filter((doc) => doc.category === category);
+          if (docsInCategory.length === 0) return null;
+
+          return (
+            <Reveal key={category} delay={200 + index * 40}>
+              <section>
+                {effectiveTab === "all" && (
+                  <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
+                    <span>{CATEGORY_EMOJI[category]}</span>
+                    <span>{t.documents.tabs[category]}</span>
+                  </h2>
+                )}
+                <div>
+                  {docsInCategory.map((doc) => {
+                    const name = t.documents.docNames[doc.nameKey];
+                    const hint = t.documents.docHints[doc.nameKey];
+                    const guideText = t.documents.uploadGuides[doc.nameKey];
+
+                    if (doc.status === "locked") {
+                      return (
+                        <LockedRow
+                          key={doc.id}
+                          name={name}
+                          hint={hint}
+                          lockedLabel={STATUS_BADGE.locked.label}
+                          demoMode={demoMode}
+                          onDemoBlocked={() => setPromptOpen(true)}
+                          onUpgradeClick={() => setUpgradeOpen(true)}
+                        />
+                      );
+                    }
+
+                    return (
+                      <DocumentRow
+                        key={doc.id}
+                        doc={doc}
+                        name={name}
+                        hint={hint}
+                        guideText={guideText}
+                        badge={STATUS_BADGE[doc.status]}
+                        viewLabel={t.documents.viewBtn}
+                        uploadLabel={t.documents.uploadBtn}
+                        deleteLabel={t.documents.deleteBtn}
+                        onUpload={handleUpload}
+                        onView={handleView}
+                        onDelete={(id) => setDeleteTargetId(id)}
+                        demoMode={demoMode}
+                        onDemoBlocked={() => setPromptOpen(true)}
+                      />
+                    );
+                  })}
+                </div>
+              </section>
+            </Reveal>
+          );
+        })}
+      </div>
+
+      <Reveal delay={240}>
         <div className="mt-12">
           <h2 className="text-xl font-bold tracking-tight text-text-primary">Все документы</h2>
           <p className="mt-1 text-sm text-text-muted">
