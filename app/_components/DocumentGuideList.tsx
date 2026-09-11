@@ -318,7 +318,7 @@ export function GuideDetails({ guide }: { guide: DocumentGuide }) {
   );
 }
 
-function GuideCard({ guide }: { guide: DocumentGuide }) {
+export function GuideCard({ guide }: { guide: DocumentGuide }) {
   const [open, setOpen] = useState(false);
 
   return (

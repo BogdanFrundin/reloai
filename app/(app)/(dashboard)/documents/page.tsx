@@ -16,10 +16,44 @@ import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, getRelevantDocuments, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 import DocumentRoadmapList from "../../../_components/DocumentRoadmapList";
-import DocumentGuideList from "../../../_components/DocumentGuideList";
+import { GuideCard } from "../../../_components/DocumentGuideList";
 import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
 
-type Category = "all" | DocumentItem["category"];
+// "Все документы" used to be its own flat, search-only list at the bottom of
+// the page. It's now folded into the same tab bar as the personal checklist
+// above: checklist categories keep their fixed English keys (below), guide
+// categories are whatever raw Russian `category` values are actually present
+// on document_guides rows right now (computed below from `allGuides`, not
+// hardcoded) — the two sets never collide, so both can share one Category type.
+type Category = "all" | DocumentItem["category"] | (string & {});
+
+function isChecklistCategory(tab: Category): tab is DocumentItem["category"] {
+  return (CATEGORIES as readonly string[]).includes(tab as string);
+}
+
+function guideCategoryLabel(category: string): string {
+  return category.charAt(0).toUpperCase() + category.slice(1);
+}
+
+// Best-effort icon per known guide category; anything not listed here (a
+// brand-new category value that shows up in the DB later) still renders fine
+// with the fallback emoji below.
+const GUIDE_CATEGORY_EMOJI: Record<string, string> = {
+  легализация: "🛂",
+  визы: "🛃",
+  документы: "📄",
+  бизнес: "🏢",
+  авто: "🚗",
+  образование: "🎓",
+  работа: "💼",
+  жильё: "🏠",
+  банки: "🏦",
+  связь: "📶",
+  транспорт: "🚌",
+  въезд: "✈️",
+  налоги: "🧾",
+};
+const GUIDE_CATEGORY_EMOJI_FALLBACK = "📄";
 type Status = DocStatus;
 
 // Canonical display order for categories. Which of these are actually shown
@@ -343,6 +377,16 @@ export default function DocumentsPage() {
     return list;
   }, [documentRoadmap]);
 
+  // Distinct raw category values actually present on allGuides right now —
+  // these become extra tabs alongside the checklist categories below (see
+  // Category type above), so "Все документы" no longer needs its own
+  // separate flat section. Sorted alphabetically for a stable tab order that
+  // adapts automatically if new guide categories show up in the DB later.
+  const guideTabCategories = useMemo(
+    () => Array.from(new Set(allGuides.map((g) => g.category))).sort((a, b) => a.localeCompare(b, "ru")),
+    [allGuides],
+  );
+
   const filteredSections = useMemo(() => {
     if (guideCategory === "all") return documentRoadmap;
     return documentRoadmap
@@ -530,16 +574,23 @@ export default function DocumentsPage() {
     const present = new Set(relevantCatalog.map((d) => d.category));
     return CATEGORIES.filter((c) => present.has(c));
   }, [relevantCatalog]);
-  const visibleTabs: Category[] = ["all", ...visibleCategories];
+  const visibleTabs: Category[] = ["all", ...visibleCategories, ...guideTabCategories];
 
   // If the goal changes (or finishes loading) and the currently-selected tab
   // is no longer relevant, fall back to "all" instead of showing an empty
   // page — derived at render time rather than corrected via an effect, so
   // there's no extra render/state write in between.
   const effectiveTab: Category =
-    activeTab !== "all" && !visibleCategories.includes(activeTab as DocumentItem["category"]) ? "all" : activeTab;
+    activeTab !== "all" &&
+    !visibleCategories.includes(activeTab as DocumentItem["category"]) &&
+    !guideTabCategories.includes(activeTab as string)
+      ? "all"
+      : activeTab;
 
-  const categoriesToRender = effectiveTab === "all" ? visibleCategories : [effectiveTab as DocumentItem["category"]];
+  const categoriesToRender = effectiveTab === "all" ? visibleCategories : isChecklistCategory(effectiveTab) ? [effectiveTab] : [];
+
+  const guideCategoriesToRender =
+    effectiveTab === "all" ? guideTabCategories : guideTabCategories.includes(effectiveTab as string) ? [effectiveTab as string] : [];
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
@@ -691,7 +742,7 @@ export default function DocumentsPage() {
                   : "border-border-subtle bg-surface-1 text-text-muted hover:border-border-strong hover:text-text-primary"
               }`}
             >
-              {t.documents.tabs[tab]}
+              {tab === "all" ? t.documents.tabs.all : isChecklistCategory(tab) ? t.documents.tabs[tab] : guideCategoryLabel(tab as string)}
             </button>
           ))}
         </div>
@@ -757,22 +808,34 @@ export default function DocumentsPage() {
         })}
       </div>
 
-      <Reveal delay={240}>
-        <div className="mt-12">
-          <h2 className="text-xl font-bold tracking-tight text-text-primary">Все документы</h2>
-          <p className="mt-1 text-sm text-text-muted">
-            Полный список гайдов по легализации — на случай, если нужен документ, не попавший в список выше.
-          </p>
-          <div className="mt-4">
-            <DocumentGuideList
-              guides={allGuides}
-              loading={documentGuidesLoading}
-              emptyText="Пока нет гайдов."
-              searchPlaceholder={t.guideCard.searchGuides}
-            />
-          </div>
+      {documentGuidesLoading ? (
+        <p className="mt-8 text-sm text-text-muted">{t.guideCard.loading}</p>
+      ) : (
+        <div className="mt-8 space-y-8">
+          {guideCategoriesToRender.map((category, index) => {
+            const guidesInCategory = allGuides.filter((g) => g.category === category);
+            if (guidesInCategory.length === 0) return null;
+
+            return (
+              <Reveal key={category} delay={200 + (categoriesToRender.length + index) * 40}>
+                <section>
+                  {effectiveTab === "all" && (
+                    <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
+                      <span>{GUIDE_CATEGORY_EMOJI[category] ?? GUIDE_CATEGORY_EMOJI_FALLBACK}</span>
+                      <span>{guideCategoryLabel(category)}</span>
+                    </h2>
+                  )}
+                  <div className="space-y-3">
+                    {guidesInCategory.map((g) => (
+                      <GuideCard key={g.id} guide={g} />
+                    ))}
+                  </div>
+                </section>
+              </Reveal>
+            );
+          })}
         </div>
-      </Reveal>
+      )}
 
       {toastVisible && (
         <div className="animate-slide-up fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 shadow-xl shadow-black/40 backdrop-blur-xl">
