@@ -16,7 +16,7 @@ import { createNotification } from "../../../_lib/notifications";
 import { supabase } from "../../../../lib/supabase";
 import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, getRelevantDocuments, type DocumentItem, type DocStatus } from "../../../_lib/documents";
 import DocumentRoadmapList from "../../../_components/DocumentRoadmapList";
-import { GuideCard } from "../../../_components/DocumentGuideList";
+import { GuideDetails, CHEVRON_ICON, type DocumentGuide } from "../../../_components/DocumentGuideList";
 import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
 
 // "Все документы" used to be its own flat, search-only list at the bottom of
@@ -298,6 +298,45 @@ function LockedRow({
     <button type="button" onClick={onUpgradeClick} className={className}>
       {content}
     </button>
+  );
+}
+
+// A document_guides row shown in the same row layout as DocumentRow above
+// (icon box + title/subtitle + right-side pill), so the merged "all guides"
+// categories read as one continuous list with the personal checklist rather
+// than switching to a different card style partway down the page. The pill
+// doubles as an expand/collapse toggle for the full guide details below.
+function GuideRow({ guide, viewLabel }: { guide: DocumentGuide; viewLabel: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-l-4 border-border-subtle transition-colors duration-150 last:border-b-0 hover:bg-surface-hover">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        className="group flex w-full items-center gap-4 py-4 pl-4 text-left"
+      >
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-surface-1 text-base">
+          {GUIDE_CATEGORY_EMOJI[guide.category] ?? GUIDE_CATEGORY_EMOJI_FALLBACK}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-text-primary transition-colors duration-150 group-hover:text-accent-bright">
+            {guide.name}
+          </p>
+          {guide.description && <p className="mt-0.5 truncate text-xs text-text-muted">{guide.description}</p>}
+        </div>
+        <span className="flex flex-shrink-0 items-center gap-1.5 rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-primary transition-colors duration-150 group-hover:border-accent/40 group-hover:text-accent-bright">
+          {viewLabel}
+          <span className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`}>{CHEVRON_ICON}</span>
+        </span>
+      </button>
+      {open && (
+        <div className="pb-4 pl-4 pr-4">
+          <GuideDetails guide={guide} />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -825,9 +864,9 @@ export default function DocumentsPage() {
                       <span>{guideCategoryLabel(category)}</span>
                     </h2>
                   )}
-                  <div className="space-y-3">
+                  <div>
                     {guidesInCategory.map((g) => (
-                      <GuideCard key={g.id} guide={g} />
+                      <GuideRow key={g.id} guide={g} viewLabel={t.documents.viewBtn} />
                     ))}
                   </div>
                 </section>
