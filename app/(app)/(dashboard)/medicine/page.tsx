@@ -124,6 +124,15 @@ const CLINIC_LOGOS: Record<string, string> = {
   bielanski: "szpital-bielanski",
   "szpital południowy": "warszawski-szpital-poludniowy",
   "szpital poludniowy": "warszawski-szpital-poludniowy",
+  // UCK GUMed (Gdańsk) is a completely different institution from UCK WUM
+  // (Warsaw) despite sharing the "Uniwersyteckie Centrum Kliniczne" name, so
+  // this must be checked before the generic "uniwersyteckie centrum kliniczne"
+  // key below — otherwise every Gdańsk UCK GUMed clinic would incorrectly
+  // show the Warsaw UCK WUM logo.
+  "uniwersyteckie centrum kliniczne gumed": "uck-gumed",
+  "uck gumed": "uck-gumed",
+  "gdańskiego uniwersytetu medycznego": "uck-gumed",
+  "gdanskiego uniwersytetu medycznego": "uck-gumed",
   "uniwersyteckie centrum kliniczne": "uck-wum",
   "uck wum": "uck-wum",
   // More specific clinics must be listed before the generic
