@@ -126,6 +126,14 @@ const CLINIC_LOGOS: Record<string, string> = {
   "szpital poludniowy": "warszawski-szpital-poludniowy",
   "uniwersyteckie centrum kliniczne": "uck-wum",
   "uck wum": "uck-wum",
+  // More specific clinics must be listed before the generic
+  // "warszawskiego uniwersytetu medycznego" / "wum" entries below (and before
+  // "lux med" further down), since findClinicLogo returns on the first
+  // substring match — "Carolina Medical Center (LUX MED)" and "Klinika
+  // Urologii Warszawskiego Uniwersytetu Medycznego" would otherwise be
+  // mis-matched to the WUM/Luxmed logos instead of their own.
+  "klinika urologii warszawskiego uniwersytetu medycznego": "klinika-urologii-wum",
+  "carolina medical center": "carolina",
   "warszawskiego uniwersytetu medycznego": "wum-eagle",
   "wum": "wum-eagle",
   "gruźlicy i chorób płuc": "instytut-gruzlicy",
@@ -438,6 +446,9 @@ export default function MedicinePage() {
 
   useEffect(() => {
     let active = true;
+    // Start of a data-fetching effect (flip to loading, fetch, then resolve);
+    // this is the standard fetch-on-change pattern, not a synchronization bug.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     supabase
       .from("clinics")
