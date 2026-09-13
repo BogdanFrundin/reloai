@@ -157,6 +157,7 @@ const CLINIC_LOGOS: Record<string, string> = {
   "ifps": "instytut-fizjologii-i-patologii-sluchu",
   "swisslaser": "swisslaser",
   "swiss laser": "swisslaser",
+  "klinika pneumonologii": "klinika-pneumonologii-lodz",
   "szpital okulistyczny retina": "szpital-okulistyczny-retina",
   "mikrochirurgii oka laser": "centrum-mikrochirurgii-oka-laser",
   "centrum zdrowia dziecka": "instytut-pomnik-czd",
