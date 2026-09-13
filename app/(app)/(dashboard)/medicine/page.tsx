@@ -133,6 +133,8 @@ const CLINIC_LOGOS: Record<string, string> = {
   // Urologii Warszawskiego Uniwersytetu Medycznego" would otherwise be
   // mis-matched to the WUM/Luxmed logos instead of their own.
   "klinika urologii warszawskiego uniwersytetu medycznego": "klinika-urologii-wum",
+  "klinika neonatologii": "klinika-neonatologii-zwirki",
+  "klinika pediatrii": "klinika-pediatrii-wum",
   "carolina medical center": "carolina",
   "warszawskiego uniwersytetu medycznego": "wum-eagle",
   "wum": "wum-eagle",
