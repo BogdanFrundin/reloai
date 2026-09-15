@@ -48,10 +48,10 @@ export default function Sidebar({
         }`}
       >
         <Link href="/dashboard" onClick={onClose} className="flex items-center gap-2 px-6 py-5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-base font-bold text-white">
             R
           </span>
-          <span className="text-sm font-semibold tracking-tight text-text-primary">ReloAI</span>
+          <span className="text-base font-semibold tracking-tight text-text-primary">ReloAI</span>
         </Link>
 
         {/* Main navigation */}
@@ -65,7 +65,7 @@ export default function Sidebar({
                 key={key}
                 href={href}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-base font-medium transition-colors duration-150 ${
                   isActive
                     ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                     : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -82,7 +82,7 @@ export default function Sidebar({
               type="button"
               onClick={() => setOtherOpen((prev) => !prev)}
               aria-expanded={otherOpen}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-base font-medium transition-colors duration-150 ${
                 isOtherActive
                   ? "bg-accent/10 text-accent-bright"
                   : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -106,7 +106,7 @@ export default function Sidebar({
                       key={key}
                       href={href}
                       onClick={onClose}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-base font-medium transition-colors duration-150 ${
                         isActive
                           ? "bg-accent/10 text-accent-bright"
                           : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
@@ -127,7 +127,7 @@ export default function Sidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className={`flex items-center justify-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-sm font-medium transition-colors duration-150 ${
+            className={`flex items-center justify-center gap-3 rounded-xl border-l-2 px-3 py-2.5 text-base font-medium transition-colors duration-150 ${
               pathname === "/profile"
                 ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                 : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -139,7 +139,7 @@ export default function Sidebar({
           <Link
             href="/profile"
             onClick={onClose}
-            className="flex items-center justify-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            className="flex items-center justify-center gap-3 rounded-xl px-3 py-2.5 text-base font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {SETTINGS_ICON}
             <span>{s.settings}</span>
@@ -147,7 +147,7 @@ export default function Sidebar({
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-base font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {LOGOUT_ICON}
             <span>{s.logout}</span>
