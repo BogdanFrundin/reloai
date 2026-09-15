@@ -8,6 +8,7 @@ import Reveal from "../../../_components/Reveal";
 import LogoutConfirmModal from "../../../_components/LogoutConfirmModal";
 import UpgradeModal from "../../../_components/UpgradeModal";
 import RouteSelectModal from "../../../_components/RouteSelectModal";
+import { RouteSummaryCard } from "../../../_components/RouteSummaryCard";
 import SearchableCountrySelect from "../../../_components/SearchableCountrySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -36,26 +37,6 @@ type GoalKey = (typeof GOAL_KEYS)[number];
 
 function isGoalKey(value: string | null | undefined): value is GoalKey {
   return !!value && (GOAL_KEYS as readonly string[]).includes(value);
-}
-
-function SpeedBadge({ speed, label }: { speed: string; label: string }) {
-  const colors =
-    speed === "fast"
-      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-      : speed === "medium"
-        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-        : "border-red-500/30 bg-red-500/10 text-red-400";
-  return <span className={`inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
-}
-
-function DifficultyBadge({ difficulty, label }: { difficulty: string; label: string }) {
-  const colors =
-    difficulty === "easy"
-      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-      : difficulty === "medium"
-        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-        : "border-red-500/30 bg-red-500/10 text-red-400";
-  return <span className={`inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${colors}`}>{label}</span>;
 }
 
 function InfoRow({ label, children }: { label: string; children: ReactNode }) {
@@ -194,14 +175,6 @@ export default function ProfilePage() {
   const goal = isGoalKey(profile?.goal) ? profile.goal : null;
   const goalDisplay = goal ? t.onboarding.goalOptions[goal] : null;
   const route = profile?.selected_route ?? null;
-  const speedLabel = (speed: string) =>
-    speed === "fast" ? t.onboarding.results.speedFast : speed === "medium" ? t.onboarding.results.speedMedium : t.onboarding.results.speedSlow;
-  const difficultyLabel = (difficulty: string) =>
-    difficulty === "easy"
-      ? t.onboarding.results.difficultyEasy
-      : difficulty === "medium"
-        ? t.onboarding.results.difficultyMedium
-        : t.onboarding.results.difficultyHard;
 
   const destinationCountryName = profile?.country
     ? (t.countries.list[COUNTRY_INDEX[profile.country]]?.name ?? profile.country)
@@ -352,27 +325,8 @@ export default function ProfilePage() {
             <div className="mt-3 border-t border-border-subtle pt-4">
               <p className="text-xs font-medium text-text-muted">{p.routeLabel}</p>
               {route ? (
-                <div className="mt-2 rounded-xl border border-border-subtle bg-surface-1 p-4">
-                  <p className="text-sm font-semibold text-text-primary">{route.name}</p>
-                  <p className="mt-1 text-xs text-text-muted">{route.description}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <SpeedBadge speed={route.speed} label={speedLabel(route.speed)} />
-                    <DifficultyBadge difficulty={route.difficulty} label={difficultyLabel(route.difficulty)} />
-                  </div>
-                  <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
-                    <div>
-                      <p className="text-text-muted">{t.onboarding.results.approvalRate}</p>
-                      <p className="mt-0.5 font-semibold text-text-secondary">{route.approval_rate}%</p>
-                    </div>
-                    <div>
-                      <p className="text-text-muted">{t.onboarding.results.timeline}</p>
-                      <p className="mt-0.5 font-semibold text-text-secondary">{route.timeline}</p>
-                    </div>
-                    <div>
-                      <p className="text-text-muted">{t.onboarding.results.cost}</p>
-                      <p className="mt-0.5 font-semibold text-text-secondary">{route.cost}</p>
-                    </div>
-                  </div>
+                <div className="mt-4">
+                  <RouteSummaryCard route={route} labels={t.onboarding} />
                 </div>
               ) : (
                 <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
