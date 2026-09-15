@@ -1912,7 +1912,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Medicine in Poland",
       subtitle: "Get insured and find care, fast.",
       clinicsTitle: "Clinics",
-      clinicsSub: "English, Russian, and Ukrainian-speaking options.",
+      clinicsSub: "Find a clinic that matches your needs.",
       warsaw: "Warsaw",
       languages: {
         ruUa: "Russian & Ukrainian speaking",
@@ -3703,7 +3703,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Медицина в Польше",
       subtitle: "Оформите страховку и найдите врача быстро.",
       clinicsTitle: "Клиники",
-      clinicsSub: "Варианты с англо-, русско- и украиноязычным персоналом.",
+      clinicsSub: "Найдите подходящую клинику по вашим потребностям.",
       warsaw: "Варшава",
       languages: {
         ruUa: "Говорят по-русски и по-украински",
@@ -5491,7 +5491,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Polshada tibbiyot",
       subtitle: "Tezda sug'urta oling va shifokor toping.",
       clinicsTitle: "Klinikalar",
-      clinicsSub: "Ingliz, rus va ukrain tilida xizmat ko'rsatuvchi variantlar.",
+      clinicsSub: "Sizning ehtiyojlaringizga mos klinikani topish.",
       warsaw: "Varshava",
       languages: {
         ruUa: "Rus va ukrain tilida xizmat",
@@ -7276,7 +7276,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Polonya'da Sağlık",
       subtitle: "Hızlıca sigorta yaptırın ve bakım bulun.",
       clinicsTitle: "Klinikler",
-      clinicsSub: "İngilizce, Rusça ve Ukraynaca konuşan seçenekler.",
+      clinicsSub: "İhtiyaçlarınıza uygun klinikleri bulun.",
       warsaw: "Varşova",
       languages: {
         ruUa: "Rusça ve Ukraynaca konuşuluyor",
@@ -9061,7 +9061,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Тибб дар Полша",
       subtitle: "Тезтар суғурта гиред ва духтур ёбед.",
       clinicsTitle: "Клиникаҳо",
-      clinicsSub: "Гузинаҳо бо забонҳои англисӣ, русӣ ва украинӣ.",
+      clinicsSub: "Клиникаро мувофиқ бо нияёти худ ёфтан.",
       warsaw: "Варшава",
       languages: {
         ruUa: "Бо забонҳои русӣ ва украинӣ",
@@ -10850,7 +10850,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       title: "Медицина в Польщі",
       subtitle: "Оформіть страховку і знайдіть лікаря швидко.",
       clinicsTitle: "Клініки",
-      clinicsSub: "Варіанти з англо-, російсько- та україномовним персоналом.",
+      clinicsSub: "Знайдіть клініку за вашими потребами.",
       warsaw: "Варшава",
       languages: {
         ruUa: "Говорять російською та українською",
