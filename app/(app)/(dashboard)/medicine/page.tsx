@@ -416,9 +416,17 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="flex-1 rounded-xl bg-accent px-3 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+            className="flex-1 rounded-xl bg-accent px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
           >
             {med.learnMoreBtn} →
+          </button>
+          <button
+            type="button"
+            onClick={askAi}
+            aria-label={t.education.askAiAriaTemplate.replace("{name}", clinic.name)}
+            className="flex-1 rounded-xl border border-border-subtle bg-surface-hover px-3 py-2.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+          >
+            ✦ {t.education.askAiBtn}
           </button>
         </div>
       )}
