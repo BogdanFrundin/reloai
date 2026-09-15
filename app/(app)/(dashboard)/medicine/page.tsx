@@ -335,7 +335,6 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
   const med = t.medicine;
   const [open, setOpen] = useState(false);
   const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
-  const subtitleParts = [clinic.address, clinic.district].filter(Boolean);
   const chosenCount = formatChosenCount(getChosenCount(clinic.id), lang);
 
   function askAi() {
@@ -345,97 +344,109 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
 
   return (
     <div
-      className={`group relative flex flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none ${
-        open ? "h-auto" : "h-[380px] overflow-hidden"
+      className={`group relative flex flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
+        open ? "p-5 sm:p-6" : "p-4 sm:p-5"
       }`}
     >
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className="flex w-full flex-1 flex-col items-start gap-4 text-left"
+        className="flex w-full flex-col items-start gap-3 text-left"
       >
-        <div className="flex w-full items-center justify-between gap-2">
+        <div className="flex w-full items-start justify-between gap-3">
           <ClinicAvatar name={clinic.name} />
-          {clinic.rating != null && <StarRating rating={clinic.rating} />}
+          <div className="flex items-center gap-2">
+            {clinic.rating != null && <StarRating rating={clinic.rating} />}
+            {!open && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  askAi();
+                }}
+                className="flex-shrink-0 rounded-lg border border-border-subtle bg-surface-hover p-1.5 text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+                title={t.education.askAiBtn}
+              >
+                {SPARKLE_ICON_SM}
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="w-full">
-          <p className="line-clamp-2 text-[17px] font-bold leading-tight text-white">{clinic.name}</p>
-          {subtitleParts.length > 0 && (
-            <p className="mt-1.5 line-clamp-1 text-xs text-white/50">{subtitleParts.join(" · ")}</p>
+        <div className="w-full min-w-0">
+          <h3 className="line-clamp-2 text-sm font-bold text-text-primary">{clinic.name}</h3>
+
+          {clinic.address && (
+            <p className="mt-2 flex items-center gap-2 text-xs text-text-muted">
+              <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span className="line-clamp-1">{[clinic.address, clinic.district].filter(Boolean).join(", ")}</span>
+            </p>
           )}
-          {clinic.description && <p className="mt-2 line-clamp-3 text-xs text-white/60">{clinic.description}</p>}
-          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
-            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
+
+          <p className="mt-1.5 flex items-center gap-2 text-xs text-text-muted">
+            <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 12H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z" />
             </svg>
-            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
+            <span>{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</span>
           </p>
         </div>
 
         {clinic.specializations && clinic.specializations.length > 0 && (
           <div className="flex w-full flex-wrap gap-1.5">
-            {clinic.specializations.slice(0, 3).map((s) => (
-              <span key={s} className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
+            {clinic.specializations.slice(0, 2).map((s) => (
+              <span key={s} className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
                 {s}
               </span>
             ))}
-            {clinic.specializations.length > 3 && (
-              <span className="rounded-lg bg-white/[0.06] px-2.5 py-1 text-[11px] text-white/60">
-                +{clinic.specializations.length - 3}
+            {clinic.specializations.length > 2 && (
+              <span className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
+                +{clinic.specializations.length - 2}
               </span>
             )}
           </div>
         )}
       </button>
 
-      <div className="mt-4 flex gap-2">
-        <button
-          type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
-        >
-          {open ? t.dashboard.collapseBtn : med.learnMoreBtn} →
-        </button>
-        <button
-          type="button"
-          onClick={askAi}
-          aria-label={t.education.askAiAriaTemplate.replace("{name}", clinic.name)}
-          className="flex flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-2xl bg-white/10 py-3 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-accent"
-        >
-          {SPARKLE_ICON_SM}
-          {t.education.askAiBtn}
-        </button>
-      </div>
+      {!open && (
+        <div className="mt-4 flex gap-2">
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="flex-1 rounded-xl bg-accent px-3 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+          >
+            {med.learnMoreBtn} →
+          </button>
+        </div>
+      )}
 
       {open && (
-        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
-          {clinic.required_docs && clinic.required_docs.length > 0 && (
-            <p className="text-xs leading-relaxed text-white/60">
-              <span className="font-semibold text-white/80">{t.education.documentsLabel}</span>
-              {clinic.required_docs.join("; ")}
-            </p>
-          )}
-
+        <div className="mt-4 space-y-4 border-t border-border-subtle pt-4">
           <a
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+            className="flex w-full items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
           >
-            {t.education.showOnMapBtn}
+            {t.education.showOnMapBtn} →
           </a>
+
+          {clinic.required_docs && clinic.required_docs.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-text-primary">{t.education.documentsLabel}</p>
+              <p className="mt-1.5 text-xs text-text-muted leading-relaxed">{clinic.required_docs.join(", ")}</p>
+            </div>
+          )}
 
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
+            className="flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
           >
-            {t.dashboard.collapseBtn}
-            <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
+            {t.dashboard.collapseBtn} ^
           </button>
         </div>
       )}
@@ -593,15 +604,18 @@ export default function MedicinePage() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 sm:p-5">
-          <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+        <div className="mt-6 rounded-2xl border border-accent/30 bg-accent/[0.05] p-5 sm:p-6">
+          <div className="flex items-start gap-4">
+            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-accent/20 text-lg text-accent-bright">
               {SPARKLE_ICON}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-text-primary">{t.medicine.aiPickHeading}</p>
-              <p className="mt-0.5 text-xs text-text-muted">{t.medicine.aiPickSubtitle}</p>
-              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <p className="text-base font-bold text-text-primary">{t.medicine.aiPickHeading}</p>
+              <p className="mt-1 text-sm text-text-muted">{t.medicine.aiPickSubtitle}</p>
+              <div className="mt-4 flex items-center gap-2 rounded-xl border border-border-strong bg-surface-1 pl-3">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
                 <input
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
@@ -609,26 +623,26 @@ export default function MedicinePage() {
                     if (e.key === "Enter") handleAiSearch();
                   }}
                   placeholder={t.medicine.aiPickPlaceholder}
-                  className="flex-1 rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                  className="flex-1 border-0 bg-transparent py-3 text-sm text-text-primary placeholder:text-text-muted focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleAiSearch}
                   disabled={aiLoading || !aiQuery.trim()}
-                  className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex-shrink-0 rounded-r-xl bg-accent px-4 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {aiLoading ? t.education.findingBtn : t.education.findBtn}
+                  →
                 </button>
               </div>
               {aiResult && (
-                <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-surface-1 px-4 py-2.5">
-                  <span className="text-xs text-text-secondary">{aiResult.reply}</span>
+                <div className="mt-3 flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2">
+                  <span className="text-xs text-text-primary">{aiResult.reply}</span>
                   <button
                     type="button"
                     onClick={resetAiSearch}
                     className="ml-auto flex-shrink-0 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:text-text-primary"
                   >
-                    {t.education.resetBtn}
+                    ✕
                   </button>
                 </div>
               )}
@@ -636,7 +650,7 @@ export default function MedicinePage() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
           <div className="relative">
             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
@@ -646,7 +660,7 @@ export default function MedicinePage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t.medicine.searchPlaceholder}
-              className="w-64 rounded-full border border-border-strong bg-surface-1 py-2 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              className="rounded-xl border border-border-strong bg-surface-1 py-2.5 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
             />
           </div>
           <Dropdown
@@ -661,7 +675,7 @@ export default function MedicinePage() {
               options={[{ value: "all", label: t.medicine.allDistrictsLabel }, ...districts.map((d) => ({ value: d, label: d }))]}
             />
           )}
-          <span className="text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
+          <span className="ml-auto text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
         </div>
 
         {loading ? (
@@ -669,11 +683,11 @@ export default function MedicinePage() {
         ) : grouped.length === 0 ? (
           <p className="mt-8 text-sm text-text-muted">{t.medicine.notFoundText.replace("{city}", getCityName(city, lang))}</p>
         ) : (
-          <div className="mt-6 space-y-10">
+          <div className="mt-8 space-y-10">
             {grouped.map(([cat, items]) => (
               <div key={cat}>
-                <h3 className="text-sm font-bold uppercase tracking-wide text-text-muted">{cat}</h3>
-                <div className="mt-3 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-text-primary">{cat}</h3>
+                <div className="mt-4 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((clinic, index) => (
                     <Reveal key={clinic.id} delay={index * 30}>
                       <ClinicCard clinic={clinic} />
