@@ -1910,7 +1910,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Medicine in Poland",
-      subtitle: "Get insured and find care, fast.",
+      subtitle: "Everything you need for your health care — in one place.",
       clinicsTitle: "Clinics",
       clinicsSub: "Find a clinic that matches your needs.",
       warsaw: "Warsaw",
@@ -3701,7 +3701,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Медицина в Польше",
-      subtitle: "Оформите страховку и найдите врача быстро.",
+      subtitle: "Всё необходимое для заботы о здоровье — в одном месте.",
       clinicsTitle: "Клиники",
       clinicsSub: "Найдите подходящую клинику по вашим потребностям.",
       warsaw: "Варшава",
@@ -5489,7 +5489,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Polshada tibbiyot",
-      subtitle: "Tezda sug'urta oling va shifokor toping.",
+      subtitle: "Sog'ligniga ehtiyoj bo'lgan hamma narsa — bir joyda.",
       clinicsTitle: "Klinikalar",
       clinicsSub: "Sizning ehtiyojlaringizga mos klinikani topish.",
       warsaw: "Varshava",
@@ -7274,7 +7274,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Polonya'da Sağlık",
-      subtitle: "Hızlıca sigorta yaptırın ve bakım bulun.",
+      subtitle: "Sağlığınız için gerekli her şey — tek yerde.",
       clinicsTitle: "Klinikler",
       clinicsSub: "İhtiyaçlarınıza uygun klinikleri bulun.",
       warsaw: "Varşova",
@@ -9059,7 +9059,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Тибб дар Полша",
-      subtitle: "Тезтар суғурта гиред ва духтур ёбед.",
+      subtitle: "Хама чизе барои нигоҳи тандурустӣ — дар як ҷой.",
       clinicsTitle: "Клиникаҳо",
       clinicsSub: "Клиникаро мувофиқ бо нияёти худ ёфтан.",
       warsaw: "Варшава",
@@ -10848,7 +10848,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     medicine: {
       title: "Медицина в Польщі",
-      subtitle: "Оформіть страховку і знайдіть лікаря швидко.",
+      subtitle: "Усе необхідне для догляду за здоров'ям — в одному місці.",
       clinicsTitle: "Клініки",
       clinicsSub: "Знайдіть клініку за вашими потребами.",
       warsaw: "Варшава",
