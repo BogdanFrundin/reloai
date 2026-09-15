@@ -136,7 +136,7 @@ export default function DashboardSidebar({
           )}
         </div>
 
-        <nav className="space-y-4 px-3 py-1.5">
+        <nav className="flex-1 space-y-4 px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1">
             <Link
               href="/home"
