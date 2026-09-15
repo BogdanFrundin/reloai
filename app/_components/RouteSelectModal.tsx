@@ -73,7 +73,7 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="max-h-[95vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-4 shadow-2xl shadow-black/40 transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-5"
+        className="max-h-[95vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-border-subtle bg-panel p-6 shadow-xl transition-[opacity,transform] duration-150 ease-[var(--ease-out-strong)] starting:opacity-0 starting:scale-95 sm:p-8"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -92,7 +92,7 @@ export default function RouteSelectModal({ open, onClose }: { open: boolean; onC
 
         {selectError && <p className="mt-3 text-sm text-red-400">{t.onboarding.results.selectError}</p>}
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {routes.map((route) => (
             <RouteCard
               key={route.name}

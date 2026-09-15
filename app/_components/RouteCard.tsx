@@ -67,7 +67,7 @@ export function RouteCard({
 
   return (
     <div
-      className={`group relative flex h-full flex-col rounded-[24px] bg-[#1c1f26] p-4 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none ${
+      className={`group relative flex h-full flex-col rounded-[24px] bg-[#1c1f26] p-5 shadow-lg shadow-black/20 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_20px_40px_-12px_rgba(33,85,212,0.35)] motion-reduce:transition-none ${
         isRecommended ? "ring-1 ring-accent/50" : ""
       }`}
     >
