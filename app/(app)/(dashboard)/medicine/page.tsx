@@ -411,48 +411,46 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         )}
       </button>
 
-      {!open && (
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            className="flex-1 rounded-xl bg-accent px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
-          >
-            {med.learnMoreBtn} →
-          </button>
-          <button
-            type="button"
-            onClick={askAi}
-            aria-label={t.education.askAiAriaTemplate.replace("{name}", clinic.name)}
-            className="flex-1 rounded-xl border border-border-subtle bg-surface-hover px-3 py-2.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-          >
-            ✦ {t.education.askAiBtn}
-          </button>
-        </div>
-      )}
+      <div className="mt-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="flex-1 rounded-xl bg-accent-dark px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent"
+        >
+          {med.learnMoreBtn} →
+        </button>
+        <button
+          type="button"
+          onClick={askAi}
+          aria-label={t.education.askAiAriaTemplate.replace("{name}", clinic.name)}
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover px-3 py-2.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+        >
+          ✦ {t.education.askAiBtn}
+        </button>
+      </div>
 
       {open && (
-        <div className="mt-4 space-y-4 border-t border-border-subtle pt-4">
+        <div className="mt-4 border-t border-border-subtle pt-4">
+          {clinic.required_docs && clinic.required_docs.length > 0 && (
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-text-primary">{t.education.documentsLabel}</p>
+              <p className="mt-2 text-xs text-text-muted leading-relaxed">{clinic.required_docs.join(", ")}</p>
+            </div>
+          )}
+
           <a
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright"
+            className="flex w-full items-center justify-center rounded-xl bg-accent-dark px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent"
           >
             {t.education.showOnMapBtn} →
           </a>
 
-          {clinic.required_docs && clinic.required_docs.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-text-primary">{t.education.documentsLabel}</p>
-              <p className="mt-1.5 text-xs text-text-muted leading-relaxed">{clinic.required_docs.join(", ")}</p>
-            </div>
-          )}
-
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
+            className="flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 mt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
           >
             {t.dashboard.collapseBtn} ^
           </button>
