@@ -265,7 +265,37 @@ function BankCard({
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [showAiTooltip, setShowAiTooltip] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const cardRef = useRef<HTMLDivElement>(null);
+
+  function toggleSection(sectionId: string) {
+    const next = new Set(expandedSections);
+    if (next.has(sectionId)) {
+      next.delete(sectionId);
+    } else {
+      next.add(sectionId);
+    }
+    setExpandedSections(next);
+  }
+
+  function truncateText(text: string, sentences: number = 2): { truncated: string; isTruncated: boolean } {
+    const sentencePattern = /[^.!?]+[.!?]+/g;
+    const matches = text.match(sentencePattern);
+    if (!matches || matches.length <= sentences) {
+      return { truncated: text, isTruncated: false };
+    }
+    return {
+      truncated: matches.slice(0, sentences).join("").trim(),
+      isTruncated: true,
+    };
+  }
+
+  function truncateList(items: string[], count: number = 2): { items: string[]; isTruncated: boolean } {
+    if (items.length <= count) {
+      return { items, isTruncated: false };
+    }
+    return { items: items.slice(0, count), isTruncated: true };
+  }
 
   useEffect(() => {
     if (!isExpanded) return;
@@ -366,12 +396,47 @@ function BankCard({
         </div>
 
         {isExpanded && guide.description && (
-          <div className="space-y-3">
-            {guide.description.split("\n\n").map((paragraph, i) => (
-              <p key={i} className="text-sm leading-relaxed text-text-secondary">
-                <TextWithGlossary text={paragraph} />
-              </p>
-            ))}
+          <div className="space-y-2">
+            {guide.description.split("\n\n").map((paragraph, i) => {
+              const sectionId = `description-${i}`;
+              const isExpanded = expandedSections.has(sectionId);
+              const { truncated, isTruncated } = truncateText(paragraph, 2);
+              const displayText = isExpanded ? paragraph : truncated;
+
+              return (
+                <div key={i}>
+                  <p className="text-sm leading-relaxed text-text-secondary">
+                    <TextWithGlossary text={displayText} />
+                  </p>
+                  {isTruncated && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSection(sectionId);
+                      }}
+                      className="mt-1 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                    >
+                      {isExpanded ? (
+                        <>
+                          {t.common.collapseBtn}
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                          </svg>
+                        </>
+                      ) : (
+                        <>
+                          {t.common.expandBtn}
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </button>
@@ -425,7 +490,44 @@ function BankCard({
                 </svg>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.whereToSubmit}</p>
-                  <p className="mt-1.5 text-sm text-text-secondary">{guide.where_to_submit}</p>
+                  {(() => {
+                    const sectionId = "where-to-submit";
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
+                    const displayText = isExpanded ? guide.where_to_submit : truncated;
+
+                    return (
+                      <>
+                        <p className="mt-1.5 text-sm text-text-secondary">{displayText}</p>
+                        {isTruncated && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSection(sectionId);
+                            }}
+                            className="mt-1 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                          >
+                            {isExpanded ? (
+                              <>
+                                {t.common.collapseBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                                </svg>
+                              </>
+                            ) : (
+                              <>
+                                {t.common.expandBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
                   <a
                     href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
                     target="_blank"
@@ -465,9 +567,45 @@ function BankCard({
                 </svg>
                 <div className="flex-1">
                   <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.requiredDocs}</p>
-                  <div className="mt-2">
-                    <Bullets items={guide.required_docs} />
-                  </div>
+                  {(() => {
+                    const sectionId = "required-docs";
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { items: displayItems, isTruncated } = truncateList(guide.required_docs, 2);
+
+                    return (
+                      <>
+                        <div className="mt-2">
+                          <Bullets items={isExpanded ? guide.required_docs : displayItems} />
+                        </div>
+                        {isTruncated && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSection(sectionId);
+                            }}
+                            className="mt-2 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                          >
+                            {isExpanded ? (
+                              <>
+                                {t.common.collapseBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                                </svg>
+                              </>
+                            ) : (
+                              <>
+                                {t.common.expandBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
@@ -481,16 +619,53 @@ function BankCard({
                 </svg>
                 <div className="flex-1">
                   <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.howToApply}</p>
-                  <ol className="mt-2 space-y-1.5">
-                    {guide.instructions.map((step, i) => (
-                      <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
-                        <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-text-muted">
-                          {i + 1}
-                        </span>
-                        {step}
-                      </li>
-                    ))}
-                  </ol>
+                  {(() => {
+                    const sectionId = "instructions";
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { items: displayItems, isTruncated } = truncateList(guide.instructions, 3);
+                    const itemsToShow = isExpanded ? guide.instructions : displayItems;
+
+                    return (
+                      <>
+                        <ol className="mt-2 space-y-1.5">
+                          {itemsToShow.map((step, i) => (
+                            <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
+                              <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-text-muted">
+                                {i + 1}
+                              </span>
+                              {step}
+                            </li>
+                          ))}
+                        </ol>
+                        {isTruncated && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSection(sectionId);
+                            }}
+                            className="mt-2 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                          >
+                            {isExpanded ? (
+                              <>
+                                {t.common.collapseBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                                </svg>
+                              </>
+                            ) : (
+                              <>
+                                {t.common.expandBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
@@ -504,9 +679,45 @@ function BankCard({
                 </svg>
                 <div className="flex-1">
                   <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.tips}</p>
-                  <div className="mt-2">
-                    <Bullets items={guide.tips} tone="accent" />
-                  </div>
+                  {(() => {
+                    const sectionId = "tips";
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { items: displayItems, isTruncated } = truncateList(guide.tips, 2);
+
+                    return (
+                      <>
+                        <div className="mt-2">
+                          <Bullets items={isExpanded ? guide.tips : displayItems} tone="accent" />
+                        </div>
+                        {isTruncated && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSection(sectionId);
+                            }}
+                            className="mt-2 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                          >
+                            {isExpanded ? (
+                              <>
+                                {t.common.collapseBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                                </svg>
+                              </>
+                            ) : (
+                              <>
+                                {t.common.expandBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
@@ -520,9 +731,45 @@ function BankCard({
                 </svg>
                 <div className="flex-1">
                   <p className="font-semibold text-sm sm:text-base text-red-300/90">{gc.commonMistakes}</p>
-                  <div className="mt-2">
-                    <Bullets items={guide.common_mistakes} tone="warn" />
-                  </div>
+                  {(() => {
+                    const sectionId = "common-mistakes";
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { items: displayItems, isTruncated } = truncateList(guide.common_mistakes, 2);
+
+                    return (
+                      <>
+                        <div className="mt-2">
+                          <Bullets items={isExpanded ? guide.common_mistakes : displayItems} tone="warn" />
+                        </div>
+                        {isTruncated && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSection(sectionId);
+                            }}
+                            className="mt-2 inline-flex items-center gap-1 text-xs text-text-muted transition-colors hover:text-text-secondary"
+                          >
+                            {isExpanded ? (
+                              <>
+                                {t.common.collapseBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
+                                </svg>
+                              </>
+                            ) : (
+                              <>
+                                {t.common.expandBtn}
+                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>

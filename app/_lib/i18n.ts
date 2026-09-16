@@ -30,6 +30,8 @@ export type Dictionary = {
     logoutConfirmBody: string;
     cityLabel: string;
     chosenByCountTemplate: string;
+    expandBtn: string;
+    collapseBtn: string;
   };
   hero: {
     badge: string;
@@ -1003,6 +1005,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Are you sure you want to log out?",
       cityLabel: "City",
       chosenByCountTemplate: "{n}+ people already chose this via ReloAI",
+      expandBtn: "Expand",
+      collapseBtn: "Collapse",
     },
     hero: {
       badge: "Your AI relocation guide",
@@ -2795,6 +2799,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Вы уверены, что хотите выйти?",
       cityLabel: "Город",
       chosenByCountTemplate: "Уже выбрали {n}+ человек через ReloAI",
+      expandBtn: "Развернуть",
+      collapseBtn: "Свернуть",
     },
     hero: {
       badge: "Ваш AI-гид по переезду",
@@ -4590,6 +4596,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Chiqishga ishonchingiz komilmi?",
       cityLabel: "Shahar",
       chosenByCountTemplate: "ReloAI orqali {n}+ kishi allaqachon tanladi",
+      expandBtn: "Yoyish",
+      collapseBtn: "Yig'ish",
     },
     hero: {
       badge: "Sizning AI ko'chish yordamchingiz",
@@ -6380,6 +6388,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Çıkış yapmak istediğinizden emin misiniz?",
       cityLabel: "Şehir",
       chosenByCountTemplate: "ReloAI ile {n}+ kişi zaten bunu seçti",
+      expandBtn: "Genişlet",
+      collapseBtn: "Daralt",
     },
     hero: {
       badge: "Yapay zeka destekli taşınma rehberiniz",
@@ -8169,6 +8179,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Оё мутмаин ҳастед, ки мехоҳед бароед?",
       cityLabel: "Шаҳр",
       chosenByCountTemplate: "Тавассути ReloAI аллакай {n}+ нафар интихоб кардаанд",
+      expandBtn: "Кушодан",
+      collapseBtn: "Пӯшидан",
     },
     hero: {
       badge: "Роҳнамои сунъии аз ҷониби AI барои кӯчиш",
@@ -9958,6 +9970,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       logoutConfirmBody: "Ви впевнені, що хочете вийти?",
       cityLabel: "Місто",
       chosenByCountTemplate: "Уже обрали {n}+ людей через ReloAI",
+      expandBtn: "Розгорнути",
+      collapseBtn: "Згорнути",
     },
     hero: {
       badge: "Ваш AI-гід з переїзду",
