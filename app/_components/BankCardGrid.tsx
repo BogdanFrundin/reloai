@@ -237,7 +237,7 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
   return (
     <ul className="space-y-2">
       {items.map((it) => (
-        <li key={it} className={`flex items-start gap-2 text-sm ${textClass}`}>
+        <li key={it} className={`flex items-start gap-2 text-base ${textClass}`}>
           <span className={`mt-1.5 h-1 w-1 flex-shrink-0 rounded-full ${dotClass}`} />
           {it}
         </li>
@@ -416,7 +416,7 @@ function BankCard({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+              className="inline-flex rounded-xl bg-slate-700 px-5 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
             >
               {gc.officialSite} →
             </a>
@@ -459,29 +459,50 @@ function BankCard({
             {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
           </div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {guide.where_to_submit && (
-              <div className="rounded-xl border border-border-subtle bg-surface-hover p-3">
-                <div className="text-xs">
-                  <p className="text-text-muted">{gc.whereToSubmit}</p>
-                  <p className="mt-0.5 text-text-secondary">{guide.where_to_submit}</p>
-                  <a
-                    href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className="mt-2 inline-flex items-center gap-1.5 font-semibold text-accent-bright hover:underline"
-                  >
-                    <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    {gc.showOnMap} →
-                  </a>
+          <div className="mt-4 flex flex-col gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+              {guide.where_to_submit && (
+                <div className="flex-1 rounded-xl border border-border-subtle bg-surface-hover p-3">
+                  <div className="text-sm">
+                    <p className="font-semibold text-text-primary">{gc.whereToSubmit}</p>
+                    <p className="mt-1 text-text-secondary">{guide.where_to_submit}</p>
+                    <a
+                      href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                      className="mt-2 inline-flex items-center gap-1.5 font-semibold text-accent-bright hover:underline"
+                    >
+                      <svg className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {gc.showOnMap} →
+                    </a>
+                  </div>
                 </div>
-              </div>
-            )}
-            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint currencies={currencies.length > 0 ? currencies : undefined} asPanel />}
+              )}
+              {cost && (
+                <div className="rounded-xl border border-border-subtle bg-surface-hover p-3 sm:min-w-fit">
+                  <div className="text-sm">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <svg className="h-4 w-4 flex-shrink-0 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <p className="font-semibold text-text-primary">{gc.cost}</p>
+                      <CurrencyHint />
+                    </div>
+                    {currencies && currencies.length > 0 ? (
+                      <div className="mt-1.5">
+                        <CurrencyBadges currencies={currencies} />
+                      </div>
+                    ) : (
+                      <p className="text-text-secondary">{cost}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
@@ -489,7 +510,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("required_docs")}
-                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-base font-bold text-text-primary transition-colors hover:text-text-primary sm:text-lg"
               >
                 <span>{gc.requiredDocs} ({guide.required_docs.length})</span>
                 <svg
@@ -517,7 +538,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("instructions")}
-                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-base font-bold text-text-primary transition-colors hover:text-text-primary sm:text-lg"
               >
                 <span>{gc.howToApply} ({guide.instructions.length})</span>
                 <svg
@@ -535,7 +556,7 @@ function BankCard({
               {expandedSections.has("instructions") && (
                 <ol className="mt-2 space-y-2">
                   {guide.instructions.map((step, i) => (
-                    <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
+                    <li key={step} className="flex items-start gap-2 text-base text-text-secondary">
                       <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent-bright">
                         {i + 1}
                       </span>
@@ -552,7 +573,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("tips")}
-                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-base font-bold text-text-primary transition-colors hover:text-text-primary sm:text-lg"
               >
                 <span>{gc.tips} ({guide.tips.length})</span>
                 <svg
@@ -580,7 +601,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("common_mistakes")}
-                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-base font-bold text-text-primary transition-colors hover:text-text-primary sm:text-lg"
               >
                 <span>{gc.commonMistakes} ({guide.common_mistakes.length})</span>
                 <svg
@@ -608,7 +629,7 @@ function BankCard({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
+              className="mt-4 inline-flex items-center gap-1 rounded-full border border-accent/50 px-5 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
             >
               {gc.officialSite}
               <span aria-hidden>→</span>
