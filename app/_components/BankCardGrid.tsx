@@ -360,6 +360,27 @@ function BankCard({
     >
       <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
         {guide.rating != null && <StarRating rating={guide.rating} />}
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            const favorites = JSON.parse(localStorage.getItem("reloai_favorite_banks") || "[]") as string[];
+            const isFavorite = favorites.includes(guide.id);
+            if (isFavorite) {
+              favorites.splice(favorites.indexOf(guide.id), 1);
+            } else {
+              favorites.push(guide.id);
+            }
+            localStorage.setItem("reloai_favorite_banks", JSON.stringify(favorites));
+            window.dispatchEvent(new Event("favoritesBankChange"));
+          }}
+          aria-label="Add to favorites"
+          className="flex-shrink-0 rounded-lg border border-transparent transition-colors duration-150 hover:text-yellow-400 p-1.5"
+        >
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth={1.5}>
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        </button>
         <div className="relative">
           <button
             type="button"

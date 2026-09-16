@@ -718,6 +718,8 @@ export type Dictionary = {
     tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
     headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
     tagDescriptions: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+    favoriteTag: string;
+    noFavoritesText: string;
   };
   helpButton: {
     label: string;
@@ -2425,6 +2427,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "No monthly service fees or minimum balance requirements.",
         multicurrency: "Hold and exchange multiple currencies at favorable rates.",
       },
+      favoriteTag: "Favorites",
+      noFavoritesText: "You haven't added any banks to favorites yet",
     },
     helpButton: {
       label: "How to get this?",
@@ -4228,6 +4232,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Отсутствуют ежемесячные комиссии за обслуживание и требования к минимальному остатку на счёте.",
         multicurrency: "Открыть счета в нескольких валютах и обмениваться по выгодным курсам прямо в приложении.",
       },
+      favoriteTag: "Избранное",
+      noFavoritesText: "Вы ещё не добавили банки в избранное",
     },
     helpButton: {
       label: "Как это получить?",
@@ -6028,6 +6034,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Oylik xizmat komissiyasi va minimal balans talab qilinmaydi.",
         multicurrency: "Bir nechta valyutada hisoblar ochish va qimmat kurslarda almashtirish qiling.",
       },
+      favoriteTag: "Sevimli",
+      noFavoritesText: "Siz hali sevimli banklar qo'shmagansiz",
     },
     helpButton: {
       label: "Buni qanday olish mumkin?",
@@ -7825,6 +7833,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Aylık hizmet ücreti ve minimum bakiye şartı yoktur.",
         multicurrency: "Birden fazla para biriminde hesap açın ve uygun kurlarla değişim yapın.",
       },
+      favoriteTag: "Favoriler",
+      noFavoritesText: "Henüz favori bankaları eklemediniz",
     },
     helpButton: {
       label: "Bu nasıl alınır?",
@@ -9622,6 +9632,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Комиссионҳои луна ва талабҳо барои қаломи ҳадди ақал вуҷуд надоранд.",
         multicurrency: "Ҳисобҳо дар асъорҳои мухталиф кушоед ва дар қиматҳои комиёбӣ табодул кунед.",
       },
+      favoriteTag: "Дӯст дошта",
+      noFavoritesText: "Шумо ҳалан ҳеч гуна банкҳо ба дӯстӣ илова накардаед",
     },
     helpButton: {
       label: "Инро чӣ тавр гирем?",
@@ -11423,6 +11435,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Немає щомісячних комісій за обслуговування та вимог до мінімального залишку.",
         multicurrency: "Відкривайте рахунки у декількох валютах та обмінюйте за вигідними курсами.",
       },
+      favoriteTag: "Обрані",
+      noFavoritesText: "Ви ще не додали банки до вибраних",
     },
     helpButton: {
       label: "Як це отримати?",
