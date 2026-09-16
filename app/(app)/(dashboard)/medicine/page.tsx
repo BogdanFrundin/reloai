@@ -329,11 +329,10 @@ const SPARKLE_ICON_SM = (
   </svg>
 );
 
-function ClinicCard({ clinic }: { clinic: Clinic }) {
+function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; isExpanded: boolean; onExpandedChange: (expanded: boolean) => void }) {
   const router = useRouter();
   const { t, lang } = useLanguage();
   const med = t.medicine;
-  const [open, setOpen] = useState(false);
   const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
   const chosenCount = formatChosenCount(getChosenCount(clinic.id), lang);
 
@@ -344,21 +343,21 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
 
   return (
     <div
-      className={`group relative flex flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
-        open ? "p-5 sm:p-6" : "p-4 sm:p-5"
+      className={`group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
+        isExpanded ? "p-5 sm:p-6" : "p-4 sm:p-5"
       }`}
     >
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        aria-expanded={open}
+        onClick={() => onExpandedChange(!isExpanded)}
+        aria-expanded={isExpanded}
         className="flex w-full flex-col items-start gap-3 text-left"
       >
         <div className="flex w-full items-start justify-between gap-3">
           <ClinicAvatar name={clinic.name} />
           <div className="flex items-center gap-2">
             {clinic.rating != null && <StarRating rating={clinic.rating} />}
-            {!open && (
+            {!isExpanded && (
               <button
                 type="button"
                 onClick={(e) => {
@@ -414,10 +413,10 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
       <div className="mt-4 flex gap-2">
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => onExpandedChange(!isExpanded)}
           className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
         >
-          {med.learnMoreBtn} →
+          {isExpanded ? t.dashboard.collapseBtn : med.learnMoreBtn} {isExpanded ? "^" : "→"}
         </button>
         <button
           type="button"
@@ -429,8 +428,8 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
         </button>
       </div>
 
-      {open && (
-        <div className="mt-4 border-t border-border-subtle pt-4">
+      {isExpanded && (
+        <div className="mt-4 flex flex-1 flex-col border-t border-border-subtle pt-4">
           {clinic.required_docs && clinic.required_docs.length > 0 && (
             <div className="mb-4">
               <p className="text-sm font-semibold text-text-primary">{t.education.documentsLabel}</p>
@@ -442,14 +441,18 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex w-full items-center justify-center rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+            className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
           >
-            {t.education.showOnMapBtn} →
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {t.education.showOnMapBtn}
           </a>
 
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={() => onExpandedChange(false)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 mt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
           >
             {t.dashboard.collapseBtn} ^
@@ -472,6 +475,7 @@ export default function MedicinePage() {
   const [aiQuery, setAiQuery] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState<MedicineSearchResult | null>(null);
+  const [expandedClinicId, setExpandedClinicId] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -693,10 +697,14 @@ export default function MedicinePage() {
             {grouped.map(([cat, items]) => (
               <div key={cat}>
                 <h3 className="text-sm font-bold uppercase tracking-wider text-text-primary">{cat}</h3>
-                <div className="mt-4 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-4 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((clinic, index) => (
                     <Reveal key={clinic.id} delay={index * 30}>
-                      <ClinicCard clinic={clinic} />
+                      <ClinicCard
+                        clinic={clinic}
+                        isExpanded={expandedClinicId === clinic.id}
+                        onExpandedChange={(isExpanded) => setExpandedClinicId(isExpanded ? clinic.id : null)}
+                      />
                     </Reveal>
                   ))}
                 </div>
