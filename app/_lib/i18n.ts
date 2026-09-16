@@ -3619,7 +3619,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     banks: {
       title: "Банки в Польше",
-      subtitle: "Сравните счета, созданные для новоприбывших.",
+      subtitle: "Подберите банк и счёт, который подходит именно вам.",
       openAccount: "Открыть счёт",
       bestForExpats: "Лучший для релокантов",
       features: {
@@ -4179,7 +4179,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       classicAccount: "Классический счёт",
       moreDetails: "Подробнее",
       allTag: "Все",
-      citizenshipNote: "Показаны гайды, актуальные для вашего гражданства.",
+      citizenshipNote: "Выберите подходящий вариант по условиям оформления.",
       loading: "Загрузка…",
       searchGeneric: "Поиск",
       searchBanks: "Поиск банка",

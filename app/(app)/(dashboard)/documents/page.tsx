@@ -649,7 +649,7 @@ export default function DocumentsPage() {
             Подобраны под ваш маршрут, цель переезда и гражданство — пошаговые инструкции.
           </p>
           {profile?.citizenship && (
-            <p className="mt-2 text-xs text-text-muted">Показаны гайды, актуальные для вашего гражданства.</p>
+            <p className="mt-2 text-xs text-text-muted">Выберите подходящий вариант по условиям оформления.</p>
           )}
 
           {profile?.selected_route ? (
