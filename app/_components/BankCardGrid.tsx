@@ -12,6 +12,7 @@ import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
 import StarRating from "./StarRating";
+import BankCardModal from "./BankCardModal";
 import { supabase } from "../../lib/supabase";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
@@ -251,54 +252,20 @@ function BankCard({
   guide,
   chosenBank,
   onChoose,
-  isExpanded,
-  onExpandedChange,
+  onOpenModal,
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
   onChoose: (name: string | null) => void;
-  isExpanded: boolean;
-  onExpandedChange: (expanded: boolean) => void;
+  onOpenModal: () => void;
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
-  const [showAiTooltip, setShowAiTooltip] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [tagInfoOpen, setTagInfoOpen] = useState<string | null>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const tagInfoRef = useRef<HTMLDivElement>(null);
-
-  function toggleSection(sectionId: string) {
-    const next = new Set(expandedSections);
-    if (next.has(sectionId)) {
-      next.delete(sectionId);
-    } else {
-      next.add(sectionId);
-    }
-    setExpandedSections(next);
-  }
-
-  function truncateText(text: string, sentences: number = 2): { truncated: string; isTruncated: boolean } {
-    const sentencePattern = /[^.!?]+[.!?]+/g;
-    const matches = text.match(sentencePattern);
-    if (!matches || matches.length <= sentences) {
-      return { truncated: text, isTruncated: false };
-    }
-    return {
-      truncated: matches.slice(0, sentences).join("").trim(),
-      isTruncated: true,
-    };
-  }
-
-  function truncateList(items: string[], count: number = 2): { items: string[]; isTruncated: boolean } {
-    if (items.length <= count) {
-      return { items, isTruncated: false };
-    }
-    return { items: items.slice(0, count), isTruncated: true };
-  }
 
   useEffect(() => {
     if (!tagInfoOpen) return;
@@ -314,21 +281,6 @@ function BankCard({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [tagInfoOpen]);
-
-  useEffect(() => {
-    if (!isExpanded) return;
-
-    function handleClickOutside(event: MouseEvent) {
-      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
-        onExpandedChange(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isExpanded, onExpandedChange]);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
@@ -353,10 +305,7 @@ function BankCard({
 
   return (
     <div
-      ref={cardRef}
-      className={`group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
-        isExpanded ? "p-4 sm:p-5" : "p-4 sm:p-5"
-      }`}
+      className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5"
     >
       {guide.rating != null && (
         <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
@@ -364,9 +313,7 @@ function BankCard({
         </div>
       )}
 
-      <div
-        className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
-      >
+      <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
         <div className="flex w-full items-center gap-2.5">
           <BankAvatar name={guide.name} />
           <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
@@ -426,396 +373,17 @@ function BankCard({
             <p className="text-xs text-text-muted">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
           </div>
         </div>
-
-        {isExpanded && guide.description && (
-          <div className="space-y-2">
-            {guide.description.split("\n\n").map((paragraph, i) => {
-              const sectionId = `description-${i}`;
-              const isExpanded = expandedSections.has(sectionId);
-              const { truncated, isTruncated } = truncateText(paragraph, 2);
-              const displayText = isExpanded ? paragraph : truncated;
-
-              return (
-                <div key={i}>
-                  <p className="text-sm leading-relaxed text-text-secondary">
-                    <TextWithGlossary text={displayText} />
-                  </p>
-                  {isTruncated && (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleSection(sectionId);
-                      }}
-                      className="mt-1 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                    >
-                      {isExpanded ? (
-                        <>
-                          {t.common.collapseBtn}
-                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                          </svg>
-                        </>
-                      ) : (
-                        <>
-                          {t.common.expandBtn}
-                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
 
       <div className="mt-4 flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
         <button
           type="button"
-          onClick={() => onExpandedChange(!isExpanded)}
-          className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors duration-150 ${
-            isExpanded
-              ? "bg-[#7d4a42] text-white hover:bg-[#8b5549]"
-              : "border border-border-subtle bg-surface-hover text-accent-bright hover:border-accent/40 hover:bg-accent/10"
-          }`}
+          onClick={onOpenModal}
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
         >
-          {isExpanded ? t.dashboard.collapseBtn : gc.bankInfo}
-        </button>
-
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            askAi();
-          }}
-          className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-        >
-          {gc.askAi} ✦
+          {gc.bankInfo}
         </button>
       </div>
-
-      {isExpanded && (
-        <div className="mt-3 flex flex-col border-t border-border-subtle pt-3 space-y-4">
-          {guide.important_2026 && (
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
-              {guide.important_2026}
-            </div>
-          )}
-
-          <div className="space-y-3">
-            {guide.when_to_get && <InfoRow label={gc.whenToGet} value={guide.when_to_get} />}
-            {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
-            {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
-            {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
-          </div>
-
-          {guide.where_to_submit && (
-            <div>
-              <div className="flex items-start gap-2.5">
-                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.whereToSubmit}</p>
-                  {(() => {
-                    const sectionId = "where-to-submit";
-                    const isExpanded = expandedSections.has(sectionId);
-                    const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
-                    const displayText = isExpanded ? guide.where_to_submit : truncated;
-
-                    return (
-                      <>
-                        <p className="mt-1.5 text-sm text-text-secondary">{displayText}</p>
-                        {isTruncated && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleSection(sectionId);
-                            }}
-                            className="mt-1 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                          >
-                            {isExpanded ? (
-                              <>
-                                {t.common.collapseBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                </svg>
-                              </>
-                            ) : (
-                              <>
-                                {t.common.expandBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </>
-                    );
-                  })()}
-                  <a
-                    href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/50 bg-transparent text-xs font-medium text-accent-bright transition-colors hover:border-accent hover:bg-accent/10"
-                  >
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    {gc.showOnMap}
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {cost && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 bg-transparent text-xs font-medium text-white/80 transition-colors hover:border-white/30 hover:bg-white/5">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {currencies && currencies.length > 0 ? (
-                <span>{gc.cost}</span>
-              ) : (
-                <span>{cost}</span>
-              )}
-            </div>
-          )}
-
-          {guide.required_docs && guide.required_docs.length > 0 && (
-            <div className="border-t border-white/10 pt-6">
-              <div className="flex items-start gap-2.5">
-                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.requiredDocs}</p>
-                  {(() => {
-                    const sectionId = "required-docs";
-                    const isExpanded = expandedSections.has(sectionId);
-                    const { items: displayItems, isTruncated } = truncateList(guide.required_docs, 2);
-
-                    return (
-                      <>
-                        <div className="mt-2">
-                          <Bullets items={isExpanded ? guide.required_docs : displayItems} />
-                        </div>
-                        {isTruncated && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleSection(sectionId);
-                            }}
-                            className="mt-2 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                          >
-                            {isExpanded ? (
-                              <>
-                                {t.common.collapseBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                </svg>
-                              </>
-                            ) : (
-                              <>
-                                {t.common.expandBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {guide.instructions && guide.instructions.length > 0 && (
-            <div className="border-t border-white/10 pt-6">
-              <div className="flex items-start gap-2.5">
-                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.howToApply}</p>
-                  {(() => {
-                    const sectionId = "instructions";
-                    const isExpanded = expandedSections.has(sectionId);
-                    const { items: displayItems, isTruncated } = truncateList(guide.instructions, 3);
-                    const itemsToShow = isExpanded ? guide.instructions : displayItems;
-
-                    return (
-                      <>
-                        <ol className="mt-2 space-y-1.5">
-                          {itemsToShow.map((step, i) => (
-                            <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
-                              <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[10px] font-semibold text-accent-bright">
-                                {i + 1}
-                              </span>
-                              {step}
-                            </li>
-                          ))}
-                        </ol>
-                        {isTruncated && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleSection(sectionId);
-                            }}
-                            className="mt-2 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                          >
-                            {isExpanded ? (
-                              <>
-                                {t.common.collapseBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                </svg>
-                              </>
-                            ) : (
-                              <>
-                                {t.common.expandBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {guide.tips && guide.tips.length > 0 && (
-            <div className="border-t border-white/10 pt-6">
-              <div className="flex items-start gap-2.5">
-                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.tips}</p>
-                  {(() => {
-                    const sectionId = "tips";
-                    const isExpanded = expandedSections.has(sectionId);
-                    const { items: displayItems, isTruncated } = truncateList(guide.tips, 2);
-
-                    return (
-                      <>
-                        <div className="mt-2">
-                          <Bullets items={isExpanded ? guide.tips : displayItems} tone="accent" />
-                        </div>
-                        {isTruncated && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleSection(sectionId);
-                            }}
-                            className="mt-2 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                          >
-                            {isExpanded ? (
-                              <>
-                                {t.common.collapseBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                </svg>
-                              </>
-                            ) : (
-                              <>
-                                {t.common.expandBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {guide.common_mistakes && guide.common_mistakes.length > 0 && (
-            <div className="border-t border-white/10 pt-6">
-              <div className="flex items-start gap-2.5">
-                <svg className="h-4 w-4 flex-shrink-0 text-red-400/70 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4v2m0 5v.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
-                </svg>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm sm:text-base text-red-300/90">{gc.commonMistakes}</p>
-                  {(() => {
-                    const sectionId = "common-mistakes";
-                    const isExpanded = expandedSections.has(sectionId);
-                    const { items: displayItems, isTruncated } = truncateList(guide.common_mistakes, 2);
-
-                    return (
-                      <>
-                        <div className="mt-2">
-                          <Bullets items={isExpanded ? guide.common_mistakes : displayItems} tone="warn" />
-                        </div>
-                        {isTruncated && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleSection(sectionId);
-                            }}
-                            className="mt-2 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                          >
-                            {isExpanded ? (
-                              <>
-                                {t.common.collapseBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                </svg>
-                              </>
-                            ) : (
-                              <>
-                                {t.common.expandBtn}
-                                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                </svg>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          )}
-
-          <button
-            type="button"
-            onClick={() => onExpandedChange(false)}
-            className="mt-4 flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
-          >
-            {t.dashboard.collapseBtn} ^
-          </button>
-        </div>
-      )}
     </div>
   );
 }
@@ -844,7 +412,7 @@ export default function BankCardGrid({
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [expandedBankId, setExpandedBankId] = useState<string | null>(null);
+  const [modalBankId, setModalBankId] = useState<string | null>(null);
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
@@ -924,10 +492,7 @@ export default function BankCardGrid({
                 guide={g}
                 chosenBank={profile?.chosen_bank}
                 onChoose={chooseBank}
-                isExpanded={expandedBankId === g.id}
-                onExpandedChange={(isExpanded) =>
-                  setExpandedBankId(isExpanded ? g.id : null)
-                }
+                onOpenModal={() => setModalBankId(g.id)}
               />
             ))}
           </div>
@@ -950,16 +515,21 @@ export default function BankCardGrid({
                       guide={g}
                       chosenBank={profile?.chosen_bank}
                       onChoose={chooseBank}
-                      isExpanded={expandedBankId === g.id}
-                      onExpandedChange={(isExpanded) =>
-                        setExpandedBankId(isExpanded ? g.id : null)
-                      }
+                      onOpenModal={() => setModalBankId(g.id)}
                     />
                   ))}
                 </div>
               )}
             </div>
           )}
+
+          <BankCardModal
+            guide={guides.find((g) => g.id === modalBankId) || null}
+            open={modalBankId !== null}
+            onClose={() => setModalBankId(null)}
+            chosenBank={profile?.chosen_bank}
+            onChoose={chooseBank}
+          />
         </>
       )}
     </div>
