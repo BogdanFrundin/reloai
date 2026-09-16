@@ -416,7 +416,11 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
         <button
           type="button"
           onClick={() => onExpandedChange(!isExpanded)}
-          className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+          className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 ${
+            isExpanded
+              ? "bg-red-700 hover:bg-red-600"
+              : "bg-slate-700 hover:bg-slate-600"
+          }`}
         >
           {isExpanded ? t.dashboard.collapseBtn : med.learnMoreBtn} {isExpanded ? "^" : "→"}
         </button>
