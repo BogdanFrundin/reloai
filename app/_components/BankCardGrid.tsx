@@ -210,7 +210,7 @@ function BankCard({
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
-  onChoose: (name: string) => void;
+  onChoose: (name: string | null) => void;
   isExpanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
 }) {
@@ -250,7 +250,7 @@ function BankCard({
   return (
     <div
       ref={cardRef}
-      className="group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-4 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] sm:p-5 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none"
+      className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 p-4 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] sm:p-5 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none"
     >
       <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
         <div className="relative">
@@ -294,12 +294,28 @@ function BankCard({
 
         <div className="w-full min-w-0">
           {isChosen && (
-            <span className="mb-1.5 flex items-center gap-1 text-xs font-semibold text-emerald-400">
-              <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-              </svg>
-              {gc.yourBank}
-            </span>
+            <div className="mb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
+                <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                </svg>
+                {gc.yourBank}
+              </span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChoose(null);
+                }}
+                className="rounded p-1 text-text-muted transition-colors duration-150 hover:text-text-primary"
+                title={t.dashboard.cancelBtn || "Отменить выбор"}
+                aria-label={t.dashboard.cancelBtn || "Отменить выбор"}
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           )}
           <p className="line-clamp-2 min-h-12 text-sm font-bold leading-tight text-text-primary">
             <TextWithGlossary text={headline} />
@@ -316,9 +332,13 @@ function BankCard({
         </div>
 
         {isExpanded && guide.description && (
-          <p className="text-xs leading-relaxed text-text-muted">
-            <TextWithGlossary text={guide.description} />
-          </p>
+          <div className="space-y-3">
+            {guide.description.split("\n\n").map((paragraph, i) => (
+              <p key={i} className="text-sm leading-relaxed text-text-secondary">
+                <TextWithGlossary text={paragraph} />
+              </p>
+            ))}
+          </div>
         )}
       </button>
 
@@ -496,9 +516,9 @@ export default function BankCardGrid({
     setShowAll(false);
   }
 
-  async function chooseBank(name: string) {
+  async function chooseBank(name: string | null) {
     if (!user) return;
-    await supabase.from("profiles").update({ chosen_bank: name }).eq("id", user.id);
+    await supabase.from("profiles").update({ chosen_bank: name || null }).eq("id", user.id);
     await refreshProfile();
   }
 
@@ -551,20 +571,16 @@ export default function BankCardGrid({
         <>
           <div className="grid items-start gap-4 sm:grid-cols-2">
             {featured.map((g) => (
-              <div
+              <BankCard
                 key={g.id}
-                className={expandedBankId === g.id ? "sm:col-span-2" : ""}
-              >
-                <BankCard
-                  guide={g}
-                  chosenBank={profile?.chosen_bank}
-                  onChoose={chooseBank}
-                  isExpanded={expandedBankId === g.id}
-                  onExpandedChange={(isExpanded) =>
-                    setExpandedBankId(isExpanded ? g.id : null)
-                  }
-                />
-              </div>
+                guide={g}
+                chosenBank={profile?.chosen_bank}
+                onChoose={chooseBank}
+                isExpanded={expandedBankId === g.id}
+                onExpandedChange={(isExpanded) =>
+                  setExpandedBankId(isExpanded ? g.id : null)
+                }
+              />
             ))}
           </div>
 
@@ -581,20 +597,16 @@ export default function BankCardGrid({
               {showAll && (
                 <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2">
                   {rest.map((g) => (
-                    <div
+                    <BankCard
                       key={g.id}
-                      className={expandedBankId === g.id ? "sm:col-span-2" : ""}
-                    >
-                      <BankCard
-                        guide={g}
-                        chosenBank={profile?.chosen_bank}
-                        onChoose={chooseBank}
-                        isExpanded={expandedBankId === g.id}
-                        onExpandedChange={(isExpanded) =>
-                          setExpandedBankId(isExpanded ? g.id : null)
-                        }
-                      />
-                    </div>
+                      guide={g}
+                      chosenBank={profile?.chosen_bank}
+                      onChoose={chooseBank}
+                      isExpanded={expandedBankId === g.id}
+                      onExpandedChange={(isExpanded) =>
+                        setExpandedBankId(isExpanded ? g.id : null)
+                      }
+                    />
                   ))}
                 </div>
               )}
