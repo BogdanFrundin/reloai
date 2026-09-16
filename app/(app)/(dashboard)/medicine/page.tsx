@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
@@ -335,14 +335,31 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
   const med = t.medicine;
   const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
   const chosenCount = formatChosenCount(getChosenCount(clinic.id), lang);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   function askAi() {
     const question = med.askAiQuestionTemplate.replace("{name}", clinic.name).replace("{city}", clinic.city);
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onExpandedChange(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded, onExpandedChange]);
+
   return (
     <div
+      ref={cardRef}
       className={`group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
         isExpanded ? "p-5 sm:p-6" : "p-4 sm:p-5"
       }`}
@@ -418,7 +435,7 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
           onClick={() => onExpandedChange(!isExpanded)}
           className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 ${
             isExpanded
-              ? "bg-red-700 hover:bg-red-600"
+              ? "bg-[#7d4a42] hover:bg-[#8b5549]"
               : "bg-slate-700 hover:bg-slate-600"
           }`}
         >
