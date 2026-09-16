@@ -24,6 +24,9 @@ where name = 'Santander Bank Polska' and category = 'финансы';
 -- 4. Add tags (jsonb array) to document_guides for filter chips
 alter table public.document_guides add column if not exists tags jsonb;
 
+-- 4.5. Add rating (numeric) to document_guides for bank/clinic ratings
+alter table public.document_guides add column if not exists rating numeric;
+
 -- 5. Add a column to profiles to remember which bank the user picked
 alter table public.profiles add column if not exists chosen_bank text;
 
@@ -43,3 +46,20 @@ update public.document_guides set tags = '["no_pesel", "free", "multicurrency"]'
 update public.document_guides set tags = '["no_pesel", "free", "multicurrency"]'::jsonb where name = 'BOŚ Bank' and category = 'финансы';
 update public.document_guides set tags = '["fully_online", "free", "multicurrency"]'::jsonb where name = 'Volkswagen Bank Polska' and category = 'финансы';
 update public.document_guides set tags = '["free", "multicurrency"]'::jsonb where name = 'Plus Bank' and category = 'финансы';
+
+-- 7. Populate ratings per bank
+update public.document_guides set rating = 4.7 where name = 'PKO Bank Polski' and category = 'финансы';
+update public.document_guides set rating = 4.5 where name = 'Erste Bank Polska' and category = 'финансы';
+update public.document_guides set rating = 4.6 where name = 'Toyota Bank Polska' and category = 'финансы';
+update public.document_guides set rating = 4.4 where name = 'VeloBank' and category = 'финансы';
+update public.document_guides set rating = 4.3 where name = 'Credit Agricole Bank Polska' and category = 'финансы';
+update public.document_guides set rating = 4.5 where name = 'ING Bank Śląski' and category = 'финансы';
+update public.document_guides set rating = 4.8 where name = 'mBank' and category = 'финансы';
+update public.document_guides set rating = 4.2 where name = 'Nest Bank' and category = 'финансы';
+update public.document_guides set rating = 4.6 where name = 'Bank Millennium' and category = 'финансы';
+update public.document_guides set rating = 4.4 where name = 'Bank Pekao S.A.' and category = 'финансы';
+update public.document_guides set rating = 4.1 where name = 'Bank Pocztowy' and category = 'финансы';
+update public.document_guides set rating = 4.3 where name = 'BNP Paribas Bank Polska' and category = 'финансы';
+update public.document_guides set rating = 4.5 where name = 'BOŚ Bank' and category = 'финансы';
+update public.document_guides set rating = 4.7 where name = 'Volkswagen Bank Polska' and category = 'финансы';
+update public.document_guides set rating = 4.0 where name = 'Plus Bank' and category = 'финансы';

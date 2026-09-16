@@ -33,6 +33,7 @@ export type DocumentGuide = {
   countries: Record<string, boolean> | null;
   tags: string[] | null;
   price_label: string | null;
+  rating: number | null;
   // Document filtering matrix columns (see add-document-guides-matrix.sql).
   // Only populated for the 66+2 documents covered by the matrix so far —
   // guides without any of this data (e.g. PIT bundle forms) fall back to

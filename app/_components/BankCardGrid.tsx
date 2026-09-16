@@ -11,6 +11,7 @@ import { useDashboardProgress } from "./DashboardProgressProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
+import StarRating from "./StarRating";
 import { supabase } from "../../lib/supabase";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
@@ -372,9 +373,12 @@ function BankCard({
       <div
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
-        <div className="flex items-center gap-2.5">
-          <BankAvatar name={guide.name} />
-          <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
+        <div className="flex w-full items-start justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <BankAvatar name={guide.name} />
+            <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
+          </div>
+          {guide.rating != null && <StarRating rating={guide.rating} />}
         </div>
 
         <div className="w-full min-w-0">
