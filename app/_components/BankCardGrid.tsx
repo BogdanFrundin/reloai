@@ -235,9 +235,9 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
   const textClass = tone === "warn" ? "text-red-300" : tone === "accent" ? "text-text-secondary" : "text-text-secondary";
   const dotClass = tone === "warn" ? "bg-red-400" : tone === "accent" ? "bg-accent-bright" : "bg-text-muted";
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1.5">
       {items.map((it) => (
-        <li key={it} className={`flex items-start gap-2 text-base ${textClass}`}>
+        <li key={it} className={`flex items-start gap-2 text-sm ${textClass}`}>
           <span className={`mt-1.5 h-1 w-1 flex-shrink-0 rounded-full ${dotClass}`} />
           {it}
         </li>
@@ -265,18 +265,7 @@ function BankCard({
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [showAiTooltip, setShowAiTooltip] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const cardRef = useRef<HTMLDivElement>(null);
-
-  function toggleSection(sectionName: string) {
-    const next = new Set(expandedSections);
-    if (next.has(sectionName)) {
-      next.delete(sectionName);
-    } else {
-      next.add(sectionName);
-    }
-    setExpandedSections(next);
-  }
 
   useEffect(() => {
     if (!isExpanded) return;
@@ -410,7 +399,7 @@ function BankCard({
       </div>
 
       {isExpanded && (
-        <div className="mt-4 flex flex-col border-t border-border-subtle pt-4 space-y-4">
+        <div className="mt-4 flex flex-col border-t border-border-subtle pt-4 space-y-6">
           {guide.important_2026 && (
             <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
               {guide.important_2026}
@@ -425,21 +414,21 @@ function BankCard({
           </div>
 
           {guide.where_to_submit && (
-            <div className="rounded-lg border-l-4 border-l-accent-bright bg-surface-hover/50 p-4">
-              <div className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-accent-bright mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div>
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-base text-text-primary">{gc.whereToSubmit}</p>
-                  <p className="mt-2 text-sm text-text-secondary">{guide.where_to_submit}</p>
+                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.whereToSubmit}</p>
+                  <p className="mt-1.5 text-sm text-text-secondary">{guide.where_to_submit}</p>
                   <a
                     href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(event) => event.stopPropagation()}
-                    className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/50 bg-accent/10 text-xs font-semibold text-accent-bright transition-colors hover:border-accent hover:bg-accent/20"
+                    className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 text-xs font-medium text-text-secondary transition-colors hover:border-white/30 hover:bg-white/5"
                   >
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -453,22 +442,22 @@ function BankCard({
           )}
 
           {cost && (
-            <div className="rounded-lg border-l-4 border-l-accent-bright bg-surface-hover/50 p-4">
-              <div className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-accent-bright mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div>
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="font-bold text-base text-text-primary">{gc.cost}</p>
+                    <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.cost}</p>
                     <CurrencyHint />
                   </div>
                   {currencies && currencies.length > 0 ? (
-                    <div className="mt-2">
+                    <div className="mt-1.5">
                       <CurrencyBadges currencies={currencies} />
                     </div>
                   ) : (
-                    <p className="mt-2 text-sm text-text-secondary">{cost}</p>
+                    <p className="mt-1.5 text-sm text-text-secondary">{cost}</p>
                   )}
                 </div>
               </div>
@@ -476,141 +465,73 @@ function BankCard({
           )}
 
           {guide.required_docs && guide.required_docs.length > 0 && (
-            <div className="rounded-lg border-l-4 border-l-accent-bright bg-surface-hover/50 p-4">
-              <button
-                type="button"
-                onClick={() => toggleSection("required_docs")}
-                className="flex w-full items-center justify-between gap-2"
-              >
-                <div className="flex items-start gap-3 flex-1">
-                  <svg className="h-5 w-5 flex-shrink-0 text-accent-bright mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                  <p className="font-bold text-base text-text-primary">{gc.requiredDocs}</p>
-                </div>
-                <svg
-                  className={`h-4 w-4 flex-shrink-0 text-accent-bright transition-transform ${
-                    expandedSections.has("required_docs") ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <div className="border-t border-white/10 pt-6">
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-              </button>
-              {expandedSections.has("required_docs") && (
-                <div className="mt-3">
-                  <Bullets items={guide.required_docs} />
+                <div className="flex-1">
+                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.requiredDocs}</p>
+                  <div className="mt-2">
+                    <Bullets items={guide.required_docs} />
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           )}
 
           {guide.instructions && guide.instructions.length > 0 && (
-            <div className="rounded-lg border-l-4 border-l-accent-bright bg-surface-hover/50 p-4">
-              <button
-                type="button"
-                onClick={() => toggleSection("instructions")}
-                className="flex w-full items-center justify-between gap-2"
-              >
-                <div className="flex items-start gap-3 flex-1">
-                  <svg className="h-5 w-5 flex-shrink-0 text-accent-bright mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                  </svg>
-                  <p className="font-bold text-base text-text-primary">{gc.howToApply}</p>
-                </div>
-                <svg
-                  className={`h-4 w-4 flex-shrink-0 text-accent-bright transition-transform ${
-                    expandedSections.has("instructions") ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <div className="border-t border-white/10 pt-6">
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                 </svg>
-              </button>
-              {expandedSections.has("instructions") && (
-                <ol className="mt-3 space-y-2">
-                  {guide.instructions.map((step, i) => (
-                    <li key={step} className="flex items-start gap-2 text-base text-text-secondary">
-                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent-bright">
-                        {i + 1}
-                      </span>
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              )}
+                <div className="flex-1">
+                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.howToApply}</p>
+                  <ol className="mt-2 space-y-1.5">
+                    {guide.instructions.map((step, i) => (
+                      <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
+                        <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-text-muted">
+                          {i + 1}
+                        </span>
+                        {step}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
             </div>
           )}
 
           {guide.tips && guide.tips.length > 0 && (
-            <div className="rounded-lg border-l-4 border-l-accent-bright bg-surface-hover/50 p-4">
-              <button
-                type="button"
-                onClick={() => toggleSection("tips")}
-                className="flex w-full items-center justify-between gap-2"
-              >
-                <div className="flex items-start gap-3 flex-1">
-                  <svg className="h-5 w-5 flex-shrink-0 text-accent-bright mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="font-bold text-base text-text-primary">{gc.tips}</p>
-                </div>
-                <svg
-                  className={`h-4 w-4 flex-shrink-0 text-accent-bright transition-transform ${
-                    expandedSections.has("tips") ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <div className="border-t border-white/10 pt-6">
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </button>
-              {expandedSections.has("tips") && (
-                <div className="mt-3">
-                  <Bullets items={guide.tips} tone="accent" />
+                <div className="flex-1">
+                  <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.tips}</p>
+                  <div className="mt-2">
+                    <Bullets items={guide.tips} tone="accent" />
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           )}
 
           {guide.common_mistakes && guide.common_mistakes.length > 0 && (
-            <div className="rounded-lg border-l-4 border-l-red-400 bg-red-500/10 p-4">
-              <button
-                type="button"
-                onClick={() => toggleSection("common_mistakes")}
-                className="flex w-full items-center justify-between gap-2"
-              >
-                <div className="flex items-start gap-3 flex-1">
-                  <svg className="h-5 w-5 flex-shrink-0 text-red-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4v2m0 5v.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
-                  </svg>
-                  <p className="font-bold text-base text-red-300">{gc.commonMistakes}</p>
-                </div>
-                <svg
-                  className={`h-4 w-4 flex-shrink-0 text-red-400 transition-transform ${
-                    expandedSections.has("common_mistakes") ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <div className="border-t border-white/10 pt-6">
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 flex-shrink-0 text-red-400/70 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4v2m0 5v.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
                 </svg>
-              </button>
-              {expandedSections.has("common_mistakes") && (
-                <div className="mt-3">
-                  <Bullets items={guide.common_mistakes} tone="warn" />
+                <div className="flex-1">
+                  <p className="font-semibold text-sm sm:text-base text-red-300/90">{gc.commonMistakes}</p>
+                  <div className="mt-2">
+                    <Bullets items={guide.common_mistakes} tone="warn" />
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           )}
 
