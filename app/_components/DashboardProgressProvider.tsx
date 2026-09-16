@@ -39,6 +39,7 @@ type DashboardProgressValue = {
   allGuides: DocumentGuide[];
   documentGuidesLoading: boolean;
   toggleStepCompletion: (documentType: string) => void;
+  setStepCompletion: (documentType: string, completed: boolean) => void;
   regeneratePlan: () => Promise<void>;
   regenerating: boolean;
   regenerateError: boolean;
@@ -193,6 +194,24 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
       });
   }
 
+  function setStepCompletion(documentType: string, completed: boolean) {
+    if (!user) return;
+    const next = new Set(roadmapCompleted);
+    if (completed) {
+      next.add(documentType);
+    } else {
+      next.delete(documentType);
+    }
+    setRoadmapCompleted(next);
+    supabase
+      .from("profiles")
+      .update({ roadmap_completed_steps: Array.from(next) })
+      .eq("id", user.id)
+      .then(({ error }) => {
+        if (error) console.error("Failed to save step completion:", error);
+      });
+  }
+
   async function regeneratePlan() {
     if (!user || !profile) return;
     setRegenerating(true);
@@ -252,6 +271,7 @@ export function DashboardProgressProvider({ children }: { children: ReactNode })
         allGuides: guides,
         documentGuidesLoading,
         toggleStepCompletion,
+        setStepCompletion,
         regeneratePlan,
         regenerating,
         regenerateError,

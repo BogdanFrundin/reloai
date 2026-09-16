@@ -638,6 +638,7 @@ export type Dictionary = {
         };
       };
       business: { title: string; desc: string };
+      bankAccount: { title: string; desc: string };
       documents: { title: string; desc: string };
       biometric: { title: string; desc: string };
       residence: { title: string; desc: string };
@@ -2236,6 +2237,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         business: {
           title: "Register your business",
           desc: "Set up your company structure and tax registration before applying for a business residence permit.",
+        },
+        bankAccount: {
+          title: "Open a bank account",
+          desc: "Choose a bank and set up your account — needed for taxes, salary, and payments.",
         },
         documents: { title: "Upload required documents", desc: "7 documents needed — 2 you already have." },
         biometric: { title: "Schedule biometric appointment", desc: "Unlocks once your documents are verified." },
@@ -4027,6 +4032,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         business: {
           title: "Зарегистрируйте бизнес",
           desc: "Оформите структуру компании и налоговую регистрацию перед подачей на вид на жительство для бизнеса.",
+        },
+        bankAccount: {
+          title: "Откройте банковский счёт",
+          desc: "Выберите банк и откройте счёт — нужен для налогов, зарплаты и платежей.",
         },
         documents: { title: "Загрузите необходимые документы", desc: "Нужно 7 документов — 2 у вас уже есть." },
         biometric: { title: "Запишитесь на биометрию", desc: "Откроется после проверки ваших документов." },

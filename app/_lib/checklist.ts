@@ -70,6 +70,7 @@ export function buildChecklistSteps(
   }
 
   steps.push(
+    { documentType: "bank_account", title: s.bankAccount.title, description: s.bankAccount.desc, phase: "legalization" },
     { documentType: "documents", title: s.documents.title, description: s.documents.desc, phase: "legalization" },
     { documentType: "biometric", title: s.biometric.title, description: s.biometric.desc, phase: "legalization" },
     {

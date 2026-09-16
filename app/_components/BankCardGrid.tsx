@@ -7,6 +7,7 @@ import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
 import { useLanguage } from "./LanguageProvider";
+import { useDashboardProgress } from "./DashboardProgressProvider";
 import { convertPlnText } from "../_lib/currency";
 import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
@@ -174,14 +175,48 @@ function BankAvatar({ name }: { name: string }) {
   );
 }
 
-function InfoRow({ label, value, showCurrencyHint }: { label: string; value: string; showCurrencyHint?: boolean }) {
+function CurrencyBadges({ currencies }: { currencies: string[] }) {
+  const currencyNames: Record<string, string> = {
+    PLN: "PLN",
+    EUR: "EUR",
+    USD: "USD",
+    GBP: "GBP",
+    CHF: "CHF",
+    SEK: "SEK",
+    NOK: "NOK",
+    DKK: "DKK",
+    CZK: "CZK",
+    HUF: "HUF",
+  };
+
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {currencies.map((code) => (
+        <span
+          key={code}
+          className="inline-flex items-center gap-1 rounded-full border border-border-subtle bg-surface-hover px-2.5 py-1 text-xs font-medium text-text-secondary"
+        >
+          {currencyNames[code] || code}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function InfoRow({ label, value, showCurrencyHint, currencies }: { label: string; value: string; showCurrencyHint?: boolean; currencies?: string[] }) {
   return (
     <div className="text-xs">
       <p className="flex items-center gap-1 text-text-muted">
         {label}
         {showCurrencyHint && <CurrencyHint />}
       </p>
-      <p className="mt-0.5 text-text-secondary">{value}</p>
+      {currencies && currencies.length > 0 ? (
+        <div className="mt-1.5">
+          <CurrencyBadges currencies={currencies} />
+        </div>
+      ) : (
+        <p className="mt-0.5 text-text-secondary">{value}</p>
+      )}
     </div>
   );
 }
@@ -220,7 +255,18 @@ function BankCard({
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [showAiTooltip, setShowAiTooltip] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const cardRef = useRef<HTMLDivElement>(null);
+
+  function toggleSection(sectionName: string) {
+    const next = new Set(expandedSections);
+    if (next.has(sectionName)) {
+      next.delete(sectionName);
+    } else {
+      next.add(sectionName);
+    }
+    setExpandedSections(next);
+  }
 
   useEffect(() => {
     if (!isExpanded) return;
@@ -241,6 +287,17 @@ function BankCard({
   const isChosen = chosenBank === guide.name;
   const { headline, subtitle } = buildHeadline(guide, currency, rates, t);
   const cost = convertPlnText(guide.cost, currency, rates);
+
+  // Extract currencies from price_label or cost field (e.g., "PLN, EUR, USD, GBP")
+  const extractCurrencies = (text: string | null | undefined): string[] => {
+    if (!text) return [];
+    const currencyPattern = /\b[A-Z]{3}\b/g;
+    const matches = text.match(currencyPattern) || [];
+    return Array.from(new Set(matches)).filter(
+      (code) => ["PLN", "EUR", "USD", "GBP", "CHF", "SEK", "NOK", "DKK", "CZK", "HUF"].includes(code)
+    );
+  };
+  const currencies = extractCurrencies(guide.price_label || guide.cost);
 
   function askAi() {
     const question = gc.askAiBankQuestionTemplate.replace("{name}", guide.name);
@@ -403,50 +460,126 @@ function BankCard({
             )}
             {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
-            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint />}
+            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint currencies={currencies.length > 0 ? currencies : undefined} />}
             {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-semibold text-text-secondary">{gc.requiredDocs}</p>
-              <div className="mt-1.5">
-                <Bullets items={guide.required_docs} />
-              </div>
+            <div className="mt-4 border-t border-border-subtle pt-4">
+              <button
+                type="button"
+                onClick={() => toggleSection("required_docs")}
+                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <span>{gc.requiredDocs} ({guide.required_docs.length})</span>
+                <svg
+                  className={`h-4 w-4 flex-shrink-0 transition-transform ${
+                    expandedSections.has("required_docs") ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {expandedSections.has("required_docs") && (
+                <div className="mt-2">
+                  <Bullets items={guide.required_docs} />
+                </div>
+              )}
             </div>
           )}
 
           {guide.instructions && guide.instructions.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-semibold text-text-secondary">{gc.howToApply}</p>
-              <ol className="mt-1.5 space-y-1.5">
-                {guide.instructions.map((step, i) => (
-                  <li key={step} className="flex items-start gap-2 text-xs text-text-secondary">
-                    <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent-bright">
-                      {i + 1}
-                    </span>
-                    {step}
-                  </li>
-                ))}
-              </ol>
+            <div className="mt-4 border-t border-border-subtle pt-4">
+              <button
+                type="button"
+                onClick={() => toggleSection("instructions")}
+                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <span>{gc.howToApply} ({guide.instructions.length})</span>
+                <svg
+                  className={`h-4 w-4 flex-shrink-0 transition-transform ${
+                    expandedSections.has("instructions") ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {expandedSections.has("instructions") && (
+                <ol className="mt-2 space-y-1.5">
+                  {guide.instructions.map((step, i) => (
+                    <li key={step} className="flex items-start gap-2 text-xs text-text-secondary">
+                      <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent-bright">
+                        {i + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              )}
             </div>
           )}
 
           {guide.tips && guide.tips.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-semibold text-text-secondary">{gc.tips}</p>
-              <div className="mt-1.5">
-                <Bullets items={guide.tips} tone="accent" />
-              </div>
+            <div className="mt-4 border-t border-border-subtle pt-4">
+              <button
+                type="button"
+                onClick={() => toggleSection("tips")}
+                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <span>{gc.tips} ({guide.tips.length})</span>
+                <svg
+                  className={`h-4 w-4 flex-shrink-0 transition-transform ${
+                    expandedSections.has("tips") ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {expandedSections.has("tips") && (
+                <div className="mt-2">
+                  <Bullets items={guide.tips} tone="accent" />
+                </div>
+              )}
             </div>
           )}
 
           {guide.common_mistakes && guide.common_mistakes.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-semibold text-text-secondary">{gc.commonMistakes}</p>
-              <div className="mt-1.5">
-                <Bullets items={guide.common_mistakes} tone="warn" />
-              </div>
+            <div className="mt-4 border-t border-border-subtle pt-4">
+              <button
+                type="button"
+                onClick={() => toggleSection("common_mistakes")}
+                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+              >
+                <span>{gc.commonMistakes} ({guide.common_mistakes.length})</span>
+                <svg
+                  className={`h-4 w-4 flex-shrink-0 transition-transform ${
+                    expandedSections.has("common_mistakes") ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {expandedSections.has("common_mistakes") && (
+                <div className="mt-2">
+                  <Bullets items={guide.common_mistakes} tone="warn" />
+                </div>
+              )}
             </div>
           )}
 
@@ -488,6 +621,7 @@ export default function BankCardGrid({
 }) {
   const { user, profile, refreshProfile } = useAuth();
   const { t, lang } = useLanguage();
+  const { setStepCompletion } = useDashboardProgress();
   const gc = t.guideCard;
   const tagLabels: Record<string, string> = {
     no_pesel: gc.tags.noPesel,
@@ -520,6 +654,8 @@ export default function BankCardGrid({
     if (!user) return;
     await supabase.from("profiles").update({ chosen_bank: name || null }).eq("id", user.id);
     await refreshProfile();
+    // Mark bank account step as completed when user selects a bank, uncompleted when they deselect it
+    setStepCompletion("bank_account", !!name);
   }
 
   return (
