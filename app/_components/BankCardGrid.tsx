@@ -374,14 +374,14 @@ function BankCard({
       >
         <div className="flex items-center gap-2.5">
           <BankAvatar name={guide.name} />
-          <p className="text-xs text-text-muted">{guide.name}</p>
+          <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
         </div>
 
         <div className="w-full min-w-0">
-          <p className="line-clamp-2 min-h-12 text-sm font-bold leading-tight text-text-primary">
+          <p className="line-clamp-2 min-h-6 text-sm leading-tight text-text-secondary">
             <TextWithGlossary text={headline} />
           </p>
-          <p className="mt-2 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
+          <p className="mt-1.5 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
             {subtitle && <TextWithGlossary text={subtitle} />}
           </p>
           <div className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5">
