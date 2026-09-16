@@ -267,7 +267,9 @@ function BankCard({
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [showAiTooltip, setShowAiTooltip] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [tagInfoOpen, setTagInfoOpen] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const tagInfoRef = useRef<HTMLDivElement>(null);
 
   function toggleSection(sectionId: string) {
     const next = new Set(expandedSections);
@@ -297,6 +299,21 @@ function BankCard({
     }
     return { items: items.slice(0, count), isTruncated: true };
   }
+
+  useEffect(() => {
+    if (!tagInfoOpen) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (tagInfoRef.current && !tagInfoRef.current.contains(event.target as Node)) {
+        setTagInfoOpen(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [tagInfoOpen]);
 
   useEffect(() => {
     if (!isExpanded) return;
@@ -382,9 +399,49 @@ function BankCard({
         </div>
 
         <div className="w-full min-w-0">
-          <p className="line-clamp-2 min-h-6 text-sm leading-tight text-text-secondary">
-            <TextWithGlossary text={headline} />
-          </p>
+          <div className="flex items-start gap-2" ref={tagInfoRef}>
+            <p className="line-clamp-2 min-h-6 text-sm leading-tight text-text-secondary flex-1">
+              <TextWithGlossary text={headline} />
+            </p>
+            {guide.tags && guide.tags.length > 0 && (
+              <div className="relative flex-shrink-0">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTagInfoOpen(tagInfoOpen === guide.tags![0] ? null : guide.tags![0]);
+                  }}
+                  className="inline-flex h-5 w-5 items-center justify-center rounded-full text-text-muted hover:text-text-secondary transition-colors"
+                  aria-label="More information"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <circle cx="12" cy="12" r="10" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-4m0-4h.01" />
+                  </svg>
+                </button>
+                {tagInfoOpen === guide.tags![0] && (
+                  <div className="absolute right-0 top-full z-20 mt-2 w-64 rounded-xl border border-border-subtle bg-panel p-3 text-xs leading-relaxed text-text-secondary shadow-lg">
+                    <div className="flex items-start justify-between gap-2">
+                      <p>{gc.tagDescriptions?.[guide.tags![0] as keyof typeof gc.tagDescriptions] || ""}</p>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTagInfoOpen(null);
+                        }}
+                        className="flex-shrink-0 text-text-muted hover:text-text-primary transition-colors"
+                        aria-label="Close"
+                      >
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           <p className="mt-1.5 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
             {subtitle && <TextWithGlossary text={subtitle} />}
           </p>

@@ -717,6 +717,7 @@ export type Dictionary = {
     tagsLabel: string;
     tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
     headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+    tagDescriptions: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
   };
   helpButton: {
     label: string;
@@ -2417,6 +2418,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Open an account online",
         free: "Free service",
         multicurrency: "Multi-currency account",
+      },
+      tagDescriptions: {
+        noPesel: "You can open an account without a PESEL number (Polish ID number). Most documents can be signed digitally during the process.",
+        fullyOnline: "Complete account opening from start to finish entirely online — no need to visit a branch.",
+        free: "No monthly service fees or minimum balance requirements.",
+        multicurrency: "Hold and exchange multiple currencies at favorable rates.",
       },
     },
     helpButton: {
@@ -4215,6 +4222,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Бесплатное обслуживание",
         multicurrency: "Мультивалютный счёт",
       },
+      tagDescriptions: {
+        noPesel: "Единый номер учёта населения Польши. Счёт можно открыть без PESEL — большинство документов подписываются цифровым образом в процессе.",
+        fullyOnline: "Полное открытие счёта от начала до конца полностью онлайн — не нужно посещать отделение банка.",
+        free: "Отсутствуют ежемесячные комиссии за обслуживание и требования к минимальному остатку на счёте.",
+        multicurrency: "Открыть счета в нескольких валютах и обмениваться по выгодным курсам прямо в приложении.",
+      },
     },
     helpButton: {
       label: "Как это получить?",
@@ -6009,6 +6022,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Bepul xizmat",
         multicurrency: "Ko'p valyutali hisob",
       },
+      tagDescriptions: {
+        noPesel: "Polsha aholisining yagona identifikatsion raqami. PESEL raqamisiz hisobni ochishingiz mumkin — ko'p hujjatlar jarayonda raqamli imzoning orqali imzolashiladi.",
+        fullyOnline: "Hisobni boshidan oxirigacha to'liq onlayn orqali ochish — bankning filialiga tashrif buyurish shart emas.",
+        free: "Oylik xizmat komissiyasi va minimal balans talab qilinmaydi.",
+        multicurrency: "Bir nechta valyutada hisoblar ochish va qimmat kurslarda almashtirish qiling.",
+      },
     },
     helpButton: {
       label: "Buni qanday olish mumkin?",
@@ -7800,6 +7819,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Ücretsiz hizmet",
         multicurrency: "Çoklu döviz hesabı",
       },
+      tagDescriptions: {
+        noPesel: "Polanya'nın ulusal kimlik numarası. PESEL numarası olmadan hesap açabilirsiniz — çoğu belge işlem sırasında dijital olarak imzalanır.",
+        fullyOnline: "Hesap açmayı başından sonuna kadar tamamen çevrimiçi yapın — şubeyı ziyaret etmeye gerek yoktur.",
+        free: "Aylık hizmet ücreti ve minimum bakiye şartı yoktur.",
+        multicurrency: "Birden fazla para biriminde hesap açın ve uygun kurlarla değişim yapın.",
+      },
     },
     helpButton: {
       label: "Bu nasıl alınır?",
@@ -9590,6 +9615,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Кушодани ҳисоб онлайн",
         free: "Хизматрасонии ройгон",
         multicurrency: "Ҳисоби бисёрасъорӣ",
+      },
+      tagDescriptions: {
+        noPesel: "Рақами ҳалатӣ дар реестри аҳолии Полша. Шумо метавонед ҳисоб бе PESEL кушоед — аксари ҳуҷҷатҳо бо имзои рақамӣ имзо карда мешаванд.",
+        fullyOnline: "Кушодани ҳисобро аз оғоз то охир онлайн анҷом диҳед — нояд қайди бонк рафтан нист.",
+        free: "Комиссионҳои луна ва талабҳо барои қаломи ҳадди ақал вуҷуд надоранд.",
+        multicurrency: "Ҳисобҳо дар асъорҳои мухталиф кушоед ва дар қиматҳои комиёбӣ табодул кунед.",
       },
     },
     helpButton: {
@@ -11385,6 +11416,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Відкрити рахунок онлайн",
         free: "Безкоштовне обслуговування",
         multicurrency: "Мультивалютний рахунок",
+      },
+      tagDescriptions: {
+        noPesel: "Єдиний ідентифікаційний номер у реєстрі населення Польщі. Ви можете відкрити рахунок без PESEL — більшість документів підписуються цифровим способом під час процесу.",
+        fullyOnline: "Відкрийте рахунок повністю онлайн від початку до кінця — не потрібно відвідувати відділення банку.",
+        free: "Немає щомісячних комісій за обслуговування та вимог до мінімального залишку.",
+        multicurrency: "Відкривайте рахунки у декількох валютах та обмінюйте за вигідними курсами.",
       },
     },
     helpButton: {
