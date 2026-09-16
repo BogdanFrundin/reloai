@@ -265,7 +265,6 @@ function BankCard({
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
-  const [showAiTooltip, setShowAiTooltip] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [tagInfoOpen, setTagInfoOpen] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -367,15 +366,14 @@ function BankCard({
       <div
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
-        <div className="flex w-full items-center gap-2.5">
+        <div className="flex w-full items-start gap-2.5">
           <BankAvatar name={guide.name} />
-          <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
-        </div>
-
-        <div className="w-full min-w-0">
-          <div className="flex items-start gap-2" ref={tagInfoRef}>
-            <p className="line-clamp-2 min-h-6 text-sm leading-tight text-text-secondary flex-1">
-              <TextWithGlossary text={headline} />
+          <div className="flex flex-1 items-start gap-2 min-w-0" ref={tagInfoRef}>
+            <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">
+              {guide.name}{" "}
+              <span className="text-sm font-medium text-text-secondary">
+                (<TextWithGlossary text={headline} />)
+              </span>
             </p>
             {guide.tags && guide.tags.length > 0 && (
               <div className="relative flex-shrink-0">
@@ -416,7 +414,10 @@ function BankCard({
               </div>
             )}
           </div>
-          <p className="mt-1.5 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
+        </div>
+
+        <div className="w-full min-w-0">
+          <p className="min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
             {subtitle && <TextWithGlossary text={subtitle} />}
           </p>
           <div className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5">
