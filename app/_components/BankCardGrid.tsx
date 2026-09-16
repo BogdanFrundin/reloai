@@ -286,17 +286,15 @@ function BankCard({
           <p className="line-clamp-2 min-h-12 text-sm font-bold leading-tight text-text-primary">
             <TextWithGlossary text={headline} />
           </p>
-          {subtitle && (
-            <p className="mt-2 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
-              <TextWithGlossary text={subtitle} />
-            </p>
-          )}
-          <p className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5 text-xs text-text-muted">
-            <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <p className="mt-2 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
+            {subtitle && <TextWithGlossary text={subtitle} />}
+          </p>
+          <div className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5">
+            <svg className="h-3 w-3 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
             </svg>
-            {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
-          </p>
+            <p className="text-xs text-text-muted">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
+          </div>
         </div>
 
         {open && guide.description && (
