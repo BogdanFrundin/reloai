@@ -336,6 +336,7 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
   const mapsUrl = buildGoogleMapsUrl([clinic.address, clinic.district, clinic.city, "Poland"]);
   const chosenCount = formatChosenCount(getChosenCount(clinic.id), lang);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [showAiTooltip, setShowAiTooltip] = useState(false);
 
   function askAi() {
     const question = med.askAiQuestionTemplate.replace("{name}", clinic.name).replace("{city}", clinic.city);
@@ -375,17 +376,25 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
           <div className="flex items-center gap-2">
             {clinic.rating != null && <StarRating rating={clinic.rating} />}
             {!isExpanded && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  askAi();
-                }}
-                className="flex-shrink-0 rounded-lg border border-border-subtle bg-surface-hover p-1.5 text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-                title={t.education.askAiBtn}
-              >
-                {SPARKLE_ICON_SM}
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    askAi();
+                  }}
+                  onMouseEnter={() => setShowAiTooltip(true)}
+                  onMouseLeave={() => setShowAiTooltip(false)}
+                  className="flex-shrink-0 rounded-lg border border-border-subtle bg-surface-hover p-1.5 text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+                >
+                  {SPARKLE_ICON_SM}
+                </button>
+                {showAiTooltip && (
+                  <div className="absolute -left-2 top-full z-10 mt-2 whitespace-nowrap rounded-lg border border-border-subtle bg-panel px-3 py-2 text-xs font-medium text-text-primary shadow-lg transition-opacity duration-150">
+                    {t.education.askAiBtn}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
