@@ -203,9 +203,9 @@ function CurrencyBadges({ currencies }: { currencies: string[] }) {
   );
 }
 
-function InfoRow({ label, value, showCurrencyHint, currencies }: { label: string; value: string; showCurrencyHint?: boolean; currencies?: string[] }) {
-  return (
-    <div className="text-xs">
+function InfoRow({ label, value, showCurrencyHint, currencies, asPanel }: { label: string; value: string; showCurrencyHint?: boolean; currencies?: string[]; asPanel?: boolean }) {
+  const content = (
+    <div className={asPanel ? "text-xs" : "text-xs"}>
       <p className="flex items-center gap-1 text-text-muted">
         {label}
         {showCurrencyHint && <CurrencyHint />}
@@ -219,15 +219,25 @@ function InfoRow({ label, value, showCurrencyHint, currencies }: { label: string
       )}
     </div>
   );
+
+  if (asPanel) {
+    return (
+      <div className="rounded-xl border border-border-subtle bg-surface-hover p-3">
+        {content}
+      </div>
+    );
+  }
+
+  return content;
 }
 
 function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" }) {
   const textClass = tone === "warn" ? "text-red-300" : tone === "accent" ? "text-text-secondary" : "text-text-secondary";
   const dotClass = tone === "warn" ? "bg-red-400" : tone === "accent" ? "bg-accent-bright" : "bg-text-muted";
   return (
-    <ul className="space-y-1.5">
+    <ul className="space-y-2">
       {items.map((it) => (
-        <li key={it} className={`flex items-start gap-2 text-xs ${textClass}`}>
+        <li key={it} className={`flex items-start gap-2 text-sm ${textClass}`}>
           <span className={`mt-1.5 h-1 w-1 flex-shrink-0 rounded-full ${dotClass}`} />
           {it}
         </li>
@@ -399,14 +409,14 @@ function BankCard({
         )}
       </button>
 
-      <div className="mt-4 flex gap-2" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4 flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
         {isChosen ? (
           link && (
             <a
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+              className="rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
             >
               {gc.officialSite} →
             </a>
@@ -415,7 +425,7 @@ function BankCard({
           <button
             type="button"
             onClick={() => onChoose(guide.name)}
-            className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+            className="rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
           >
             {gc.chooseBank} →
           </button>
@@ -442,26 +452,36 @@ function BankCard({
             </div>
           )}
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="space-y-3">
             {guide.when_to_get && <InfoRow label={gc.whenToGet} value={guide.when_to_get} />}
-            {guide.where_to_submit && (
-              <div>
-                <InfoRow label={gc.whereToSubmit} value={guide.where_to_submit} />
-                <a
-                  href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => event.stopPropagation()}
-                  className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-accent-bright hover:underline"
-                >
-                  {gc.showOnMap} →
-                </a>
-              </div>
-            )}
             {guide.working_hours && <InfoRow label={gc.workingHours} value={guide.working_hours} />}
             {guide.online_booking && <InfoRow label={gc.onlineBooking} value={guide.online_booking} />}
-            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint currencies={currencies.length > 0 ? currencies : undefined} />}
             {guide.waiting_time && <InfoRow label={gc.waitingTime} value={guide.waiting_time} />}
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {guide.where_to_submit && (
+              <div className="rounded-xl border border-border-subtle bg-surface-hover p-3">
+                <div className="text-xs">
+                  <p className="text-text-muted">{gc.whereToSubmit}</p>
+                  <p className="mt-0.5 text-text-secondary">{guide.where_to_submit}</p>
+                  <a
+                    href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    className="mt-2 inline-flex items-center gap-1.5 font-semibold text-accent-bright hover:underline"
+                  >
+                    <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {gc.showOnMap} →
+                  </a>
+                </div>
+              </div>
+            )}
+            {cost && <InfoRow label={gc.cost} value={cost} showCurrencyHint currencies={currencies.length > 0 ? currencies : undefined} asPanel />}
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
@@ -469,7 +489,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("required_docs")}
-                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
               >
                 <span>{gc.requiredDocs} ({guide.required_docs.length})</span>
                 <svg
@@ -497,7 +517,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("instructions")}
-                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
               >
                 <span>{gc.howToApply} ({guide.instructions.length})</span>
                 <svg
@@ -513,9 +533,9 @@ function BankCard({
                 </svg>
               </button>
               {expandedSections.has("instructions") && (
-                <ol className="mt-2 space-y-1.5">
+                <ol className="mt-2 space-y-2">
                   {guide.instructions.map((step, i) => (
-                    <li key={step} className="flex items-start gap-2 text-xs text-text-secondary">
+                    <li key={step} className="flex items-start gap-2 text-sm text-text-secondary">
                       <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent-bright">
                         {i + 1}
                       </span>
@@ -532,7 +552,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("tips")}
-                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
               >
                 <span>{gc.tips} ({guide.tips.length})</span>
                 <svg
@@ -560,7 +580,7 @@ function BankCard({
               <button
                 type="button"
                 onClick={() => toggleSection("common_mistakes")}
-                className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-text-secondary transition-colors hover:text-text-primary"
+                className="flex w-full items-center justify-between gap-2 text-sm font-bold text-text-secondary transition-colors hover:text-text-primary"
               >
                 <span>{gc.commonMistakes} ({guide.common_mistakes.length})</span>
                 <svg
