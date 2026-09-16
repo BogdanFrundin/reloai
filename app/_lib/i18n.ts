@@ -5825,6 +5825,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
           title: "Biznesingizni ro'yxatdan o'tkazing",
           desc: "Biznes uchun yashash ruxsatnomasiga ariza berishdan oldin kompaniya tuzilmasi va soliq ro'yxatidan o'tishni tashkil qiling.",
         },
+        bankAccount: {
+          title: "Bank hisobini oching",
+          desc: "Bank tanlang va hisobingizni o'rnating — soliqlar, ish haqi va to'lovlar uchun kerak.",
+        },
         documents: { title: "Kerakli hujjatlarni yuklang", desc: "7 ta hujjat kerak — 2 tasi sizda allaqachon bor." },
         biometric: { title: "Biometrik uchrashuvni belgilang", desc: "Hujjatlaringiz tasdiqlangach ochiladi." },
         residence: { title: "Yashash ruxsatnomasiga ariza bering", desc: "Biometrik uchrashuvingizdan so'ng ochiladi." },
@@ -7610,6 +7614,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
           title: "İşletmenizi kaydettirin",
           desc: "İşletme oturma izni için başvurmadan önce şirket yapınızı ve vergi kaydınızı oluşturun.",
         },
+        bankAccount: {
+          title: "Banka hesap açın",
+          desc: "Bir banka seçin ve hesabınızı kurun — vergiler, maaş ve ödemeler için gereklidir.",
+        },
         documents: { title: "Gerekli belgeleri yükleyin", desc: "7 belge gerekiyor — 2'si zaten sizde." },
         biometric: { title: "Biyometrik randevu planlayın", desc: "Belgeleriniz onaylandığında açılır." },
         residence: { title: "Oturma izni için başvurun", desc: "Biyometrik randevunuzdan sonra açılır." },
@@ -9394,6 +9402,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         business: {
           title: "Бизнеси худро ба қайд гиред",
           desc: "Пеш аз дархости иҷозати истиқомат барои бизнес сохтори ширкат ва бақайдгирии андозро ташкил кунед.",
+        },
+        bankAccount: {
+          title: "Ҳисоби бронӣ кушоед",
+          desc: "Банк интихоб кунед ва ҳисоби худро ташкил кунед — барои андоз, музди кор ва то'ловот зарур аст.",
         },
         documents: { title: "Ҳуҷҷатҳои лозимиро бор кунед", desc: "7 ҳуҷҷат лозим аст — 2-тои онҳо аллакай назди шумост." },
         biometric: { title: "Вохӯрии биометриро таъин кунед", desc: "Пас аз тасдиқи ҳуҷҷатҳоятон кушода мешавад." },
@@ -11183,6 +11195,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         business: {
           title: "Зареєструйте бізнес",
           desc: "Оформіть структуру компанії та податкову реєстрацію перед подачею на посвідку на проживання для бізнесу.",
+        },
+        bankAccount: {
+          title: "Відкрийте банківський рахунок",
+          desc: "Виберіть банк і налаштуйте рахунок — потрібен для податків, зарплати та платежів.",
         },
         documents: { title: "Завантажте необхідні документи", desc: "Потрібно 7 документів — 2 у вас вже є." },
         biometric: { title: "Запишіться на біометрію", desc: "Відкриється після перевірки ваших документів." },
