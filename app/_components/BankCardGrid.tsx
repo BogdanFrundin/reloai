@@ -358,56 +358,11 @@ function BankCard({
         isExpanded ? "p-4 sm:p-5" : "p-4 sm:p-5"
       }`}
     >
-      <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
-        {guide.rating != null && <StarRating rating={guide.rating} />}
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-            const favorites = JSON.parse(localStorage.getItem("reloai_favorite_banks") || "[]") as string[];
-            const isFavorite = favorites.includes(guide.id);
-            if (isFavorite) {
-              favorites.splice(favorites.indexOf(guide.id), 1);
-            } else {
-              favorites.push(guide.id);
-            }
-            localStorage.setItem("reloai_favorite_banks", JSON.stringify(favorites));
-            window.dispatchEvent(new Event("favoritesBankChange"));
-          }}
-          aria-label="Add to favorites"
-          className="flex-shrink-0 rounded-lg border border-transparent transition-colors duration-150 hover:text-yellow-400 p-1.5"
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth={1.5}>
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-        </button>
-        <div className="relative">
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              askAi();
-            }}
-            onMouseEnter={() => setShowAiTooltip(true)}
-            onMouseLeave={() => setShowAiTooltip(false)}
-            aria-label={gc.askAiAriaTemplate.replace("{name}", guide.name)}
-            className="flex-shrink-0 rounded-lg border border-border-subtle bg-surface-hover p-1.5 text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
-              />
-            </svg>
-          </button>
-          {showAiTooltip && (
-            <div className="absolute -left-2 top-full z-10 mt-2 whitespace-nowrap rounded-lg border border-border-subtle bg-panel px-3 py-2 text-xs font-medium text-text-primary shadow-lg transition-opacity duration-150">
-              {gc.askAi}
-            </div>
-          )}
+      {guide.rating != null && (
+        <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
+          <StarRating rating={guide.rating} />
         </div>
-      </div>
+      )}
 
       <div
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
