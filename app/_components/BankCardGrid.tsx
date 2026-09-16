@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
@@ -216,6 +216,8 @@ function BankCard({
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
   const [open, setOpen] = useState(false);
+  const [showAiTooltip, setShowAiTooltip] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
@@ -228,25 +230,38 @@ function BankCard({
   }
 
   return (
-    <div className="group relative flex h-full min-h-[272px] flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
-      <button
-        type="button"
-        onClick={(event) => {
-          event.stopPropagation();
-          askAi();
-        }}
-        aria-label={gc.askAiAriaTemplate.replace("{name}", guide.name)}
-        className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/80 transition-colors duration-150 hover:bg-accent hover:text-white"
-      >
-        <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a2.25 2.25 0 00-1.632-1.632L15 6.75l1.035-.259a2.25 2.25 0 001.632-1.632L18 3.75l.259 1.035a2.25 2.25 0 001.632 1.632L21 6.75l-1.035.259a2.25 2.25 0 00-1.632 1.632z"
-          />
-        </svg>
-        {gc.askAi}
-      </button>
+    <div
+      ref={cardRef}
+      className="group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-4 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] sm:p-5 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none"
+    >
+      <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              askAi();
+            }}
+            onMouseEnter={() => setShowAiTooltip(true)}
+            onMouseLeave={() => setShowAiTooltip(false)}
+            aria-label={gc.askAiAriaTemplate.replace("{name}", guide.name)}
+            className="flex-shrink-0 rounded-lg border border-border-subtle bg-surface-hover p-1.5 text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
+              />
+            </svg>
+          </button>
+          {showAiTooltip && (
+            <div className="absolute -left-2 top-full z-10 mt-2 whitespace-nowrap rounded-lg border border-border-subtle bg-panel px-3 py-2 text-xs font-medium text-text-primary shadow-lg transition-opacity duration-150">
+              {gc.askAi}
+            </div>
+          )}
+        </div>
+      </div>
 
       <button
         type="button"
@@ -256,10 +271,10 @@ function BankCard({
       >
         <div className="flex items-center gap-2.5">
           <BankAvatar name={guide.name} />
-          <p className="text-[13px] font-medium text-white/50">{guide.name}</p>
+          <p className="text-xs text-text-muted">{guide.name}</p>
         </div>
 
-        <div>
+        <div className="w-full min-w-0">
           {isChosen && (
             <span className="mb-1.5 flex items-center gap-1 text-xs font-semibold text-emerald-400">
               <svg className="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -268,15 +283,15 @@ function BankCard({
               {gc.yourBank}
             </span>
           )}
-          <p className="text-[22px] font-bold leading-tight text-white">
+          <p className="line-clamp-2 min-h-12 text-sm font-bold leading-tight text-text-primary">
             <TextWithGlossary text={headline} />
           </p>
           {subtitle && (
-            <p className="mt-2 text-xs text-white/50">
+            <p className="mt-2 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
               <TextWithGlossary text={subtitle} />
             </p>
           )}
-          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+          <p className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5 text-xs text-text-muted">
             <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
             </svg>
@@ -285,30 +300,29 @@ function BankCard({
         </div>
 
         {open && guide.description && (
-          <p className="text-xs leading-relaxed text-white/60">
+          <p className="text-xs leading-relaxed text-text-muted">
             <TextWithGlossary text={guide.description} />
           </p>
         )}
       </button>
 
-      <div className="mt-4 space-y-2" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4 flex gap-2" onClick={(event) => event.stopPropagation()}>
         {isChosen ? (
           link && (
             <a
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+              className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
             >
-              {gc.officialSite}
-              <span aria-hidden>→</span>
+              {gc.officialSite} →
             </a>
           )
         ) : (
           <button
             type="button"
             onClick={() => onChoose(guide.name)}
-            className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+            className="flex-1 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
           >
             {gc.chooseBank} →
           </button>
@@ -317,9 +331,9 @@ function BankCard({
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="w-full rounded-2xl bg-white/10 py-3 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-accent"
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover px-3 py-2.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
         >
-          {open ? t.dashboard.collapseBtn : gc.bankInfo}
+          ℹ {open ? t.dashboard.collapseBtn : gc.bankInfo}
         </button>
       </div>
 
