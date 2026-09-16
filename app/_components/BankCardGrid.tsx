@@ -359,6 +359,7 @@ function BankCard({
       }`}
     >
       <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
+        {guide.rating != null && <StarRating rating={guide.rating} />}
         <div className="relative">
           <button
             type="button"
@@ -390,12 +391,9 @@ function BankCard({
       <div
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
-        <div className="flex w-full items-start justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <BankAvatar name={guide.name} />
-            <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
-          </div>
-          {guide.rating != null && <StarRating rating={guide.rating} />}
+        <div className="flex w-full items-center gap-2.5">
+          <BankAvatar name={guide.name} />
+          <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
         </div>
 
         <div className="w-full min-w-0">
