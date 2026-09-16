@@ -694,9 +694,9 @@ export default function MedicinePage() {
           <p className="mt-8 text-sm text-text-muted">{t.medicine.notFoundText.replace("{city}", getCityName(city, lang))}</p>
         ) : (
           <div className="mt-8 space-y-10">
-            {grouped.map(([cat, items]) => (
-              <div key={cat}>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-text-primary">{cat}</h3>
+            {grouped.map(([cat, items], index) => (
+              <div key={cat} className={index > 0 ? "border-t border-border-subtle pt-10" : ""}>
+                <h3 className="text-base font-bold uppercase tracking-wider text-text-primary">{cat}</h3>
                 <div className="mt-4 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((clinic, index) => (
                     <Reveal key={clinic.id} delay={index * 30}>
