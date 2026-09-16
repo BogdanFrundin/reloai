@@ -374,10 +374,10 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
         </div>
 
         <div className="w-full min-w-0">
-          <h3 className="line-clamp-2 text-sm font-bold text-text-primary">{clinic.name}</h3>
+          <h3 className="line-clamp-2 min-h-12 text-sm font-bold text-text-primary">{clinic.name}</h3>
 
           {clinic.address && (
-            <p className="mt-2 flex items-center gap-2 text-xs text-text-muted">
+            <p className="mt-2 flex min-h-[1.5rem] items-center gap-2 text-xs text-text-muted">
               <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -386,7 +386,7 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
             </p>
           )}
 
-          <p className="mt-1.5 flex items-center gap-2 text-xs text-text-muted">
+          <p className="mt-1.5 flex min-h-[1.5rem] items-center gap-2 text-xs text-text-muted">
             <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 12H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z" />
             </svg>
@@ -395,17 +395,19 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
         </div>
 
         {clinic.specializations && clinic.specializations.length > 0 && (
-          <div className="flex w-full flex-wrap gap-1.5">
-            {clinic.specializations.slice(0, 2).map((s) => (
-              <span key={s} className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
-                {s}
-              </span>
-            ))}
-            {clinic.specializations.length > 2 && (
-              <span className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
-                +{clinic.specializations.length - 2}
-              </span>
-            )}
+          <div className="min-h-6 w-full overflow-hidden">
+            <div className="flex w-full flex-wrap gap-1.5">
+              {clinic.specializations.slice(0, 2).map((s) => (
+                <span key={s} className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
+                  {s}
+                </span>
+              ))}
+              {clinic.specializations.length > 2 && (
+                <span className="rounded-full border border-border-subtle bg-white/[0.05] px-2 py-0.5 text-[11px] text-text-secondary">
+                  +{clinic.specializations.length - 2}
+                </span>
+              )}
+            </div>
           </div>
         )}
       </button>
@@ -429,7 +431,7 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
       </div>
 
       {isExpanded && (
-        <div className="mt-4 flex flex-1 flex-col border-t border-border-subtle pt-4">
+        <div className="mt-4 flex flex-col border-t border-border-subtle pt-4">
           {clinic.required_docs && clinic.required_docs.length > 0 && (
             <div className="mb-4">
               <p className="text-sm font-semibold text-text-primary">{t.education.documentsLabel}</p>
@@ -441,7 +443,7 @@ function ClinicCard({ clinic, isExpanded, onExpandedChange }: { clinic: Clinic; 
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-3 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
