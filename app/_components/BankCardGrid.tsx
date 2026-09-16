@@ -205,19 +205,37 @@ function BankCard({
   guide,
   chosenBank,
   onChoose,
+  isExpanded,
+  onExpandedChange,
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
   onChoose: (name: string) => void;
+  isExpanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
-  const [open, setOpen] = useState(false);
   const [showAiTooltip, setShowAiTooltip] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onExpandedChange(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded, onExpandedChange]);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
@@ -265,8 +283,8 @@ function BankCard({
 
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        aria-expanded={open}
+        onClick={() => onExpandedChange(!isExpanded)}
+        aria-expanded={isExpanded}
         className="flex w-full flex-1 flex-col items-start gap-4 pr-28 text-left"
       >
         <div className="flex items-center gap-2.5">
@@ -297,7 +315,7 @@ function BankCard({
           </div>
         </div>
 
-        {open && guide.description && (
+        {isExpanded && guide.description && (
           <p className="text-xs leading-relaxed text-text-muted">
             <TextWithGlossary text={guide.description} />
           </p>
@@ -328,17 +346,21 @@ function BankCard({
 
         <button
           type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover px-3 py-2.5 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+          onClick={() => onExpandedChange(!isExpanded)}
+          className={`flex-1 rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors duration-150 ${
+            isExpanded
+              ? "bg-[#7d4a42] text-white hover:bg-[#8b5549]"
+              : "border border-border-subtle bg-surface-hover text-accent-bright hover:border-accent/40 hover:bg-accent/10"
+          }`}
         >
-          ℹ {open ? t.dashboard.collapseBtn : gc.bankInfo}
+          {isExpanded ? t.dashboard.collapseBtn : gc.bankInfo}
         </button>
       </div>
 
-      {open && (
-        <div className="mt-4 space-y-4 border-t border-white/10 pt-4">
+      {isExpanded && (
+        <div className="mt-4 flex flex-col border-t border-border-subtle pt-4">
           {guide.important_2026 && (
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
+            <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
               {guide.important_2026}
             </div>
           )}
@@ -366,7 +388,7 @@ function BankCard({
           </div>
 
           {guide.required_docs && guide.required_docs.length > 0 && (
-            <div>
+            <div className="mt-4">
               <p className="text-xs font-semibold text-text-secondary">{gc.requiredDocs}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.required_docs} />
@@ -375,7 +397,7 @@ function BankCard({
           )}
 
           {guide.instructions && guide.instructions.length > 0 && (
-            <div>
+            <div className="mt-4">
               <p className="text-xs font-semibold text-text-secondary">{gc.howToApply}</p>
               <ol className="mt-1.5 space-y-1.5">
                 {guide.instructions.map((step, i) => (
@@ -391,7 +413,7 @@ function BankCard({
           )}
 
           {guide.tips && guide.tips.length > 0 && (
-            <div>
+            <div className="mt-4">
               <p className="text-xs font-semibold text-text-secondary">{gc.tips}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.tips} tone="accent" />
@@ -400,7 +422,7 @@ function BankCard({
           )}
 
           {guide.common_mistakes && guide.common_mistakes.length > 0 && (
-            <div>
+            <div className="mt-4">
               <p className="text-xs font-semibold text-text-secondary">{gc.commonMistakes}</p>
               <div className="mt-1.5">
                 <Bullets items={guide.common_mistakes} tone="warn" />
@@ -413,7 +435,7 @@ function BankCard({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
+              className="mt-4 inline-flex items-center gap-1 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-white"
             >
               {gc.officialSite}
               <span aria-hidden>→</span>
@@ -422,13 +444,10 @@ function BankCard({
 
           <button
             type="button"
-            onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center gap-1.5 border-t border-white/10 pt-3 text-xs font-semibold text-white/40 transition-colors duration-150 hover:text-white/80"
+            onClick={() => onExpandedChange(false)}
+            className="mt-auto flex w-full items-center justify-center gap-1.5 border-t border-border-subtle pt-3 text-xs font-semibold text-text-muted transition-colors duration-150 hover:text-text-primary"
           >
-            {t.dashboard.collapseBtn}
-            <svg className="h-3.5 w-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
+            {t.dashboard.collapseBtn} ^
           </button>
         </div>
       )}
@@ -459,6 +478,7 @@ export default function BankCardGrid({
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [expandedBankId, setExpandedBankId] = useState<string | null>(null);
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
@@ -529,14 +549,22 @@ export default function BankCardGrid({
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <>
-          <div className="grid items-stretch gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 sm:grid-cols-2">
             {featured.map((g) => (
-              <BankCard
+              <div
                 key={g.id}
-                guide={g}
-                chosenBank={profile?.chosen_bank}
-                onChoose={chooseBank}
-              />
+                className={expandedBankId === g.id ? "sm:col-span-2" : ""}
+              >
+                <BankCard
+                  guide={g}
+                  chosenBank={profile?.chosen_bank}
+                  onChoose={chooseBank}
+                  isExpanded={expandedBankId === g.id}
+                  onExpandedChange={(isExpanded) =>
+                    setExpandedBankId(isExpanded ? g.id : null)
+                  }
+                />
+              </div>
             ))}
           </div>
 
@@ -551,14 +579,22 @@ export default function BankCardGrid({
               </button>
 
               {showAll && (
-                <div className="mt-6 grid w-full items-stretch gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2">
                   {rest.map((g) => (
-                    <BankCard
+                    <div
                       key={g.id}
-                      guide={g}
-                      chosenBank={profile?.chosen_bank}
-                      onChoose={chooseBank}
-                    />
+                      className={expandedBankId === g.id ? "sm:col-span-2" : ""}
+                    >
+                      <BankCard
+                        guide={g}
+                        chosenBank={profile?.chosen_bank}
+                        onChoose={chooseBank}
+                        isExpanded={expandedBankId === g.id}
+                        onExpandedChange={(isExpanded) =>
+                          setExpandedBankId(isExpanded ? g.id : null)
+                        }
+                      />
+                    </div>
                   ))}
                 </div>
               )}
