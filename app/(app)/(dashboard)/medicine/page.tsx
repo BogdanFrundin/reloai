@@ -697,15 +697,17 @@ export default function MedicinePage() {
             {grouped.map(([cat, items], index) => (
               <div key={cat} className={index > 0 ? "border-t border-border-subtle pt-10" : ""}>
                 <h3 className="text-base font-bold uppercase tracking-wider text-text-primary">{cat}</h3>
-                <div className="mt-4 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-4 flex flex-wrap justify-center gap-4">
                   {items.map((clinic, index) => (
-                    <Reveal key={clinic.id} delay={index * 30}>
-                      <ClinicCard
-                        clinic={clinic}
-                        isExpanded={expandedClinicId === clinic.id}
-                        onExpandedChange={(isExpanded) => setExpandedClinicId(isExpanded ? clinic.id : null)}
-                      />
-                    </Reveal>
+                    <div key={clinic.id} className="w-full sm:w-1/2 lg:w-1/3">
+                      <Reveal delay={index * 30}>
+                        <ClinicCard
+                          clinic={clinic}
+                          isExpanded={expandedClinicId === clinic.id}
+                          onExpandedChange={(isExpanded) => setExpandedClinicId(isExpanded ? clinic.id : null)}
+                        />
+                      </Reveal>
+                    </div>
                   ))}
                 </div>
               </div>
