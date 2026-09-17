@@ -3899,7 +3899,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     work: {
       title: "Работа в Польше",
-      subtitle: "Контракты, зарплаты и где искать.",
+      subtitle: "Работа и трудоустройство в Польше",
       contractVsB2B: "Трудовой договор против B2B",
       salarySearch: "Поиск зарплаты",
       salarySearchSub: "Введите профессию, чтобы узнать среднюю зарплату.",
