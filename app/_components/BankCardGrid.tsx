@@ -54,17 +54,21 @@ function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string;
     multicurrency: t.guideCard.headlines.multicurrency,
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
+  // Fallback used whenever the tag-derived subtitle would be empty (a bank
+  // with 0 or only 1 of the 4 standard filter tags) so the tag-line slot on
+  // the card never renders blank — every bank shows some genuine plus point.
+  const fallbackHighlight = t.guideCard.bankHighlights[guide.name] ?? "";
   if (tags.length === 0) {
-    // No subtitle here: guide.cost/price_label can be a full sentence for
+    // No pricing text here: guide.cost/price_label can be a full sentence for
     // some banks (e.g. Plus Bank's tariff conditions), which looks broken
     // squeezed into this single-line slot. The always-visible description
-    // below already covers pricing details in full, so this line is left
-    // blank rather than truncating raw pricing text mid-word.
-    return { headline: t.guideCard.classicAccount, subtitle: "" };
+    // below already covers pricing details in full, so we show a short
+    // curated highlight instead of raw pricing text.
+    return { headline: t.guideCard.classicAccount, subtitle: fallbackHighlight };
   }
   const [first, ...rest] = tags;
   const headline = headlinePhrases[first] ?? tagLabels[first];
-  const subtitle = rest.map((tag) => tagLabels[tag]).join(" · ");
+  const subtitle = rest.length > 0 ? rest.map((tag) => tagLabels[tag]).join(" · ") : fallbackHighlight;
   return { headline, subtitle };
 }
 
@@ -308,9 +312,20 @@ function BankCard({
         </div>
 
         <div className="w-full min-w-0">
-          <p className="min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
-            {subtitle && <TextWithGlossary text={subtitle} />}
-          </p>
+          <div className="flex min-h-[1.5rem] items-center gap-1.5">
+            {subtitle && (
+              <svg className="h-3 w-3 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+            <p className="line-clamp-1 text-xs text-text-muted">
+              {subtitle && <TextWithGlossary text={subtitle} />}
+            </p>
+          </div>
           {guide.description && (
             <p className="mt-2 text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />
