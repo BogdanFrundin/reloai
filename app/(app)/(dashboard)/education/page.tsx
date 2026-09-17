@@ -1122,7 +1122,7 @@ export default function EducationPage() {
             </button>
           ))}
         </div>
-        <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
+        <CitySelect value={city} onSelect={setCity} placeholder={t.common.cityLabel} />
       </div>
 
       <div className="mt-4 rounded-[28px] bg-[#1c1f26] p-4 sm:p-5">
