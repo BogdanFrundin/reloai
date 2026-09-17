@@ -14,7 +14,7 @@ import { getFlagUrl } from "../_lib/flags";
 import { pressScale } from "../_lib/motion";
 
 const ICON_PROPS = {
-  className: "h-5.5 w-5.5",
+  className: "h-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)] w-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)]",
   fill: "none",
   viewBox: "0 0 24 24",
   stroke: "currentColor",
@@ -119,10 +119,10 @@ export default function DashboardSidebar({
               {BACK_ARROW_ICON}
             </Link>
           </div>
-          <p className="mt-2 text-sm text-text-muted">{d.tagline}</p>
+          <p className="mt-[clamp(0.2rem,0.6vh,0.5rem)] text-sm text-text-muted">{d.tagline}</p>
 
           {countryEntry && (
-            <div className="mt-2.5 flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-1.5">
+            <div className="mt-[clamp(0.3rem,0.7vh,0.625rem)] flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-[clamp(0.2rem,0.4vh,0.375rem)]">
               <Image
                 src={getFlagUrl(COUNTRY_FLAG_CODE[country] ?? "pl", "sm")}
                 alt={countryEntry.name}
@@ -154,7 +154,7 @@ export default function DashboardSidebar({
 
           <div>
             <p className="px-3 text-xs font-semibold tracking-wider text-text-muted">{d.myPlanSection}</p>
-            <div className="mt-1.5 space-y-0.5">
+            <div className="mt-[clamp(0.2rem,0.4vh,0.375rem)] space-y-0.5">
               <Link
                 href="/dashboard"
                 onClick={onClose}
@@ -196,7 +196,7 @@ export default function DashboardSidebar({
 
           <div>
             <p className="px-3 text-xs font-semibold tracking-wider text-text-muted">{d.servicesSection}</p>
-            <div className="mt-1.5 space-y-0.5">
+            <div className="mt-[clamp(0.2rem,0.4vh,0.375rem)] space-y-0.5">
               {SERVICES_ORDER.map((key) => {
                 const href = SERVICE_HREFS[key];
                 const isActive = pathname === href;

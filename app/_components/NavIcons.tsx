@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 const ICON_PROPS = {
-  className: "h-5.5 w-5.5",
+  className: "h-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)] w-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)]",
   fill: "none",
   viewBox: "0 0 24 24",
   stroke: "currentColor",
