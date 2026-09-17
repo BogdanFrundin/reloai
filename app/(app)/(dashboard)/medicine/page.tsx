@@ -805,18 +805,12 @@ export default function MedicinePage() {
             <div>
               <p className="text-sm text-text-secondary">{t.medicine.emergencyNumber}</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                <a
-                  href="tel:112"
-                  className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300 transition-colors duration-150 hover:bg-red-500/20"
-                >
+                <span className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300">
                   112
-                </a>
-                <a
-                  href="tel:999"
-                  className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300 transition-colors duration-150 hover:bg-red-500/20"
-                >
+                </span>
+                <span className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-sm font-bold text-red-300">
                   999
-                </a>
+                </span>
               </div>
             </div>
           </div>
@@ -825,24 +819,7 @@ export default function MedicinePage() {
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-1 text-text-secondary">
               {ER_ICON}
             </span>
-            <p className="pt-2 text-sm text-text-secondary">{t.medicine.emergencyEr}</p>
-          </div>
-
-          <div className="mt-4 flex items-start gap-4 border-t border-border-subtle pt-4">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-1 text-text-secondary">
-              {PHARMACY_ICON}
-            </span>
-            <p className="pt-2 text-sm text-text-secondary">
-              {t.medicine.emergencyPharmacy}{" "}
-              <a
-                href="https://aptekadyzurna.pl"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-accent-bright transition-colors duration-150 hover:text-text-primary"
-              >
-                aptekadyzurna.pl
-              </a>
-            </p>
+            <p className="pt-2 text-sm text-text-secondary">{t.medicine.emergencyNiSoz}</p>
           </div>
         </div>
       </Reveal>
