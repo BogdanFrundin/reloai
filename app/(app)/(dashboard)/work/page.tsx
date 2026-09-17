@@ -553,7 +553,7 @@ function SalaryCalculator() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-text-muted">Jak długo prowadzisz działalność</label>
+                <label className="text-xs font-semibold text-text-muted">{t.work.salaryCalculator.b2bPeriodLabel}</label>
                 <div className="mt-2 flex gap-2 flex-col">
                   <button
                     onClick={() => setB2bPeriod("0-6")}
@@ -563,7 +563,7 @@ function SalaryCalculator() {
                         : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
                     }`}
                   >
-                    Do 6 miesięcy (Ulga na start: ZUS = 0 PLN)
+                    {t.work.salaryCalculator.b2bPeriod0_6}
                   </button>
                   <button
                     onClick={() => setB2bPeriod("6-30")}
@@ -573,7 +573,7 @@ function SalaryCalculator() {
                         : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
                     }`}
                   >
-                    6-30 miesięcy (Mały ZUS Plus: ~960 PLN/mies, orientacyjnie)
+                    {t.work.salaryCalculator.b2bPeriod6_30}
                   </button>
                   <button
                     onClick={() => setB2bPeriod("30+")}
@@ -583,7 +583,7 @@ function SalaryCalculator() {
                         : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
                     }`}
                   >
-                    Ponad 30 miesięcy (ZUS pełny: 1 788,29 PLN/mies)
+                    {t.work.salaryCalculator.b2bPeriod30Plus}
                   </button>
                 </div>
               </div>

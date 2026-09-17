@@ -556,6 +556,10 @@ export type Dictionary = {
       taxRate12: string;
       taxRate19: string;
       nettoEstimate: string;
+      b2bPeriodLabel: string;
+      b2bPeriod0_6: string;
+      b2bPeriod6_30: string;
+      b2bPeriod30Plus: string;
     };
   };
   community: {
@@ -2178,6 +2182,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Tax (12%)",
         taxRate19: "Tax (19%)",
         nettoEstimate: "Net (estimated)",
+        b2bPeriodLabel: "How long have you been operating",
+        b2bPeriod0_6: "Up to 6 months (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 months (Mały ZUS Plus: ~960 PLN/month, approximate)",
+        b2bPeriod30Plus: "Over 30 months (Full ZUS: 1 788.29 PLN/month)",
       },
     },
     community: {
@@ -4029,6 +4037,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Налог (12%)",
         taxRate19: "Налог (19%)",
         nettoEstimate: "На руки (примерно)",
+        b2bPeriodLabel: "Как давно ведёте деятельность",
+        b2bPeriod0_6: "До 6 месяцев (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 месяцев (Mały ZUS Plus: ~960 PLN/мес, ориентировочно)",
+        b2bPeriod30Plus: "Более 30 месяцев (ZUS полный: 1 788,29 PLN/мес)",
       },
     },
     community: {
@@ -5877,6 +5889,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Soliq (12%)",
         taxRate19: "Soliq (19%)",
         nettoEstimate: "Qo'lga (taxminiy)",
+        b2bPeriodLabel: "Qancha vaqt faoliyat olib borsiz",
+        b2bPeriod0_6: "6 oyigacha (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 oy (Mały ZUS Plus: ~960 PLN/oy, taxminiy)",
+        b2bPeriod30Plus: "30 oydan ko'p (To'liq ZUS: 1 788,29 PLN/oy)",
       },
     },
     community: {
@@ -7722,6 +7738,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Vergi (12%)",
         taxRate19: "Vergi (19%)",
         nettoEstimate: "Eline geçen (tahmini)",
+        b2bPeriodLabel: "Ne kadar süredir faaliyet gösteriyorsunuz",
+        b2bPeriod0_6: "6 aya kadar (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 ay (Mały ZUS Plus: ~960 PLN/ay, yaklaşık)",
+        b2bPeriod30Plus: "30 aydan fazla (Tam ZUS: 1 788,29 PLN/ay)",
       },
     },
     community: {
@@ -9567,6 +9587,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Маликиёт (12%)",
         taxRate19: "Маликиёт (19%)",
         nettoEstimate: "Дастагирӣ (имкон)",
+        b2bPeriodLabel: "Чанд мо қаблан фаолияти худро оғоз намудед",
+        b2bPeriod0_6: "То 6 моҳ (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 моҳ (Mały ZUS Plus: ~960 PLN/моҳ, такмин)",
+        b2bPeriod30Plus: "Бишҳа аз 30 моҳ (ZUS пурра: 1 788,29 PLN/моҳ)",
       },
     },
     community: {
@@ -11416,6 +11440,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         taxRate12: "Податок (12%)",
         taxRate19: "Податок (19%)",
         nettoEstimate: "На руки (приблизно)",
+        b2bPeriodLabel: "Як давно ви ведете діяльність",
+        b2bPeriod0_6: "До 6 місяців (Ulga na start: ZUS = 0 PLN)",
+        b2bPeriod6_30: "6-30 місяців (Mały ZUS Plus: ~960 PLN/мес, приблизно)",
+        b2bPeriod30Plus: "Понад 30 місяців (Повний ZUS: 1 788,29 PLN/мес)",
       },
     },
     community: {
