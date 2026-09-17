@@ -719,6 +719,12 @@ export type Dictionary = {
     tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
     headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
     tagDescriptions: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+    // Fallback one-liner shown in the tag-line slot on a bank card when the
+    // bank has fewer than 2 of the standard filter tags (no_pesel/fully_online/
+    // free/multicurrency) and that slot would otherwise render empty. Keyed by
+    // the bank's exact name in document_guides (same key across all languages
+    // since bank names aren't translated); value is the translated highlight.
+    bankHighlights: Record<string, string>;
   };
   helpButton: {
     label: string;
@@ -2426,6 +2432,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Complete account opening from start to finish entirely online — no need to visit a branch.",
         free: "No monthly service fees or minimum balance requirements.",
         multicurrency: "Hold and exchange multiple currencies at favorable rates.",
+      },
+      bankHighlights: {
+        "Bank Millennium": "Part of Millennium bcp group",
+        "Bank Pekao S.A.": "Poland's 2nd-largest bank by assets",
+        "Bank Pocztowy": "4,700+ post office locations",
+        "BNP Paribas Bank Polska": "Part of the BNP Paribas Group",
+        "BOŚ Bank": "Specializes in environmental financing",
+        "Credit Agricole Bank Polska": "Part of the Crédit Agricole Group",
+        "Erste Bank Polska": "Extensive branch network",
+        "ING Bank Śląski": "Leader in mobile banking",
+        "mBank": "Pioneer of online banking",
+        "Nest Bank": "Fully digital bank",
+        "PKO Bank Polski": "Poland's largest bank",
+        "Plus Bank": "Remote service via plusbank24",
+        "Toyota Bank Polska": "Part of Toyota Financial Services",
+        "VeloBank": "One of Poland's newest banks",
+        "Volkswagen Bank Polska": "Part of Volkswagen Financial Services",
       },
     },
     helpButton: {
@@ -4231,6 +4254,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Отсутствуют ежемесячные комиссии за обслуживание и требования к минимальному остатку на счёте.",
         multicurrency: "Открыть счета в нескольких валютах и обмениваться по выгодным курсам прямо в приложении.",
       },
+      bankHighlights: {
+        "Bank Millennium": "Часть группы Millennium bcp",
+        "Bank Pekao S.A.": "2-й банк Польши по активам",
+        "Bank Pocztowy": "4700+ почтовых отделений",
+        "BNP Paribas Bank Polska": "Часть группы BNP Paribas",
+        "BOŚ Bank": "Специализация — экологические проекты",
+        "Credit Agricole Bank Polska": "Часть группы Crédit Agricole",
+        "Erste Bank Polska": "Широкая сеть отделений",
+        "ING Bank Śląski": "Лидер мобильного банкинга",
+        "mBank": "Пионер онлайн-банкинга",
+        "Nest Bank": "Полностью цифровой банк",
+        "PKO Bank Polski": "Крупнейший банк Польши",
+        "Plus Bank": "Обслуживание через plusbank24",
+        "Toyota Bank Polska": "Часть Toyota Financial Services",
+        "VeloBank": "Один из новейших банков Польши",
+        "Volkswagen Bank Polska": "Часть Volkswagen Financial Services",
+      },
     },
     helpButton: {
       label: "Как это получить?",
@@ -6032,6 +6072,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Oylik xizmat komissiyasi va minimal balans talab qilinmaydi.",
         multicurrency: "Bir nechta valyutada hisoblar ochish va qimmat kurslarda almashtirish qiling.",
       },
+      bankHighlights: {
+        "Bank Millennium": "Millennium bcp guruhi tarkibida",
+        "Bank Pekao S.A.": "Aktivlar bo'yicha Polshaning 2-banki",
+        "Bank Pocztowy": "4700+ pochta bo'limi",
+        "BNP Paribas Bank Polska": "BNP Paribas guruhi tarkibida",
+        "BOŚ Bank": "Ekologik loyihalarga ixtisoslashgan",
+        "Credit Agricole Bank Polska": "Crédit Agricole guruhi tarkibida",
+        "Erste Bank Polska": "Keng filiallar tarmog'i",
+        "ING Bank Śląski": "Mobil bankingda yetakchi",
+        "mBank": "Onlayn-bankingning kashshofi",
+        "Nest Bank": "To'liq raqamli bank",
+        "PKO Bank Polski": "Polshaning eng yirik banki",
+        "Plus Bank": "plusbank24 orqali masofaviy xizmat",
+        "Toyota Bank Polska": "Toyota Financial Services tarkibida",
+        "VeloBank": "Polshaning eng yangi banklaridan biri",
+        "Volkswagen Bank Polska": "Volkswagen Financial Services tarkibida",
+      },
     },
     helpButton: {
       label: "Buni qanday olish mumkin?",
@@ -7830,6 +7887,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         free: "Aylık hizmet ücreti ve minimum bakiye şartı yoktur.",
         multicurrency: "Birden fazla para biriminde hesap açın ve uygun kurlarla değişim yapın.",
       },
+      bankHighlights: {
+        "Bank Millennium": "Millennium bcp grubunun bir parçası",
+        "Bank Pekao S.A.": "Varlıklara göre Polonya'nın 2. büyük bankası",
+        "Bank Pocztowy": "4.700+ posta şubesi",
+        "BNP Paribas Bank Polska": "BNP Paribas Grubu'nun bir parçası",
+        "BOŚ Bank": "Çevre projelerinde uzmanlaşmış",
+        "Credit Agricole Bank Polska": "Crédit Agricole Grubu'nun bir parçası",
+        "Erste Bank Polska": "Geniş şube ağı",
+        "ING Bank Śląski": "Mobil bankacılıkta lider",
+        "mBank": "Çevrimiçi bankacılığın öncüsü",
+        "Nest Bank": "Tamamen dijital banka",
+        "PKO Bank Polski": "Polonya'nın en büyük bankası",
+        "Plus Bank": "plusbank24 ile uzaktan hizmet",
+        "Toyota Bank Polska": "Toyota Financial Services'ın bir parçası",
+        "VeloBank": "Polonya'nın en yeni bankalarından biri",
+        "Volkswagen Bank Polska": "Volkswagen Financial Services'ın bir parçası",
+      },
     },
     helpButton: {
       label: "Bu nasıl alınır?",
@@ -9627,6 +9701,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Кушодани ҳисобро аз оғоз то охир онлайн анҷом диҳед — нояд қайди бонк рафтан нист.",
         free: "Комиссионҳои луна ва талабҳо барои қаломи ҳадди ақал вуҷуд надоранд.",
         multicurrency: "Ҳисобҳо дар асъорҳои мухталиф кушоед ва дар қиматҳои комиёбӣ табодул кунед.",
+      },
+      bankHighlights: {
+        "Bank Millennium": "Дар ҳайати гурӯҳи Millennium bcp",
+        "Bank Pekao S.A.": "Бонки 2-юми Полша аз рӯи дороӣ",
+        "Bank Pocztowy": "Зиёда аз 4700 шӯъбаи почта",
+        "BNP Paribas Bank Polska": "Дар ҳайати гурӯҳи BNP Paribas",
+        "BOŚ Bank": "Тахассус дар лоиҳаҳои экологӣ",
+        "Credit Agricole Bank Polska": "Дар ҳайати гурӯҳи Crédit Agricole",
+        "Erste Bank Polska": "Шабакаи васеи филиалҳо",
+        "ING Bank Śląski": "Пешсаф дар бонкдории мобилӣ",
+        "mBank": "Асосгузори бонкдории онлайн",
+        "Nest Bank": "Бонки комилан рақамӣ",
+        "PKO Bank Polski": "Бузургтарин бонки Полша",
+        "Plus Bank": "Хизматрасонӣ тавассути plusbank24",
+        "Toyota Bank Polska": "Дар ҳайати Toyota Financial Services",
+        "VeloBank": "Яке аз бонкҳои навтарини Полша",
+        "Volkswagen Bank Polska": "Дар ҳайати Volkswagen Financial Services",
       },
     },
     helpButton: {
@@ -11429,6 +11520,23 @@ export const dictionaries: Record<Lang, Dictionary> = {
         fullyOnline: "Відкрийте рахунок повністю онлайн від початку до кінця — не потрібно відвідувати відділення банку.",
         free: "Немає щомісячних комісій за обслуговування та вимог до мінімального залишку.",
         multicurrency: "Відкривайте рахунки у декількох валютах та обмінюйте за вигідними курсами.",
+      },
+      bankHighlights: {
+        "Bank Millennium": "Частина групи Millennium bcp",
+        "Bank Pekao S.A.": "2-й банк Польщі за активами",
+        "Bank Pocztowy": "4700+ поштових відділень",
+        "BNP Paribas Bank Polska": "Частина групи BNP Paribas",
+        "BOŚ Bank": "Спеціалізація — екологічні проєкти",
+        "Credit Agricole Bank Polska": "Частина групи Crédit Agricole",
+        "Erste Bank Polska": "Широка мережа відділень",
+        "ING Bank Śląski": "Лідер мобільного банкінгу",
+        "mBank": "Піонер онлайн-банкінгу",
+        "Nest Bank": "Повністю цифровий банк",
+        "PKO Bank Polski": "Найбільший банк Польщі",
+        "Plus Bank": "Обслуговування через plusbank24",
+        "Toyota Bank Polska": "Частина Toyota Financial Services",
+        "VeloBank": "Один із найновіших банків Польщі",
+        "Volkswagen Bank Polska": "Частина Volkswagen Financial Services",
       },
     },
     helpButton: {

@@ -54,17 +54,21 @@ function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string;
     multicurrency: t.guideCard.headlines.multicurrency,
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
+  // Fallback used whenever the tag-derived subtitle would be empty (a bank
+  // with 0 or only 1 of the 4 standard filter tags) so the tag-line slot on
+  // the card never renders blank — every bank shows some genuine plus point.
+  const fallbackHighlight = t.guideCard.bankHighlights[guide.name] ?? "";
   if (tags.length === 0) {
-    // No subtitle here: guide.cost/price_label can be a full sentence for
+    // No pricing text here: guide.cost/price_label can be a full sentence for
     // some banks (e.g. Plus Bank's tariff conditions), which looks broken
     // squeezed into this single-line slot. The always-visible description
-    // below already covers pricing details in full, so this line is left
-    // blank rather than truncating raw pricing text mid-word.
-    return { headline: t.guideCard.classicAccount, subtitle: "" };
+    // below already covers pricing details in full, so we show a short
+    // curated highlight instead of raw pricing text.
+    return { headline: t.guideCard.classicAccount, subtitle: fallbackHighlight };
   }
   const [first, ...rest] = tags;
   const headline = headlinePhrases[first] ?? tagLabels[first];
-  const subtitle = rest.map((tag) => tagLabels[tag]).join(" · ");
+  const subtitle = rest.length > 0 ? rest.map((tag) => tagLabels[tag]).join(" · ") : fallbackHighlight;
   return { headline, subtitle };
 }
 
