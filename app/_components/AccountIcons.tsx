@@ -1,5 +1,5 @@
 const ICON_PROPS = {
-  className: "h-5 w-5",
+  className: "h-[clamp(1rem,0.71rem+0.67vh,1.25rem)] w-[clamp(1rem,0.71rem+0.67vh,1.25rem)]",
   fill: "none",
   viewBox: "0 0 24 24",
   stroke: "currentColor",

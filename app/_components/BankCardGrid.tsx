@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { pressScale } from "../_lib/motion";
@@ -40,12 +40,7 @@ function moreBanksLabel(n: number, lang: Lang, t: Dictionary): string {
 // Headline replaces the old price display: the bank's single most useful
 // feature, in plain language, so the card leads with "what's in it for you"
 // instead of a number that was often just "0 zł" for most banks anyway.
-function buildHeadline(
-  guide: DocumentGuide,
-  currency: ReturnType<typeof useCurrency>["currency"],
-  rates: ReturnType<typeof useCurrency>["rates"],
-  t: Dictionary
-): { headline: string; subtitle: string } {
+function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string; subtitle: string } {
   const tagLabels: Record<string, string> = {
     no_pesel: t.guideCard.tags.noPesel,
     fully_online: t.guideCard.tags.fullyOnline,
@@ -60,7 +55,12 @@ function buildHeadline(
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
   if (tags.length === 0) {
-    return { headline: t.guideCard.classicAccount, subtitle: convertPlnText(guide.cost, currency, rates) };
+    // No subtitle here: guide.cost/price_label can be a full sentence for
+    // some banks (e.g. Plus Bank's tariff conditions), which looks broken
+    // squeezed into this single-line slot. The always-visible description
+    // below already covers pricing details in full, so this line is left
+    // blank rather than truncating raw pricing text mid-word.
+    return { headline: t.guideCard.classicAccount, subtitle: "" };
   }
   const [first, ...rest] = tags;
   const headline = headlinePhrases[first] ?? tagLabels[first];
@@ -264,27 +264,10 @@ function BankCard({
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
-  const [tagInfoOpen, setTagInfoOpen] = useState<string | null>(null);
-  const tagInfoRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!tagInfoOpen) return;
-
-    function handleClickOutside(event: MouseEvent) {
-      if (tagInfoRef.current && !tagInfoRef.current.contains(event.target as Node)) {
-        setTagInfoOpen(null);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [tagInfoOpen]);
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
-  const { headline, subtitle } = buildHeadline(guide, currency, rates, t);
+  const { headline, subtitle } = buildHeadline(guide, t);
   const cost = convertPlnText(guide.cost, currency, rates);
 
   // Extract currencies from price_label or cost field (e.g., "PLN, EUR, USD, GBP")
@@ -314,56 +297,18 @@ function BankCard({
       )}
 
       <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
-        <div className="flex w-full items-center gap-2.5">
+        <div className="flex w-full items-start gap-2.5">
           <BankAvatar name={guide.name} />
-          <p className="text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
+          <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">
+            {guide.name}{" "}
+            <span className="text-sm font-medium text-text-secondary [&_span[role='button']]:ml-1 [&_span[role='button']]:h-3.5 [&_span[role='button']]:w-3.5">
+              (<TextWithGlossary text={headline} />)
+            </span>
+          </p>
         </div>
 
         <div className="w-full min-w-0">
-          <div className="flex items-start gap-2" ref={tagInfoRef}>
-            <p className="line-clamp-2 min-h-6 text-sm leading-tight text-text-secondary flex-1">
-              <TextWithGlossary text={headline} />
-            </p>
-            {guide.tags && guide.tags.length > 0 && (
-              <div className="relative flex-shrink-0">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTagInfoOpen(tagInfoOpen === guide.tags![0] ? null : guide.tags![0]);
-                  }}
-                  className="inline-flex h-5 w-5 items-center justify-center rounded-full text-text-muted hover:text-text-secondary transition-colors"
-                  aria-label="More information"
-                >
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <circle cx="12" cy="12" r="10" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-4m0-4h.01" />
-                  </svg>
-                </button>
-                {tagInfoOpen === guide.tags![0] && (
-                  <div className="absolute right-0 top-full z-20 mt-2 w-64 rounded-xl border border-border-subtle bg-panel p-3 text-xs leading-relaxed text-text-secondary shadow-lg">
-                    <div className="flex items-start justify-between gap-2">
-                      <p>{gc.tagDescriptions?.[guide.tags![0] as keyof typeof gc.tagDescriptions] || ""}</p>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setTagInfoOpen(null);
-                        }}
-                        className="flex-shrink-0 text-text-muted hover:text-text-primary transition-colors"
-                        aria-label="Close"
-                      >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          <p className="mt-1.5 min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
+          <p className="min-h-[1.5rem] line-clamp-1 text-xs text-text-muted">
             {subtitle && <TextWithGlossary text={subtitle} />}
           </p>
           <div className="mt-1.5 flex min-h-[1.5rem] items-center gap-1.5">
@@ -372,6 +317,11 @@ function BankCard({
             </svg>
             <p className="text-xs text-text-muted">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
           </div>
+          {guide.description && (
+            <p className="mt-2 text-xs leading-relaxed text-text-secondary">
+              <TextWithGlossary text={guide.description} />
+            </p>
+          )}
         </div>
       </div>
 
