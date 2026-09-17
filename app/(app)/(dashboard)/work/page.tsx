@@ -584,7 +584,75 @@ export default function WorkPage() {
         subtitle={t.work.subtitle}
       />
 
-      <Reveal delay={40} className="mt-10">
+      <Reveal delay={160} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {CONTRACT_TYPES.map((type, index) => (
+            <Reveal key={type.name} delay={index * 40}>
+              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
+                <p className="text-xs text-text-muted">{type.subtitle}</p>
+                <ul className="mt-4 space-y-2.5">
+                  {type.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
+                      <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                {t.work.guides[type.key] && (
+                  <div className="mt-4">
+                    <HelpButton
+                      guideHeading={t.work.guides[type.key].heading}
+                      guideSteps={t.work.guides[type.key].steps}
+                      aiQuestion={t.work.guides[type.key].aiQuestion}
+                      label={t.helpButton.label}
+                    />
+                  </div>
+                )}
+              </div>
+            </Reveal>
+          ))}
+          <Reveal delay={80}>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">Umowa zlecenie</p>
+              <p className="mt-2 text-xs text-text-muted">Гражданско-правовой договор, ниже защита работника, ZUS частично обязателен (в зависимости от других источников дохода), нет оплачиваемого отпуска.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">Umowa o dzieło</p>
+              <p className="mt-2 text-xs text-text-muted">Договор на конкретный результат работы, ZUS и медстраховка НЕ уплачиваются — внимание: без неё нет доступа к NFZ бесплатно. Работодатели иногда предлагают её вместо трудового, чтобы сэкономить — для мигранта это риск остаться без легальной медстраховки и без пути к виду на жительство.</p>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="mt-5 rounded-[28px] bg-[#1c1f26] p-6">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+              {SPARKLE_ICON}
+            </span>
+            <p className="text-[15px] font-bold text-white">{t.work.faqHeading}</p>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {t.work.faqQuestions.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
+                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
+              >
+                {q} →
+              </button>
+            ))}
+          </div>
+          <p className="mt-3.5 text-xs text-white/40">{t.work.faqCaption}</p>
+        </div>
+      </Reveal>
+
+      <Reveal delay={40} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.salarySearch}</h2>
         <p className="mt-1 text-sm text-text-muted">{t.work.salarySearchSub}</p>
         <div className="mt-4 rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
@@ -675,9 +743,12 @@ export default function WorkPage() {
         </div>
       </Reveal>
 
+
+      <SalaryCalculator />
+
       <Reveal delay={120} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.jobSites}</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {JOB_SITES.map((site, index) => (
             <Reveal key={site.key} delay={index * 40}>
               <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
@@ -708,72 +779,32 @@ export default function WorkPage() {
               </div>
             </Reveal>
           ))}
-        </div>
-      </Reveal>
-
-      <Reveal delay={160} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {CONTRACT_TYPES.map((type, index) => (
-            <Reveal key={type.name} delay={index * 40}>
-              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
-                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
-                <p className="text-xs text-text-muted">{type.subtitle}</p>
-                <ul className="mt-4 space-y-2.5">
-                  {type.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
-                      <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                {t.work.guides[type.key] && (
-                  <div className="mt-4">
-                    <HelpButton
-                      guideHeading={t.work.guides[type.key].heading}
-                      guideSteps={t.work.guides[type.key].steps}
-                      aiQuestion={t.work.guides[type.key].aiQuestion}
-                      label={t.helpButton.label}
-                    />
-                  </div>
-                )}
+          <Reveal delay={160}>
+            <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright">PU</span>
+              <p className="mt-3 text-sm font-semibold text-text-primary">PUP</p>
+              <p className="mt-1 flex-1 text-xs text-text-muted">Государственная биржа труда — бесплатная регистрация, поиск вакансий, пособие по безработице</p>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <Link
+                  href="https://praca.gov.pl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-[background-color,border-color,color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent [@media(hover:hover)_and_(pointer:fine)]:hover:bg-accent [@media(hover:hover)_and_(pointer:fine)]:hover:text-white motion-reduce:transition-none ${pressScale}`}
+                >
+                  Найти PUP
+                  <span aria-hidden>→</span>
+                </Link>
               </div>
-            </Reveal>
-          ))}
-        </div>
-
-        <div className="mt-5 rounded-[28px] bg-[#1c1f26] p-6">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
-              {SPARKLE_ICON}
-            </span>
-            <p className="text-[15px] font-bold text-white">{t.work.faqHeading}</p>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {t.work.faqQuestions.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
-                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
-              >
-                {q} →
-              </button>
-            ))}
-          </div>
-          <p className="mt-3.5 text-xs text-white/40">{t.work.faqCaption}</p>
+            </div>
+          </Reveal>
         </div>
       </Reveal>
-
-      <SalaryCalculator />
 
       <Reveal delay={190} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">Признание диплома (нострификация)</h2>
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
           <p className="text-sm text-text-secondary">
-            Для регулируемых профессий (врач, юрист, инженер-строитель, архитектор, фармацевт, ветеринар и др.) диплом нужно официально признать в Польше, прежде чем работать по специальности. Обращайтесь в профильную палату (например, Naczelna Izba Lekarska для врачей) или в Министерство науки и высшего образования для нерегулируемых специальностей.
+            Для регулируемых профессий (врач, юрист, инженер-строитель, архитектор, фармацевт, ветеринар и др.) диплом нужно официально признать в Польше, прежде чем работать по специальности. Обращайтесь в профильную палату (например, Naczelna Izba Lekarska для врачей) или в Министерство науки и высшего образования.
           </p>
           <Link
             href="https://www.gov.pl/web/nauka/nostryfikacja-dyplomow"
@@ -788,24 +819,6 @@ export default function WorkPage() {
       </Reveal>
 
       <Reveal delay={220} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-text-primary">Типы трудовых договоров</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          <Reveal delay={0}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">Umowa zlecenie</p>
-              <p className="mt-2 text-xs text-text-muted">Гражданско-правовой договор, ниже защита работника, ZUS частично обязателен (в зависимости от других источников дохода), нет оплачиваемого отпуска.</p>
-            </div>
-          </Reveal>
-          <Reveal delay={40}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">Umowa o dzieło</p>
-              <p className="mt-2 text-xs text-text-muted">Договор на конкретный результат работы, ZUS и медстраховка НЕ уплачиваются — внимание: без неё нет доступа к NFZ бесплатно. Работодатели иногда предлагают её вместо трудового, чтобы сэкономить — для мигранта это риск остаться без легальной медстраховки.</p>
-            </div>
-          </Reveal>
-        </div>
-      </Reveal>
-
-      <Reveal delay={250} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">На что обратить внимание при трудоустройстве</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-3">
           <Reveal delay={0}>
@@ -823,27 +836,9 @@ export default function WorkPage() {
           <Reveal delay={80}>
             <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm">
               <p className="text-sm font-semibold text-red-400">Обещание оформить документы 'потом'</p>
-              <p className="mt-2 text-xs text-text-secondary">Легализация (виза, ZUS, PESEL) должна начинаться сразу при устройстве. Отсрочки часто означают, что работодатель не планирует оформлять вас официально.</p>
+              <p className="mt-2 text-xs text-text-secondary">Легализация должна начинаться сразу при устройстве. Отсрочки часто означают, что работодатель не планирует оформлять вас официально.</p>
             </div>
           </Reveal>
-        </div>
-      </Reveal>
-
-      <Reveal delay={280} className="mt-12">
-        <h2 className="text-xl font-bold tracking-tight text-text-primary">PUP — государственная биржа труда</h2>
-        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-          <p className="text-sm text-text-secondary">
-            Государственная биржа труда (Powiatowy Urząd Pracy) — можно бесплатно встать на учёт, искать вакансии, в некоторых случаях получить пособие по безработице или направление на бесплатные курсы переквалификации.
-          </p>
-          <Link
-            href="https://praca.gov.pl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-white"
-          >
-            Найти ближайший PUP
-            <span aria-hidden>→</span>
-          </Link>
         </div>
       </Reveal>
     </div>
