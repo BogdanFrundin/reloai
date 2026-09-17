@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import ToggleSwitch from "../../../_components/ToggleSwitch";
@@ -17,6 +17,49 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 
+const ICON_USER = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <circle cx="12" cy="8" r="4" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
+  </svg>
+);
+
+const ICON_GLOBE = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <circle cx="12" cy="12" r="9" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z" />
+  </svg>
+);
+
+const ICON_COIN = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <circle cx="12" cy="12" r="9" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 15.5c0 1.1 1.1 2 2.5 2s2.5-.9 2.5-2-1.1-1.5-2.5-2-2.5-.9-2.5-2 1.1-2 2.5-2 2.5.9 2.5 2M12 7.5v1m0 7v1" />
+  </svg>
+);
+
+const ICON_BELL = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 8a6 6 0 1112 0c0 4 1.5 5.5 1.5 5.5H4.5S6 12 6 8z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 17a2.5 2.5 0 005 0" />
+  </svg>
+);
+
+const ICON_THEME = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <circle cx="12" cy="12" r="4" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.5-6.5L16 7m-8 8l-1.5 1.5M17.5 17.5L16 16M8 7 6.5 5.5" />
+  </svg>
+);
+
+const ICON_DANGER = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" />
+  </svg>
+);
+
+type SectionKey = "account" | "language" | "currency" | "notifications" | "theme" | "danger";
+
 export default function SettingsPage() {
   const { lang, setLang, t } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -24,6 +67,25 @@ export default function SettingsPage() {
   const { user, profile, signOut, refreshProfile } = useAuth();
   const router = useRouter();
   const s = t.settings;
+
+  const SECTIONS: { key: SectionKey; label: string; icon: ReactNode; danger?: boolean }[] = [
+    { key: "account", label: s.accountSection, icon: ICON_USER },
+    { key: "language", label: s.languageSection, icon: ICON_GLOBE },
+    { key: "currency", label: s.currencySection, icon: ICON_COIN },
+    { key: "notifications", label: s.notifications, icon: ICON_BELL },
+    { key: "theme", label: s.themeSection, icon: ICON_THEME },
+    { key: "danger", label: s.dangerSection, icon: ICON_DANGER, danger: true },
+  ];
+
+  const [activeSection, setActiveSection] = useState<SectionKey>("account");
+
+  // A couple of places elsewhere in the app link to /settings#currency-section
+  // to jump straight to the currency picker. Now that sections are tabbed
+  // instead of one long scroll, honor that by switching to the matching tab
+  // on load instead of just scrolling to a spot on the page.
+  useEffect(() => {
+    if (window.location.hash === "#currency-section") setActiveSection("currency");
+  }, []);
 
   const [notifications, setNotifications] = useState<Record<string, boolean>>({
     email: profile?.email_newsletter ?? true,
@@ -103,223 +165,254 @@ export default function SettingsPage() {
     <div className="px-6 pb-8 lg:px-10 lg:pb-10">
       <PageHeader title={s.title} subtitle={s.subtitle} center />
 
-      <div className="mt-4 max-w-4xl space-y-6 mx-auto">
-        {/* Account */}
+      <div className="mt-4 max-w-5xl space-y-6 mx-auto">
         <Reveal>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">
-              {s.accountSection}{" "}
-              {accountSaved && <span className="text-xs font-normal text-accent-bright">{s.saved}</span>}
-            </p>
-            <div className="mt-4 space-y-3">
-              <label className="block">
-                <span className="text-xs text-text-muted">{s.nameLabel}</span>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) => {
-                    setName(event.target.value);
-                    setAccountSaved(false);
-                  }}
-                  className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
-                />
-              </label>
-              <label className="block">
-                <span className="text-xs text-text-muted">{s.emailLabel}</span>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => {
-                    setEmail(event.target.value);
-                    setAccountSaved(false);
-                  }}
-                  className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
-                />
-              </label>
-              <button
-                type="button"
-                onClick={handleSaveAccount}
-                disabled={savingAccount}
-                className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-60 ${pressScale}`}
-              >
-                {s.saveBtn}
-              </button>
+          <div className="flex flex-col gap-6 lg:flex-row">
+            {/* Section nav */}
+            <nav className="flex flex-shrink-0 gap-1 overflow-x-auto pb-1 lg:w-52 lg:flex-col lg:overflow-visible lg:pb-0">
+              {SECTIONS.map((section) => {
+                const isActive = activeSection === section.key;
+                return (
+                  <button
+                    key={section.key}
+                    type="button"
+                    onClick={() => setActiveSection(section.key)}
+                    className={`flex flex-shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-left text-sm font-medium transition-colors duration-150 ${
+                      isActive
+                        ? section.danger
+                          ? "bg-red-500/10 text-red-400"
+                          : "bg-accent/10 text-accent-bright"
+                        : section.danger
+                          ? "text-red-400/70 hover:bg-red-500/5 hover:text-red-400"
+                          : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                    }`}
+                  >
+                    <span className="flex-shrink-0">{section.icon}</span>
+                    <span className="whitespace-nowrap">{section.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Active section content */}
+            <div className="min-w-0 flex-1">
+              {activeSection === "account" && (
+                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">
+                    {s.accountSection}{" "}
+                    {accountSaved && <span className="text-xs font-normal text-accent-bright">{s.saved}</span>}
+                  </p>
+                  <div className="mt-4 space-y-3">
+                    <label className="block">
+                      <span className="text-xs text-text-muted">{s.nameLabel}</span>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(event) => {
+                          setName(event.target.value);
+                          setAccountSaved(false);
+                        }}
+                        className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="text-xs text-text-muted">{s.emailLabel}</span>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(event) => {
+                          setEmail(event.target.value);
+                          setAccountSaved(false);
+                        }}
+                        className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleSaveAccount}
+                      disabled={savingAccount}
+                      className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-60 ${pressScale}`}
+                    >
+                      {s.saveBtn}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === "language" && (
+                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">
+                    {s.languageSection}{" "}
+                    {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
+                  </p>
+                  <p className="mt-1 text-xs text-text-muted">{s.languageDesc}</p>
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {LANGUAGES.map((l) => (
+                      <button
+                        key={l.code}
+                        type="button"
+                        onClick={() => handleLangChange(l.code)}
+                        className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                          lang === l.code
+                            ? "border-accent/50 bg-accent/10 text-accent-bright"
+                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                        }`}
+                      >
+                        <Image
+                          src={getFlagUrl(l.flag, "sm")}
+                          alt={l.name}
+                          width={24}
+                          height={18}
+                          className="rounded-sm"
+                          unoptimized
+                        />
+                        {l.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeSection === "currency" && (
+                <div id="currency-section" className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">{s.currencySection}</p>
+                  <p className="mt-1 text-xs text-text-muted">{s.currencyDesc}</p>
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {CURRENCIES.map((c) => (
+                      <button
+                        key={c.code}
+                        type="button"
+                        onClick={() => setCurrency(c.code)}
+                        className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                          currency === c.code
+                            ? "border-accent/50 bg-accent/10 text-accent-bright"
+                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                        }`}
+                      >
+                        <Image
+                          src={getFlagUrl(c.flag, "sm")}
+                          alt={getCurrencyName(c.code, lang)}
+                          width={24}
+                          height={18}
+                          className="flex-shrink-0 rounded-sm"
+                          unoptimized
+                        />
+                        <span className="min-w-0 flex-1 truncate text-left">{getCurrencyName(c.code, lang)}</span>
+                        <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeSection === "notifications" && (
+                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
+                  <div className="mt-4 space-y-4">
+                    {NOTIFICATION_SETTINGS.map((setting) => (
+                      <div key={setting.key} className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-medium text-text-primary">{setting.label}</p>
+                          <p className="text-xs text-text-muted">{setting.description}</p>
+                        </div>
+                        <div
+                          className={
+                            savingNotifications[setting.key] ? "pointer-events-none opacity-50 transition-opacity" : "transition-opacity"
+                          }
+                        >
+                          <ToggleSwitch
+                            checked={notifications[setting.key]}
+                            onChange={(checked) => handleNotificationChange(setting.key, checked)}
+                            label={setting.label}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeSection === "theme" && (
+                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">{s.themeSection}</p>
+                  <p className="mt-1 text-xs text-text-muted">{s.themeDesc}</p>
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setTheme("light")}
+                      aria-pressed={theme === "light"}
+                      className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                        theme === "light"
+                          ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                          : "border-border-subtle bg-surface-1 hover:border-border-strong"
+                      }`}
+                    >
+                      <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg bg-white p-2.5">
+                        <div className="flex gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                        </div>
+                        <div className="h-1.5 w-3/4 rounded-full bg-slate-300" />
+                        <div className="h-1.5 w-1/2 rounded-full bg-slate-200" />
+                        <div className="h-1.5 w-2/3 rounded-full bg-slate-200" />
+                      </div>
+                      <span
+                        className={`text-sm font-medium ${theme === "light" ? "text-text-primary" : "text-text-secondary"}`}
+                      >
+                        {s.themeLight}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setTheme("dark")}
+                      aria-pressed={theme === "dark"}
+                      className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                        theme === "dark"
+                          ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                          : "border-border-subtle bg-surface-1 hover:border-border-strong"
+                      }`}
+                    >
+                      <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg border border-white/10 bg-[#131316] p-2.5">
+                        <div className="flex gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+                        </div>
+                        <div className="h-1.5 w-3/4 rounded-full bg-white/25" />
+                        <div className="h-1.5 w-1/2 rounded-full bg-white/15" />
+                        <div className="h-1.5 w-2/3 rounded-full bg-white/15" />
+                      </div>
+                      <span
+                        className={`text-sm font-medium ${theme === "dark" ? "text-text-primary" : "text-text-secondary"}`}
+                      >
+                        {s.themeDark}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === "danger" && (
+                <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6 backdrop-blur-sm">
+                  <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
+                  <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
+                  <button
+                    type="button"
+                    onClick={() => setDeleteConfirmOpen(true)}
+                    className={`mt-4 rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-sm font-semibold text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 ${pressScale}`}
+                  >
+                    {s.deleteAccountBtn}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </Reveal>
 
-        {/* Language */}
+        {/* Log out — always reachable regardless of which section is open */}
         <Reveal delay={50}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">
-              {s.languageSection}{" "}
-              {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
-            </p>
-            <p className="mt-1 text-xs text-text-muted">{s.languageDesc}</p>
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {LANGUAGES.map((l) => (
-                <button
-                  key={l.code}
-                  type="button"
-                  onClick={() => handleLangChange(l.code)}
-                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
-                    lang === l.code
-                      ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
-                  }`}
-                >
-                  <Image
-                    src={getFlagUrl(l.flag, "sm")}
-                    alt={l.name}
-                    width={24}
-                    height={18}
-                    className="rounded-sm"
-                    unoptimized
-                  />
-                  {l.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Currency */}
-        <Reveal delay={75}>
-          <div id="currency-section" className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{s.currencySection}</p>
-            <p className="mt-1 text-xs text-text-muted">{s.currencyDesc}</p>
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {CURRENCIES.map((c) => (
-                <button
-                  key={c.code}
-                  type="button"
-                  onClick={() => setCurrency(c.code)}
-                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
-                    currency === c.code
-                      ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
-                  }`}
-                >
-                  <Image
-                    src={getFlagUrl(c.flag, "sm")}
-                    alt={getCurrencyName(c.code, lang)}
-                    width={24}
-                    height={18}
-                    className="flex-shrink-0 rounded-sm"
-                    unoptimized
-                  />
-                  <span className="min-w-0 flex-1 truncate text-left">{getCurrencyName(c.code, lang)}</span>
-                  <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Notifications */}
-        <Reveal delay={100}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
-            <div className="mt-4 space-y-4">
-              {NOTIFICATION_SETTINGS.map((setting) => (
-                <div key={setting.key} className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-text-primary">{setting.label}</p>
-                    <p className="text-xs text-text-muted">{setting.description}</p>
-                  </div>
-                  <ToggleSwitch
-                    checked={notifications[setting.key]}
-                    onChange={(checked) => handleNotificationChange(setting.key, checked)}
-                    label={setting.label}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Theme */}
-        <Reveal delay={150}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{s.themeSection}</p>
-            <p className="mt-1 text-xs text-text-muted">{s.themeDesc}</p>
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setTheme("light")}
-                aria-pressed={theme === "light"}
-                className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-                  theme === "light"
-                    ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
-                    : "border-border-subtle bg-surface-1 hover:border-border-strong"
-                }`}
-              >
-                {/* Fixed preview mockup: always shows what light theme looks like, regardless of the live theme */}
-                <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg bg-white p-2.5">
-                  <div className="flex gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  </div>
-                  <div className="h-1.5 w-3/4 rounded-full bg-slate-300" />
-                  <div className="h-1.5 w-1/2 rounded-full bg-slate-200" />
-                  <div className="h-1.5 w-2/3 rounded-full bg-slate-200" />
-                </div>
-                <span
-                  className={`text-sm font-medium ${theme === "light" ? "text-text-primary" : "text-text-secondary"}`}
-                >
-                  {s.themeLight}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setTheme("dark")}
-                aria-pressed={theme === "dark"}
-                className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-                  theme === "dark"
-                    ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
-                    : "border-border-subtle bg-surface-1 hover:border-border-strong"
-                }`}
-              >
-                {/* Fixed preview mockup: always shows what dark theme looks like, regardless of the live theme */}
-                <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0d0d0f] p-2.5">
-                  <div className="flex gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
-                  </div>
-                  <div className="h-1.5 w-3/4 rounded-full bg-white/25" />
-                  <div className="h-1.5 w-1/2 rounded-full bg-white/15" />
-                  <div className="h-1.5 w-2/3 rounded-full bg-white/15" />
-                </div>
-                <span
-                  className={`text-sm font-medium ${theme === "dark" ? "text-text-primary" : "text-text-secondary"}`}
-                >
-                  {s.themeDark}
-                </span>
-              </button>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Danger zone */}
-        <Reveal delay={175}>
-          <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
-            <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
-            <button
-              type="button"
-              onClick={() => setDeleteConfirmOpen(true)}
-              className={`mt-4 rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-sm font-semibold text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 ${pressScale}`}
-            >
-              {s.deleteAccountBtn}
-            </button>
-          </div>
-        </Reveal>
-
-        {/* Log out */}
-        <Reveal delay={200}>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}

@@ -39,7 +39,7 @@ export function RouteSummaryCard({
         : "bg-red-500/15 text-red-400";
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-500/10 via-[#1c1f26] to-[#1c1f26] p-6 shadow-lg shadow-purple-500/20">
+    <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-purple-500/10 via-[#1c1f26] to-[#1c1f26] p-6 shadow-lg shadow-accent/20">
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
