@@ -408,7 +408,7 @@ function SalaryCalculator() {
     zus = brutto * 0.1371;
     const healthBase = brutto - zus;
     healthInsurance = healthBase * 0.09;
-    const taxBase = Math.floor((brutto - zus - 250) * 100) / 100;
+    const taxBase = Math.max(0, Math.floor((brutto - zus - 250) * 100) / 100);
     const baseTax = Math.max(0, taxBase * 0.12 - 300);
     tax = baseTax;
     netto = Math.round((brutto - zus - healthInsurance - tax) * 100) / 100;
@@ -423,7 +423,8 @@ function SalaryCalculator() {
   } else if (contractType === "b2b" && brutto > 0) {
     const avgZus = 1700;
     const taxRate = b2bTaxType === "12" ? 0.12 : 0.19;
-    const taxAmount = Math.round((brutto - avgZus) * taxRate * 100) / 100;
+    const taxableBase = Math.max(0, brutto - avgZus);
+    const taxAmount = Math.round(taxableBase * taxRate * 100) / 100;
     netto = Math.round((brutto - avgZus - taxAmount) * 100) / 100;
 
     breakdown = [
