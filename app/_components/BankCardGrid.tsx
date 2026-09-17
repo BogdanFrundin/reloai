@@ -450,42 +450,44 @@ export default function BankCardGrid({
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => setActiveTag(null)}
-          className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
-            activeTag === null
-              ? "border-accent bg-accent/15 text-accent-bright"
-              : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
-          }`}
-        >
-          {gc.allTag}
-        </button>
-        {TAG_ORDER.map((tag) => (
+      <div className="mb-6 rounded-xl border border-border-subtle bg-surface-1 p-3 sm:p-4">
+        <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
           <button
-            key={tag}
             type="button"
-            onClick={() => setActiveTag(tag)}
+            onClick={() => setActiveTag(null)}
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
-              activeTag === tag
-                ? "border-accent bg-accent/15 text-accent-bright"
+              activeTag === null
+                ? "border-accent bg-accent/20 text-accent-bright"
                 : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
             }`}
           >
-            {tagLabels[tag]}
+            {gc.allTag}
           </button>
-        ))}
-      </div>
+          {TAG_ORDER.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setActiveTag(tag)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+                activeTag === tag
+                  ? "border-accent bg-accent/15 text-accent-bright"
+                  : "border-border-strong bg-surface-1 text-text-muted hover:text-text-primary"
+              }`}
+            >
+              {tagLabels[tag]}
+            </button>
+          ))}
+        </div>
 
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="max-w-sm flex-1">
-          <input
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder={searchPlaceholder ?? gc.searchGeneric}
-            className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-          />
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="max-w-sm flex-1">
+            <input
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder={searchPlaceholder ?? gc.searchGeneric}
+              className="w-full rounded-full border border-border-strong bg-surface-hover px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+            />
+          </div>
         </div>
       </div>
 
