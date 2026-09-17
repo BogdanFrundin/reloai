@@ -546,6 +546,14 @@ export type Dictionary = {
     faqCaption: string;
     faqQuestions: [string, string, string, string];
     salaryCalculator: {
+      title: string;
+      grossSalaryLabel: string;
+      grossSalaryPlaceholder: string;
+      contractTypeLabel: string;
+      contractTypeEmployment: string;
+      contractTypeB2b: string;
+      under26Label: string;
+      taxFormLabel: string;
       brutto: string;
       zus: string;
       zusTooltip: string;
@@ -2172,6 +2180,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "What do I lose if I work without a contract?",
       ],
       salaryCalculator: {
+        title: "Salary Calculator",
+        grossSalaryLabel: "Gross salary (PLN)",
+        grossSalaryPlaceholder: "Enter amount",
+        contractTypeLabel: "Contract type",
+        contractTypeEmployment: "Employment contract",
+        contractTypeB2b: "B2B",
+        under26Label: "I'm under 26 (0% tax up to 85,528 PLN/year)",
+        taxFormLabel: "Tax form",
         brutto: "Gross",
         zus: "ZUS",
         zusTooltip: "ZUS (social insurance)",
@@ -4027,6 +4043,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Что теряю, если работаю без договора?",
       ],
       salaryCalculator: {
+        title: "Калькулятор зарплаты",
+        grossSalaryLabel: "Зарплата брутто (PLN)",
+        grossSalaryPlaceholder: "Введите сумму",
+        contractTypeLabel: "Тип договора",
+        contractTypeEmployment: "Трудовой договор",
+        contractTypeB2b: "B2B",
+        under26Label: "Мне меньше 26 лет (0% налог до 85 528 PLN/год)",
+        taxFormLabel: "Форма налогообложения",
         brutto: "Брутто",
         zus: "ZUS",
         zusTooltip: "ZUS (соц. страхование)",
@@ -5879,6 +5903,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Shartnomasiz ishlasam nimani yo'qotaman?",
       ],
       salaryCalculator: {
+        title: "Maosh kalkulyatori",
+        grossSalaryLabel: "Brutto maosh (PLN)",
+        grossSalaryPlaceholder: "Summa kiriting",
+        contractTypeLabel: "Shartnoma turi",
+        contractTypeEmployment: "Mehnat shartnomasi",
+        contractTypeB2b: "B2B",
+        under26Label: "Men 26 yoshdan kam (0% soliq 85 528 PLN/yilgacha)",
+        taxFormLabel: "Soliq shakli",
         brutto: "Brutto",
         zus: "ZUS",
         zusTooltip: "ZUS (ijtimoiy sug'urta)",
@@ -7728,6 +7760,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Sözleşmesiz çalışırsam neyi kaybederim?",
       ],
       salaryCalculator: {
+        title: "Maaş Hesaplayıcısı",
+        grossSalaryLabel: "Brüt maaş (PLN)",
+        grossSalaryPlaceholder: "Tutarı girin",
+        contractTypeLabel: "Sözleşme türü",
+        contractTypeEmployment: "İşe alım sözleşmesi",
+        contractTypeB2b: "B2B",
+        under26Label: "26 yaşın altındayım (yılda 85.528 PLN'ye kadar %0 vergi)",
+        taxFormLabel: "Vergi formu",
         brutto: "Brüt",
         zus: "ZUS",
         zusTooltip: "ZUS (sosyal sigorta)",
@@ -9577,6 +9617,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Агар бе шартнома кор кунам, чиро аз даст медиҳам?",
       ],
       salaryCalculator: {
+        title: "Ҳисобкунаки маошҳо",
+        grossSalaryLabel: "Маошҳои брутто (PLN)",
+        grossSalaryPlaceholder: "Ҷумро ворид кунед",
+        contractTypeLabel: "Намуди шартнома",
+        contractTypeEmployment: "Шартномаи кори",
+        contractTypeB2b: "B2B",
+        under26Label: "Ман аз 26 сол ҳам наҳ (0% маликиёт то 85 528 PLN/сол)",
+        taxFormLabel: "Намуди маликиёт",
         brutto: "Брутто",
         zus: "ZUS",
         zusTooltip: "ZUS (бима ҳамаҳалӣ)",
@@ -11430,6 +11478,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Що я втрачаю, якщо працюю без договору?",
       ],
       salaryCalculator: {
+        title: "Калькулятор зарплати",
+        grossSalaryLabel: "Брутто зарплата (PLN)",
+        grossSalaryPlaceholder: "Введіть суму",
+        contractTypeLabel: "Тип контракту",
+        contractTypeEmployment: "Трудовий договір",
+        contractTypeB2b: "B2B",
+        under26Label: "Мені менше 26 років (0% податку до 85 528 PLN/рік)",
+        taxFormLabel: "Форма оподаткування",
         brutto: "Брутто",
         zus: "ZUS",
         zusTooltip: "ZUS (соціальне страхування)",

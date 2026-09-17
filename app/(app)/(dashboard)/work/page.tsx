@@ -472,22 +472,22 @@ function SalaryCalculator() {
 
   return (
     <Reveal delay={280} className="mt-12">
-      <h2 className="text-xl font-bold tracking-tight text-text-primary">Калькулятор зарплаты</h2>
+      <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.salaryCalculator.title}</h2>
       <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
         <div className="space-y-4">
           <div>
-            <label className="text-xs font-semibold text-text-muted">Зарплата брутто (PLN)</label>
+            <label className="text-xs font-semibold text-text-muted">{t.work.salaryCalculator.grossSalaryLabel}</label>
             <input
               type="number"
               value={bruttoInput}
               onChange={(e) => setBruttoInput(e.target.value)}
-              placeholder="Введите сумму"
+              placeholder={t.work.salaryCalculator.grossSalaryPlaceholder}
               className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-accent/50 focus:bg-white/[0.08]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-text-muted">Тип договора</label>
+            <label className="text-xs font-semibold text-text-muted">{t.work.salaryCalculator.contractTypeLabel}</label>
             <div className="mt-2 flex gap-3">
               <button
                 onClick={() => setContractType("employment")}
@@ -497,7 +497,7 @@ function SalaryCalculator() {
                     : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
                 }`}
               >
-                Трудовой договор
+                {t.work.salaryCalculator.contractTypeEmployment}
               </button>
               <button
                 onClick={() => setContractType("b2b")}
@@ -507,7 +507,7 @@ function SalaryCalculator() {
                     : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
                 }`}
               >
-                B2B
+                {t.work.salaryCalculator.contractTypeB2b}
               </button>
             </div>
           </div>
@@ -520,14 +520,14 @@ function SalaryCalculator() {
                 onChange={(e) => setUnder26(e.target.checked)}
                 className="h-4 w-4 rounded border-border-strong"
               />
-              <span className="text-xs font-semibold text-text-muted">Мне меньше 26 лет (0% налог до 85 528 PLN/год)</span>
+              <span className="text-xs font-semibold text-text-muted">{t.work.salaryCalculator.under26Label}</span>
             </label>
           )}
 
           {contractType === "b2b" && (
             <>
               <div>
-                <label className="text-xs font-semibold text-text-muted">Форма налогообложения</label>
+                <label className="text-xs font-semibold text-text-muted">{t.work.salaryCalculator.taxFormLabel}</label>
                 <div className="mt-2 flex gap-3">
                   <button
                     onClick={() => setB2bTaxType("12")}
