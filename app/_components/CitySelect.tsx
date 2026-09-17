@@ -50,7 +50,7 @@ export default function CitySelect({
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-white/[0.1] py-2 pl-4 pr-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 focus:border-accent focus:outline-none"
+          className="inline-flex items-center gap-2 rounded-xl border border-border-strong bg-white/[0.1] py-2 pl-4 pr-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 focus:border-accent focus:outline-none"
         >
           {selected ?? placeholder}
           <span className={`text-text-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`}>{CHEVRON_ICON}</span>
