@@ -119,7 +119,7 @@ function DistrictCard({
             {d.district.slice(0, 2).toUpperCase()}
           </span>
           {d.is_top && (
-            <span className="rounded-full border border-accent/50 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright shadow-[0_0_30px_-12px_var(--accent)]">
+            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-400 shadow-[0_0_30px_-12px_rgb(217,119,6)]">
               {t.housing.recommended}
             </span>
           )}
@@ -147,13 +147,15 @@ function DistrictCard({
                 </button>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => setExpandDescription(true)}
-                className="mt-2 inline-flex rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
-              >
-                Развернуть
-              </button>
+              <div className="mt-2 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setExpandDescription(true)}
+                  className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
+                >
+                  Развернуть
+                </button>
+              </div>
             )}
           </div>
         )}
