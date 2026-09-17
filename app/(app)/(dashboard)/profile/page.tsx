@@ -443,7 +443,7 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className="flex w-full items-center justify-center py-2 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-red-400"
+            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
           >
             {p.logOut}
           </button>
