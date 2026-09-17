@@ -415,7 +415,7 @@ export type Dictionary = {
     visitSite: string;
     websiteDescs: { olx: string; otodom: string; gratka: string };
     tips: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
-    topDistrictDescs: { mokotow: string; wola: string; zoliborz: string; ochota: string };
+    topDistrictDescs: { mokotow: string; wola: string; zoliborz: string; ochota: string; ursynow: string; wawer: string; wesola: string; wilanow: string };
     bestValueBadge: string;
     expatsChoiceBadge: string;
     recommended: string;
@@ -1794,6 +1794,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Modern district with lots of new developments, close to the center.",
         zoliborz: "Cozy, safe, a favorite among релокантов.",
         ochota: "Quiet district near the center, great infrastructure, metro, popular with students and релокантов.",
+        ursynow: "Above average. Large southern district, mostly multi-story buildings but with wide boulevards and parks; near SGGW campus, many students and young families. Good connection to center — end station of metro M1.",
+        wawer: "Below average. Warsaw's largest district by area, southeastern outskirts — private houses, pine forests, dacha atmosphere. Weaker public transport, but plenty of space and quiet for affordable prices.",
+        wesola: "Average. Smallest and most remote district on the east side of the city, almost a separate village — low-rise buildings, greenery, minimal noise. Longer commute to center, but prices and peace make up for it.",
+        wilanow: "Above average. Prestigious southern district near Wilanów Palace and Park — new development, families with children, developed infrastructure. No metro, but good bus and tram connections.",
       },
       bestValueBadge: "Best value",
       expatsChoiceBadge: "Релокантов' choice",
@@ -3615,6 +3619,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Современный район, много новостроек, близко к центру.",
         zoliborz: "Уютный, безопасный, любимый среди релокантов.",
         ochota: "Тихий район рядом с центром, хорошая инфраструктура, метро, популярен среди студентов и релокантов.",
+        ursynow: "Выше среднего. Большой южный район, застроен в основном многоэтажками, но с широкими бульварами и парками; рядом кампус SGGW, много студентов и молодых семей. Хорошая связь с центром — конечная станция метро M1.",
+        wawer: "Ниже среднего. Самый большой по площади район Варшавы, южно-восточная окраина — частные дома, сосновые леса, дачная атмосфера. Общественный транспорт слабее, зато простор и тишина за небольшие деньги.",
+        wesola: "Средний. Самый маленький и удалённый район на востоке города, почти отдельный посёлок — низкая застройка, зелень, мало шума. Добираться до центра дольше, но цены и спокойствие компенсируют.",
+        wilanow: "Выше среднего. Престижный южный район рядом с Вилянувским дворцом и парком — новая застройка, семьи с детьми, развитая инфраструктура. Метро нет, но хорошее автобусное и трамвайное сообщение.",
       },
       bestValueBadge: "Рекомендуем",
       expatsChoiceBadge: "Выбор релокантов",
@@ -5433,6 +5441,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Zamonaviy tuman, yangi qurilishlar ko'p, markazga yaqin.",
         zoliborz: "Qulay, xavfsiz, chet elliklar orasida sevimli.",
         ochota: "Markazga yaqin tinch tuman, infratuzilmasi yaxshi, metro bor, talabalar va chet elliklar orasida mashhur.",
+        ursynow: "Mingini yuqorida. Katta janubiy tuman, asosan ko'p qavatli binolar, lekin keng bulvarlar va parklar bor; SGGW kampusi yaqinida, ko'p talabalar va yosh oilalar. Markazga yaxshi aloqa — M1 metro stantsiyasi.",
+        wawer: "Mingini pastroq. Varshava'ning maydon bo'yicha eng katta tumani, janub-sharqiy chegara — shaxsiy uylar, qarag'ay o'rmanlari, dacha muhiti. Umumiy transport zaifroq, lekin ko'p maydon va jimlik arzon narxda.",
+        wesola: "Mingini o'rtasi. Sharqida eng kichik va masofaviy tuman, deyarli alohida qishloq — past qurilishlar, ko'kalamzorlik, kam shovqin. Markazga uzoqroq, lekin narxlar va tinchlik to'ldiradi.",
+        wilanow: "Mingini yuqorida. Prestijli janubiy tuman Vilyanuv saroyi va parki yaqinida — yangi qurilishlar, bolali oilalar, rivojlantirilgan infratuzilma. Metro yo'q, lekin yaxshi avtobas va tramvay aloqasi.",
       },
       bestValueBadge: "Eng foydali",
       expatsChoiceBadge: "Chet elliklar tanlovi",
@@ -7248,6 +7260,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Modern bir ilçe, çok sayıda yeni inşaat, merkeze yakın.",
         zoliborz: "Rahat, güvenli, göçmenler arasında favori.",
         ochota: "Merkeze yakın sakin bir ilçe, altyapısı iyi, metro var, öğrenciler ve göçmenler arasında popüler.",
+        ursynow: "Orta fiyat seviyesi. Geniş güney ilçesi, çoğunlukla apartmanlar, ancak geniş bulvarlar ve parklar var; SGGW kampüsü yakınında, birçok öğrenci ve genç aile. Merkeze iyi ulaşım — M1 metro istasyonu.",
+        wawer: "Daha düşük fiyat seviyesi. Varşova'nın alan açısından en büyük ilçesi, güneydoğu kenarı — özel evler, çam ormanları, köy havası. Toplu taşıma daha zayıf, ancak çok alan ve sakinlik ucuza.",
+        wesola: "Orta fiyat seviyesi. Doğuda en küçük ve uzak ilçe, neredeyse ayrı bir köy — düşük yapılar, yeşillik, az gürültü. Merkeze daha uzak, ancak fiyatlar ve huzur telafi eder.",
+        wilanow: "Orta-yüksek fiyat seviyesi. Prestijli güney ilçesi Wilanów Sarayı ve parkı yakınında — yeni inşaatlar, aileli çiftler, gelişmiş altyapı. Metro yok, ancak iyi otobüs ve tramvay bağlantısı.",
       },
       bestValueBadge: "En iyi değer",
       expatsChoiceBadge: "Göçmenlerin tercihi",
@@ -9063,6 +9079,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Ноҳияи муосир, бисёр биноҳои нав, наздик ба марказ.",
         zoliborz: "Форам, бехатар, дар байни муҳоҷирон маҳбуб.",
         ochota: "Ноҳияи ороми наздики марказ, инфрасохтори хуб, метро дорад, дар байни донишҷӯён ва муҳоҷирон маъмул.",
+        ursynow: "Нархҳои миёнаи баланд. Ноҳияи калони ҷануб, асосан иморатҳои бисёруловӣ, аммо бульварҳо ва боғҳои васеъ; наздики кампуси SGGW, бисёр донишҷӯён ва оилаҳои ҷавон. Пайваст хуб ба марказ — истгоҳи метро M1.",
+        wawer: "Нархҳои паст. Ноҳияи калонтарин Варшава аз луҳи майдон, сарҳади ҷануб-шарқ — хонаҳои шахсӣ, ҷангали сосна, махолли деҳкадә. Нақли ҷамоатӣ заиф, аммо маҳалла фарават ва ором арзон.",
+        wesola: "Нархҳои миёна. Ноҳияи хурдтарин ва дураз дар шарқ, деҳақ алохида — сохтмони паст, сарҳам сефёд, сарм. Наздики марказ дуртар, аммо нархҳо ва ором ҷабро мекунанд.",
+        wilanow: "Нархҳои миёна та баланд. Ноҳияи намунавӣ дар ҷануб наздики Қасри ва Боғи Виланов — сохтмони нав, оилаҳо бо фарзандон, инфрасохтори рӯзмარра. Метро нест, аммо пайваста хуб бо автобус ва трамвай.",
       },
       bestValueBadge: "Тавсия медиҳем",
       expatsChoiceBadge: "Интихоби муҳоҷирон",
@@ -10882,6 +10902,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
         wola: "Сучасний район, багато новобудов, близько до центру.",
         zoliborz: "Затишний, безпечний, улюблений серед експатів.",
         ochota: "Тихий район поруч із центром, хороша інфраструктура, метро, популярний серед студентів і експатів.",
+        ursynow: "Середні ціни. Великий південний район, переважно багатоповерхові будинки, але з широкими бульварами й парками; поруч з кампусом SGGW, багато студентів та молодих сімей. Гарний зв'язок з центром — станція метро M1.",
+        wawer: "Нижчі ціни. Найбільший район Варшави за площею, південно-східна окраїна — приватні будинки, соснові ліси, дачний дух. Громадський транспорт слабший, але багато простору й спокою за доступні гроші.",
+        wesola: "Середні ціни. Найменший та найдальший район на сході, майже окремий села — низька забудова, озеленення, тихо. Далі від центру, але ціни й спокій компенсують.",
+        wilanow: "Середні-вищі ціни. Престижний південний район поруч із палацом і парком Вілянова — нові будівництво, сім'ї з дітьми, розвинута інфраструктура. Немає метро, але хорош зв'язок автобусом і трамваєм.",
       },
       bestValueBadge: "Рекомендуємо",
       expatsChoiceBadge: "Вибір експатів",
