@@ -347,8 +347,23 @@ export default function HousingPage() {
             return (
               <Reveal key={site.key} delay={index * 40}>
                 <div className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm transition-[transform,box-shadow,border-color,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-hover [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_12px_32px_-12px_rgba(33,85,212,0.45)] motion-reduce:transition-none">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none">
-                    {site.name.slice(0, 2).toUpperCase()}
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 motion-reduce:transition-none overflow-hidden">
+                    <img
+                      src={`https://www.${site.key === "olx" ? "olx.pl" : site.key === "otodom" ? "otodom.pl" : "gratka.pl"}/apple-touch-icon.png`}
+                      alt={site.name}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        const domain = site.key === "olx" ? "olx.pl" : site.key === "otodom" ? "otodom.pl" : "gratka.pl";
+                        if (img.src.includes("apple-touch-icon")) {
+                          img.src = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+                        } else {
+                          // Fallback to text
+                          img.style.display = "none";
+                          img.parentElement!.textContent = site.name.slice(0, 2).toUpperCase();
+                        }
+                      }}
+                    />
                   </span>
                   <p className="mt-3 text-sm font-semibold text-text-primary">{site.name}</p>
                   <p className="mt-1 flex-1 text-xs text-text-muted">{t.housing.websiteDescs[site.key]}</p>
