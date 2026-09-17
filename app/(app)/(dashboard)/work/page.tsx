@@ -391,6 +391,150 @@ function getSuggestions(query: string): string[] {
   return Array.from(suggestions).sort();
 }
 
+function SalaryCalculator() {
+  const [bruttoInput, setBruttoInput] = useState("");
+  const [contractType, setContractType] = useState<"employment" | "b2b">("employment");
+  const [b2bTaxType, setB2bTaxType] = useState<"12" | "19">("12");
+
+  const brutto = parseFloat(bruttoInput) || 0;
+
+  let netto = 0;
+  let zus = 0;
+  let healthInsurance = 0;
+  let tax = 0;
+  let breakdown: { label: string; value: number }[] = [];
+
+  if (contractType === "employment" && brutto > 0) {
+    zus = brutto * 0.1371;
+    const healthBase = brutto - zus;
+    healthInsurance = healthBase * 0.09;
+    const taxBase = Math.floor((brutto - zus - 250) * 100) / 100;
+    const baseTax = Math.max(0, taxBase * 0.12 - 300);
+    tax = baseTax;
+    netto = Math.round((brutto - zus - healthInsurance - tax) * 100) / 100;
+
+    breakdown = [
+      { label: "Brutto", value: brutto },
+      { label: "ZUS", value: Math.round(zus * 100) / 100 },
+      { label: "Ubezpieczenie zdrowotne", value: Math.round(healthInsurance * 100) / 100 },
+      { label: "Podatek dochodowy", value: Math.round(tax * 100) / 100 },
+      { label: "Netto", value: netto },
+    ];
+  } else if (contractType === "b2b" && brutto > 0) {
+    const avgZus = 1700;
+    const taxRate = b2bTaxType === "12" ? 0.12 : 0.19;
+    const taxAmount = Math.round((brutto - avgZus) * taxRate * 100) / 100;
+    netto = Math.round((brutto - avgZus - taxAmount) * 100) / 100;
+
+    breakdown = [
+      { label: "Przychód", value: brutto },
+      { label: "ZUS (średnio)", value: avgZus },
+      { label: `Podatek (${b2bTaxType}%)`, value: taxAmount },
+      { label: "Netto (szacunkowo)", value: netto },
+    ];
+  }
+
+  return (
+    <Reveal delay={280} className="mt-12">
+      <h2 className="text-xl font-bold tracking-tight text-text-primary">Калькулятор зарплаты</h2>
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+        <div className="space-y-4">
+          <div>
+            <label className="text-xs font-semibold text-text-muted">Зарплата брутто (PLN)</label>
+            <input
+              type="number"
+              value={bruttoInput}
+              onChange={(e) => setBruttoInput(e.target.value)}
+              placeholder="Введите сумму"
+              className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-accent/50 focus:bg-white/[0.08]"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold text-text-muted">Тип договора</label>
+            <div className="mt-2 flex gap-3">
+              <button
+                onClick={() => setContractType("employment")}
+                className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                  contractType === "employment"
+                    ? "border-accent/50 bg-accent/10 text-accent-bright"
+                    : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                }`}
+              >
+                Трудовой договор
+              </button>
+              <button
+                onClick={() => setContractType("b2b")}
+                className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                  contractType === "b2b"
+                    ? "border-accent/50 bg-accent/10 text-accent-bright"
+                    : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                }`}
+              >
+                B2B
+              </button>
+            </div>
+          </div>
+
+          {contractType === "b2b" && (
+            <div>
+              <label className="text-xs font-semibold text-text-muted">Форма налогообложения</label>
+              <div className="mt-2 flex gap-3">
+                <button
+                  onClick={() => setB2bTaxType("12")}
+                  className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                    b2bTaxType === "12"
+                      ? "border-accent/50 bg-accent/10 text-accent-bright"
+                      : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                  }`}
+                >
+                  Ryczałt 12%
+                </button>
+                <button
+                  onClick={() => setB2bTaxType("19")}
+                  className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                    b2bTaxType === "19"
+                      ? "border-accent/50 bg-accent/10 text-accent-bright"
+                      : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                  }`}
+                >
+                  Liniowy 19%
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {brutto > 0 && (
+          <div className="mt-6 space-y-4">
+            <div>
+              <p className="text-xs text-text-muted">На руки</p>
+              <p className="mt-1 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
+                {netto.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} PLN
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              {breakdown.map((item) => (
+                <div key={item.label} className="flex justify-between text-xs">
+                  <span className="text-text-muted">{item.label}</span>
+                  <span className="font-semibold text-text-primary">
+                    {item.value.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} PLN
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <p className="mt-6 text-xs text-text-muted">
+          Расчёт приблизительный, не заменяет консультацию бухгалтера. Не учитывает льготы для ИП младше 26 лет, региональные надбавки и вычеты.
+        </p>
+      </div>
+    </Reveal>
+  );
+}
+
 export default function WorkPage() {
   const router = useRouter();
   const { t, lang } = useLanguage();
@@ -620,6 +764,86 @@ export default function WorkPage() {
             ))}
           </div>
           <p className="mt-3.5 text-xs text-white/40">{t.work.faqCaption}</p>
+        </div>
+      </Reveal>
+
+      <SalaryCalculator />
+
+      <Reveal delay={190} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">Признание диплома (нострификация)</h2>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+          <p className="text-sm text-text-secondary">
+            Для регулируемых профессий (врач, юрист, инженер-строитель, архитектор, фармацевт, ветеринар и др.) диплом нужно официально признать в Польше, прежде чем работать по специальности. Обращайтесь в профильную палату (например, Naczelna Izba Lekarska для врачей) или в Министерство науки и высшего образования для нерегулируемых специальностей.
+          </p>
+          <Link
+            href="https://www.gov.pl/web/nauka/nostryfikacja-dyplomow"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-white"
+          >
+            Узнать подробнее
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
+      </Reveal>
+
+      <Reveal delay={220} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">Типы трудовых договоров</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+          <Reveal delay={0}>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">Umowa zlecenie</p>
+              <p className="mt-2 text-xs text-text-muted">Гражданско-правовой договор, ниже защита работника, ZUS частично обязателен (в зависимости от других источников дохода), нет оплачиваемого отпуска.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={40}>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">Umowa o dzieło</p>
+              <p className="mt-2 text-xs text-text-muted">Договор на конкретный результат работы, ZUS и медстраховка НЕ уплачиваются — внимание: без неё нет доступа к NFZ бесплатно. Работодатели иногда предлагают её вместо трудового, чтобы сэкономить — для мигранта это риск остаться без легальной медстраховки.</p>
+            </div>
+          </Reveal>
+        </div>
+      </Reveal>
+
+      <Reveal delay={250} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">На что обратить внимание при трудоустройстве</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+          <Reveal delay={0}>
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-red-400">Работа без договора</p>
+              <p className="mt-2 text-xs text-text-secondary">Устная договорённость не даёт прав на отпуск, больничный, легализацию пребывания. Требуйте договор в письменном виде до выхода на работу.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={40}>
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-red-400">Неоплачиваемый испытательный срок</p>
+              <p className="mt-2 text-xs text-text-secondary">Испытательный срок должен быть частью оплачиваемого договора. Если просят поработать бесплатно 'на пробу' — это незаконно.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-red-400">Обещание оформить документы 'потом'</p>
+              <p className="mt-2 text-xs text-text-secondary">Легализация (виза, ZUS, PESEL) должна начинаться сразу при устройстве. Отсрочки часто означают, что работодатель не планирует оформлять вас официально.</p>
+            </div>
+          </Reveal>
+        </div>
+      </Reveal>
+
+      <Reveal delay={280} className="mt-12">
+        <h2 className="text-xl font-bold tracking-tight text-text-primary">PUP — государственная биржа труда</h2>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
+          <p className="text-sm text-text-secondary">
+            Государственная биржа труда (Powiatowy Urząd Pracy) — можно бесплатно встать на учёт, искать вакансии, в некоторых случаях получить пособие по безработице или направление на бесплатные курсы переквалификации.
+          </p>
+          <Link
+            href="https://praca.gov.pl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-xs font-semibold text-accent-bright transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-white"
+          >
+            Найти ближайший PUP
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </Reveal>
     </div>
