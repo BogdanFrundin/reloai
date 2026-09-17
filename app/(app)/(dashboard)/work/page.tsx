@@ -395,8 +395,11 @@ function SalaryCalculator() {
   const [bruttoInput, setBruttoInput] = useState("");
   const [contractType, setContractType] = useState<"employment" | "b2b">("employment");
   const [b2bTaxType, setB2bTaxType] = useState<"12" | "19">("12");
+  const [under26, setUnder26] = useState(false);
+  const [b2bPeriod, setB2bPeriod] = useState<"0-6" | "6-30" | "30+">("30+");
 
   const brutto = parseFloat(bruttoInput) || 0;
+  const monthlyBrutto = brutto;
 
   let netto = 0;
   let zus = 0;
@@ -408,9 +411,20 @@ function SalaryCalculator() {
     zus = brutto * 0.1371;
     const healthBase = brutto - zus;
     healthInsurance = healthBase * 0.09;
-    const taxBase = Math.max(0, Math.floor((brutto - zus - 250) * 100) / 100);
-    const baseTax = Math.max(0, taxBase * 0.12 - 300);
-    tax = baseTax;
+
+    const annualBrutto = monthlyBrutto * 12;
+    const annualTaxableBase = Math.max(0, annualBrutto - zus * 12 - 250 * 12);
+    let annualTax = 0;
+
+    if (under26) {
+      annualTax = Math.max(0, (annualTaxableBase - 85528) * 0.32);
+    } else if (annualTaxableBase <= 120000) {
+      annualTax = Math.max(0, annualTaxableBase * 0.12 - 3600);
+    } else {
+      annualTax = 120000 * 0.12 - 3600 + (annualTaxableBase - 120000) * 0.32;
+    }
+
+    tax = Math.round((annualTax / 12) * 100) / 100;
     netto = Math.round((brutto - zus - healthInsurance - tax) * 100) / 100;
 
     breakdown = [
@@ -421,15 +435,35 @@ function SalaryCalculator() {
       { label: "Netto", value: netto },
     ];
   } else if (contractType === "b2b" && brutto > 0) {
-    const avgZus = 1700;
+    let zusSpoleczne = 0;
+    if (b2bPeriod === "0-6") {
+      zusSpoleczne = 0;
+    } else if (b2bPeriod === "6-30") {
+      zusSpoleczne = 960;
+    } else {
+      zusSpoleczne = 1788.29;
+    }
+
+    let healthInsuranceB2b = 0;
+    const annualIncome = monthlyBrutto * 12;
+
+    if (b2bTaxType === "12") {
+      if (annualIncome <= 60000) healthInsuranceB2b = 498.35;
+      else if (annualIncome <= 300000) healthInsuranceB2b = 830.58;
+      else healthInsuranceB2b = 1495.04;
+    } else {
+      healthInsuranceB2b = Math.max(432.54, annualIncome * 0.049 / 12);
+    }
+
+    const taxableBase = Math.max(0, brutto - zusSpoleczne);
     const taxRate = b2bTaxType === "12" ? 0.12 : 0.19;
-    const taxableBase = Math.max(0, brutto - avgZus);
     const taxAmount = Math.round(taxableBase * taxRate * 100) / 100;
-    netto = Math.round((brutto - avgZus - taxAmount) * 100) / 100;
+    netto = Math.max(0, Math.round((brutto - zusSpoleczne - healthInsuranceB2b - taxAmount) * 100) / 100);
 
     breakdown = [
       { label: "Przychód", value: brutto },
-      { label: "ZUS (średnio)", value: avgZus },
+      { label: "ZUS społeczne", value: Math.round(zusSpoleczne * 100) / 100 },
+      { label: "Ubezpieczenie zdrowotne", value: Math.round(healthInsuranceB2b * 100) / 100 },
       { label: `Podatek (${b2bTaxType}%)`, value: taxAmount },
       { label: "Netto (szacunkowo)", value: netto },
     ];
@@ -477,39 +511,89 @@ function SalaryCalculator() {
             </div>
           </div>
 
+          {contractType === "employment" && (
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={under26}
+                onChange={(e) => setUnder26(e.target.checked)}
+                className="h-4 w-4 rounded border-border-strong"
+              />
+              <span className="text-xs font-semibold text-text-muted">Мне меньше 26 лет (0% налог до 85 528 PLN/год)</span>
+            </label>
+          )}
+
           {contractType === "b2b" && (
-            <div>
-              <label className="text-xs font-semibold text-text-muted">Форма налогообложения</label>
-              <div className="mt-2 flex gap-3">
-                <button
-                  onClick={() => setB2bTaxType("12")}
-                  className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
-                    b2bTaxType === "12"
-                      ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
-                  }`}
-                >
-                  Ryczałt 12%
-                </button>
-                <button
-                  onClick={() => setB2bTaxType("19")}
-                  className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
-                    b2bTaxType === "19"
-                      ? "border-accent/50 bg-accent/10 text-accent-bright"
-                      : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
-                  }`}
-                >
-                  Liniowy 19%
-                </button>
+            <>
+              <div>
+                <label className="text-xs font-semibold text-text-muted">Форма налогообложения</label>
+                <div className="mt-2 flex gap-3">
+                  <button
+                    onClick={() => setB2bTaxType("12")}
+                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                      b2bTaxType === "12"
+                        ? "border-accent/50 bg-accent/10 text-accent-bright"
+                        : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                    }`}
+                  >
+                    Ryczałt 12%
+                  </button>
+                  <button
+                    onClick={() => setB2bTaxType("19")}
+                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                      b2bTaxType === "19"
+                        ? "border-accent/50 bg-accent/10 text-accent-bright"
+                        : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                    }`}
+                  >
+                    Liniowy 19%
+                  </button>
+                </div>
               </div>
-            </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text-muted">Jak długo prowadzisz działalność</label>
+                <div className="mt-2 flex gap-2 flex-col">
+                  <button
+                    onClick={() => setB2bPeriod("0-6")}
+                    className={`rounded-lg border px-3 py-2 text-xs font-semibold text-left transition-colors ${
+                      b2bPeriod === "0-6"
+                        ? "border-accent/50 bg-accent/10 text-accent-bright"
+                        : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                    }`}
+                  >
+                    Do 6 miesięcy (Ulga na start: ZUS = 0 PLN)
+                  </button>
+                  <button
+                    onClick={() => setB2bPeriod("6-30")}
+                    className={`rounded-lg border px-3 py-2 text-xs font-semibold text-left transition-colors ${
+                      b2bPeriod === "6-30"
+                        ? "border-accent/50 bg-accent/10 text-accent-bright"
+                        : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                    }`}
+                  >
+                    6-30 miesięcy (Mały ZUS Plus: ~960 PLN/mies, orientacyjnie)
+                  </button>
+                  <button
+                    onClick={() => setB2bPeriod("30+")}
+                    className={`rounded-lg border px-3 py-2 text-xs font-semibold text-left transition-colors ${
+                      b2bPeriod === "30+"
+                        ? "border-accent/50 bg-accent/10 text-accent-bright"
+                        : "border-white/10 bg-white/[0.05] text-text-muted hover:border-accent/30"
+                    }`}
+                  >
+                    Ponad 30 miesięcy (ZUS pełny: 1 788,29 PLN/mies)
+                  </button>
+                </div>
+              </div>
+            </>
           )}
         </div>
 
         {brutto > 0 && (
           <div className="mt-6 space-y-4">
             <div>
-              <p className="text-xs text-text-muted">На руки</p>
+              <p className="text-xs text-text-muted">Na ruки</p>
               <p className="mt-1 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
                 {netto.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} PLN
               </p>
@@ -529,7 +613,7 @@ function SalaryCalculator() {
         )}
 
         <p className="mt-6 text-xs text-text-muted">
-          Расчёт приблизительный, не заменяет консультацию бухгалтера. Не учитывает льготы для ИП младше 26 лет, региональные надбавки и вычеты.
+          Расчёт приблизительный, не заменяет консультацию бухгалтера. Не учитывает региональные различия и индивидуальные вычеты. Для Mały ZUS Plus сумма указана ориентировочно.
         </p>
       </div>
     </Reveal>
