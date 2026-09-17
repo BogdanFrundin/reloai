@@ -39,11 +39,11 @@ export function RouteSummaryCard({
         : "bg-red-500/15 text-red-400";
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-purple-500/10 via-[#1c1f26] to-[#1c1f26] p-6 shadow-lg shadow-accent/20">
+    <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-[#1c1f26] to-[#1c1f26] p-6 shadow-lg shadow-accent/20">
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-purple-300 to-purple-200 bg-clip-text text-transparent">
+            <h3 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-accent-bright to-blue-300 bg-clip-text text-transparent">
               {route.name}
             </h3>
             <p className="mt-1.5 text-sm text-text-muted">{route.description}</p>
@@ -62,7 +62,7 @@ export function RouteSummaryCard({
         <div className="mt-6 grid grid-cols-3 gap-4">
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm">
             <p className="text-xs font-medium uppercase tracking-wide text-text-muted">{labels.results.approvalRate}</p>
-            <p className="mt-2 text-2xl font-bold text-purple-300">{route.approval_rate}%</p>
+            <p className="mt-2 text-2xl font-bold text-accent-bright">{route.approval_rate}%</p>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm">
             <p className="text-xs font-medium uppercase tracking-wide text-text-muted">{labels.results.timeline}</p>
