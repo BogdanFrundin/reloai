@@ -692,32 +692,45 @@ export default function MedicinePage() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
-          <div className="relative">
-            <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
-              {SEARCH_ICON}
-            </span>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.medicine.searchPlaceholder}
-              className="rounded-xl border border-border-strong bg-surface-1 py-2.5 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-            />
+        <div className="mt-6 rounded-2xl border border-border-subtle bg-surface-1 p-4 sm:p-5">
+          <div className="flex flex-wrap items-end gap-4 sm:gap-5">
+            <div className="flex flex-col gap-1.5">
+              <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
+            </div>
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-xs text-text-muted">{t.medicine.searchPlaceholder}</label>
+              <div className="relative mt-1.5">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
+                  {SEARCH_ICON}
+                </span>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={t.medicine.searchPlaceholder}
+                  className="w-full rounded-xl border border-border-strong bg-surface-hover py-2.5 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-xs text-text-muted">{"Категория"}</span>
+              <Dropdown
+                value={category}
+                onChange={setCategory}
+                options={[{ value: "all", label: t.medicine.allCategoriesLabel }, ...categories.map((c) => ({ value: c, label: c }))]}
+              />
+            </div>
+            {districts.length > 0 && (
+              <div className="flex flex-col gap-1.5">
+                <span className="text-xs text-text-muted">{"Район"}</span>
+                <Dropdown
+                  value={district}
+                  onChange={setDistrict}
+                  options={[{ value: "all", label: t.medicine.allDistrictsLabel }, ...districts.map((d) => ({ value: d, label: d }))]}
+                />
+              </div>
+            )}
+            <span className="ml-auto text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
           </div>
-          <Dropdown
-            value={category}
-            onChange={setCategory}
-            options={[{ value: "all", label: t.medicine.allCategoriesLabel }, ...categories.map((c) => ({ value: c, label: c }))]}
-          />
-          {districts.length > 0 && (
-            <Dropdown
-              value={district}
-              onChange={setDistrict}
-              options={[{ value: "all", label: t.medicine.allDistrictsLabel }, ...districts.map((d) => ({ value: d, label: d }))]}
-            />
-          )}
-          <span className="ml-auto text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
         </div>
 
         {loading ? (
