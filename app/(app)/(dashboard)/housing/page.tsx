@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import HelpButton from "../../../_components/HelpButton";
@@ -96,9 +96,23 @@ function DistrictCard({
   const description = d.description ? stripPricePrefix(d.description) : null;
   const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
   const [expandDescription, setExpandDescription] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!expandDescription) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        setExpandDescription(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [expandDescription]);
 
   return (
-    <div className="group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
+    <div ref={cardRef} className="group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
       <div className="flex-1">
         <div className="flex items-start justify-between">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-105">
@@ -122,13 +136,25 @@ function DistrictCard({
             <p className={`text-xs leading-relaxed text-text-secondary ${!expandDescription ? "line-clamp-2" : ""}`}>
               {description}
             </p>
-            <button
-              type="button"
-              onClick={() => setExpandDescription(!expandDescription)}
-              className="mt-2 inline-flex rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
-            >
-              {expandDescription ? "Свернуть" : "Развернуть"}
-            </button>
+            {expandDescription ? (
+              <div className="mt-2 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setExpandDescription(false)}
+                  className="rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] font-medium text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 hover:text-red-300"
+                >
+                  Свернуть
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setExpandDescription(true)}
+                className="mt-2 inline-flex rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
+              >
+                Развернуть
+              </button>
+            )}
           </div>
         )}
         <p className="mt-2 flex items-center gap-1.5 text-[11px] text-blue-300/80">
