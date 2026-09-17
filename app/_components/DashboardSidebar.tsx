@@ -14,7 +14,7 @@ import { getFlagUrl } from "../_lib/flags";
 import { pressScale } from "../_lib/motion";
 
 const ICON_PROPS = {
-  className: "h-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)] w-[clamp(1.1rem,0.78rem+0.73vh,1.375rem)]",
+  className: "h-[clamp(0.95rem,0.65rem+0.72vh,1.375rem)] w-[clamp(0.95rem,0.65rem+0.72vh,1.375rem)]",
   fill: "none",
   viewBox: "0 0 24 24",
   stroke: "currentColor",
@@ -102,7 +102,7 @@ export default function DashboardSidebar({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex-shrink-0 px-5 py-[clamp(0.4rem,1.3vh,1rem)]">
+        <div className="flex-shrink-0 px-5 py-[clamp(0.3rem,1.3vh,1rem)]">
           <div className="flex items-center justify-between gap-2">
             <Link href="/home" onClick={onClose} className="flex min-w-0 items-center gap-2">
               <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-bright text-sm font-bold text-white">
@@ -136,12 +136,12 @@ export default function DashboardSidebar({
           )}
         </div>
 
-        <nav className="scrollbar-hide min-h-0 flex-1 space-y-[clamp(0.4rem,1.3vh,1rem)] overflow-y-auto px-3 py-1.5">
+        <nav className="scrollbar-hide min-h-0 flex-1 space-y-[clamp(0.3rem,1.3vh,1rem)] overflow-y-auto px-3 py-1.5">
           <div className="border-b border-border-subtle pb-1">
             <Link
               href="/home"
               onClick={onClose}
-              className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+              className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
                 pathname === "/home"
                   ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                   : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -158,7 +158,7 @@ export default function DashboardSidebar({
               <Link
                 href="/dashboard"
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
                   pathname === "/dashboard"
                     ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                     : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -170,7 +170,7 @@ export default function DashboardSidebar({
               <Link
                 href="/dashboard/ai"
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
                   pathname === "/dashboard/ai"
                     ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                     : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -182,7 +182,7 @@ export default function DashboardSidebar({
               <Link
                 href="/documents"
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-3 rounded-xl border-l-2 px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
                   pathname === "/documents"
                     ? "border-accent-bright bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                     : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -206,7 +206,7 @@ export default function DashboardSidebar({
                     key={key}
                     href={href}
                     onClick={onClose}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+                    className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
                       isActive ? "bg-accent/10 text-accent-bright" : "text-text-muted hover:bg-surface-hover hover:text-text-primary"
                     }`}
                   >
@@ -219,11 +219,11 @@ export default function DashboardSidebar({
           </div>
         </nav>
 
-        <div className="flex-shrink-0 space-y-[clamp(0.1rem,0.4vh,0.25rem)] border-t border-border-subtle p-[clamp(0.4rem,0.9vh,0.75rem)]">
+        <div className="flex-shrink-0 space-y-[clamp(0.1rem,0.4vh,0.25rem)] border-t border-border-subtle p-[clamp(0.3rem,0.9vh,0.75rem)]">
           <Link
             href="/profile"
             onClick={onClose}
-            className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+            className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
               pathname === "/profile"
                 ? "bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                 : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -235,7 +235,7 @@ export default function DashboardSidebar({
           <Link
             href="/settings"
             onClick={onClose}
-            className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
+            className={`flex items-center gap-3 rounded-xl px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-sm font-medium transition-colors duration-150 ${
               pathname === "/settings"
                 ? "bg-accent/20 text-accent-bright shadow-[inset_0_0_0_1px_rgba(91,141,239,0.25)]"
                 : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
@@ -247,7 +247,7 @@ export default function DashboardSidebar({
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-[clamp(0.3rem,0.5vh,0.5rem)] text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-[clamp(0.2rem,0.5vh,0.5rem)] text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
           >
             {LOGOUT_ICON}
             <span>{s.logout}</span>
