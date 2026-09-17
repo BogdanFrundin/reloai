@@ -139,7 +139,7 @@ function DistrictCard({
           </div>
         )}
         {description && (
-          <div className="mt-2">
+          <div className="mt-4">
             <div className="flex items-start justify-between gap-2">
               <p className={`flex-1 text-xs leading-relaxed text-text-secondary ${!expandDescription ? "line-clamp-2" : ""}`}>
                 {description}
