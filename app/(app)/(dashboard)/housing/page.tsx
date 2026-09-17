@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
@@ -90,6 +91,7 @@ function DistrictCard({
   rooms: RoomsFilter;
   onOpenSearch: (district: string) => void;
 }) {
+  const router = useRouter();
   const { currency, rates } = useCurrency();
   const { t, lang } = useLanguage();
   const priceLabel = districtPriceLabel(d, rooms, currency, rates);
@@ -97,6 +99,11 @@ function DistrictCard({
   const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
   const [expandDescription, setExpandDescription] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  function askAi() {
+    const question = `Расскажи об условиях жизни в районе ${d.district} Варшавы: цены на жилье, инфраструктура, безопасность, как это место подходит для иностранцев.`;
+    router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
+  }
 
   useEffect(() => {
     if (!expandDescription) return;
@@ -141,7 +148,7 @@ function DistrictCard({
                 <button
                   type="button"
                   onClick={() => setExpandDescription(false)}
-                  className="rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] font-medium text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 hover:text-red-300"
+                  className="rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] font-medium text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 hover:text-red-300"
                 >
                   Свернуть
                 </button>
@@ -151,7 +158,7 @@ function DistrictCard({
                 <button
                   type="button"
                   onClick={() => setExpandDescription(true)}
-                  className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
+                  className="rounded-lg border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
                 >
                   Развернуть
                 </button>
@@ -166,13 +173,25 @@ function DistrictCard({
           {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
         </p>
       </div>
-      <button
-        type="button"
-        onClick={() => onOpenSearch(d.district)}
-        className="mt-4 w-full rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-      >
-        {t.housing.searchWithFiltersBtn}
-      </button>
+      <div className="mt-4 flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
+        <button
+          type="button"
+          onClick={() => onOpenSearch(d.district)}
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+        >
+          {t.housing.searchWithFiltersBtn}
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            askAi();
+          }}
+          className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+        >
+          Спросить ИИ ✦
+        </button>
+      </div>
     </div>
   );
 }
@@ -278,26 +297,39 @@ export default function HousingPage() {
 
             {restDistricts.length > 0 && (
               <div className="mt-8 border-t border-border-subtle pt-6">
-                <button
-                  type="button"
-                  onClick={() => setShowAll((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
-                >
-                  {showAll ? t.housing.showFewerDistricts : showAllLabel}
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowAll((prev) => !prev)}
+                    className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+                  >
+                    {showAll ? t.housing.showFewerDistricts : showAllLabel}
+                  </button>
+                </div>
 
                 {showAll && (
-                  <div className="mt-6 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {restDistricts.map((district, index) => (
-                      <Reveal key={district.id} delay={index * 25}>
-                        <DistrictCard
-                          d={district}
-                                rooms={rooms}
-                          onOpenSearch={setSearchModalDistrict}
-                        />
-                      </Reveal>
-                    ))}
-                  </div>
+                  <>
+                    <div className="mt-6 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {restDistricts.map((district, index) => (
+                        <Reveal key={district.id} delay={index * 25}>
+                          <DistrictCard
+                            d={district}
+                                  rooms={rooms}
+                            onOpenSearch={setSearchModalDistrict}
+                          />
+                        </Reveal>
+                      ))}
+                    </div>
+                    <div className="mt-8 flex justify-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowAll(false)}
+                        className={`inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-1 px-6 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright ${pressScale}`}
+                      >
+                        {t.housing.showFewerDistricts}
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             )}
