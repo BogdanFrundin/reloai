@@ -10,6 +10,7 @@ import UpgradeModal from "../../../_components/UpgradeModal";
 import RouteSelectModal from "../../../_components/RouteSelectModal";
 import { RouteSummaryCard } from "../../../_components/RouteSummaryCard";
 import SearchableCountrySelect from "../../../_components/SearchableCountrySelect";
+import CitySelect from "../../../_components/CitySelect";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useDashboardProgress } from "../../../_components/DashboardProgressProvider";
@@ -478,15 +479,9 @@ export default function ProfilePage() {
 
               <label className="block">
                 <span className="text-xs text-text-muted">{p.cityLabel}</span>
-                <input
-                  type="text"
-                  value={formCity}
-                  onChange={(event) => setFormCity(event.target.value)}
-                  placeholder={p.cityPlaceholder}
-                  list="pl-cities-suggestions"
-                  autoComplete="off"
-                  className="mt-1.5 w-full rounded-xl border border-border-strong bg-surface-1 px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted outline-none transition-colors duration-150 focus:border-accent"
-                />
+                <div className="mt-1.5">
+                  <CitySelect value={formCity} onSelect={setFormCity} placeholder={p.cityPlaceholder} />
+                </div>
                 <datalist id="pl-cities-suggestions">
                   {POLISH_CITIES.map((city) => (
                     <option key={city} value={city} />
