@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { useLanguage } from "./LanguageProvider";
@@ -106,6 +106,8 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const [modalOpen, setModalOpen] = useState(false);
+  const [expandDescription, setExpandDescription] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const visual = topicVisual(guide.name);
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
 
@@ -114,9 +116,22 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
+  useEffect(() => {
+    if (!expandDescription) return;
+
+    function handleClickOutside(event: MouseEvent) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        setExpandDescription(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [expandDescription]);
+
   return (
     <>
-      <div className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
+      <div ref={cardRef} className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
         <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
           <div className="relative">
             <span
@@ -144,9 +159,24 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
               )}
             </div>
             {guide.description && (
-              <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/50">
-                {guide.description}
-              </p>
+              <div className="mt-2 flex items-start justify-between gap-2">
+                <p className={`flex-1 text-xs leading-relaxed text-white/50 ${!expandDescription ? "line-clamp-2" : ""}`}>
+                  {guide.description}
+                </p>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandDescription(!expandDescription);
+                  }}
+                  className="flex-shrink-0 flex items-center justify-center h-5 w-5 text-text-secondary transition-transform duration-150 hover:text-accent-bright"
+                  aria-label={expandDescription ? "Свернуть описание" : "Развернуть описание"}
+                >
+                  <svg className={`h-5 w-5 transition-transform duration-150 ${expandDescription ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
             )}
             <p className="mt-2 flex items-center gap-1.5 text-[11px] text-blue-300/80">
               <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
