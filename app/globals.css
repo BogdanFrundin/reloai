@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
+  --background: #131316;
   --foreground: #ffffff;
   --accent: #2155d4;
   --accent-bright: #5b8def;
@@ -11,7 +11,7 @@
   --surface-1: rgba(255, 255, 255, 0.03);
   --surface-2: rgba(255, 255, 255, 0.02);
   --surface-hover: rgba(255, 255, 255, 0.06);
-  --panel: #0d0d0f;
+  --panel: #17171b;
   --border-subtle: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.2);
   --text-primary: #ffffff;
