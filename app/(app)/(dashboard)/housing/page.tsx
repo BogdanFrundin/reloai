@@ -382,19 +382,27 @@ export default function HousingPage() {
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.housing.aiTips}</h2>
         <p className="mt-1 text-sm text-text-muted">{t.housing.aiTipsSub}</p>
         <div className="mt-4 grid gap-5 lg:grid-cols-3">
-          {t.housing.tips.map((tip, index) => (
-            <Reveal key={tip.title} delay={index * 40}>
-              <div className="h-full rounded-2xl border border-accent/20 bg-accent/[0.04] p-5 backdrop-blur-sm">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent-bright">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.5M12 6.5h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </span>
-                <p className="mt-3 text-sm font-semibold text-text-primary">{tip.title}</p>
-                <p className="mt-1 text-xs text-text-muted">{tip.body}</p>
-              </div>
-            </Reveal>
-          ))}
+          {t.housing.tips.map((tip, index) => {
+            const tipType = tip.type || "general";
+            const borderColor = tipType === "warning" ? "border-red-500/20" : tipType === "legal" ? "border-accent/20" : tipType === "financial" ? "border-amber-500/20" : "border-accent/20";
+            const bgColor = tipType === "warning" ? "bg-red-500/[0.04]" : tipType === "legal" ? "bg-accent/[0.04]" : tipType === "financial" ? "bg-amber-500/[0.04]" : "bg-accent/[0.04]";
+            const iconBg = tipType === "warning" ? "bg-red-500/15" : tipType === "legal" ? "bg-accent/15" : tipType === "financial" ? "bg-amber-500/15" : "bg-accent/15";
+            const iconColor = tipType === "warning" ? "text-red-400" : tipType === "legal" ? "text-accent-bright" : tipType === "financial" ? "text-amber-400" : "text-accent-bright";
+
+            return (
+              <Reveal key={tip.title} delay={index * 40}>
+                <div className={`h-full rounded-2xl border ${borderColor} ${bgColor} p-5 backdrop-blur-sm`}>
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${iconBg} ${iconColor}`}>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.5M12 6.5h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                  <p className="mt-3 text-sm font-semibold text-text-primary">{tip.title}</p>
+                  <p className="mt-1 text-xs text-text-muted">{tip.body}</p>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </Reveal>
 

@@ -414,7 +414,7 @@ export type Dictionary = {
     aiTipsSub: string;
     visitSite: string;
     websiteDescs: { olx: string; otodom: string; gratka: string };
-    tips: [{ title: string; body: string }, { title: string; body: string }, { title: string; body: string }];
+    tips: [{ title: string; body: string; type?: "warning" | "legal" | "financial" | "general" }, { title: string; body: string; type?: "warning" | "legal" | "financial" | "general" }, { title: string; body: string; type?: "warning" | "legal" | "financial" | "general" }];
     topDistrictDescs: { mokotow: string; wola: string; zoliborz: string; ochota: string; srodmiescie: string; ursynow: string; "praga-polnoc": string; "praga-poludnie": string; bemowo: string; bielany: string; targowek: string; bialoleka: string; wilanow: string; wlochy: string; rembertow: string; wawer: string; wesola: string; ursus: string };
     bestValueBadge: string;
     expatsChoiceBadge: string;
@@ -1779,14 +1779,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Avoid deposit scams",
           body: "Never wire a deposit before seeing the apartment in person or on a live video call with the landlord. Scammers target foreigners with too-good-to-be-true listings.",
+          type: "warning",
         },
         {
           title: "Get the contract in Polish",
           body: "Rental agreements (umowa najmu) must be in Polish to be enforceable. Get a certified translation before signing anything you don't fully understand.",
+          type: "legal",
         },
         {
           title: "Budget beyond the rent",
           body: "Expect a security deposit (1–2 months' rent) plus czynsz — building maintenance fees — billed separately from rent and utilities.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
@@ -3614,14 +3617,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Остерегайтесь мошенников с депозитом",
           body: "Никогда не переводите депозит, не увидев квартиру лично или на видеозвонке с хозяином. Мошенники охотятся на иностранцев с слишком выгодными объявлениями.",
+          type: "warning",
         },
         {
           title: "Требуйте договор на польском",
           body: "Договор аренды (umowa najmu) должен быть составлен на польском языке, чтобы иметь юридическую силу. Сделайте заверенный перевод, прежде чем подписывать то, что не до конца понимаете.",
+          type: "legal",
         },
         {
           title: "Планируйте бюджет не только на аренду",
           body: "Ожидайте залог (1–2 месячные ставки) плюс czynsz — эксплуатационные расходы дома, которые оплачиваются отдельно от аренды и коммунальных услуг.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
@@ -5446,14 +5452,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Depozit firibgarligidan ehtiyot bo'ling",
           body: "Kvartirani shaxsan yoki uy egasi bilan jonli video qo'ng'iroqda ko'rmasdan turib hech qachon depozit o'tkazmang. Firibgarlar juda jozibali ko'rinadigan e'lonlar orqali chet elliklarni nishonga oladi.",
+          type: "warning",
         },
         {
           title: "Shartnomani polyak tilida oling",
           body: "Ijara shartnomalari (umowa najmu) yuridik kuchga ega bo'lishi uchun polyak tilida bo'lishi shart. To'liq tushunmagan hujjatga imzo qo'yishdan oldin uning tasdiqlangan tarjimasini oling.",
+          type: "legal",
         },
         {
           title: "Ijaradan tashqari xarajatlarni ham hisobga oling",
           body: "Kafolat depoziti (1–2 oylik ijara puli), shuningdek czynsz — bino uchun texnik xizmat haqi — ijaradan va kommunal to'lovlardan alohida hisoblanishini kutib turing.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
@@ -7275,14 +7284,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Depozito dolandırıcılığından kaçının",
           body: "Daireyi şahsen görmeden veya ev sahibiyle canlı görüntülü görüşme yapmadan asla depozito göndermeyin. Dolandırıcılar, gerçek olamayacak kadar iyi ilanlarla yabancıları hedef alır.",
+          type: "warning",
         },
         {
           title: "Sözleşmeyi Lehçe alın",
           body: "Kira sözleşmeleri (umowa najmu) yasal geçerliliği için Lehçe olmalıdır. Tam olarak anlamadığınız hiçbir şeyi imzalamadan önce onaylı bir çeviri alın.",
+          type: "legal",
         },
         {
           title: "Bütçenizi sadece kiraya göre yapmayın",
           body: "Kiraya ek olarak bir güvenlik depozitosu (1–2 aylık kira) ve kira ile faturalardan ayrı tahsil edilen czynsz — bina bakım ücretleri — bekleyin.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
@@ -9104,14 +9116,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Аз фиребгарии вобаста ба пешпардохт эҳтиёт бошед",
           body: "Ҳеҷ гоҳ пеш аз дидани хона шахсан ё тавассути видеоконфронси зинда бо соҳибхона пешпардохт нафиристед. Фиребгарон бо эълонҳои аз ҳад зиёд ҷолиб хориҷиёнро ҳадаф мегиранд.",
+          type: "warning",
         },
         {
           title: "Шартномаро ба забони полякӣ гиред",
           body: "Шартномаҳои иҷора (umowa najmu) бояд ба забони полякӣ бошанд, то қувваи ҳуқуқӣ дошта бошанд. Пеш аз имзои чизе, ки пурра намефаҳмед, тарҷумаи тасдиқшударо гиред.",
+          type: "legal",
         },
         {
           title: "Хароҷоти иловагӣ ба ғайр аз иҷораро ба ҳисоб гиред",
           body: "Интизор бошед, ки пешпардохти кафолатӣ (иҷораи 1–2 моҳ), инчунин czynsz — ҳаққи нигоҳдории бино — алоҳида аз иҷора ва хизматрасониҳои коммуналӣ ҳисоб карда мешавад.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
@@ -10937,14 +10952,17 @@ export const dictionaries: Record<Lang, Dictionary> = {
         {
           title: "Остерігайтеся шахраїв із депозитом",
           body: "Ніколи не переказуйте депозит, не побачивши квартиру особисто або на відеодзвінку з господарем. Шахраї полюють на іноземців із занадто вигідними оголошеннями.",
+          type: "warning",
         },
         {
           title: "Вимагайте договір польською",
           body: "Договір оренди (umowa najmu) має бути складений польською мовою, щоб мати юридичну силу. Зробіть завірений переклад, перш ніж підписувати те, що не до кінця розумієте.",
+          type: "legal",
         },
         {
           title: "Плануйте бюджет не лише на оренду",
           body: "Очікуйте заставу (1–2 місячні ставки) плюс czynsz — експлуатаційні витрати будинку, які сплачуються окремо від оренди та комунальних послуг.",
+          type: "financial",
         },
       ],
       topDistrictDescs: {
