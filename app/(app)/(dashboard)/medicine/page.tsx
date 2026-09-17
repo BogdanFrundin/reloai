@@ -692,26 +692,12 @@ export default function MedicinePage() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-border-subtle bg-surface-1 p-4 sm:p-5">
-          <div className="flex flex-wrap items-end gap-4 sm:gap-5">
-            <div className="flex flex-col gap-1.5">
+        <div className="mt-6 border-t border-border-subtle pt-3 sm:pt-4">
+          <div className="flex flex-wrap items-end gap-3 sm:gap-4">
+            <div className="flex flex-col gap-1">
               <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
             </div>
-            <div className="flex-1 min-w-[200px]">
-              <label className="text-xs text-text-muted">{t.medicine.searchPlaceholder}</label>
-              <div className="relative mt-1.5">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
-                  {SEARCH_ICON}
-                </span>
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder={t.medicine.searchPlaceholder}
-                  className="w-full rounded-xl border border-border-strong bg-surface-hover py-2.5 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1">
               <span className="text-xs text-text-muted">{"Категория"}</span>
               <Dropdown
                 value={category}
@@ -720,7 +706,7 @@ export default function MedicinePage() {
               />
             </div>
             {districts.length > 0 && (
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1">
                 <span className="text-xs text-text-muted">{"Район"}</span>
                 <Dropdown
                   value={district}
@@ -729,6 +715,20 @@ export default function MedicinePage() {
                 />
               </div>
             )}
+            <div className="flex-1 min-w-[200px]">
+              <label className="text-xs text-text-muted">{t.medicine.searchPlaceholder}</label>
+              <div className="relative mt-1">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted">
+                  {SEARCH_ICON}
+                </span>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={t.medicine.searchPlaceholder}
+                  className="w-full rounded-xl border border-border-strong bg-surface-hover py-2 pl-9 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                />
+              </div>
+            </div>
             <span className="ml-auto text-xs text-text-muted">{t.medicine.clinicsCountTemplate.replace("{count}", String(filtered.length))}</span>
           </div>
         </div>
