@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { useLanguage } from "./LanguageProvider";
 import TextWithGlossary from "./TextWithGlossary";
-import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import { pressScale } from "../_lib/motion";
 
 function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" }) {
@@ -318,124 +317,6 @@ export default function GuideTopicModal({
               )}
             </div>
 
-            {/* Where to Submit */}
-            {guide.where_to_submit && (
-              <div>
-                <div className="flex items-start gap-2.5">
-                  <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.whereToSubmit}</p>
-                    {(() => {
-                      const sectionId = "where-to-submit";
-                      const isExpanded = expandedSections.has(sectionId);
-                      const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
-                      const displayText = isExpanded ? guide.where_to_submit : truncated;
-
-                      return (
-                        <>
-                          <p className="mt-1.5 text-sm text-text-secondary">{displayText}</p>
-                          {isTruncated && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleSection(sectionId);
-                              }}
-                              className="mt-1 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                            >
-                              {isExpanded ? (
-                                <>
-                                  {t.common.collapseBtn}
-                                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                  </svg>
-                                </>
-                              ) : (
-                                <>
-                                  {t.common.expandBtn}
-                                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                  </svg>
-                                </>
-                              )}
-                            </button>
-                          )}
-                        </>
-                      );
-                    })()}
-                    <a
-                      href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(event) => event.stopPropagation()}
-                      className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/50 bg-transparent text-xs font-medium text-accent-bright transition-colors hover:border-accent hover:bg-accent/10"
-                    >
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {gc.showOnMap}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Required Docs */}
-            {guide.required_docs && guide.required_docs.length > 0 && (
-              <div className="border-t border-white/10 pt-6">
-                <div className="flex items-start gap-2.5">
-                  <svg className="h-4 w-4 flex-shrink-0 text-text-muted mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm sm:text-base text-text-primary">{gc.requiredDocs}</p>
-                    {(() => {
-                      const sectionId = "required-docs";
-                      const isExpanded = expandedSections.has(sectionId);
-                      const { items: displayItems, isTruncated } = truncateList(guide.required_docs, 2);
-
-                      return (
-                        <>
-                          <div className="mt-2">
-                            <Bullets items={isExpanded ? guide.required_docs : displayItems} />
-                          </div>
-                          {isTruncated && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleSection(sectionId);
-                              }}
-                              className="mt-2 inline-flex items-center gap-1 text-xs text-accent-bright transition-colors hover:underline"
-                            >
-                              {isExpanded ? (
-                                <>
-                                  {t.common.collapseBtn}
-                                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7-7m0 0L5 14m7-7v12" />
-                                  </svg>
-                                </>
-                              ) : (
-                                <>
-                                  {t.common.expandBtn}
-                                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 10l-7 7m0 0l-7-7m7 7V3" />
-                                  </svg>
-                                </>
-                              )}
-                            </button>
-                          )}
-                        </>
-                      );
-                    })()}
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* Instructions */}
             {guide.instructions && guide.instructions.length > 0 && (
