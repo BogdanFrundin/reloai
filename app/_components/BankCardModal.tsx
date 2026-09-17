@@ -250,20 +250,6 @@ export default function BankCardModal({
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
-  function shareBank() {
-    if (!guide) return;
-    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/banks?bank=${encodeURIComponent(guide.name)}`;
-    navigator.clipboard.writeText(url).catch(() => {
-      // Fallback if clipboard API is not available
-      const tempInput = document.createElement("input");
-      tempInput.value = url;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempInput);
-    });
-  }
-
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const cost = convertPlnText(guide.cost, currency, rates);
@@ -357,31 +343,16 @@ export default function BankCardModal({
               </div>
             )}
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  askAi();
-                }}
-                className="inline-flex rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-              >
-                {gc.askAi} ✦
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  shareBank();
-                }}
-                className="inline-flex items-center justify-center rounded-xl border border-border-subtle bg-surface-hover text-text-secondary px-3 py-2.5 transition-colors duration-150 hover:border-accent/40 hover:text-accent-bright"
-                aria-label="Share"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8m-6 4l-4-4m0 0l-4 4m4-4v12" />
-                </svg>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                askAi();
+              }}
+              className="inline-flex rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+            >
+              {gc.askAi} ✦
+            </button>
 
             {/* Description */}
             {guide.description && (
