@@ -465,6 +465,7 @@ export type Dictionary = {
     emergencyTitle: string;
     emergencyNumber: string;
     emergencyEr: string;
+    emergencyNiSoz: string;
     emergencyPharmacy: string;
     usefulSitesTitle: string;
     usefulSites: [
@@ -1964,6 +1965,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Emergency and urgent care",
       emergencyNumber: "Emergency number in Poland: 112 or 999",
       emergencyEr: "The nearest ER (SOR) takes walk-ins with no appointment, free of charge",
+      emergencyNiSoz: "Night and holiday medical care (NiŚOZ): free care for non-urgent cases outside clinic hours — from 18:00 to 8:00 on weekdays and round-the-clock on weekends and holidays, no referral needed, valid with NFZ insurance.",
       emergencyPharmacy: "Duty pharmacy finder:",
       usefulSitesTitle: "Useful websites",
       usefulSites: [
@@ -3802,6 +3804,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Скорая помощь и экстренные случаи",
       emergencyNumber: "Номер скорой помощи в Польше: 112 или 999",
       emergencyEr: "Ближайшее отделение неотложной помощи (SOR) принимает без записи и бесплатно",
+      emergencyNiSoz: "Ночная и праздничная медпомощь (NiŚOZ): бесплатная помощь при несрочных случаях вне часов работы поликлиник — с 18:00 до 8:00 в будни и круглосуточно в выходные и праздники, без направления, по полису NFZ.",
       emergencyPharmacy: "Дежурная аптека:",
       usefulSitesTitle: "Полезные сайты",
       usefulSites: [
@@ -5637,6 +5640,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Tez yordam va favqulodda holatlar",
       emergencyNumber: "Polshada tez yordam raqami: 112 yoki 999",
       emergencyEr: "Eng yaqin tez yordam bo'limi (SOR) navbatsiz va bepul qabul qiladi",
+      emergencyNiSoz: "Kechasi va bayram kunlarida tibbiy yordam (NiŚOZ): klinika ish soatlari tashqarisida shoshilinchi bo'lmagan holatlar uchun bepul yordam — haftaga 18:00 dan 8:00 gacha va dam olish kunlari va bayramlarida 24 soat, yo'naltirishsiz, NFZ sugurtasi bilan.",
       emergencyPharmacy: "Navbatchi dorixona:",
       usefulSitesTitle: "Foydali saytlar",
       usefulSites: [
@@ -7469,6 +7473,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Acil durum ve ambulans",
       emergencyNumber: "Polonya'da acil numara: 112 veya 999",
       emergencyEr: "En yakın acil servis (SOR) randevusuz ve ücretsiz kabul eder",
+      emergencyNiSoz: "Gece ve tatil günü tıbbi yardım (NiŚOZ): poliklinik çalışma saatleri dışında acil olmayan durumlar için ücretsiz yardım — hafta içi 18:00-8:00 arası ve hafta sonları ile tatil günlerinde 24 saat, yönlendirme gerekmez, NFZ sigortası ile.",
       emergencyPharmacy: "Nöbetçi eczane bulucu:",
       usefulSitesTitle: "Faydalı web siteleri",
       usefulSites: [
@@ -9301,6 +9306,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Ёрии таъҷилӣ ва ҳолатҳои фавқулодда",
       emergencyNumber: "Рақами ёрии таъҷилӣ дар Полша: 112 ё 999",
       emergencyEr: "Наздиктарин шӯъбаи ёрии таъҷилӣ (SOR) бидуни навбат ва ройгон қабул мекунад",
+      emergencyNiSoz: "Ёрии тиббӣ дар шаб ва рӯзҳои аём (NiŚOZ): ёрии бепули тиббӣ барои ҳолатҳои ғайр-фавқулодда берун аз вақти кори сентрҳо — аз 18:00 то 8:00 дар рӯзҳои кориро ҳафта ва мамликане ва рӯзҳои ҷашн, бидуни ихтилор, бо полисаи NFZ.",
       emergencyPharmacy: "Дорухонаи навбатдор:",
       usefulSitesTitle: "Сомонаҳои муфид",
       usefulSites: [
@@ -11137,6 +11143,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       emergencyTitle: "Швидка допомога та невідкладні випадки",
       emergencyNumber: "Номер швидкої допомоги в Польщі: 112 або 999",
       emergencyEr: "Найближче відділення невідкладної допомоги (SOR) приймає без запису та безкоштовно",
+      emergencyNiSoz: "Нічна та святкова медична допомога (NiŚOZ): безкоштовна допомога при невідкладних випадках поза часами роботи поліклінік — з 18:00 до 8:00 у будні дні та цілодобово в вихідні та свята, без направлення, за полісом NFZ.",
       emergencyPharmacy: "Чергова аптека:",
       usefulSitesTitle: "Корисні сайти",
       usefulSites: [
