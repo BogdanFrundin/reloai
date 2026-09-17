@@ -408,7 +408,7 @@ export default function BankCardGrid({
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
               activeTag === null
                 ? "border-accent bg-accent/20 text-accent-bright"
-                : "border-border-strong bg-white/[0.1] text-text-muted hover:text-text-primary"
+                : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
             }`}
           >
             {gc.allTag}
@@ -421,7 +421,7 @@ export default function BankCardGrid({
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 activeTag === tag
                   ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-white/[0.1] text-text-muted hover:text-text-primary"
+                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
               }`}
             >
               {tagLabels[tag]}
@@ -435,7 +435,7 @@ export default function BankCardGrid({
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
               placeholder={searchPlaceholder ?? gc.searchGeneric}
-              className="w-full rounded-full border border-border-strong bg-white/[0.1] px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              className="w-full rounded-full border border-border-strong bg-white/[0.1] px-4 py-2 text-sm text-text-primary placeholder:text-white/70 focus:border-accent focus:outline-none"
             />
           </div>
         </div>
