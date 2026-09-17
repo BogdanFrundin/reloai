@@ -898,7 +898,7 @@ function EduCard({ row, icon }: { row: EduRow; icon: ReactNode }) {
             <CurrencyHint />
           </div>
           {subtitleParts.length > 0 && <p className="mt-2 text-xs text-white/50">{subtitleParts.join(" · ")}</p>}
-          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-blue-300/80">
             <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
             </svg>
