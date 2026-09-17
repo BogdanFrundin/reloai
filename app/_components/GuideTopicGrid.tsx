@@ -119,16 +119,11 @@ function TopicCard({ guide }: { guide: DocumentGuide }) {
       <div className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
         <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
           <div className="relative">
-            <div
-              className="absolute inset-0 rounded-2xl blur-md opacity-40"
-              style={{ backgroundColor: visual.text }}
-            />
             <span
               className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl"
               style={{
                 backgroundColor: visual.bg,
                 color: visual.text,
-                boxShadow: `0 4px 12px ${visual.text}40`,
               }}
             >
               <span style={{ fontSize: '22px', lineHeight: 1 }}>
