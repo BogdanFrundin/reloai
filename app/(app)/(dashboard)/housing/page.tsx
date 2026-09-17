@@ -251,7 +251,7 @@ export default function HousingPage() {
               {t.housing.expatsChoiceBadge}
             </span>
           </div>
-          <div className="rounded-xl border border-border-strong bg-surface-1 px-3 sm:px-4 py-2.5 sm:py-3">
+          <div className="rounded-2xl border border-border-strong bg-surface-1 px-3 sm:px-4 py-2.5 sm:py-3">
             <div className="flex flex-wrap items-end gap-3 sm:gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-xs text-text-muted">{t.housing.roomsLabel}</label>
