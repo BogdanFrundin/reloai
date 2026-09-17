@@ -8,12 +8,6 @@ const CHEVRON_ICON = (
   </svg>
 );
 
-const CHECK_ICON = (
-  <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-    <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-  </svg>
-);
-
 export type DropdownOption<T extends string> = { value: T; label: string };
 
 export default function Dropdown<T extends string>({
@@ -78,12 +72,11 @@ export default function Dropdown<T extends string>({
                       onChange(opt.value);
                       setOpen(false);
                     }}
-                    className={`flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm transition-colors duration-100 hover:bg-surface-hover ${
-                      selected ? "text-accent-bright font-semibold" : "text-text-primary"
+                    className={`flex w-full items-center px-4 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-accent/10 hover:text-accent-bright ${
+                      selected ? "font-semibold text-accent-bright" : "text-text-secondary"
                     }`}
                   >
                     {opt.label}
-                    {selected && <span className="text-accent-bright">{CHECK_ICON}</span>}
                   </button>
                 </li>
               );
