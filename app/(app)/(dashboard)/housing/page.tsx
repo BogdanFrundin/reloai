@@ -253,6 +253,10 @@ export default function HousingPage() {
           </div>
           <div className="flex flex-wrap items-end gap-3 sm:gap-4">
             <div className="flex flex-col gap-1">
+              <label className="text-xs text-text-muted">{t.common.cityLabel}</label>
+              <CitySelect value={city} onSelect={setCity} placeholder={t.common.cityLabel} />
+            </div>
+            <div className="flex flex-col gap-1">
               <label className="text-xs text-text-muted">Кол-во комнат</label>
               <Dropdown<RoomsFilter>
                 value={rooms}
@@ -264,10 +268,6 @@ export default function HousingPage() {
                   { value: "3room", label: t.housing.rooms3 },
                 ]}
               />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-text-muted">{t.common.cityLabel}</label>
-              <CitySelect value={city} onChange={setCity} />
             </div>
           </div>
         </div>
