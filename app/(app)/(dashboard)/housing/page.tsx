@@ -140,30 +140,21 @@ function DistrictCard({
         )}
         {description && (
           <div className="mt-2">
-            <p className={`text-xs leading-relaxed text-text-secondary ${!expandDescription ? "line-clamp-2" : ""}`}>
-              {description}
-            </p>
-            {expandDescription ? (
-              <div className="mt-2 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setExpandDescription(false)}
-                  className="rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] font-medium text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 hover:text-red-300"
-                >
-                  Свернуть
-                </button>
-              </div>
-            ) : (
-              <div className="mt-2 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setExpandDescription(true)}
-                  className="rounded-lg border border-white/15 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
-                >
-                  Развернуть
-                </button>
-              </div>
-            )}
+            <div className="flex items-start justify-between gap-2">
+              <p className={`flex-1 text-xs leading-relaxed text-text-secondary ${!expandDescription ? "line-clamp-2" : ""}`}>
+                {description}
+              </p>
+              <button
+                type="button"
+                onClick={() => setExpandDescription(!expandDescription)}
+                className="flex-shrink-0 flex items-center justify-center h-5 w-5 text-text-secondary transition-transform duration-150 hover:text-accent-bright"
+                aria-label={expandDescription ? "Свернуть описание" : "Развернуть описание"}
+              >
+                <svg className={`h-5 w-5 transition-transform duration-150 ${expandDescription ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
         <p className="mt-2 flex items-center gap-1.5 text-[11px] text-blue-300/80">
@@ -177,7 +168,7 @@ function DistrictCard({
         <button
           type="button"
           onClick={() => onOpenSearch(d.district)}
-          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
         >
           {t.housing.searchWithFiltersBtn}
         </button>
@@ -187,7 +178,7 @@ function DistrictCard({
             e.stopPropagation();
             askAi();
           }}
-          className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+          className="flex-1 rounded-xl bg-slate-700 px-3 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
         >
           Спросить ИИ ✦
         </button>
@@ -260,19 +251,26 @@ export default function HousingPage() {
               {t.housing.expatsChoiceBadge}
             </span>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Dropdown<RoomsFilter>
-              value={rooms}
-              onChange={setRooms}
-              label={t.housing.roomsLabel}
-              options={[
-                { value: "any", label: t.housing.roomsAny },
-                { value: "studio", label: t.housing.roomsStudio },
-                { value: "2room", label: t.housing.rooms2 },
-                { value: "3room", label: t.housing.rooms3 },
-              ]}
-            />
-            <CitySelect value={city} onChange={setCity} label={t.common.cityLabel} />
+          <div className="rounded-xl border border-border-strong bg-surface-1 px-3 sm:px-4 py-2.5 sm:py-3">
+            <div className="flex flex-wrap items-end gap-3 sm:gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-text-muted">{t.housing.roomsLabel}</label>
+                <Dropdown<RoomsFilter>
+                  value={rooms}
+                  onChange={setRooms}
+                  options={[
+                    { value: "any", label: t.housing.roomsAny },
+                    { value: "studio", label: t.housing.roomsStudio },
+                    { value: "2room", label: t.housing.rooms2 },
+                    { value: "3room", label: t.housing.rooms3 },
+                  ]}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-text-muted">{t.common.cityLabel}</label>
+                <CitySelect value={city} onChange={setCity} />
+              </div>
+            </div>
           </div>
         </div>
         <p className="mt-1.5 max-w-2xl text-sm text-text-muted">{t.housing.rentMarketSub}</p>
