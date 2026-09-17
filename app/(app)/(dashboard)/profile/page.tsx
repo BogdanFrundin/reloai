@@ -19,7 +19,7 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { getCountryName } from "../../../_lib/countries";
 import { POLISH_CITIES } from "../../../_lib/polishCities";
-import { DOCUMENT_CATALOG, STATUS_BADGE_CLASS, type DocumentItem, type DocStatus, type DocCategory } from "../../../_lib/documents";
+import { DOCUMENT_CATALOG, type DocumentItem, type DocStatus, type DocCategory } from "../../../_lib/documents";
 import { goalBucket } from "../../../_lib/checklist";
 import { supabase } from "../../../../lib/supabase";
 
@@ -36,6 +36,13 @@ const GOAL_KEYS = [
 ] as const;
 type GoalKey = (typeof GOAL_KEYS)[number];
 
+const DOC_STATUS_DOT: Record<DocStatus, string> = {
+  verified: "bg-emerald-400",
+  pending: "bg-amber-400",
+  missing: "bg-white/20",
+  locked: "bg-accent-bright",
+};
+
 function isGoalKey(value: string | null | undefined): value is GoalKey {
   return !!value && (GOAL_KEYS as readonly string[]).includes(value);
 }
@@ -45,6 +52,15 @@ function InfoRow({ label, children }: { label: string; children: ReactNode }) {
     <div className="flex items-center justify-between gap-4 py-2.5">
       <span className="text-sm text-text-muted">{label}</span>
       <span className="flex items-center gap-2 text-sm font-medium text-text-primary">{children}</span>
+    </div>
+  );
+}
+
+function StatChip({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="rounded-xl bg-white/[0.03] p-3">
+      <p className="text-[11px] text-text-muted">{label}</p>
+      <p className="mt-0.5 truncate text-sm font-semibold text-text-primary">{value}</p>
     </div>
   );
 }
@@ -84,6 +100,15 @@ export default function ProfilePage() {
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [documents, profile?.goals, profile?.goal],
+  );
+  // Not-yet-done documents surface first — that's what the user actually
+  // needs to look at from a quick glance at this card.
+  const previewDocuments = useMemo(
+    () =>
+      [...visibleDocuments]
+        .sort((a, b) => Number(a.status === "verified") - Number(b.status === "verified"))
+        .slice(0, 5),
+    [visibleDocuments],
   );
 
   const [formCitizenship, setFormCitizenship] = useState<string | undefined>(profile?.citizenship ?? undefined);
@@ -191,12 +216,12 @@ export default function ProfilePage() {
     <div className="px-6 pb-8 lg:px-10 lg:pb-10">
       <PageHeader title={p.title} subtitle={p.subtitle} center />
 
-      <div className="mt-4 max-w-4xl space-y-6 mx-auto">
-        {/* Section 1 — Personal Info */}
+      <div className="mt-4 max-w-5xl space-y-6 mx-auto">
+        {/* Hero — identity + at-a-glance stats, replaces the separate
+            Personal Info / Progress Overview cards from the old layout. */}
         <Reveal>
           <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{p.personalSection}</p>
-            <div className="mt-4 flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-xl font-semibold text-white">
                 {avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element -- external OAuth avatar, no static domain to configure next/image for
@@ -209,16 +234,12 @@ export default function ProfilePage() {
                 <p className="truncate text-lg font-semibold text-text-primary">{profile?.name || p.unnamed}</p>
                 <p className="truncate text-sm text-text-muted">{user?.email}</p>
               </div>
-              <span className={`flex-shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold ${planBadge.className}`}>
-                {planBadge.label}
-              </span>
-            </div>
-            <div className="mt-4 space-y-1 border-t border-border-subtle pt-3">
-              {memberSince && <InfoRow label={p.memberSinceLabel}>{memberSince}</InfoRow>}
-              <div className="flex items-center justify-between gap-4 py-2.5">
-                <span className="text-sm text-text-muted">{p.planLabel}</span>
+              <div className="flex flex-shrink-0 flex-col items-end gap-2">
+                <span className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${planBadge.className}`}>
+                  {planBadge.label}
+                </span>
                 {isPro ? (
-                  <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-400">
+                  <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-400">
                     {p.maxPlanBadge}
                   </span>
                 ) : (
@@ -226,10 +247,10 @@ export default function ProfilePage() {
                     type="button"
                     onClick={() => setUpgradeOpen(true)}
                     title={p.upgradeTooltip}
-                    className={`flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 ${pressScale} ${
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-white transition-colors duration-150 ${pressScale} ${
                       isFree
-                        ? "bg-accent shadow-[0_0_20px_-6px_var(--accent)] hover:bg-accent-bright"
-                        : "bg-purple-600 shadow-[0_0_20px_-6px_rgba(168,85,247,0.7)] hover:bg-purple-500"
+                        ? "bg-accent hover:bg-accent-bright"
+                        : "bg-purple-600 hover:bg-purple-500"
                     }`}
                   >
                     {isFree ? p.upgradeBadge : p.upgradeToProBadge}
@@ -237,202 +258,192 @@ export default function ProfilePage() {
                 )}
               </div>
             </div>
+
+            <div className="mt-5 grid grid-cols-3 gap-2 border-t border-border-subtle pt-5">
+              <StatChip label={p.progressSection} value={progressLoading ? "…" : `${progressPercent}%`} />
+              <StatChip
+                label={p.documentsSection}
+                value={`${visibleDocuments.filter((d) => d.status === "verified").length} / ${visibleDocuments.length}`}
+              />
+              <StatChip
+                label={p.currentStepLabel}
+                value={
+                  currentStep ? (
+                    <Link href={`/dashboard#${currentStep.documentType}`} className="hover:text-accent-bright">
+                      {currentStep.title}
+                    </Link>
+                  ) : (
+                    p.allStepsDone
+                  )
+                }
+              />
+            </div>
+
+            {memberSince && (
+              <p className="mt-3 text-xs text-text-muted">
+                {p.memberSinceLabel}: {memberSince}
+              </p>
+            )}
           </div>
         </Reveal>
 
-        {/* Section 2 — Relocation Profile */}
-        <Reveal delay={50}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold text-text-primary">{p.relocationSection}</p>
-            <div className="mt-2 divide-y divide-border-subtle">
-              <InfoRow label={t.onboarding.citizenshipLabel}>
-                {profile?.citizenship ? (
-                  <>
-                    <Image
-                      src={getFlagUrl(profile.citizenship, "sm")}
-                      alt=""
-                      width={20}
-                      height={15}
-                      className="rounded-sm"
-                      unoptimized
-                    />
-                    {getCountryName(profile.citizenship, lang)}
-                  </>
-                ) : (
-                  <span className="text-text-muted">{p.notSet}</span>
-                )}
-              </InfoRow>
-
-              <InfoRow label={t.onboarding.currentCountryLabel}>
-                {profile?.current_country ? (
-                  <>
-                    <Image
-                      src={getFlagUrl(profile.current_country, "sm")}
-                      alt=""
-                      width={20}
-                      height={15}
-                      className="rounded-sm"
-                      unoptimized
-                    />
-                    {getCountryName(profile.current_country, lang)}
-                  </>
-                ) : (
-                  <span className="text-text-muted">{p.notSet}</span>
-                )}
-              </InfoRow>
-
-              <InfoRow label={p.destinationLabel}>
-                {destinationCountryName ? (
-                  <>
-                    {destinationFlagCode && (
+        {/* Relocation profile + documents, side by side */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Reveal delay={50}>
+            <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">{p.relocationSection}</p>
+              <div className="mt-2 divide-y divide-border-subtle">
+                <InfoRow label={t.onboarding.citizenshipLabel}>
+                  {profile?.citizenship ? (
+                    <>
                       <Image
-                        src={getFlagUrl(destinationFlagCode, "sm")}
+                        src={getFlagUrl(profile.citizenship, "sm")}
                         alt=""
                         width={20}
                         height={15}
                         className="rounded-sm"
                         unoptimized
                       />
+                      {getCountryName(profile.citizenship, lang)}
+                    </>
+                  ) : (
+                    <span className="text-text-muted">{p.notSet}</span>
+                  )}
+                </InfoRow>
+
+                <InfoRow label={t.onboarding.currentCountryLabel}>
+                  {profile?.current_country ? (
+                    <>
+                      <Image
+                        src={getFlagUrl(profile.current_country, "sm")}
+                        alt=""
+                        width={20}
+                        height={15}
+                        className="rounded-sm"
+                        unoptimized
+                      />
+                      {getCountryName(profile.current_country, lang)}
+                    </>
+                  ) : (
+                    <span className="text-text-muted">{p.notSet}</span>
+                  )}
+                </InfoRow>
+
+                <InfoRow label={p.destinationLabel}>
+                  {destinationCountryName ? (
+                    <>
+                      {destinationFlagCode && (
+                        <Image
+                          src={getFlagUrl(destinationFlagCode, "sm")}
+                          alt=""
+                          width={20}
+                          height={15}
+                          className="rounded-sm"
+                          unoptimized
+                        />
+                      )}
+                      {destinationCountryName}
+                      {profile?.city ? `, ${profile.city}` : ""}
+                    </>
+                  ) : (
+                    <span className="text-text-muted">{p.notSet}</span>
+                  )}
+                </InfoRow>
+
+                <InfoRow label={t.onboarding.steps.goal.question}>
+                  {goalDisplay ?? <span className="text-text-muted">{p.notSet}</span>}
+                </InfoRow>
+
+                {goal === "work" && (
+                  <InfoRow label={p.jobOfferLabel}>
+                    {profile?.job_offer === "yes" ? p.yes : profile?.job_offer === "no" ? p.no : (
+                      <span className="text-text-muted">{p.notSet}</span>
                     )}
-                    {destinationCountryName}
-                    {profile?.city ? `, ${profile.city}` : ""}
-                  </>
-                ) : (
-                  <span className="text-text-muted">{p.notSet}</span>
+                  </InfoRow>
                 )}
-              </InfoRow>
 
-              <InfoRow label={t.onboarding.steps.goal.question}>
-                {goalDisplay ?? <span className="text-text-muted">{p.notSet}</span>}
-              </InfoRow>
+                {goal === "study" && (
+                  <InfoRow label={p.alreadyAdmittedLabel}>
+                    {profile?.already_admitted === "yes" ? p.yes : profile?.already_admitted === "no" ? p.no : (
+                      <span className="text-text-muted">{p.notSet}</span>
+                    )}
+                  </InfoRow>
+                )}
+              </div>
 
-              {goal === "work" && (
-                <InfoRow label={p.jobOfferLabel}>
-                  {profile?.job_offer === "yes" ? p.yes : profile?.job_offer === "no" ? p.no : (
-                    <span className="text-text-muted">{p.notSet}</span>
-                  )}
-                </InfoRow>
-              )}
-
-              {goal === "study" && (
-                <InfoRow label={p.alreadyAdmittedLabel}>
-                  {profile?.already_admitted === "yes" ? p.yes : profile?.already_admitted === "no" ? p.no : (
-                    <span className="text-text-muted">{p.notSet}</span>
-                  )}
-                </InfoRow>
-              )}
-            </div>
-
-            <div className="mt-3 border-t border-border-subtle pt-4">
-              <p className="text-xs font-medium text-text-muted">{p.routeLabel}</p>
-              {route ? (
-                <div className="mt-4">
-                  <RouteSummaryCard route={route} labels={t.onboarding} />
-                </div>
-              ) : (
-                <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
-                  <span className="text-sm text-text-muted">{p.noRouteSelected}</span>
-                  <button
-                    type="button"
-                    onClick={() => setRouteModalOpen(true)}
-                    className={`flex-shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
-                  >
-                    {p.chooseRoute}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-4 flex gap-3">
               <button
                 type="button"
                 onClick={openEdit}
-                className={`flex-1 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                className={`mt-4 w-full rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
               >
                 {p.editBtn}
               </button>
-              <button
-                type="button"
-                onClick={() => setRouteModalOpen(true)}
-                className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-center text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
-              >
-                {p.changeRouteBtn}
-              </button>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        {/* Section 3 — Progress Overview */}
+          <Reveal delay={75}>
+            <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-text-primary">{p.documentsSection}</p>
+                <Link href="/documents" className="text-xs font-medium text-accent-bright hover:underline">
+                  {p.viewAllDocuments}
+                </Link>
+              </div>
+              <div className="mt-3 divide-y divide-border-subtle">
+                {previewDocuments.map((doc) => (
+                  <div key={doc.id} className="flex items-center justify-between gap-3 py-2.5">
+                    <span className="truncate text-sm text-text-secondary">
+                      {t.documents.docNames[doc.nameKey]}
+                    </span>
+                    <span className="flex flex-shrink-0 items-center gap-1.5 text-xs text-text-muted">
+                      {t.documents.status[doc.status]}
+                      <span className={`h-1.5 w-1.5 rounded-full ${DOC_STATUS_DOT[doc.status]}`} />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Route */}
         <Reveal delay={100}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-text-primary">{p.progressSection}</p>
-              <span className="text-sm font-semibold text-accent-bright">
-                {progressLoading ? "…" : `${progressPercent}%`}
-              </span>
-            </div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border-subtle">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-accent to-accent-bright transition-[width] duration-700 ease-[var(--ease-out-strong)]"
-                style={{ width: `${progressLoading ? 0 : progressPercent}%` }}
-              />
-            </div>
-            <div className="mt-4 space-y-1">
-              <p className="text-xs text-text-muted">
-                {p.stepsCompletedLabel.replace("{completed}", String(completed.size)).replace("{total}", String(checklistSteps.length))}
-              </p>
-              <p className="text-sm text-text-secondary">
-                <span className="text-text-muted">{p.currentStepLabel}: </span>
-                {currentStep ? (
-                  <Link
-                    href={`/dashboard#${currentStep.documentType}`}
-                    className="font-medium text-text-primary underline decoration-border-strong underline-offset-2 transition-colors duration-150 hover:text-accent-bright hover:decoration-accent-bright"
-                  >
-                    {currentStep.title}
-                  </Link>
-                ) : (
-                  <span className="font-medium text-text-primary">{p.allStepsDone}</span>
-                )}
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Section 4 — Documents Status */}
-        <Reveal delay={150}>
-          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-text-primary">{p.documentsSection}</p>
-              <Link href="/documents" className="text-xs font-medium text-accent-bright hover:underline">
-                {p.viewAllDocuments}
-              </Link>
-            </div>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              {visibleDocuments.map((doc) => (
-                <div
-                  key={doc.id}
-                  className="flex items-center justify-between gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5"
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-sm font-semibold text-text-primary">{p.routeLabel}</p>
+              {route && (
+                <button
+                  type="button"
+                  onClick={() => setRouteModalOpen(true)}
+                  className={`rounded-full border border-border-strong bg-surface-1 px-4 py-1.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
                 >
-                  <span className="truncate text-xs font-medium text-text-secondary">
-                    {t.documents.docNames[doc.nameKey]}
-                  </span>
-                  <span
-                    className={`flex-shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${STATUS_BADGE_CLASS[doc.status]}`}
-                  >
-                    {t.documents.status[doc.status]}
-                  </span>
-                </div>
-              ))}
+                  {p.changeRouteBtn}
+                </button>
+              )}
             </div>
+            {route ? (
+              <RouteSummaryCard route={route} labels={t.onboarding} />
+            ) : (
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-dashed border-border-strong bg-surface-1 p-4">
+                <span className="text-sm text-text-muted">{p.noRouteSelected}</span>
+                <button
+                  type="button"
+                  onClick={() => setRouteModalOpen(true)}
+                  className={`flex-shrink-0 rounded-full bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent-bright ${pressScale}`}
+                >
+                  {p.chooseRoute}
+                </button>
+              </div>
+            )}
           </div>
         </Reveal>
 
-        {/* Section 5 — Log out */}
-        <Reveal delay={200}>
+        {/* Log out */}
+        <Reveal delay={150}>
           <button
             type="button"
             onClick={() => setLogoutConfirmOpen(true)}
-            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
+            className="flex w-full items-center justify-center py-2 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-red-400"
           >
             {p.logOut}
           </button>
