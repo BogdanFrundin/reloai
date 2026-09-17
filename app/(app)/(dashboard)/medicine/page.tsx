@@ -696,7 +696,7 @@ export default function MedicinePage() {
           <div className="flex flex-wrap items-end gap-3 sm:gap-4">
             <div className="flex flex-col gap-1">
               <span className="text-xs text-text-muted">{t.common.cityLabel}</span>
-              <CitySelect value={city} onChange={setCity} />
+              <CitySelect value={city} onSelect={setCity} placeholder={t.common.cityLabel} />
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-xs text-text-muted">{"Категория"}</span>
