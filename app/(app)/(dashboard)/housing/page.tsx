@@ -97,15 +97,23 @@ function DistrictCard({
   const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
 
   return (
-    <div className="group relative flex h-full flex-col rounded-[28px] bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
+    <div className="group relative flex h-full flex-col rounded-[28px] border border-border-subtle bg-[#1c1f26] p-6 transition-[transform,box-shadow,background-color,border-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:border-accent/50 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#20242d] [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_16px_36px_-14px_rgba(33,85,212,0.4)] motion-reduce:transition-none">
       <div className="flex-1">
-        <p className="text-[15px] font-bold leading-snug text-white">{d.district}</p>
+        <div className="flex items-start justify-between">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-105">
+            {d.district.slice(0, 2).toUpperCase()}
+          </span>
+          {d.is_top && (
+            <span className="rounded-full border border-accent/50 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright shadow-[0_0_30px_-12px_var(--accent)]">
+              {t.housing.recommended}
+            </span>
+          )}
+        </div>
+        <p className="mt-3 text-lg font-semibold leading-snug text-white">{d.district}</p>
         {priceLabel && (
-          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <p className="text-sm font-bold text-accent-bright">{priceLabel}</p>
-            <CurrencyHint />
-          </div>
+          <p className="mt-2 text-xl font-bold text-accent-bright">{priceLabel}</p>
         )}
+        {priceLabel && <CurrencyHint />}
         {description && <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/50">{description}</p>}
         <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/40">
           <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">

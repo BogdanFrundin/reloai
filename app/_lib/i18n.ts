@@ -418,6 +418,7 @@ export type Dictionary = {
     topDistrictDescs: { mokotow: string; wola: string; zoliborz: string; ochota: string };
     bestValueBadge: string;
     expatsChoiceBadge: string;
+    recommended: string;
     showAllDistricts: string;
     showFewerDistricts: string;
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
@@ -1790,6 +1791,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Best value",
       expatsChoiceBadge: "Релокантов' choice",
+      recommended: "Recommended",
       showAllDistricts: "Show all {count} districts in {city} →",
       showFewerDistricts: "Show fewer districts",
       roomsLabel: "Rooms",
@@ -3593,6 +3595,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Рекомендуем",
       expatsChoiceBadge: "Выбор релокантов",
+      recommended: "Рекомендуем",
       showAllDistricts: "Показать все {count} районов {city} →",
       showFewerDistricts: "Свернуть список районов",
       roomsLabel: "Комнат",
@@ -5393,6 +5396,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Eng foydali",
       expatsChoiceBadge: "Chet elliklar tanlovi",
+      recommended: "Tavsiyalangan",
       showAllDistricts: "{city} shahridagi barcha {count} ta tumanni ko'rsatish →",
       showFewerDistricts: "Ro'yxatni yig'ish",
       roomsLabel: "Xonalar",
@@ -7190,6 +7194,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "En iyi değer",
       expatsChoiceBadge: "Göçmenlerin tercihi",
+      recommended: "Önerilen",
       showAllDistricts: "{city} şehrindeki tüm {count} ilçeyi göster →",
       showFewerDistricts: "Listeyi daralt",
       roomsLabel: "Oda",
@@ -8987,6 +8992,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Тавсия медиҳем",
       expatsChoiceBadge: "Интихоби муҳоҷирон",
+      recommended: "Тавсия шуда",
       showAllDistricts: "Ҳамаи {count} ноҳияи шаҳри {city}-ро нишон диҳед →",
       showFewerDistricts: "Рӯйхатро кӯтоҳ кунед",
       roomsLabel: "Хонаҳо",
@@ -10788,6 +10794,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       bestValueBadge: "Рекомендуємо",
       expatsChoiceBadge: "Вибір експатів",
+      recommended: "Рекомендовано",
       showAllDistricts: "Показати всі {count} районів міста {city} →",
       showFewerDistricts: "Згорнути список районів",
       roomsLabel: "Кімнат",
