@@ -40,12 +40,7 @@ function moreBanksLabel(n: number, lang: Lang, t: Dictionary): string {
 // Headline replaces the old price display: the bank's single most useful
 // feature, in plain language, so the card leads with "what's in it for you"
 // instead of a number that was often just "0 zł" for most banks anyway.
-function buildHeadline(
-  guide: DocumentGuide,
-  currency: ReturnType<typeof useCurrency>["currency"],
-  rates: ReturnType<typeof useCurrency>["rates"],
-  t: Dictionary
-): { headline: string; subtitle: string } {
+function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string; subtitle: string } {
   const tagLabels: Record<string, string> = {
     no_pesel: t.guideCard.tags.noPesel,
     fully_online: t.guideCard.tags.fullyOnline,
@@ -60,7 +55,12 @@ function buildHeadline(
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
   if (tags.length === 0) {
-    return { headline: t.guideCard.classicAccount, subtitle: convertPlnText(guide.cost, currency, rates) };
+    // No subtitle here: guide.cost/price_label can be a full sentence for
+    // some banks (e.g. Plus Bank's tariff conditions), which looks broken
+    // squeezed into this single-line slot. The always-visible description
+    // below already covers pricing details in full, so this line is left
+    // blank rather than truncating raw pricing text mid-word.
+    return { headline: t.guideCard.classicAccount, subtitle: "" };
   }
   const [first, ...rest] = tags;
   const headline = headlinePhrases[first] ?? tagLabels[first];
@@ -267,7 +267,7 @@ function BankCard({
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
-  const { headline, subtitle } = buildHeadline(guide, currency, rates, t);
+  const { headline, subtitle } = buildHeadline(guide, t);
   const cost = convertPlnText(guide.cost, currency, rates);
 
   // Extract currencies from price_label or cost field (e.g., "PLN, EUR, USD, GBP")
