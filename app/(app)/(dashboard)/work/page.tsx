@@ -392,6 +392,7 @@ function getSuggestions(query: string): string[] {
 }
 
 function SalaryCalculator() {
+  const { t } = useLanguage();
   const [bruttoInput, setBruttoInput] = useState("");
   const [contractType, setContractType] = useState<"employment" | "b2b">("employment");
   const [b2bTaxType, setB2bTaxType] = useState<"12" | "19">("12");
@@ -428,11 +429,11 @@ function SalaryCalculator() {
     netto = Math.round((brutto - zus - healthInsurance - tax) * 100) / 100;
 
     breakdown = [
-      { label: "Brutto", value: brutto },
-      { label: "ZUS", value: Math.round(zus * 100) / 100 },
-      { label: "Ubezpieczenie zdrowotne", value: Math.round(healthInsurance * 100) / 100 },
-      { label: "Podatek dochodowy", value: Math.round(tax * 100) / 100 },
-      { label: "Netto", value: netto },
+      { label: t.work.salaryCalculator.brutto, value: brutto },
+      { label: `${t.work.salaryCalculator.zus} (${t.work.salaryCalculator.zusTooltip.split(" (")[1]}`, value: Math.round(zus * 100) / 100 },
+      { label: t.work.salaryCalculator.healthInsurance, value: Math.round(healthInsurance * 100) / 100 },
+      { label: t.work.salaryCalculator.incomeTax, value: Math.round(tax * 100) / 100 },
+      { label: t.work.salaryCalculator.netto, value: netto },
     ];
   } else if (contractType === "b2b" && brutto > 0) {
     let zusSpoleczne = 0;
@@ -461,11 +462,11 @@ function SalaryCalculator() {
     netto = Math.round((brutto - zusSpoleczne - healthInsuranceB2b - taxAmount) * 100) / 100;
 
     breakdown = [
-      { label: "Przychód", value: brutto },
-      { label: "ZUS społeczne", value: Math.round(zusSpoleczne * 100) / 100 },
-      { label: "Ubezpieczenie zdrowotne", value: Math.round(healthInsuranceB2b * 100) / 100 },
-      { label: `Podatek (${b2bTaxType}%)`, value: taxAmount },
-      { label: "Netto (szacunkowo)", value: netto },
+      { label: t.work.salaryCalculator.income, value: brutto },
+      { label: t.work.salaryCalculator.zusTooltip, value: Math.round(zusSpoleczne * 100) / 100 },
+      { label: t.work.salaryCalculator.healthInsurance, value: Math.round(healthInsuranceB2b * 100) / 100 },
+      { label: b2bTaxType === "12" ? t.work.salaryCalculator.taxRate12 : t.work.salaryCalculator.taxRate19, value: taxAmount },
+      { label: t.work.salaryCalculator.nettoEstimate, value: netto },
     ];
   }
 
@@ -593,7 +594,7 @@ function SalaryCalculator() {
         {brutto > 0 && (
           <div className="mt-6 space-y-4">
             <div>
-              <p className="text-xs text-text-muted">Na ruки</p>
+              <p className="text-xs text-text-muted">{t.work.salaryCalculator.netto}</p>
               <p className="mt-1 bg-gradient-to-br from-white to-slate-400 bg-clip-text text-xl font-bold text-transparent">
                 {netto.toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} PLN
               </p>

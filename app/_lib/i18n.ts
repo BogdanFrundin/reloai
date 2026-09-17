@@ -545,6 +545,18 @@ export type Dictionary = {
     faqHeading: string;
     faqCaption: string;
     faqQuestions: [string, string, string, string];
+    salaryCalculator: {
+      brutto: string;
+      zus: string;
+      zusTooltip: string;
+      healthInsurance: string;
+      incomeTax: string;
+      netto: string;
+      income: string;
+      taxRate12: string;
+      taxRate19: string;
+      nettoEstimate: string;
+    };
   };
   community: {
     title: string;
@@ -2155,6 +2167,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "What taxes do I pay under B2B?",
         "What do I lose if I work without a contract?",
       ],
+      salaryCalculator: {
+        brutto: "Gross",
+        zus: "ZUS",
+        zusTooltip: "ZUS (social insurance)",
+        healthInsurance: "Health insurance",
+        incomeTax: "Income tax",
+        netto: "Net (take-home)",
+        income: "Income",
+        taxRate12: "Tax (12%)",
+        taxRate19: "Tax (19%)",
+        nettoEstimate: "Net (estimated)",
+      },
     },
     community: {
       title: "Communities",
@@ -3994,6 +4018,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Какие налоги я плачу при B2B?",
         "Что теряю, если работаю без договора?",
       ],
+      salaryCalculator: {
+        brutto: "Брутто",
+        zus: "ZUS",
+        zusTooltip: "ZUS (соц. страхование)",
+        healthInsurance: "Медицинская страховка",
+        incomeTax: "Подоходный налог",
+        netto: "Netto (на руки)",
+        income: "Доход",
+        taxRate12: "Налог (12%)",
+        taxRate19: "Налог (19%)",
+        nettoEstimate: "На руки (примерно)",
+      },
     },
     community: {
       title: "Сообщества",
@@ -5830,6 +5866,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "B2B'da qanday soliqlar to'layman?",
         "Shartnomasiz ishlasam nimani yo'qotaman?",
       ],
+      salaryCalculator: {
+        brutto: "Brutto",
+        zus: "ZUS",
+        zusTooltip: "ZUS (ijtimoiy sug'urta)",
+        healthInsurance: "Sog'liqni saqla sug'urtasi",
+        incomeTax: "Daromad soligi",
+        netto: "Netto (qo'lga)",
+        income: "Daromad",
+        taxRate12: "Soliq (12%)",
+        taxRate19: "Soliq (19%)",
+        nettoEstimate: "Qo'lga (taxminiy)",
+      },
     },
     community: {
       title: "Jamiyatlar",
@@ -7663,6 +7711,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "B2B'de hangi vergileri öderim?",
         "Sözleşmesiz çalışırsam neyi kaybederim?",
       ],
+      salaryCalculator: {
+        brutto: "Brüt",
+        zus: "ZUS",
+        zusTooltip: "ZUS (sosyal sigorta)",
+        healthInsurance: "Sağlık sigortası",
+        incomeTax: "Gelir vergisi",
+        netto: "Net (eline geçen)",
+        income: "Gelir",
+        taxRate12: "Vergi (12%)",
+        taxRate19: "Vergi (19%)",
+        nettoEstimate: "Eline geçen (tahmini)",
+      },
     },
     community: {
       title: "Topluluklar",
@@ -9496,6 +9556,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Ман дар B2B кадом андозҳоро месупорам?",
         "Агар бе шартнома кор кунам, чиро аз даст медиҳам?",
       ],
+      salaryCalculator: {
+        brutto: "Брутто",
+        zus: "ZUS",
+        zusTooltip: "ZUS (бима ҳамаҳалӣ)",
+        healthInsurance: "Бима сеҳҳати",
+        incomeTax: "Маликиёти даромад",
+        netto: "Нетто (дастагирӣ)",
+        income: "Даромад",
+        taxRate12: "Маликиёт (12%)",
+        taxRate19: "Маликиёт (19%)",
+        nettoEstimate: "Дастагирӣ (имкон)",
+      },
     },
     community: {
       title: "Ҷамъиятҳо",
@@ -11333,6 +11405,18 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Які податки я сплачую при B2B?",
         "Що я втрачаю, якщо працюю без договору?",
       ],
+      salaryCalculator: {
+        brutto: "Брутто",
+        zus: "ZUS",
+        zusTooltip: "ZUS (соціальне страхування)",
+        healthInsurance: "Медичне страхування",
+        incomeTax: "Податок на доходи",
+        netto: "Нето (на руки)",
+        income: "Доход",
+        taxRate12: "Податок (12%)",
+        taxRate19: "Податок (19%)",
+        nettoEstimate: "На руки (приблизно)",
+      },
     },
     community: {
       title: "Спільноти",
