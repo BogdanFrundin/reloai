@@ -458,7 +458,7 @@ function SalaryCalculator() {
     const taxableBase = Math.max(0, brutto - zusSpoleczne);
     const taxRate = b2bTaxType === "12" ? 0.12 : 0.19;
     const taxAmount = Math.round(taxableBase * taxRate * 100) / 100;
-    netto = Math.max(0, Math.round((brutto - zusSpoleczne - healthInsuranceB2b - taxAmount) * 100) / 100);
+    netto = Math.round((brutto - zusSpoleczne - healthInsuranceB2b - taxAmount) * 100) / 100;
 
     breakdown = [
       { label: "Przychód", value: brutto },
