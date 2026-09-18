@@ -582,6 +582,25 @@ export type Dictionary = {
     join: string;
     members: string;
     cats: { all: string; housing: string; work: string; sport: string; family: string; general: string };
+    statsCommunities: string;
+    statsMembers: string;
+    statsNewWeek: string;
+    featuredBadge: string;
+    openBtn: string;
+    emptyTitle: string;
+    emptyBody: string;
+    channelDescriptions: {
+      polesNewcomersWarsaw: string;
+      warsawFlatsRooms: string;
+      itJobsPoland: string;
+      polskaDlaUkraincow: string;
+      runningWarsaw: string;
+      expatFamiliesPoland: string;
+      krakowNewcomers: string;
+      remoteWorkersPl: string;
+      footballPickupWarsaw: string;
+      momsInWarsaw: string;
+    };
   };
   dashboard: {
     relocation: string;
@@ -2230,6 +2249,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Join",
       members: "members",
       cats: { all: "All", housing: "Housing", work: "Work", sport: "Sport", family: "Family", general: "General" },
+      statsCommunities: "Communities",
+      statsMembers: "Total members",
+      statsNewWeek: "New this week",
+      featuredBadge: "Biggest community",
+      openBtn: "Open",
+      emptyTitle: "Didn't find yours?",
+      emptyBody: "Suggest a chat to add",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "General newcomer chat for Warsaw — questions, tips, meetups.",
+        warsawFlatsRooms: "Rentals and subletting straight from tenants, no agencies.",
+        itJobsPoland: "IT vacancies for relocators, often with visa sponsorship.",
+        polskaDlaUkraincow: "The biggest community for Ukrainians in Poland — housing, jobs, documents, legal help.",
+        runningWarsaw: "Group runs through Warsaw's parks, all levels welcome.",
+        expatFamiliesPoland: "Kindergartens, schools, playgrounds — raising kids in Poland.",
+        krakowNewcomers: "General newcomer chat for Kraków — questions, tips, meetups.",
+        remoteWorkersPl: "Remote work, coworking spaces, and B2B contracts in Poland.",
+        footballPickupWarsaw: "Casual evening football, new players welcome every week.",
+        momsInWarsaw: "Moms in Warsaw — walks, swapping baby gear, support.",
+      },
     },
     dashboard: {
       relocation: "{country} Relocation",
@@ -4107,6 +4145,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Вступить",
       members: "участников",
       cats: { all: "Все", housing: "Жильё", work: "Работа", sport: "Спорт", family: "Семья", general: "Общее" },
+      statsCommunities: "Сообществ",
+      statsMembers: "Участников всего",
+      statsNewWeek: "Новых за неделю",
+      featuredBadge: "Самое большое сообщество",
+      openBtn: "Открыть",
+      emptyTitle: "Не нашли своё?",
+      emptyBody: "Предложите чат для добавления",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "Общий чат новичков Варшавы — вопросы, советы, встречи.",
+        warsawFlatsRooms: "Аренда и субаренда напрямую от жильцов, без агентств.",
+        itJobsPoland: "Вакансии в IT для релокантов, часто с визовой поддержкой.",
+        polskaDlaUkraincow: "Самое большое сообщество для украинцев в Польше — жильё, работа, документы, юридическая помощь.",
+        runningWarsaw: "Совместные пробежки по паркам Варшавы, все уровни.",
+        expatFamiliesPoland: "Детсады, школы, площадки — жизнь в Польше с детьми.",
+        krakowNewcomers: "Общий чат новичков Кракова — вопросы, советы, встречи.",
+        remoteWorkersPl: "Про удалёнку, коворкинги и B2B-контракты в Польше.",
+        footballPickupWarsaw: "Любительский футбол по вечерам, нужны игроки каждую неделю.",
+        momsInWarsaw: "Мамы в Варшаве — прогулки, обмен вещами, поддержка.",
+      },
     },
     dashboard: {
       relocation: "Переезд в {country}",
@@ -5981,6 +6038,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Qo'shilish",
       members: "a'zo",
       cats: { all: "Barchasi", housing: "Uy-joy", work: "Ish", sport: "Sport", family: "Oila", general: "Umumiy" },
+      statsCommunities: "Jamiyatlar",
+      statsMembers: "Jami a'zolar",
+      statsNewWeek: "Bu hafta yangi",
+      featuredBadge: "Eng katta jamiyat",
+      openBtn: "Ochish",
+      emptyTitle: "O'zingizni topmadingizmi?",
+      emptyBody: "Qo'shish uchun chat taklif qiling",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "Varshavaga yangi ko'chib kelganlar uchun umumiy chat — savollar, maslahatlar, uchrashuvlar.",
+        warsawFlatsRooms: "Agentliklarsiz, ijarachilardan to'g'ridan-to'g'ri ijara va subijara.",
+        itJobsPoland: "Ko'chib kelganlar uchun IT bo'sh ish o'rinlari, ko'pincha viza yordami bilan.",
+        polskaDlaUkraincow: "Polshadagi ukrainaliklar uchun eng katta jamiyat — uy-joy, ish, hujjatlar, yuridik yordam.",
+        runningWarsaw: "Varshava parklarida birgalikda yugurish, barcha darajadagilar uchun.",
+        expatFamiliesPoland: "Bolalar bog'chalari, maktablar, o'yin maydonchalari — Polshada bolali hayot.",
+        krakowNewcomers: "Krakovga yangi ko'chib kelganlar uchun umumiy chat — savollar, maslahatlar, uchrashuvlar.",
+        remoteWorkersPl: "Polshada masofaviy ish, koworking va B2B shartnomalari haqida.",
+        footballPickupWarsaw: "Kechqurun havaskor futbol, har hafta yangi o'yinchilar kerak.",
+        momsInWarsaw: "Varshavadagi onalar — sayrlar, buyum almashish, qo'llab-quvvatlash.",
+      },
     },
     dashboard: {
       relocation: "{country}ga ko'chish",
@@ -7852,6 +7928,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Katıl",
       members: "üye",
       cats: { all: "Tümü", housing: "Konut", work: "İş", sport: "Spor", family: "Aile", general: "Genel" },
+      statsCommunities: "Topluluk",
+      statsMembers: "Toplam üye",
+      statsNewWeek: "Bu hafta yeni",
+      featuredBadge: "En büyük topluluk",
+      openBtn: "Aç",
+      emptyTitle: "Aradığınızı bulamadınız mı?",
+      emptyBody: "Eklenecek bir sohbet önerin",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "Varşova'ya yeni gelenler için genel sohbet — sorular, tavsiyeler, buluşmalar.",
+        warsawFlatsRooms: "Kiracılardan doğrudan kiralama ve devren kiralama, aracısız.",
+        itJobsPoland: "Göç edenler için genelde vize desteğiyle gelen IT iş ilanları.",
+        polskaDlaUkraincow: "Polonya'daki Ukraynalılar için en büyük topluluk — konut, iş, belgeler, hukuki destek.",
+        runningWarsaw: "Varşova parklarında birlikte koşu, her seviyeye açık.",
+        expatFamiliesPoland: "Anaokulları, okullar, oyun alanları — Polonya'da çocuklu yaşam.",
+        krakowNewcomers: "Krakow'a yeni gelenler için genel sohbet — sorular, tavsiyeler, buluşmalar.",
+        remoteWorkersPl: "Polonya'da uzaktan çalışma, ortak çalışma alanları ve B2B sözleşmeleri hakkında.",
+        footballPickupWarsaw: "Akşamları amatör futbol, her hafta yeni oyunculara ihtiyaç var.",
+        momsInWarsaw: "Varşova'daki anneler — yürüyüşler, eşya takası, destek.",
+      },
     },
     dashboard: {
       relocation: "{country} Taşınması",
@@ -9723,6 +9818,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Ҳамроҳ шудан",
       members: "аъзо",
       cats: { all: "Ҳама", housing: "Манзил", work: "Кор", sport: "Варзиш", family: "Оила", general: "Умумӣ" },
+      statsCommunities: "Ҷамъиятҳо",
+      statsMembers: "Ҳамаи аъзоён",
+      statsNewWeek: "Нав дар ин ҳафта",
+      featuredBadge: "Ҷамъияти калонтарин",
+      openBtn: "Кушодан",
+      emptyTitle: "Мувофиқи худро наёфтед?",
+      emptyBody: "Барои илова кардан чат пешниҳод кунед",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "Чати умумии тозаворидагон дар Варшава — саволҳо, маслиҳатҳо, вохӯриҳо.",
+        warsawFlatsRooms: "Иҷора ва субиҷораи бевосита аз соҳибхонаҳо, бе агентӣ.",
+        itJobsPoland: "Ҷойҳои холии IT барои муҳоҷирон, аксар вақт бо дастгирии виза.",
+        polskaDlaUkraincow: "Ҷамъияти калонтарин барои украинҳо дар Лаҳистон — манзил, кор, ҳуҷҷатҳо, кӯмаки ҳуқуқӣ.",
+        runningWarsaw: "Давидани якҷоя дар боғҳои Варшава, барои ҳама сатҳҳо.",
+        expatFamiliesPoland: "Боғчаҳо, мактабҳо, майдончаҳои бозӣ — зиндагӣ бо фарзандон дар Лаҳистон.",
+        krakowNewcomers: "Чати умумии тозаворидагон дар Краков — саволҳо, маслиҳатҳо, вохӯриҳо.",
+        remoteWorkersPl: "Дар бораи кори дурдаст, коворкингҳо ва шартномаҳои B2B дар Лаҳистон.",
+        footballPickupWarsaw: "Футболи ҳаваскорона дар бегоҳиҳо, ҳар ҳафта бозингарони нав лозиманд.",
+        momsInWarsaw: "Модарон дар Варшава — сайругашт, мубодилаи чизҳо, дастгирӣ.",
+      },
     },
     dashboard: {
       relocation: "Кӯчидан ба {country}",
@@ -11598,6 +11712,25 @@ export const dictionaries: Record<Lang, Dictionary> = {
       join: "Приєднатися",
       members: "учасників",
       cats: { all: "Усі", housing: "Житло", work: "Робота", sport: "Спорт", family: "Сім'я", general: "Загальне" },
+      statsCommunities: "Спільнот",
+      statsMembers: "Учасників всього",
+      statsNewWeek: "Нових за тиждень",
+      featuredBadge: "Найбільша спільнота",
+      openBtn: "Відкрити",
+      emptyTitle: "Не знайшли своє?",
+      emptyBody: "Запропонуйте чат для додавання",
+      channelDescriptions: {
+        polesNewcomersWarsaw: "Загальний чат новачків Варшави — питання, поради, зустрічі.",
+        warsawFlatsRooms: "Оренда та суборенда напряму від мешканців, без агентств.",
+        itJobsPoland: "Вакансії в IT для релокантів, часто з візовою підтримкою.",
+        polskaDlaUkraincow: "Найбільша спільнота для українців у Польщі — житло, робота, документи, юридична допомога.",
+        runningWarsaw: "Спільні пробіжки парками Варшави, для всіх рівнів.",
+        expatFamiliesPoland: "Дитсадки, школи, майданчики — життя в Польщі з дітьми.",
+        krakowNewcomers: "Загальний чат новачків Кракова — питання, поради, зустрічі.",
+        remoteWorkersPl: "Про віддалену роботу, коворкінги та B2B-контракти в Польщі.",
+        footballPickupWarsaw: "Аматорський футбол вечорами, потрібні нові гравці щотижня.",
+        momsInWarsaw: "Мами у Варшаві — прогулянки, обмін речами, підтримка.",
+      },
     },
     dashboard: {
       relocation: "Переїзд до {country}",
