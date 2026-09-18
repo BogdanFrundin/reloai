@@ -542,6 +542,7 @@ export type Dictionary = {
     dzialoName: string;
     dzialoSubtitle: string;
     dzialoFeatures: [string, string, string];
+    contractBadges: { employment: string; b2b: string; zlecenie: string; dzialo: string };
     jobSiteDescs: { pracuj: string; nofluff: string; linkedin: string };
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
     notFoundHeading: string;
@@ -2149,6 +2150,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Without your own insurance, no free NFZ access",
         "Risk of losing path to residence permit — employers sometimes use this instead of employment contract to save money",
       ],
+      contractBadges: {
+        employment: "Full protection",
+        b2b: "Flexibility and income",
+        zlecenie: "Partial protection",
+        dzialo: "Minimal protection",
+      },
       jobSiteDescs: {
         pracuj: "Poland's largest job board, all industries.",
         nofluff: "Tech-focused, salaries listed upfront.",
@@ -4045,6 +4052,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Без своей страховки нет бесплатного доступа к NFZ",
         "Риск остаться без пути к виду на жительство — работодатели иногда предлагают этот договор вместо трудового, чтобы сэкономить",
       ],
+      contractBadges: {
+        employment: "Полная защита",
+        b2b: "Гибкость и доход",
+        zlecenie: "Частичная защита",
+        dzialo: "Минимальная защита",
+      },
       jobSiteDescs: {
         pracuj: "Крупнейшая доска вакансий Польши, все отрасли.",
         nofluff: "Ориентирован на IT, зарплаты указаны сразу.",
@@ -5938,6 +5951,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Öz sug'urtasiz NFZ-dan bepul foydalanish imkoni yo'q",
         "Yashash ruxsatnomasi yo'liga qo'l berish xavfi — ish beruvchilar ba'zan pul tejash uchun uni mehnat shartnomasi o'rniga taklif qiladi",
       ],
+      contractBadges: {
+        employment: "To'liq himoya",
+        b2b: "Moslashuvchanlik va daromad",
+        zlecenie: "Qisman himoya",
+        dzialo: "Minimal himoya",
+      },
       jobSiteDescs: {
         pracuj: "Polshaning eng katta ish qidirish sayti, barcha sohalar bo'yicha.",
         nofluff: "Texnologiya sohasiga yo'naltirilgan, maoshlar oldindan ko'rsatiladi.",
@@ -7828,6 +7847,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Kendi sigortanız olmadan NFZ'ye ücretsiz erişim yok",
         "İkamet izni yolunu kaybetme riski — işverenler bazen masrafları azaltmak için bunu istihdam sözleşmesi yerine sunarlar",
       ],
+      contractBadges: {
+        employment: "Tam koruma",
+        b2b: "Esneklik ve gelir",
+        zlecenie: "Kısmi koruma",
+        dzialo: "Asgari koruma",
+      },
       jobSiteDescs: {
         pracuj: "Polonya'nın en büyük iş sitesi, tüm sektörler.",
         nofluff: "Teknolojiye odaklı, maaşlar önceden belirtilir.",
@@ -9718,6 +9743,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Бидуни суғуртаи худӣ, муфассали бебаҳои NFZ нест",
         "Хатари ғазавандан роҳи иҷозати истиқомат — корфармоён баъзан барои пасянди восита ин шартномаро ба ҷои шартномаи меҳнатӣ пешниҳод мекунанд",
       ],
+      contractBadges: {
+        employment: "Ҳимояи пурра",
+        b2b: "Мутобиқшавӣ ва даромад",
+        zlecenie: "Ҳимояи қисман",
+        dzialo: "Ҳимояи ҳадди ақал",
+      },
       jobSiteDescs: {
         pracuj: "Бузургтарин сомонаи кории Полша, дар ҳамаи соҳаҳо.",
         nofluff: "Ба технология нигаронидашуда, маошҳо пешакӣ нишон дода мешаванд.",
@@ -11612,6 +11643,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Без власного страхування немає безплатного доступу до NFZ",
         "Ризик втратити шлях до посвідки на проживання — роботодавці іноді пропонують цей договір замість трудового, щоб заощадити",
       ],
+      contractBadges: {
+        employment: "Повний захист",
+        b2b: "Гнучкість і дохід",
+        zlecenie: "Частковий захист",
+        dzialo: "Мінімальний захист",
+      },
       jobSiteDescs: {
         pracuj: "Найбільша дошка вакансій Польщі, усі галузі.",
         nofluff: "Орієнтований на IT, зарплати вказані одразу.",
