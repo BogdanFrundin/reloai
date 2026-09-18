@@ -67,9 +67,18 @@ function DashboardShellInner({ children }: { children: ReactNode }) {
               pathname === "/dashboard/ai" ? "overflow-hidden" : "overflow-y-auto"
             }`}
           >
-            <PageTransition className={pathname === "/dashboard/ai" ? "flex min-h-0 flex-1 flex-col" : undefined}>
-              {children}
-            </PageTransition>
+            {pathname === "/dashboard/ai" ? (
+              <PageTransition className="flex min-h-0 flex-1 flex-col">{children}</PageTransition>
+            ) : (
+              // Cap content width so the layout keeps the same visual scale
+              // on every monitor instead of stretching cards/fonts further
+              // apart on wide screens — pages that want a narrower reading
+              // width (profile, settings) still nest their own max-w-5xl
+              // inside this without conflict.
+              <div className="mx-auto w-full max-w-[1400px]">
+                <PageTransition>{children}</PageTransition>
+              </div>
+            )}
           </main>
         </div>
         {isDemoMode && <DemoFloatingCard />}
