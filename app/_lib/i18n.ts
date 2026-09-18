@@ -536,6 +536,12 @@ export type Dictionary = {
     b2bContractName: string;
     employmentFeatures: [string, string, string];
     b2bFeatures: [string, string, string];
+    zlecenieName: string;
+    zleceniaSubtitle: string;
+    zleceniaFeatures: [string, string, string];
+    dzialoName: string;
+    dzialoSubtitle: string;
+    dzialoFeatures: [string, string, string];
     jobSiteDescs: { pracuj: string; nofluff: string; linkedin: string };
     guides: Record<string, { heading: string; steps: string[]; aiQuestion: string }>;
     notFoundHeading: string;
@@ -2109,6 +2115,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Higher take-home pay, lower tax rate",
         "You handle your own ZUS and invoicing",
         "More flexibility, less job security",
+      ],
+      zlecenieName: "Contract for Services (Umowa zlecenie)",
+      zleceniaSubtitle: "Civil law contract",
+      zleceniaFeatures: [
+        "Less protection than employment contract",
+        "ZUS partially mandatory — depends on other income sources",
+        "No paid leave",
+      ],
+      dzialoName: "Work Contract (Umowa o dzieło)",
+      dzialoSubtitle: "Payment for work results",
+      dzialoFeatures: [
+        "ZUS and health insurance not paid",
+        "Without your own insurance, no free NFZ access",
+        "Risk of losing path to residence permit — employers sometimes use this instead of employment contract to save money",
       ],
       jobSiteDescs: {
         pracuj: "Poland's largest job board, all industries.",
@@ -3973,6 +3993,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Вы сами занимаетесь ZUS и выставлением счетов",
         "Больше гибкости, меньше стабильности",
       ],
+      zlecenieName: "Договор поручения (Umowa zlecenie)",
+      zleceniaSubtitle: "Гражданско-правовой договор",
+      zleceniaFeatures: [
+        "Меньше защиты, чем у трудового договора",
+        "ZUS обязателен частично — зависит от других источников дохода",
+        "Нет оплачиваемого отпуска",
+      ],
+      dzialoName: "Договор подряда (Umowa o dzieło)",
+      dzialoSubtitle: "Оплата за результат работы",
+      dzialoFeatures: [
+        "ZUS и медстраховка не уплачиваются",
+        "Без своей страховки нет бесплатного доступа к NFZ",
+        "Риск остаться без пути к виду на жительство — работодатели иногда предлагают этот договор вместо трудового, чтобы сэкономить",
+      ],
       jobSiteDescs: {
         pracuj: "Крупнейшая доска вакансий Польши, все отрасли.",
         nofluff: "Ориентирован на IT, зарплаты указаны сразу.",
@@ -5833,6 +5867,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ZUS va hisob-fakturalarni o'zingiz yuritasiz",
         "Erkinlik ko'proq, ish barqarorligi kamroq",
       ],
+      zlecenieName: "Topshirish shartnomasi (Umowa zlecenie)",
+      zleceniaSubtitle: "Fuqarolik-huquqiy shartnoma",
+      zleceniaFeatures: [
+        "Mehnat shartnomasiga qaraganda kamroq himoya",
+        "ZUS qisman majbur — boshqa daromad manbalariga bog'liq",
+        "To'lanadigan ta'til yo'q",
+      ],
+      dzialoName: "Ish shartnomasi (Umowa o dzieło)",
+      dzialoSubtitle: "Ish natijalari uchun to'lov",
+      dzialoFeatures: [
+        "ZUS va sog'liq sug'urtasi to'lanmaydi",
+        "Öz sug'urtasiz NFZ-dan bepul foydalanish imkoni yo'q",
+        "Yashash ruxsatnomasi yo'liga qo'l berish xavfi — ish beruvchilar ba'zan pul tejash uchun uni mehnat shartnomasi o'rniga taklif qiladi",
+      ],
       jobSiteDescs: {
         pracuj: "Polshaning eng katta ish qidirish sayti, barcha sohalar bo'yicha.",
         nofluff: "Texnologiya sohasiga yo'naltirilgan, maoshlar oldindan ko'rsatiladi.",
@@ -7690,6 +7738,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "ZUS ve faturalandırmayı kendiniz yönetirsiniz",
         "Daha fazla esneklik, daha az iş güvencesi",
       ],
+      zlecenieName: "Görev Sözleşmesi (Umowa zlecenie)",
+      zleceniaSubtitle: "Medeni hukuk sözleşmesi",
+      zleceniaFeatures: [
+        "İş sözleşmesinden daha az koruma",
+        "ZUS kısmen zorunlu — diğer gelir kaynaklarına bağlı",
+        "Ücretli izin yok",
+      ],
+      dzialoName: "İş Sözleşmesi (Umowa o dzieło)",
+      dzialoSubtitle: "İş sonuçları için ödeme",
+      dzialoFeatures: [
+        "ZUS ve sağlık sigortası ödenmez",
+        "Kendi sigortanız olmadan NFZ'ye ücretsiz erişim yok",
+        "İkamet izni yolunu kaybetme riski — işverenler bazen masrafları azaltmak için bunu istihdam sözleşmesi yerine sunarlar",
+      ],
       jobSiteDescs: {
         pracuj: "Polonya'nın en büyük iş sitesi, tüm sektörler.",
         nofluff: "Teknolojiye odaklı, maaşlar önceden belirtilir.",
@@ -9546,6 +9608,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Даромади холис баландтар, андози камтар",
         "ZUS ва ҳисобномаҳоро худатон танзим мекунед",
         "Чандирии бештар, амнияти шуғли камтар",
+      ],
+      zlecenieName: "Шартномаи вакоҳат (Umowa zlecenie)",
+      zleceniaSubtitle: "Шартномаи ҳуқуқи шаҳрвандӣ",
+      zleceniaFeatures: [
+        "Муҳофизати камтар нисбат ба шартномаи кориҳои меҳнатӣ",
+        "ZUS ҷузъӣ ҳатмӣ — аз манбаҳои дигари даромад вобаста",
+        "Таъҭилӣ муҳаяќамшуда нест",
+      ],
+      dzialoName: "Шартномаи кор (Umowa o dzieło)",
+      dzialoSubtitle: "Пардохт барои натиҷаҳои кор",
+      dzialoFeatures: [
+        "ZUS ва суғуртаи сеҳҳатӣ пардохт нашуда",
+        "Бидуни суғуртаи худӣ, муфассали бебаҳои NFZ нест",
+        "Хатари ғазавандан роҳи иҷозати истиқомат — корфармоён баъзан барои пасянди восита ин шартномаро ба ҷои шартномаи меҳнатӣ пешниҳод мекунанд",
       ],
       jobSiteDescs: {
         pracuj: "Бузургтарин сомонаи кории Полша, дар ҳамаи соҳаҳо.",
@@ -11407,6 +11483,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Вища зарплата на руки, нижча податкова ставка",
         "Ви самі займаєтеся ZUS і виставленням рахунків",
         "Більше гнучкості, менше стабільності",
+      ],
+      zlecenieName: "Договір про надання послуг (Umowa zlecenie)",
+      zleceniaSubtitle: "Цивільно-правовий договір",
+      zleceniaFeatures: [
+        "Менша захист, ніж у трудовому договорі",
+        "ZUS частково обов'язковий — залежить від інших джерел доходу",
+        "Без оплачуваної відпустки",
+      ],
+      dzialoName: "Договір виконання роботи (Umowa o dzieło)",
+      dzialoSubtitle: "Оплата за результат роботи",
+      dzialoFeatures: [
+        "ZUS і медичне страхування не сплачуються",
+        "Без власного страхування немає безплатного доступу до NFZ",
+        "Ризик втратити шлях до посвідки на проживання — роботодавці іноді пропонують цей договір замість трудового, щоб заощадити",
       ],
       jobSiteDescs: {
         pracuj: "Найбільша дошка вакансій Польщі, усі галузі.",

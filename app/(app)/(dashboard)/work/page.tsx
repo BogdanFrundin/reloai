@@ -672,10 +672,10 @@ export default function WorkPage() {
 
       <Reveal delay={160} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
           {CONTRACT_TYPES.map((type, index) => (
             <Reveal key={type.name} delay={index * 40}>
-              <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+              <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
                 <p className="text-sm font-semibold text-text-primary">{type.name}</p>
                 <p className="text-xs text-text-muted">{type.subtitle}</p>
                 <ul className="mt-4 space-y-2.5">
@@ -689,7 +689,7 @@ export default function WorkPage() {
                   ))}
                 </ul>
                 {t.work.guides[type.key] && (
-                  <div className="mt-4">
+                  <div className="mt-auto pt-4">
                     <HelpButton
                       guideHeading={t.work.guides[type.key].heading}
                       guideSteps={t.work.guides[type.key].steps}
@@ -702,15 +702,51 @@ export default function WorkPage() {
             </Reveal>
           ))}
           <Reveal delay={80}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">Umowa zlecenie</p>
-              <p className="mt-2 text-xs text-text-muted">Гражданско-правовой договор, ниже защита работника, ZUS частично обязателен (в зависимости от других источников дохода), нет оплачиваемого отпуска.</p>
+            <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">{t.work.zlecenieName}</p>
+              <p className="text-xs text-text-muted">{t.work.zleceniaSubtitle}</p>
+              <ul className="mt-4 space-y-2.5">
+                {t.work.zleceniaFeatures.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto pt-4">
+                <HelpButton
+                  guideHeading={t.work.guides.employment?.heading || "Как оформить договор поручения"}
+                  guideSteps={t.work.guides.employment?.steps || []}
+                  aiQuestion="Что такое договор поручения (Umowa zlecenie) и как его получить?"
+                  label={t.helpButton.label}
+                />
+              </div>
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">Umowa o dzieło</p>
-              <p className="mt-2 text-xs text-text-muted">Договор на конкретный результат работы, ZUS и медстраховка НЕ уплачиваются — внимание: без неё нет доступа к NFZ бесплатно. Работодатели иногда предлагают её вместо трудового, чтобы сэкономить — для мигранта это риск остаться без легальной медстраховки и без пути к виду на жительство.</p>
+            <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">{t.work.dzialoName}</p>
+              <p className="text-xs text-text-muted">{t.work.dzialoSubtitle}</p>
+              <ul className="mt-4 space-y-2.5">
+                {t.work.dzialoFeatures.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto pt-4">
+                <HelpButton
+                  guideHeading={t.work.guides.employment?.heading || "Как оформить договор подряда"}
+                  guideSteps={t.work.guides.employment?.steps || []}
+                  aiQuestion="Что такое договор подряда (Umowa o dzieło) и как его получить?"
+                  label={t.helpButton.label}
+                />
+              </div>
             </div>
           </Reveal>
         </div>
