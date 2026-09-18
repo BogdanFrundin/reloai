@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import ToggleSwitch from "../../../_components/ToggleSwitch";
@@ -18,55 +18,16 @@ import { pressScale } from "../../../_lib/motion";
 import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 
-const ICON_USER = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <circle cx="12" cy="8" r="4" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
-  </svg>
-);
-
-const ICON_GLOBE = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <circle cx="12" cy="12" r="9" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z" />
-  </svg>
-);
-
-const ICON_BELL = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 8a6 6 0 1112 0c0 4 1.5 5.5 1.5 5.5H4.5S6 12 6 8z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 17a2.5 2.5 0 005 0" />
-  </svg>
-);
-
-const ICON_THEME = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <circle cx="12" cy="12" r="4" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.5-6.5L16 7m-8 8l-1.5 1.5M17.5 17.5L16 16M8 7 6.5 5.5" />
-  </svg>
-);
-
-const ICON_DANGER = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.3 3.9L2.5 17a2 2 0 001.7 3h15.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" />
-  </svg>
-);
-
-const ICON_LOGOUT = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H6a2 2 0 01-2-2V5a2 2 0 012-2h3m5 14l4-4m0 0l-4-4m4 4H9" />
-  </svg>
-);
-
 const CHEVRON_DOWN = (
   <svg className="h-3.5 w-3.5 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
   </svg>
 );
 
-// Compact "row control" dropdown for the language picker inside the Language
-// & currency section — same open/close-on-outside-click pattern as
-// MiniLangSwitcher, but laid out as a settings row rather than a navbar chip.
+// Row-style dropdown trigger for the Language & currency card — visually a
+// plain InfoRow value (flag + text + chevron, no box) rather than a button,
+// so it sits flush with the rest of profile-style info rows. Same
+// open/close-on-outside-click pattern as MiniLangSwitcher.
 function LanguageSelect({ lang, onChange }: { lang: Lang; onChange: (code: Lang) => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -87,7 +48,7 @@ function LanguageSelect({ lang, onChange }: { lang: Lang; onChange: (code: Lang)
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-primary transition-colors duration-150 hover:border-border-strong"
+        className="flex items-center gap-2 text-sm font-medium text-text-primary transition-colors duration-150 hover:text-accent-bright"
       >
         <Image src={getFlagUrl(current.flag, "sm")} alt="" width={20} height={15} className="rounded-sm" unoptimized />
         {current.name}
@@ -151,7 +112,7 @@ function CurrencySelect({
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-xl border border-border-subtle bg-surface-1 px-3.5 py-2.5 text-sm text-text-primary transition-colors duration-150 hover:border-border-strong"
+        className="flex items-center gap-2 text-sm font-medium text-text-primary transition-colors duration-150 hover:text-accent-bright"
       >
         <Image src={getFlagUrl(current.flag, "sm")} alt="" width={20} height={15} className="rounded-sm" unoptimized />
         {getCurrencyName(current.code, lang)}
@@ -189,8 +150,6 @@ function CurrencySelect({
   );
 }
 
-type SectionKey = "account" | "regional" | "notifications" | "theme" | "danger";
-
 export default function SettingsPage() {
   const { lang, setLang, t } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -198,23 +157,6 @@ export default function SettingsPage() {
   const { user, profile, signOut, refreshProfile } = useAuth();
   const router = useRouter();
   const s = t.settings;
-
-  const SECTIONS: { key: SectionKey; label: string; icon: ReactNode }[] = [
-    { key: "account", label: s.accountSection, icon: ICON_USER },
-    { key: "regional", label: `${s.languageSection} · ${s.currencySection}`, icon: ICON_GLOBE },
-    { key: "notifications", label: s.notifications, icon: ICON_BELL },
-    { key: "theme", label: s.themeSection, icon: ICON_THEME },
-  ];
-
-  const [activeSection, setActiveSection] = useState<SectionKey>("account");
-
-  // A couple of places elsewhere in the app link to /settings#currency-section
-  // to jump straight to the currency picker. Now that sections are tabbed
-  // instead of one long scroll, honor that by switching to the matching tab
-  // on load instead of just scrolling to a spot on the page.
-  useEffect(() => {
-    if (window.location.hash === "#currency-section") setActiveSection("regional");
-  }, []);
 
   const [notifications, setNotifications] = useState<Record<string, boolean>>({
     email: profile?.email_newsletter ?? true,
@@ -298,270 +240,223 @@ export default function SettingsPage() {
     <div className="px-6 pb-8 lg:px-10 lg:pb-10">
       <PageHeader title={s.title} subtitle={s.subtitle} center />
 
-      <div className="mt-4 max-w-5xl mx-auto">
+      <div className="mt-4 max-w-5xl space-y-6 mx-auto">
+        {/* Account — identity + editable name/email, mirrors profile's hero card */}
         <Reveal>
-          <div className="flex flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 lg:flex-row">
-            {/* Section nav */}
-            <nav className="flex flex-col border-b border-border-subtle p-4 lg:w-64 lg:flex-shrink-0 lg:border-b-0 lg:border-r">
-              <div className="mb-3 flex items-center gap-3 border-b border-border-subtle px-1 pb-4">
-                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-sm font-semibold text-white">
-                  {avatarUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- external OAuth avatar, no static domain to configure next/image for
-                    <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
-                  ) : (
-                    initials
-                  )}
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-text-primary">{profile?.name || t.profile.unnamed}</p>
-                  <p className="truncate text-xs text-text-muted">{user?.email}</p>
-                </div>
+          <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+            <div className="flex items-center gap-4">
+              <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-xl font-semibold text-white">
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- external OAuth avatar, no static domain to configure next/image for
+                  <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  initials
+                )}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-lg font-semibold text-text-primary">{profile?.name || t.profile.unnamed}</p>
+                <p className="truncate text-sm text-text-muted">{user?.email}</p>
               </div>
+            </div>
 
-              <div className="flex flex-col gap-1">
-                {SECTIONS.map((section) => {
-                  const isActive = activeSection === section.key;
-                  return (
-                    <button
-                      key={section.key}
-                      type="button"
-                      onClick={() => setActiveSection(section.key)}
-                      className={`flex items-center gap-3 rounded-r-lg border-l-2 px-3 py-3 text-left text-sm font-medium transition-colors duration-150 ${
-                        isActive
-                          ? "border-accent-bright bg-accent/10 text-accent-bright"
-                          : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-                      }`}
-                    >
-                      <span className="flex-shrink-0 [&_svg]:h-5 [&_svg]:w-5">{section.icon}</span>
-                      <span className="truncate">{section.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="mt-5 grid gap-4 border-t border-border-subtle pt-5 sm:grid-cols-2">
+              <label className="block">
+                <span className="text-xs text-text-muted">{s.nameLabel}</span>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    setAccountSaved(false);
+                  }}
+                  className="mt-1.5 w-full rounded-xl border border-border-subtle bg-panel px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs text-text-muted">{s.emailLabel}</span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    setAccountSaved(false);
+                  }}
+                  className="mt-1.5 w-full rounded-xl border border-border-subtle bg-panel px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
+                />
+              </label>
+            </div>
 
-              <div className="flex-1" />
-
-              <div className="mt-3 flex flex-col gap-1 border-t border-border-subtle pt-3">
-                <button
-                  type="button"
-                  onClick={() => setActiveSection("danger")}
-                  className={`flex items-center gap-3 rounded-r-lg border-l-2 px-3 py-3 text-left text-sm font-medium transition-colors duration-150 ${
-                    activeSection === "danger"
-                      ? "border-red-400 bg-red-500/10 text-red-400"
-                      : "border-transparent text-red-400/70 hover:bg-red-500/5 hover:text-red-400"
-                  }`}
-                >
-                  <span className="flex-shrink-0 [&_svg]:h-5 [&_svg]:w-5">{ICON_DANGER}</span>
-                  <span className="truncate">{s.dangerSection}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLogoutConfirmOpen(true)}
-                  className="flex items-center gap-3 rounded-r-lg border-l-2 border-transparent px-3 py-3 text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
-                >
-                  <span className="flex-shrink-0 [&_svg]:h-5 [&_svg]:w-5">{ICON_LOGOUT}</span>
-                  <span className="truncate">{t.profile.logOut}</span>
-                </button>
-              </div>
-            </nav>
-
-            {/* Active section content */}
-            <div className="min-w-0 flex-1 p-7">
-              {activeSection === "account" && (
-                <div>
-                  <p className="text-sm font-semibold text-text-primary">
-                    {s.accountSection}{" "}
-                    {accountSaved && <span className="text-xs font-normal text-accent-bright">{s.saved}</span>}
-                  </p>
-                  <div className="mt-4 max-w-sm space-y-3">
-                    <label className="block">
-                      <span className="text-xs text-text-muted">{s.nameLabel}</span>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(event) => {
-                          setName(event.target.value);
-                          setAccountSaved(false);
-                        }}
-                        className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
-                      />
-                    </label>
-                    <label className="block">
-                      <span className="text-xs text-text-muted">{s.emailLabel}</span>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => {
-                          setEmail(event.target.value);
-                          setAccountSaved(false);
-                        }}
-                        className="mt-1 w-full rounded-xl border border-border-subtle bg-surface-1 px-3 py-2.5 text-sm text-text-primary outline-none transition-colors duration-150 focus:border-accent/50"
-                      />
-                    </label>
-                    <button
-                      type="button"
-                      onClick={handleSaveAccount}
-                      disabled={savingAccount}
-                      className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-60 ${pressScale}`}
-                    >
-                      {s.saveBtn}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {activeSection === "regional" && (
-                <div id="currency-section" className="scroll-mt-24">
-                  <p className="text-base font-medium text-text-primary">
-                    {s.languageSection} · {s.currencySection}
-                  </p>
-
-                  <div className="mt-3 flex items-center justify-between gap-4 border-t border-border-subtle py-4">
-                    <div>
-                      <p className="text-sm font-medium text-text-primary">
-                        {s.languageSection}{" "}
-                        {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
-                      </p>
-                      <p className="mt-0.5 text-xs text-text-muted">{s.languageDesc}</p>
-                    </div>
-                    <LanguageSelect lang={lang} onChange={handleLangChange} />
-                  </div>
-
-                  <div className="flex items-center justify-between gap-4 border-t border-border-subtle py-4">
-                    <div>
-                      <p className="text-sm font-medium text-text-primary">{s.currencySection}</p>
-                      <p className="mt-0.5 text-xs text-text-muted">{s.currencyDesc}</p>
-                    </div>
-                    <CurrencySelect currency={currency} lang={lang} onChange={setCurrency} />
-                  </div>
-
-                  <div className="mt-2 rounded-xl bg-white/[0.03] p-4">
-                    <p className="text-xs text-text-muted">{s.languageSection}</p>
-                    <div className="mt-2.5 flex flex-wrap gap-2">
-                      {LANGUAGES.map((l) => (
-                        <button
-                          key={l.code}
-                          type="button"
-                          onClick={() => handleLangChange(l.code)}
-                          className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors duration-150 ${
-                            lang === l.code
-                              ? "border-accent/50 bg-accent/10 text-accent-bright"
-                              : "border-border-subtle text-text-secondary hover:border-border-strong hover:text-text-primary"
-                          }`}
-                        >
-                          <Image src={getFlagUrl(l.flag, "sm")} alt="" width={18} height={13} className="rounded-sm" unoptimized />
-                          {l.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeSection === "notifications" && (
-                <div>
-                  <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
-                  <div className="mt-4 space-y-4">
-                    {NOTIFICATION_SETTINGS.map((setting) => (
-                      <div key={setting.key} className="flex items-center justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-medium text-text-primary">{setting.label}</p>
-                          <p className="text-xs text-text-muted">{setting.description}</p>
-                        </div>
-                        <div
-                          className={
-                            savingNotifications[setting.key] ? "pointer-events-none opacity-50 transition-opacity" : "transition-opacity"
-                          }
-                        >
-                          <ToggleSwitch
-                            checked={notifications[setting.key]}
-                            onChange={(checked) => handleNotificationChange(setting.key, checked)}
-                            label={setting.label}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {activeSection === "theme" && (
-                <div>
-                  <p className="text-sm font-semibold text-text-primary">{s.themeSection}</p>
-                  <p className="mt-1 text-xs text-text-muted">{s.themeDesc}</p>
-                  <div className="mt-4 grid max-w-sm grid-cols-2 gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setTheme("light")}
-                      aria-pressed={theme === "light"}
-                      className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-                        theme === "light"
-                          ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
-                          : "border-border-subtle bg-surface-1 hover:border-border-strong"
-                      }`}
-                    >
-                      <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg bg-white p-2.5">
-                        <div className="flex gap-1">
-                          <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                        </div>
-                        <div className="h-1.5 w-3/4 rounded-full bg-slate-300" />
-                        <div className="h-1.5 w-1/2 rounded-full bg-slate-200" />
-                        <div className="h-1.5 w-2/3 rounded-full bg-slate-200" />
-                      </div>
-                      <span
-                        className={`text-sm font-medium ${theme === "light" ? "text-text-primary" : "text-text-secondary"}`}
-                      >
-                        {s.themeLight}
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setTheme("dark")}
-                      aria-pressed={theme === "dark"}
-                      className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
-                        theme === "dark"
-                          ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
-                          : "border-border-subtle bg-surface-1 hover:border-border-strong"
-                      }`}
-                    >
-                      <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg border border-white/10 bg-[#131316] p-2.5">
-                        <div className="flex gap-1">
-                          <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
-                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
-                        </div>
-                        <div className="h-1.5 w-3/4 rounded-full bg-white/25" />
-                        <div className="h-1.5 w-1/2 rounded-full bg-white/15" />
-                        <div className="h-1.5 w-2/3 rounded-full bg-white/15" />
-                      </div>
-                      <span
-                        className={`text-sm font-medium ${theme === "dark" ? "text-text-primary" : "text-text-secondary"}`}
-                      >
-                        {s.themeDark}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {activeSection === "danger" && (
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6">
-                  <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
-                  <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
-                  <button
-                    type="button"
-                    onClick={() => setDeleteConfirmOpen(true)}
-                    className={`mt-4 rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-sm font-semibold text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 ${pressScale}`}
-                  >
-                    {s.deleteAccountBtn}
-                  </button>
-                </div>
-              )}
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleSaveAccount}
+                disabled={savingAccount}
+                className={`rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-bright disabled:opacity-60 ${pressScale}`}
+              >
+                {s.saveBtn}
+              </button>
+              {accountSaved && <span className="text-xs font-medium text-accent-bright">{s.saved}</span>}
             </div>
           </div>
+        </Reveal>
+
+        {/* Language & currency + notifications, side by side */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Reveal delay={50}>
+            <div id="currency-section" className="h-full scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">
+                {s.languageSection} · {s.currencySection}
+              </p>
+              <div className="mt-2 divide-y divide-border-subtle">
+                <div className="flex items-center justify-between gap-4 py-2.5">
+                  <span className="text-sm text-text-muted">
+                    {s.languageSection}
+                    {savingLang && <span className="ml-1.5 text-xs text-text-muted">({s.saving})</span>}
+                  </span>
+                  <LanguageSelect lang={lang} onChange={handleLangChange} />
+                </div>
+                <div className="flex items-center justify-between gap-4 py-2.5">
+                  <span className="text-sm text-text-muted">{s.currencySection}</span>
+                  <CurrencySelect currency={currency} lang={lang} onChange={setCurrency} />
+                </div>
+              </div>
+
+              <div className="mt-4 rounded-xl bg-white/[0.03] p-4">
+                <p className="text-xs text-text-muted">{s.languageSection}</p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  {LANGUAGES.map((l) => (
+                    <button
+                      key={l.code}
+                      type="button"
+                      onClick={() => handleLangChange(l.code)}
+                      className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors duration-150 ${
+                        lang === l.code
+                          ? "border-accent/50 bg-accent/10 text-accent-bright"
+                          : "border-border-subtle text-text-secondary hover:border-border-strong hover:text-text-primary"
+                      }`}
+                    >
+                      <Image src={getFlagUrl(l.flag, "sm")} alt="" width={18} height={13} className="rounded-sm" unoptimized />
+                      {l.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={75}>
+            <div className="h-full rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+              <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
+              <div className="mt-2 divide-y divide-border-subtle">
+                {NOTIFICATION_SETTINGS.map((setting) => (
+                  <div key={setting.key} className="flex items-center justify-between gap-4 py-2.5">
+                    <div className="min-w-0">
+                      <p className="text-sm text-text-secondary">{setting.label}</p>
+                      <p className="mt-0.5 truncate text-xs text-text-muted">{setting.description}</p>
+                    </div>
+                    <div
+                      className={
+                        savingNotifications[setting.key] ? "pointer-events-none flex-shrink-0 opacity-50 transition-opacity" : "flex-shrink-0 transition-opacity"
+                      }
+                    >
+                      <ToggleSwitch
+                        checked={notifications[setting.key]}
+                        onChange={(checked) => handleNotificationChange(setting.key, checked)}
+                        label={setting.label}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Appearance — full width, like the Route section on profile */}
+        <Reveal delay={100}>
+          <div>
+            <p className="mb-3 text-sm font-semibold text-text-primary">{s.themeSection}</p>
+            <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+              <p className="text-xs text-text-muted">{s.themeDesc}</p>
+              <div className="mt-4 grid max-w-sm grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => setTheme("light")}
+                  aria-pressed={theme === "light"}
+                  className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                    theme === "light"
+                      ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                      : "border-border-subtle bg-panel hover:border-border-strong"
+                  }`}
+                >
+                  <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg bg-white p-2.5">
+                    <div className="flex gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    </div>
+                    <div className="h-1.5 w-3/4 rounded-full bg-slate-300" />
+                    <div className="h-1.5 w-1/2 rounded-full bg-slate-200" />
+                    <div className="h-1.5 w-2/3 rounded-full bg-slate-200" />
+                  </div>
+                  <span className={`text-sm font-medium ${theme === "light" ? "text-text-primary" : "text-text-secondary"}`}>
+                    {s.themeLight}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setTheme("dark")}
+                  aria-pressed={theme === "dark"}
+                  className={`flex flex-col items-center gap-3 rounded-2xl border p-4 transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-out-strong)] ${
+                    theme === "dark"
+                      ? "border-accent bg-accent/[0.06] shadow-[0_0_30px_-12px_var(--accent)]"
+                      : "border-border-subtle bg-panel hover:border-border-strong"
+                  }`}
+                >
+                  <div className="flex h-[72px] w-full flex-col gap-1.5 rounded-lg border border-white/10 bg-[#131316] p-2.5">
+                    <div className="flex gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+                    </div>
+                    <div className="h-1.5 w-3/4 rounded-full bg-white/25" />
+                    <div className="h-1.5 w-1/2 rounded-full bg-white/15" />
+                    <div className="h-1.5 w-2/3 rounded-full bg-white/15" />
+                  </div>
+                  <span className={`text-sm font-medium ${theme === "dark" ? "text-text-primary" : "text-text-secondary"}`}>
+                    {s.themeDark}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Danger zone */}
+        <Reveal delay={125}>
+          <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6">
+            <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
+            <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
+            <button
+              type="button"
+              onClick={() => setDeleteConfirmOpen(true)}
+              className={`mt-4 rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-sm font-semibold text-red-400 transition-colors duration-150 hover:border-red-500/50 hover:bg-red-500/20 ${pressScale}`}
+            >
+              {s.deleteAccountBtn}
+            </button>
+          </div>
+        </Reveal>
+
+        {/* Log out */}
+        <Reveal delay={150}>
+          <button
+            type="button"
+            onClick={() => setLogoutConfirmOpen(true)}
+            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
+          >
+            {t.profile.logOut}
+          </button>
         </Reveal>
       </div>
 
