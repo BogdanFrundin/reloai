@@ -372,6 +372,61 @@ const SPARKLE_ICON = (
   </svg>
 );
 
+// One icon + one uniform bullet symbol per contract type, so every point in
+// a card reads as "safe" or "risky" at a glance instead of every card using
+// the same green checkmark regardless of whether the point is a benefit.
+const CONTRACT_STYLE = {
+  employment: {
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+      </svg>
+    ),
+    symbol: "✓",
+    border: "border-emerald-500/30",
+    iconBg: "bg-emerald-500/15",
+    text: "text-emerald-400",
+  },
+  b2b: {
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <rect x="3" y="7" width="18" height="13" rx="2" />
+        <path strokeLinecap="round" d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
+      </svg>
+    ),
+    symbol: "◆",
+    border: "border-accent/30",
+    iconBg: "bg-accent/15",
+    text: "text-accent-bright",
+  },
+  zlecenie: {
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8M8 16h5M7 3h10a1 1 0 011 1v16l-3-2-3 2-3-2-3 2V4a1 1 0 011-1z" />
+      </svg>
+    ),
+    symbol: "●",
+    border: "border-amber-500/30",
+    iconBg: "bg-amber-500/15",
+    text: "text-amber-400",
+  },
+  dzialo: {
+    icon: (
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M14.7 6.3a1 1 0 010 1.4l-1 1 1.6 1.6-4.2 4.2-1.6-1.6-1 1a1 1 0 01-1.4 0L4.3 11a1 1 0 010-1.4l1-1L3.7 7 5 5.7l1.6 1.6 1-1a1 1 0 011.4 0L11 8.3l3-3-1-1L14.7 3l3 3z"
+        />
+      </svg>
+    ),
+    symbol: "−",
+    border: "border-rose-500/30",
+    iconBg: "bg-rose-500/15",
+    text: "text-rose-400",
+  },
+} as const;
+
 function lookupSalary(query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return null;
@@ -654,8 +709,46 @@ export default function WorkPage() {
   };
 
   const CONTRACT_TYPES = [
-    { key: "employment" as const, name: t.work.employmentSubtitle, subtitle: t.work.employmentFullSubtitle, features: t.work.employmentFeatures },
-    { key: "b2b" as const, name: t.work.b2bContractName, subtitle: t.work.b2bSubtitle, features: t.work.b2bFeatures },
+    {
+      key: "employment" as const,
+      name: t.work.employmentSubtitle,
+      subtitle: t.work.employmentFullSubtitle,
+      features: t.work.employmentFeatures,
+      badge: t.work.contractBadges.employment,
+      guideHeading: t.work.guides.employment?.heading,
+      guideSteps: t.work.guides.employment?.steps || [],
+      aiQuestion: t.work.guides.employment?.aiQuestion,
+    },
+    {
+      key: "b2b" as const,
+      name: t.work.b2bContractName,
+      subtitle: t.work.b2bSubtitle,
+      features: t.work.b2bFeatures,
+      badge: t.work.contractBadges.b2b,
+      guideHeading: t.work.guides.b2b?.heading,
+      guideSteps: t.work.guides.b2b?.steps || [],
+      aiQuestion: t.work.guides.b2b?.aiQuestion,
+    },
+    {
+      key: "zlecenie" as const,
+      name: t.work.zlecenieName,
+      subtitle: t.work.zleceniaSubtitle,
+      features: t.work.zleceniaFeatures,
+      badge: t.work.contractBadges.zlecenie,
+      guideHeading: t.work.guides.employment?.heading || "Как оформить договор поручения",
+      guideSteps: t.work.guides.employment?.steps || [],
+      aiQuestion: "Что такое договор поручения (Umowa zlecenie) и как его получить?",
+    },
+    {
+      key: "dzialo" as const,
+      name: t.work.dzialoName,
+      subtitle: t.work.dzialoSubtitle,
+      features: t.work.dzialoFeatures,
+      badge: t.work.contractBadges.dzialo,
+      guideHeading: t.work.guides.employment?.heading || "Как оформить договор подряда",
+      guideSteps: t.work.guides.employment?.steps || [],
+      aiQuestion: "Что такое договор подряда (Umowa o dzieło) и как его получить?",
+    },
   ];
 
   return (
@@ -673,82 +766,45 @@ export default function WorkPage() {
       <Reveal delay={160} className="mt-12">
         <h2 className="text-xl font-bold tracking-tight text-text-primary">{t.work.contractVsB2B}</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
-          {CONTRACT_TYPES.map((type, index) => (
-            <Reveal key={type.name} delay={index * 40}>
-              <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
-                <p className="text-sm font-semibold text-text-primary">{type.name}</p>
-                <p className="text-xs text-text-muted">{type.subtitle}</p>
-                <ul className="mt-4 space-y-2.5">
-                  {type.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
-                      <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                {t.work.guides[type.key] && (
-                  <div className="mt-auto pt-4">
-                    <HelpButton
-                      guideHeading={t.work.guides[type.key].heading}
-                      guideSteps={t.work.guides[type.key].steps}
-                      aiQuestion={t.work.guides[type.key].aiQuestion}
-                      label={t.helpButton.label}
-                    />
+          {CONTRACT_TYPES.map((type, index) => {
+            const style = CONTRACT_STYLE[type.key];
+            return (
+              <Reveal key={type.key} delay={index * 40}>
+                <div className={`flex h-full flex-col rounded-2xl border ${style.border} bg-surface-1 p-5 backdrop-blur-sm`}>
+                  <div className="flex items-center gap-2">
+                    <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${style.iconBg} ${style.text}`}>
+                      {style.icon}
+                    </span>
+                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${style.iconBg} ${style.text}`}>
+                      {type.badge}
+                    </span>
                   </div>
-                )}
-              </div>
-            </Reveal>
-          ))}
-          <Reveal delay={80}>
-            <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">{t.work.zlecenieName}</p>
-              <p className="text-xs text-text-muted">{t.work.zleceniaSubtitle}</p>
-              <ul className="mt-4 space-y-2.5">
-                {t.work.zleceniaFeatures.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
-                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto pt-4">
-                <HelpButton
-                  guideHeading={t.work.guides.employment?.heading || "Как оформить договор поручения"}
-                  guideSteps={t.work.guides.employment?.steps || []}
-                  aiQuestion="Что такое договор поручения (Umowa zlecenie) и как его получить?"
-                  label={t.helpButton.label}
-                />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            <div className="flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 p-5 backdrop-blur-sm">
-              <p className="text-sm font-semibold text-text-primary">{t.work.dzialoName}</p>
-              <p className="text-xs text-text-muted">{t.work.dzialoSubtitle}</p>
-              <ul className="mt-4 space-y-2.5">
-                {t.work.dzialoFeatures.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
-                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M16.7 5.3a1 1 0 010 1.4l-7.4 7.4a1 1 0 01-1.4 0L3.3 9.5a1 1 0 111.4-1.4l3.6 3.6 6.7-6.7a1 1 0 011.4 0z" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto pt-4">
-                <HelpButton
-                  guideHeading={t.work.guides.employment?.heading || "Как оформить договор подряда"}
-                  guideSteps={t.work.guides.employment?.steps || []}
-                  aiQuestion="Что такое договор подряда (Umowa o dzieło) и как его получить?"
-                  label={t.helpButton.label}
-                />
-              </div>
-            </div>
-          </Reveal>
+                  <div className="mt-2.5 min-h-[44px]">
+                    <p className="text-sm font-semibold text-text-primary">{type.name}</p>
+                    <p className="text-xs text-text-muted">{type.subtitle}</p>
+                  </div>
+                  <ul className="mt-2.5 space-y-2.5">
+                    {type.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm text-text-muted">
+                        <span className={`mt-0.5 flex-shrink-0 text-sm font-bold ${style.text}`}>{style.symbol}</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  {type.guideHeading && (
+                    <div className="mt-auto pt-4">
+                      <HelpButton
+                        guideHeading={type.guideHeading}
+                        guideSteps={type.guideSteps}
+                        aiQuestion={type.aiQuestion}
+                        label={t.helpButton.label}
+                      />
+                    </div>
+                  )}
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
 
         <div className="mt-5 rounded-[28px] bg-[#1c1f26] p-6">
