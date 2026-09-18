@@ -22,6 +22,7 @@ import { useSelectedCity } from "../../../_lib/useSelectedCity";
 import { buildOlxUrl, buildOtodomUrl } from "../../../_lib/housingSearchLinks";
 import { getCityName } from "../../../_lib/cities";
 import { getChosenCount, formatChosenCount } from "../../../_lib/chosenCount";
+import { getDistrictImage } from "../../../_lib/districtImages";
 
 const CITY_GENITIVE_RU: Record<string, string> = {
   "Варшава": "Варшавы",
@@ -99,6 +100,7 @@ function DistrictCard({
   const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
   const [expandDescription, setExpandDescription] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const image = getDistrictImage(d.district);
 
   function askAi() {
     const question = `Расскажи об условиях жизни в районе ${d.district} Варшавы: цены на жилье, инфраструктура, безопасность, как это место подходит для иностранцев.`;
@@ -119,19 +121,41 @@ function DistrictCard({
   }, [expandDescription]);
 
   return (
-    <div ref={cardRef} className="group relative flex h-full flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5">
-      <div className="flex-1">
-        <div className="flex items-start justify-between">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-105">
-            {d.district.slice(0, 2).toUpperCase()}
-          </span>
+    <div ref={cardRef} className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none">
+      {image && (
+        <div className="relative h-32 w-full flex-shrink-0 overflow-hidden sm:h-36">
+          <Image
+            src={image}
+            alt={d.district}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
           {d.is_top && (
-            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-400 shadow-[0_0_30px_-12px_rgb(217,119,6)]">
+            <span className="absolute right-3 top-3 rounded-full border border-amber-500/30 bg-amber-500/20 px-2.5 py-1 text-[11px] font-semibold text-amber-300 backdrop-blur-sm">
               {t.housing.recommended}
             </span>
           )}
+          <p className="absolute inset-x-0 bottom-0 p-3 text-lg font-semibold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+            {d.district}
+          </p>
         </div>
-        <p className="mt-3 text-lg font-semibold leading-snug text-text-primary">{d.district}</p>
+      )}
+      <div className="flex-1 px-4 pt-4 sm:px-5 sm:pt-5">
+        {!image && (
+          <div className="flex items-start justify-between">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-sm font-bold text-accent-bright transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-105">
+              {d.district.slice(0, 2).toUpperCase()}
+            </span>
+            {d.is_top && (
+              <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold text-amber-400 shadow-[0_0_30px_-12px_rgb(217,119,6)]">
+                {t.housing.recommended}
+              </span>
+            )}
+          </div>
+        )}
+        {!image && <p className="mt-3 text-lg font-semibold leading-snug text-text-primary">{d.district}</p>}
         {priceLabel && (
           <div className="mt-2 flex items-center gap-2">
             <p className="text-xl font-bold text-accent-bright">{priceLabel}</p>
@@ -164,7 +188,7 @@ function DistrictCard({
           {t.common.chosenByCountTemplate.replace("{n}", chosenCount)}
         </p>
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-2" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4 grid grid-cols-2 gap-2 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
         <button
           type="button"
           onClick={() => onOpenSearch(d.district)}
