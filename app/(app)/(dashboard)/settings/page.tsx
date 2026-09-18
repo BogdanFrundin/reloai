@@ -11,6 +11,7 @@ import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
 import { useTheme } from "../../../_components/ThemeProvider";
 import { useCurrency } from "../../../_components/CurrencyProvider";
+import { getInitials } from "../../../_lib/initials";
 import { LANGUAGES, type Lang } from "../../../_lib/i18n";
 import { CURRENCIES, getCurrencyName } from "../../../_lib/currency";
 import { pressScale } from "../../../_lib/motion";
@@ -28,13 +29,6 @@ const ICON_GLOBE = (
   <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
     <circle cx="12" cy="12" r="9" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z" />
-  </svg>
-);
-
-const ICON_COIN = (
-  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-    <circle cx="12" cy="12" r="9" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 15.5c0 1.1 1.1 2 2.5 2s2.5-.9 2.5-2-1.1-1.5-2.5-2-2.5-.9-2.5-2 1.1-2 2.5-2 2.5.9 2.5 2M12 7.5v1m0 7v1" />
   </svg>
 );
 
@@ -58,7 +52,13 @@ const ICON_DANGER = (
   </svg>
 );
 
-type SectionKey = "account" | "language" | "currency" | "notifications" | "theme" | "danger";
+const ICON_LOGOUT = (
+  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 21H6a2 2 0 01-2-2V5a2 2 0 012-2h3m5 14l4-4m0 0l-4-4m4 4H9" />
+  </svg>
+);
+
+type SectionKey = "account" | "regional" | "notifications" | "theme" | "danger";
 
 export default function SettingsPage() {
   const { lang, setLang, t } = useLanguage();
@@ -68,13 +68,11 @@ export default function SettingsPage() {
   const router = useRouter();
   const s = t.settings;
 
-  const SECTIONS: { key: SectionKey; label: string; icon: ReactNode; danger?: boolean }[] = [
+  const SECTIONS: { key: SectionKey; label: string; icon: ReactNode }[] = [
     { key: "account", label: s.accountSection, icon: ICON_USER },
-    { key: "language", label: s.languageSection, icon: ICON_GLOBE },
-    { key: "currency", label: s.currencySection, icon: ICON_COIN },
+    { key: "regional", label: `${s.languageSection} · ${s.currencySection}`, icon: ICON_GLOBE },
     { key: "notifications", label: s.notifications, icon: ICON_BELL },
     { key: "theme", label: s.themeSection, icon: ICON_THEME },
-    { key: "danger", label: s.dangerSection, icon: ICON_DANGER, danger: true },
   ];
 
   const [activeSection, setActiveSection] = useState<SectionKey>("account");
@@ -84,7 +82,7 @@ export default function SettingsPage() {
   // instead of one long scroll, honor that by switching to the matching tab
   // on load instead of just scrolling to a spot on the page.
   useEffect(() => {
-    if (window.location.hash === "#currency-section") setActiveSection("currency");
+    if (window.location.hash === "#currency-section") setActiveSection("regional");
   }, []);
 
   const [notifications, setNotifications] = useState<Record<string, boolean>>({
@@ -161,48 +159,90 @@ export default function SettingsPage() {
     router.push("/");
   }
 
+  const initials = getInitials(profile?.name, user?.email);
+  const avatarUrl = (user?.user_metadata as { avatar_url?: string; picture?: string } | undefined)?.avatar_url
+    ?? (user?.user_metadata as { avatar_url?: string; picture?: string } | undefined)?.picture;
+
   return (
     <div className="px-6 pb-8 lg:px-10 lg:pb-10">
       <PageHeader title={s.title} subtitle={s.subtitle} center />
 
-      <div className="mt-4 max-w-5xl space-y-6 mx-auto">
+      <div className="mt-4 max-w-5xl mx-auto">
         <Reveal>
-          <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="flex flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 lg:flex-row">
             {/* Section nav */}
-            <nav className="flex flex-shrink-0 gap-1 overflow-x-auto pb-1 lg:w-52 lg:flex-col lg:overflow-visible lg:pb-0">
-              {SECTIONS.map((section) => {
-                const isActive = activeSection === section.key;
-                return (
-                  <button
-                    key={section.key}
-                    type="button"
-                    onClick={() => setActiveSection(section.key)}
-                    className={`flex flex-shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-left text-sm font-medium transition-colors duration-150 ${
-                      isActive
-                        ? section.danger
-                          ? "bg-red-500/10 text-red-400"
-                          : "bg-accent/10 text-accent-bright"
-                        : section.danger
-                          ? "text-red-400/70 hover:bg-red-500/5 hover:text-red-400"
-                          : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-                    }`}
-                  >
-                    <span className="flex-shrink-0">{section.icon}</span>
-                    <span className="whitespace-nowrap">{section.label}</span>
-                  </button>
-                );
-              })}
+            <nav className="flex flex-col border-b border-border-subtle p-3 lg:w-60 lg:flex-shrink-0 lg:border-b-0 lg:border-r">
+              <div className="mb-2 flex items-center gap-2.5 border-b border-border-subtle px-2.5 pb-3">
+                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-accent to-accent-bright text-xs font-semibold text-white">
+                  {avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- external OAuth avatar, no static domain to configure next/image for
+                    <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    initials
+                  )}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-text-primary">{profile?.name || t.profile.unnamed}</p>
+                  <p className="truncate text-xs text-text-muted">{user?.email}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-0.5">
+                {SECTIONS.map((section) => {
+                  const isActive = activeSection === section.key;
+                  return (
+                    <button
+                      key={section.key}
+                      type="button"
+                      onClick={() => setActiveSection(section.key)}
+                      className={`flex items-center gap-2.5 rounded-r-lg border-l-2 px-2.5 py-2.5 text-left text-sm font-medium transition-colors duration-150 ${
+                        isActive
+                          ? "border-accent-bright bg-accent/10 text-accent-bright"
+                          : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                      }`}
+                    >
+                      <span className="flex-shrink-0">{section.icon}</span>
+                      <span className="truncate">{section.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex-1" />
+
+              <div className="mt-2 flex flex-col gap-0.5 border-t border-border-subtle pt-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveSection("danger")}
+                  className={`flex items-center gap-2.5 rounded-r-lg border-l-2 px-2.5 py-2.5 text-left text-sm font-medium transition-colors duration-150 ${
+                    activeSection === "danger"
+                      ? "border-red-400 bg-red-500/10 text-red-400"
+                      : "border-transparent text-red-400/70 hover:bg-red-500/5 hover:text-red-400"
+                  }`}
+                >
+                  <span className="flex-shrink-0">{ICON_DANGER}</span>
+                  <span className="truncate">{s.dangerSection}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLogoutConfirmOpen(true)}
+                  className="flex items-center gap-2.5 rounded-r-lg border-l-2 border-transparent px-2.5 py-2.5 text-left text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-surface-hover hover:text-text-primary"
+                >
+                  <span className="flex-shrink-0">{ICON_LOGOUT}</span>
+                  <span className="truncate">{t.profile.logOut}</span>
+                </button>
+              </div>
             </nav>
 
             {/* Active section content */}
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 p-6">
               {activeSection === "account" && (
-                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                <div>
                   <p className="text-sm font-semibold text-text-primary">
                     {s.accountSection}{" "}
                     {accountSaved && <span className="text-xs font-normal text-accent-bright">{s.saved}</span>}
                   </p>
-                  <div className="mt-4 space-y-3">
+                  <div className="mt-4 max-w-sm space-y-3">
                     <label className="block">
                       <span className="text-xs text-text-muted">{s.nameLabel}</span>
                       <input
@@ -239,74 +279,74 @@ export default function SettingsPage() {
                 </div>
               )}
 
-              {activeSection === "language" && (
-                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-                  <p className="text-sm font-semibold text-text-primary">
-                    {s.languageSection}{" "}
-                    {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
-                  </p>
-                  <p className="mt-1 text-xs text-text-muted">{s.languageDesc}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {LANGUAGES.map((l) => (
-                      <button
-                        key={l.code}
-                        type="button"
-                        onClick={() => handleLangChange(l.code)}
-                        className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
-                          lang === l.code
-                            ? "border-accent/50 bg-accent/10 text-accent-bright"
-                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
-                        }`}
-                      >
-                        <Image
-                          src={getFlagUrl(l.flag, "sm")}
-                          alt={l.name}
-                          width={24}
-                          height={18}
-                          className="rounded-sm"
-                          unoptimized
-                        />
-                        {l.name}
-                      </button>
-                    ))}
+              {activeSection === "regional" && (
+                <div id="currency-section" className="scroll-mt-24 space-y-6">
+                  <div>
+                    <p className="text-sm font-semibold text-text-primary">
+                      {s.languageSection}{" "}
+                      {savingLang && <span className="text-xs font-normal text-text-muted">{s.saving}</span>}
+                    </p>
+                    <p className="mt-1 text-xs text-text-muted">{s.languageDesc}</p>
+                    <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                      {LANGUAGES.map((l) => (
+                        <button
+                          key={l.code}
+                          type="button"
+                          onClick={() => handleLangChange(l.code)}
+                          className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                            lang === l.code
+                              ? "border-accent/50 bg-accent/10 text-accent-bright"
+                              : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                          }`}
+                        >
+                          <Image
+                            src={getFlagUrl(l.flag, "sm")}
+                            alt={l.name}
+                            width={24}
+                            height={18}
+                            className="rounded-sm"
+                            unoptimized
+                          />
+                          {l.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {activeSection === "currency" && (
-                <div id="currency-section" className="scroll-mt-24 rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
-                  <p className="text-sm font-semibold text-text-primary">{s.currencySection}</p>
-                  <p className="mt-1 text-xs text-text-muted">{s.currencyDesc}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {CURRENCIES.map((c) => (
-                      <button
-                        key={c.code}
-                        type="button"
-                        onClick={() => setCurrency(c.code)}
-                        className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
-                          currency === c.code
-                            ? "border-accent/50 bg-accent/10 text-accent-bright"
-                            : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
-                        }`}
-                      >
-                        <Image
-                          src={getFlagUrl(c.flag, "sm")}
-                          alt={getCurrencyName(c.code, lang)}
-                          width={24}
-                          height={18}
-                          className="flex-shrink-0 rounded-sm"
-                          unoptimized
-                        />
-                        <span className="min-w-0 flex-1 truncate text-left">{getCurrencyName(c.code, lang)}</span>
-                        <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
-                      </button>
-                    ))}
+                  <div className="border-t border-border-subtle pt-6">
+                    <p className="text-sm font-semibold text-text-primary">{s.currencySection}</p>
+                    <p className="mt-1 text-xs text-text-muted">{s.currencyDesc}</p>
+                    <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                      {CURRENCIES.map((c) => (
+                        <button
+                          key={c.code}
+                          type="button"
+                          onClick={() => setCurrency(c.code)}
+                          className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors duration-150 ${
+                            currency === c.code
+                              ? "border-accent/50 bg-accent/10 text-accent-bright"
+                              : "border-border-subtle bg-surface-1 text-text-secondary hover:border-border-strong hover:text-text-primary"
+                          }`}
+                        >
+                          <Image
+                            src={getFlagUrl(c.flag, "sm")}
+                            alt={getCurrencyName(c.code, lang)}
+                            width={24}
+                            height={18}
+                            className="flex-shrink-0 rounded-sm"
+                            unoptimized
+                          />
+                          <span className="min-w-0 flex-1 truncate text-left">{getCurrencyName(c.code, lang)}</span>
+                          <span className="flex-shrink-0 text-xs text-text-muted">{c.symbol}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
 
               {activeSection === "notifications" && (
-                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                <div>
                   <p className="text-sm font-semibold text-text-primary">{s.notifications}</p>
                   <div className="mt-4 space-y-4">
                     {NOTIFICATION_SETTINGS.map((setting) => (
@@ -333,10 +373,10 @@ export default function SettingsPage() {
               )}
 
               {activeSection === "theme" && (
-                <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6 backdrop-blur-sm">
+                <div>
                   <p className="text-sm font-semibold text-text-primary">{s.themeSection}</p>
                   <p className="mt-1 text-xs text-text-muted">{s.themeDesc}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="mt-4 grid max-w-sm grid-cols-2 gap-4">
                     <button
                       type="button"
                       onClick={() => setTheme("light")}
@@ -395,7 +435,7 @@ export default function SettingsPage() {
               )}
 
               {activeSection === "danger" && (
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6 backdrop-blur-sm">
+                <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.03] p-6">
                   <p className="text-sm font-semibold text-text-primary">{s.dangerSection}</p>
                   <p className="mt-1 text-xs text-text-muted">{s.dangerDesc}</p>
                   <button
@@ -409,17 +449,6 @@ export default function SettingsPage() {
               )}
             </div>
           </div>
-        </Reveal>
-
-        {/* Log out — always reachable regardless of which section is open */}
-        <Reveal delay={50}>
-          <button
-            type="button"
-            onClick={() => setLogoutConfirmOpen(true)}
-            className={`flex w-full items-center justify-center rounded-full border border-border-strong bg-surface-1 px-5 py-3 text-sm font-semibold text-text-primary transition-colors duration-150 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 ${pressScale}`}
-          >
-            {t.profile.logOut}
-          </button>
         </Reveal>
       </div>
 
