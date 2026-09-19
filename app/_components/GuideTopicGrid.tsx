@@ -249,9 +249,22 @@ export default function GuideTopicGrid({
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <div className="grid items-stretch gap-4 sm:grid-cols-2">
-          {filtered.map((g) => (
-            <TopicCard key={g.id} guide={g} />
-          ))}
+          {filtered.map((g, index) => {
+            // With a 2-column grid, an odd item count leaves the last card
+            // alone on its row, hugging the left edge. Give just that card
+            // its own centered slot instead of stretching it full-width.
+            const isLastOdd = filtered.length % 2 === 1 && index === filtered.length - 1;
+            if (isLastOdd) {
+              return (
+                <div key={g.id} className="sm:col-span-2 sm:flex sm:justify-center">
+                  <div className="w-full sm:w-[calc(50%-0.5rem)]">
+                    <TopicCard guide={g} />
+                  </div>
+                </div>
+              );
+            }
+            return <TopicCard key={g.id} guide={g} />;
+          })}
         </div>
       )}
     </div>
