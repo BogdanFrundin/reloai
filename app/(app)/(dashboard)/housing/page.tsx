@@ -100,7 +100,7 @@ function DistrictCard({
   const chosenCount = formatChosenCount(getChosenCount(d.id), lang);
   const [expandDescription, setExpandDescription] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const image = getDistrictImage(d.district);
+  const image = getDistrictImage(d.city, d.district);
 
   function askAi() {
     const question = `Расскажи об условиях жизни в районе ${d.district} Варшавы: цены на жилье, инфраструктура, безопасность, как это место подходит для иностранцев.`;
@@ -223,6 +223,9 @@ export default function HousingPage() {
 
   useEffect(() => {
     let active = true;
+    // Start of a data-fetching effect (flip to loading, fetch, then resolve);
+    // this is the standard fetch-on-change pattern, not a synchronization bug.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setShowAll(false);
     supabase
