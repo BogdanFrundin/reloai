@@ -26,6 +26,63 @@ const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
     wesola: "/districts/wesola.jpg",
     ursus: "/districts/ursus.jpg",
   },
+  Катовице: {
+    srodmiescie: "/districts/katowice/srodmiescie.jpg",
+    "ligota-panewniki": "/districts/katowice/ligota-panewniki.jpg",
+    koszutka: "/districts/katowice/koszutka.jpg",
+    "brynow-osiedle-zgrzebnioka": "/districts/katowice/brynow-osiedle-zgrzebnioka.jpg",
+    "osiedle-tysiaclecia-witosa": "/districts/katowice/osiedle-tysiaclecia.jpg",
+  },
+  Вроцлав: {
+    "stare-miasto": "/districts/wroclaw/stare-miasto.jpg",
+    srodmiescie: "/districts/wroclaw/srodmiescie.jpg",
+    krzyki: "/districts/wroclaw/krzyki.jpg",
+    fabryczna: "/districts/wroclaw/fabryczna.jpg",
+  },
+  Гданьск: {
+    wrzeszcz: "/districts/gdansk/wrzeszcz.jpg",
+    oliwa: "/districts/gdansk/oliwa.jpg",
+    przymorze: "/districts/gdansk/przymorze.jpg",
+    "piecki-migowo-morena": "/districts/gdansk/piecki-migowo-morena.jpg",
+  },
+  Познань: {
+    jezyce: "/districts/poznan/jezyce.jpg",
+    grunwald: "/districts/poznan/grunwald.jpg",
+    wilda: "/districts/poznan/wilda.jpg",
+    "rataje-czesc-nowe-miasto": "/districts/poznan/rataje-czesc-nowe-miasto.jpg",
+  },
+  Лодзь: {
+    srodmiescie: "/districts/lodz/srodmiescie.jpg",
+    widzew: "/districts/lodz/widzew.jpg",
+    polesie: "/districts/lodz/polesie.jpg",
+    baluty: "/districts/lodz/baluty.jpg",
+  },
+  Люблин: {
+    srodmiescie: "/districts/lublin/srodmiescie.jpg",
+    czechow: "/districts/lublin/czechow.jpg",
+    weglin: "/districts/lublin/weglin.jpg",
+    czuby: "/districts/lublin/czuby.jpg",
+  },
+  Щецин: {
+    srodmiescie: "/districts/szczecin/srodmiescie.jpg",
+    pogodno: "/districts/szczecin/pogodno.jpg",
+    warszewo: "/districts/szczecin/warszewo.jpg",
+    niebuszewo: "/districts/szczecin/niebuszewo.jpg",
+  },
+  Краков: {
+    "stare-miasto": "/districts/krakow/stare-miasto.jpg",
+    grzegorzki: "/districts/krakow/grzegorzki.jpg",
+    zwierzyniec: "/districts/krakow/zwierzyniec.jpg",
+    krowodrza: "/districts/krakow/krowodrza.jpg",
+    podgorze: "/districts/krakow/podgorze.jpg",
+    bronowice: "/districts/krakow/bronowice.jpg",
+    "pradnik-czerwony": "/districts/krakow/pradnik-czerwony.jpg",
+    "lagiewniki-borek-falecki": "/districts/krakow/lagiewniki-borek-falecki.jpg",
+    czyzyny: "/districts/krakow/czyzyny.jpg",
+    "podgorze-duchackie": "/districts/krakow/podgorze-duchackie.jpg",
+    "pradnik-bialy": "/districts/krakow/pradnik-bialy.jpg",
+    debniki: "/districts/krakow/debniki.jpg",
+  },
 };
 
 // Polish letters that don't decompose via NFD (most notably "ł") need an
