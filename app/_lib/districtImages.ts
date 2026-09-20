@@ -82,6 +82,12 @@ const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
     "podgorze-duchackie": "/districts/krakow/podgorze-duchackie.jpg",
     "pradnik-bialy": "/districts/krakow/pradnik-bialy.jpg",
     debniki: "/districts/krakow/debniki.jpg",
+    mistrzejowice: "/districts/krakow/mistrzejowice.jpg",
+    "biezanow-prokocim": "/districts/krakow/biezanow-prokocim.jpg",
+    bienczyce: "/districts/krakow/bienczyce.jpg",
+    "nowa-huta": "/districts/krakow/nowa-huta.jpg",
+    "wzgorza-krzeslawickie": "/districts/krakow/wzgorza-krzeslawickie.jpg",
+    swoszowice: "/districts/krakow/swoszowice.jpg",
   },
 };
 
