@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../../_components/PageHeader";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
 import { useAuth } from "../../../_components/AuthProvider";
@@ -81,21 +80,58 @@ export default function BanksPage() {
 
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
-      <PageHeader
-        title={
-          <span className="inline-flex items-center gap-3">
-            {t.banks.title}
-            <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
-          </span>
-        }
-        subtitle={t.banks.subtitle}
-      />
+      <Reveal>
+        <div className="relative isolate overflow-hidden rounded-[28px] border border-border-subtle">
+          <Image
+            src="/districts/srodmiescie.jpg"
+            alt=""
+            fill
+            priority
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0c10] via-[#0a0c10]/88 to-[#0a0c10]/45" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/5 to-transparent" />
 
-      <Reveal delay={60} className="mt-10">
-        {profile?.citizenship && (
-          <p className="mb-3 text-xs text-text-muted">{t.guideCard.citizenshipNote}</p>
-        )}
+          <div className="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div className="max-w-lg">
+              <h1 className="inline-flex items-center gap-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                {t.banks.title}
+                <Image src={getFlagUrl("pl", "md")} alt="Poland" width={32} height={24} className="rounded-sm" unoptimized />
+              </h1>
+              <p className="mt-2 text-sm text-white/70">{t.banks.subtitle}</p>
+              {profile?.citizenship && (
+                <p className="mt-3 text-xs text-white/50">{t.guideCard.citizenshipNote}</p>
+              )}
+            </div>
 
+            <div className="w-full lg:max-w-sm">
+              <div className="rounded-2xl border border-white/10 bg-black/35 p-5 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/20">
+                    <svg className="h-5 w-5 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.556-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-bold text-white">{t.banks.whichBankTitle}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-white/70">{t.banks.whichBankDescription}</p>
+                    <button
+                      type="button"
+                      onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.whichBankGuide.heading))}
+                      className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-accent px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent/90"
+                    >
+                      {t.banks.whichBankLearnMore}
+                      <span aria-hidden>→</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={60} className="mt-6">
         {!loading && visibleBanks.length > 0 && (
           <div className="mb-8 rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/10 to-transparent p-6">
             <div className="flex items-start gap-4">
@@ -136,7 +172,7 @@ export default function BanksPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-accent/20 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/30"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
                 >
                   {t.banks.topRankedViewRating}
                   <span aria-hidden>→</span>
@@ -152,30 +188,6 @@ export default function BanksPage() {
           emptyText={t.banks.emptyText}
           searchPlaceholder={t.guideCard.searchBanks}
         />
-      </Reveal>
-
-      <Reveal delay={130} className="mt-12">
-        <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6">
-          <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
-              <svg className="h-6 w-6 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.556-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-base font-bold text-white mb-1">{t.banks.whichBankTitle}</h3>
-              <p className="text-sm text-text-secondary mb-4">{t.banks.whichBankDescription}</p>
-              <button
-                type="button"
-                onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.whichBankGuide.heading))}
-                className="inline-flex items-center gap-2 rounded-xl bg-accent/15 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/25"
-              >
-                {t.banks.whichBankLearnMore}
-                <span aria-hidden>→</span>
-              </button>
-            </div>
-          </div>
-        </div>
       </Reveal>
 
       <Reveal delay={200} className="mt-12">

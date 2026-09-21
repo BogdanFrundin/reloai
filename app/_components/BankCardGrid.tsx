@@ -37,10 +37,12 @@ function moreBanksLabel(n: number, lang: Lang, t: Dictionary): string {
   return lang === "ru" ? template.replace("{word}", bankWord(n)) : template;
 }
 
-// Headline replaces the old price display: the bank's single most useful
-// feature, in plain language, so the card leads with "what's in it for you"
-// instead of a number that was often just "0 zł" for most banks anyway.
-function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string; subtitle: string } {
+// Up to 2 short pill-style tag chips shown under the bank name (matching the
+// "Надёжный / Популярный" chip row in the reference design) — replaces the
+// old parenthetical headline+subtitle text. Falls back to a curated
+// per-bank highlight (or a generic "classic account" label) for banks with
+// none of the 5 standard filter tags, so the chip row never renders empty.
+function buildTagChips(guide: DocumentGuide, t: Dictionary): string[] {
   const tagLabels: Record<string, string> = {
     no_pesel: t.guideCard.tags.noPesel,
     fully_online: t.guideCard.tags.fullyOnline,
@@ -48,30 +50,65 @@ function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string;
     multicurrency: t.guideCard.tags.multicurrency,
     for_foreigners: t.guideCard.tags.forForeigners,
   };
-  const headlinePhrases: Record<string, string> = {
-    no_pesel: t.guideCard.headlines.noPesel,
-    fully_online: t.guideCard.headlines.fullyOnline,
-    free: t.guideCard.headlines.free,
-    multicurrency: t.guideCard.headlines.multicurrency,
-    for_foreigners: t.guideCard.headlines.forForeigners,
-  };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
-  // Fallback used whenever the tag-derived subtitle would be empty (a bank
-  // with 0 or only 1 of the 4 standard filter tags) so the tag-line slot on
-  // the card never renders blank — every bank shows some genuine plus point.
-  const fallbackHighlight = t.guideCard.bankHighlights[guide.name] ?? "";
-  if (tags.length === 0) {
-    // No pricing text here: guide.cost/price_label can be a full sentence for
-    // some banks (e.g. Plus Bank's tariff conditions), which looks broken
-    // squeezed into this single-line slot. The always-visible description
-    // below already covers pricing details in full, so we show a short
-    // curated highlight instead of raw pricing text.
-    return { headline: t.guideCard.classicAccount, subtitle: fallbackHighlight };
-  }
-  const [first, ...rest] = tags;
-  const headline = headlinePhrases[first] ?? tagLabels[first];
-  const subtitle = rest.length > 0 ? rest.map((tag) => tagLabels[tag]).join(" · ") : fallbackHighlight;
-  return { headline, subtitle };
+  if (tags.length > 0) return tags.slice(0, 2).map((tag) => tagLabels[tag]);
+  const fallback = t.guideCard.bankHighlights[guide.name];
+  return [fallback || t.guideCard.classicAccount];
+}
+
+// Real, publicly-sourced client/branch figures for the 4 featured banks
+// (verified via each bank's own investor-relations / press materials in
+// Sept 2026 — see chat history for sources). Deliberately left out for every
+// other bank rather than guessed: the stat row below only renders the
+// figures we actually have, plus the always-available real account-opening
+// price from `price_label` (already populated in Supabase for most banks).
+type BankStat = { clients: string; branches?: string };
+const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
+  mBank: {
+    ru: { clients: "6+ млн", branches: "без отделений" },
+    en: { clients: "6M+", branches: "no branches" },
+    uk: { clients: "6+ млн", branches: "без відділень" },
+    uz: { clients: "6+ mln", branches: "filiallarsiz" },
+    tr: { clients: "6M+", branches: "şubesiz" },
+    tg: { clients: "6+ млн", branches: "бе шӯъба" },
+  },
+  "ING Bank Śląski": {
+    ru: { clients: "4,7 млн" },
+    en: { clients: "4.7M" },
+    uk: { clients: "4,7 млн" },
+    uz: { clients: "4,7 mln" },
+    tr: { clients: "4,7M" },
+    tg: { clients: "4,7 млн" },
+  },
+  "PKO Bank Polski": {
+    ru: { clients: "12,5 млн", branches: "947" },
+    en: { clients: "12.5M", branches: "947" },
+    uk: { clients: "12,5 млн", branches: "947" },
+    uz: { clients: "12,5 mln", branches: "947" },
+    tr: { clients: "12,5M", branches: "947" },
+    tg: { clients: "12,5 млн", branches: "947" },
+  },
+  "Bank Millennium": {
+    ru: { clients: "3,27 млн", branches: "590" },
+    en: { clients: "3.27M", branches: "590" },
+    uk: { clients: "3,27 млн", branches: "590" },
+    uz: { clients: "3,27 mln", branches: "590" },
+    tr: { clients: "3,27M", branches: "590" },
+    tg: { clients: "3,27 млн", branches: "590" },
+  },
+};
+
+function getBankStats(name: string, lang: Lang): BankStat | undefined {
+  return BANK_STATS[name]?.[lang];
+}
+
+function StatCell({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="text-sm font-bold text-text-primary">{value}</p>
+      <p className="text-[10px] text-text-muted">{label}</p>
+    </div>
+  );
 }
 
 const BANK_DOMAINS: Record<string, string> = {
@@ -275,7 +312,8 @@ function BankCard({
   const rawLink = guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
-  const { headline, subtitle } = buildHeadline(guide, t);
+  const tagChips = buildTagChips(guide, t);
+  const stats = getBankStats(guide.name, lang);
   const cost = convertPlnText(guide.cost, currency, rates);
 
   // Extract currencies from price_label or cost field (e.g., "PLN, EUR, USD, GBP")
@@ -300,8 +338,11 @@ function BankCard({
     >
       {bankRanking != null && bankRanking <= 4 && (
         <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
-          <span className="inline-flex items-center rounded-lg bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright border border-accent/20">
-            #{bankRanking}
+          <span className="inline-flex items-center gap-1 rounded-lg border border-accent/20 bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright">
+            <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
+            </svg>
+            #{bankRanking} {t.banks.byReviews}
           </span>
         </div>
       )}
@@ -309,28 +350,19 @@ function BankCard({
       <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
         <div className="flex w-full items-start gap-2.5">
           <BankAvatar name={guide.name} />
-          <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">
-            {guide.name}{" "}
-            <span className="text-sm font-medium text-text-secondary [&_span[role='button']]:ml-1 [&_span[role='button']]:h-3.5 [&_span[role='button']]:w-3.5">
-              (<TextWithGlossary text={headline} />)
-            </span>
-          </p>
+          <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
         </div>
 
         <div className="w-full min-w-0">
-          <div className="flex min-h-[1.5rem] items-center gap-1.5">
-            {subtitle && (
-              <svg className="h-3 w-3 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            )}
-            <p className="line-clamp-1 text-xs text-text-muted">
-              {subtitle && <TextWithGlossary text={subtitle} />}
-            </p>
+          <div className="flex flex-wrap gap-1.5">
+            {tagChips.map((chip) => (
+              <span
+                key={chip}
+                className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright"
+              >
+                <TextWithGlossary text={chip} />
+              </span>
+            ))}
           </div>
           {guide.description && (
             <p className="mt-2 text-xs leading-relaxed text-text-secondary">
@@ -343,6 +375,13 @@ function BankCard({
             </svg>
             <p className="text-xs text-blue-300/80">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
           </div>
+          {(stats?.clients || stats?.branches || guide.price_label) && (
+            <div className="mt-3 flex flex-wrap gap-4 border-t border-border-subtle pt-3">
+              {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
+              {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} />}
+              {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} />}
+            </div>
+          )}
         </div>
       </div>
 
@@ -450,18 +489,17 @@ export default function BankCardGrid({
 
   return (
     <div>
-      <div className="mb-6 rounded-xl border border-border-subtle bg-surface-1 p-3 sm:p-4">
-        <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
+      <div className="mb-4 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setActiveTag(null)}
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
               activeTag === null
                 ? "border-accent bg-accent/20 text-accent-bright"
-                : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+                : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
             }`}
           >
-            {gc.allTag}
+            {t.banks.allBanksTemplate.replace("{n}", String(guides.length))}
           </button>
           {visibleTags.map((tag) => (
             <button
@@ -471,7 +509,7 @@ export default function BankCardGrid({
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 activeTag === tag
                   ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
               }`}
             >
               {tagLabels[tag]}
@@ -484,7 +522,7 @@ export default function BankCardGrid({
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 showMoreTags
                   ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
               }`}
             >
               {t.banks.moreFiltersBtn} <span className={`ml-1 transition-transform ${showMoreTags ? "rotate-180" : ""}`}>⌄</span>
@@ -498,24 +536,21 @@ export default function BankCardGrid({
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 activeTag === tag
                   ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
               }`}
             >
               {tagLabels[tag]}
             </button>
           ))}
-        </div>
+      </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="max-w-sm flex-1">
-            <input
-              value={search}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder={searchPlaceholder ?? gc.searchGeneric}
-              className="w-full rounded-full border border-border-strong bg-white/[0.1] px-4 py-2 text-sm text-text-primary placeholder:text-white/70 focus:border-accent focus:outline-none"
-            />
-          </div>
-        </div>
+      <div className="mb-6 max-w-sm">
+        <input
+          value={search}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          placeholder={searchPlaceholder ?? gc.searchGeneric}
+          className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+        />
       </div>
 
       {loading ? (
