@@ -369,12 +369,6 @@ function BankCard({
               <TextWithGlossary text={guide.description} />
             </p>
           )}
-          <div className="mt-2 flex min-h-[1.5rem] items-center gap-1.5">
-            <svg className="h-3 w-3 flex-shrink-0 text-blue-300/80" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM2 17a8 8 0 1116 0H2z" />
-            </svg>
-            <p className="text-xs text-blue-300/80">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
-          </div>
           {(stats?.clients || stats?.branches || guide.price_label) && (
             <div className="mt-3 flex flex-wrap gap-4">
               {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
@@ -397,25 +391,16 @@ function BankCard({
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
           </a>
         )}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onOpenModal}
-            className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-          >
-            {gc.bankInfo}
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              askAi();
-            }}
-            className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-          >
-            {gc.askAi} ✦
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            askAi();
+          }}
+          className="w-full rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+        >
+          {gc.askAi} ✦
+        </button>
         <button
           type="button"
           onClick={onOpenModal}

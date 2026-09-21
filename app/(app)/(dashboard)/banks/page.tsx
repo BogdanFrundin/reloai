@@ -92,13 +92,6 @@ export default function BanksPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0c10] via-[#0a0c10]/88 to-[#0a0c10]/45" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/5 to-transparent" />
 
-          {/* Decorative flourish over the photo, bottom-right — purely cosmetic. */}
-          <div className="pointer-events-none absolute bottom-4 right-5 hidden text-right sm:block">
-            <p className="font-serif text-lg italic text-white/50" style={{ fontFamily: "'Brush Script MT', cursive" }}>
-              Polska
-            </p>
-            <p className="text-[10px] tracking-wide text-white/35">Больше возможностей в новой стране</p>
-          </div>
 
           <div className="relative flex flex-col gap-4 p-6 sm:p-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
             <div className="max-w-lg">
