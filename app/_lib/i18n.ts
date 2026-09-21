@@ -875,6 +875,7 @@ export type Dictionary = {
     findBtn: string;
     findingBtn: string;
     resetBtn: string;
+    aiNoExactMatchText: string;
     searchByNamePlaceholder: string;
     addressLabel: string;
     showOnMapBtn: string;
@@ -2715,6 +2716,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Find",
       findingBtn: "Searching…",
       resetBtn: "Reset",
+      aiNoExactMatchText: "No exact matches for your request — showing everything in this category instead.",
       searchByNamePlaceholder: "Search by name",
       addressLabel: "Address",
       showOnMapBtn: "Show on map →",
@@ -4632,6 +4634,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Найти",
       findingBtn: "Подбираем…",
       resetBtn: "Сбросить",
+      aiNoExactMatchText: "Точных совпадений по вашему запросу не нашлось — показываем все варианты в этой категории.",
       searchByNamePlaceholder: "Поиск по названию",
       addressLabel: "Адрес",
       showOnMapBtn: "Показать на карте →",
@@ -6546,6 +6549,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Topish",
       findingBtn: "Qidirilmoqda…",
       resetBtn: "Bekor qilish",
+      aiNoExactMatchText: "So'rovingiz bo'yicha aniq mos kelish topilmadi — shu toifadagi barcha variantlar ko'rsatilmoqda.",
       searchByNamePlaceholder: "Nomi bo'yicha qidirish",
       addressLabel: "Manzil",
       showOnMapBtn: "Xaritada ko'rsatish →",
@@ -8457,6 +8461,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Bul",
       findingBtn: "Aranıyor…",
       resetBtn: "Sıfırla",
+      aiNoExactMatchText: "Talebinize tam eşleşme bulunamadı — bu kategorideki tüm seçenekler gösteriliyor.",
       searchByNamePlaceholder: "İsme göre ara",
       addressLabel: "Adres",
       showOnMapBtn: "Haritada göster →",
@@ -10368,6 +10373,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Ёфтан",
       findingBtn: "Ҷустуҷӯ…",
       resetBtn: "Бекор кардан",
+      aiNoExactMatchText: "Мувофиқати дақиқ ба дархости шумо ёфт нашуд — ҳамаи вариантҳои ин категория нишон дода мешаванд.",
       searchByNamePlaceholder: "Ҷустуҷӯ аз рӯи ном",
       addressLabel: "Суроға",
       showOnMapBtn: "Дар харита нишон додан →",
@@ -12283,6 +12289,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       findBtn: "Знайти",
       findingBtn: "Підбираємо…",
       resetBtn: "Скинути",
+      aiNoExactMatchText: "Точних збігів за вашим запитом не знайдено — показуємо всі варіанти в цій категорії.",
       searchByNamePlaceholder: "Пошук за назвою",
       addressLabel: "Адреса",
       showOnMapBtn: "Показати на карті →",
