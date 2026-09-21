@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
+import { getBankImage } from "../_lib/bankImages";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
@@ -315,6 +317,7 @@ function BankCard({
   const tagChips = buildTagChips(guide, t);
   const stats = getBankStats(guide.name, lang);
   const cost = convertPlnText(guide.cost, currency, rates);
+  const bankImage = getBankImage(guide.name);
 
   // Extract currencies from price_label or cost field (e.g., "PLN, EUR, USD, GBP")
   const extractCurrencies = (text: string | null | undefined): string[] => {
@@ -334,9 +337,36 @@ function BankCard({
 
   return (
     <div
-      className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5"
+      className="group relative flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none"
     >
-      {bankRanking != null && bankRanking <= 4 && (
+      {bankImage && (
+        <div className="relative h-28 w-full flex-shrink-0 overflow-hidden sm:h-32">
+          <Image
+            src={bankImage}
+            alt={guide.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
+          {bankRanking != null && bankRanking <= 4 && (
+            <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg border border-white/20 bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+              <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
+              </svg>
+              #{bankRanking} {t.banks.byReviews}
+            </span>
+          )}
+          <div className="absolute inset-x-0 bottom-0 flex items-center gap-2.5 p-3">
+            <BankAvatar name={guide.name} />
+            <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:text-lg">
+              {guide.name}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {!bankImage && bankRanking != null && bankRanking <= 4 && (
         <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
           <span className="inline-flex items-center gap-1 rounded-lg border border-accent/20 bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright">
             <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -347,11 +377,13 @@ function BankCard({
         </div>
       )}
 
-      <div className="flex w-full flex-1 flex-col items-start gap-4 text-left">
-        <div className="flex w-full items-start gap-2.5">
-          <BankAvatar name={guide.name} />
-          <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
-        </div>
+      <div className="flex w-full flex-1 flex-col items-start gap-4 px-4 pt-4 text-left sm:px-5 sm:pt-5">
+        {!bankImage && (
+          <div className="flex w-full items-start gap-2.5">
+            <BankAvatar name={guide.name} />
+            <p className="line-clamp-2 flex-1 text-lg sm:text-xl font-bold text-text-primary">{guide.name}</p>
+          </div>
+        )}
 
         <div className="w-full min-w-0">
           <div className="flex flex-wrap gap-1.5">
@@ -379,7 +411,7 @@ function BankCard({
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-2" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4 flex flex-col gap-2 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
         {link && (
           <a
             href={link}
