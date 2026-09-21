@@ -858,6 +858,7 @@ export type Dictionary = {
     aiPickHeading: string;
     aiPickSubtitle: string;
     aiPickPlaceholder: string;
+    aiNoExactMatchText: string;
     findBtn: string;
     findingBtn: string;
     resetBtn: string;
@@ -2683,6 +2684,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "AI-powered matching",
       aiPickSubtitle: "Describe what you're looking for — a university, school, kindergarten, or courses — and we'll find matching options.",
       aiPickPlaceholder: "E.g.: a private kindergarten near the center for a 3-year-old",
+      aiNoExactMatchText: "No exact match for this request — showing all options in this category.",
       findBtn: "Find",
       findingBtn: "Searching…",
       resetBtn: "Reset",
@@ -4585,6 +4587,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "Подбор с ИИ",
       aiPickSubtitle: "Опишите, что вы ищете — вуз, школу, садик или курсы — и мы подберём подходящие варианты.",
       aiPickPlaceholder: "Например: частный садик рядом с центром для ребёнка 3 лет",
+      aiNoExactMatchText: "Точных совпадений по этому запросу не нашли — показываем все варианты этой категории.",
       findBtn: "Найти",
       findingBtn: "Подбираем…",
       resetBtn: "Сбросить",
@@ -6484,6 +6487,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "AI bilan tanlash",
       aiPickSubtitle: "Nima izlayotganingizni tasvirlab bering — universitet, maktab, bog'cha yoki kurslar — biz mos variantlarni topamiz.",
       aiPickPlaceholder: "Masalan: markazga yaqin, 3 yoshli bola uchun xususiy bog'cha",
+      aiNoExactMatchText: "Bu so'rov bo'yicha aniq moslik topilmadi — shu toifadagi barcha variantlar ko'rsatilmoqda.",
       findBtn: "Topish",
       findingBtn: "Qidirilmoqda…",
       resetBtn: "Bekor qilish",
@@ -8380,6 +8384,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "Yapay zeka ile seçim",
       aiPickSubtitle: "Ne aradığınızı tarif edin — üniversite, okul, anaokulu ya da kurs — size uygun seçenekleri bulalım.",
       aiPickPlaceholder: "Örn: merkeze yakın, 3 yaşındaki çocuk için özel anaokulu",
+      aiNoExactMatchText: "Bu arama için tam eşleşme bulunamadı — bu kategorideki tüm seçenekler gösteriliyor.",
       findBtn: "Bul",
       findingBtn: "Aranıyor…",
       resetBtn: "Sıfırla",
@@ -10276,6 +10281,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "Интихоб бо ёрии ЗҲ",
       aiPickSubtitle: "Тавсиф кунед, ки чиро меҷӯед — донишгоҳ, мактаб, боғча ё курс — мо вариантҳои мувофиқро меёбем.",
       aiPickPlaceholder: "Масалан: боғчаи хусусии наздики марказ барои кӯдаки 3-сола",
+      aiNoExactMatchText: "Мувофиқати дақиқ барои ин дархост ёфт нашуд — ҳамаи вариантҳои ин категория нишон дода мешаванд.",
       findBtn: "Ёфтан",
       findingBtn: "Ҷустуҷӯ…",
       resetBtn: "Бекор кардан",
@@ -12176,6 +12182,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       aiPickHeading: "Підбір з ШІ",
       aiPickSubtitle: "Опишіть, що ви шукаєте — виш, школу, садок або курси — і ми підберемо відповідні варіанти.",
       aiPickPlaceholder: "Наприклад: приватний садок поруч із центром для дитини 3 років",
+      aiNoExactMatchText: "Точних збігів за цим запитом не знайдено — показуємо всі варіанти цієї категорії.",
       findBtn: "Знайти",
       findingBtn: "Підбираємо…",
       resetBtn: "Скинути",

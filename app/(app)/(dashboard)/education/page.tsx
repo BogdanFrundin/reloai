@@ -1010,6 +1010,9 @@ export default function EducationPage() {
 
   useEffect(() => {
     let active = true;
+    // Start of a data-fetching effect (flip to loading, fetch, then resolve);
+    // this is the standard fetch-on-change pattern, not a synchronization bug.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     supabase
       .from("education")
@@ -1032,32 +1035,43 @@ export default function EducationPage() {
     setFilter("all");
   }
 
-  const items = useMemo(() => {
+  const { items, aiNoExactMatch } = useMemo(() => {
     const wantedType = TYPE_BY_TAB[activeTab];
     const term = search.trim().toLowerCase();
     const aiKeywords = (aiResult?.keywords ?? []).map((k) => k.toLowerCase()).filter(Boolean);
 
-    return rows.filter((r) => {
+    const base = rows.filter((r) => {
       if (r.type !== wantedType) return false;
       if (filter !== "all" && r.ownership !== filter) return false;
       if (term && !r.name.toLowerCase().includes(term)) return false;
-
-      if (aiKeywords.length > 0) {
-        const haystack = [
-          r.audience ?? "",
-          ...(r.languages ?? []),
-          ...(r.programs ?? []),
-          ...(r.highlights ?? []),
-          ...(r.features ?? []),
-        ]
-          .join(" ")
-          .toLowerCase();
-        const matchesAi = aiKeywords.some((k) => haystack.includes(k));
-        if (!matchesAi) return false;
-      }
-
       return true;
     });
+
+    if (aiKeywords.length === 0) {
+      return { items: base, aiNoExactMatch: false };
+    }
+
+    const withAi = base.filter((r) => {
+      const haystack = [
+        r.audience ?? "",
+        r.address ?? "",
+        ...(r.languages ?? []),
+        ...(r.programs ?? []),
+        ...(r.highlights ?? []),
+        ...(r.features ?? []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return aiKeywords.some((k) => haystack.includes(k));
+    });
+
+    if (withAi.length > 0) return { items: withAi, aiNoExactMatch: false };
+
+    // Nothing in our data actually matches the AI-inferred keywords (this
+    // happens for requests our fields can't reliably resolve, like a very
+    // specific location) — fall back to the full category instead of a dead
+    // end, and flag it so the banner doesn't contradict an empty list.
+    return { items: base, aiNoExactMatch: true };
   }, [rows, activeTab, filter, search, aiResult]);
 
   async function handleAiSearch() {
@@ -1154,7 +1168,9 @@ export default function EducationPage() {
             </div>
             {aiResult && (
               <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-white/[0.05] px-4 py-2.5">
-                <span className="text-xs text-white/70">{aiResult.reply}</span>
+                <span className="text-xs text-white/70">
+                  {aiNoExactMatch ? t.education.aiNoExactMatchText : aiResult.reply}
+                </span>
                 <button
                   type="button"
                   onClick={resetAiSearch}
