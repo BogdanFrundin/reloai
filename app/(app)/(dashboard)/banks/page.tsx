@@ -11,6 +11,7 @@ import { getFlagUrl } from "../../../_lib/flags";
 import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 import { localizeDocumentGuides } from "../../../_lib/localizeGuide";
+import { getChosenCount } from "../../../_lib/chosenCount";
 import BankCardGrid from "../../../_components/BankCardGrid";
 
 const SPARKLE_ICON = (
@@ -104,10 +105,38 @@ export default function BanksPage() {
               <div className="flex-1">
                 <h3 className="text-lg font-bold text-white mb-1">{t.banks.topRankedTitle}</h3>
                 <p className="text-sm text-text-secondary mb-4">{t.banks.topRankedSubtitle}</p>
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    {visibleBanks.slice(0, 4).map((bank) => (
+                      <div
+                        key={bank.id}
+                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/25 border border-accent/40 text-xs font-semibold text-accent-bright"
+                        title={bank.name}
+                      >
+                        {bank.name
+                          .split(/\s+/)
+                          .slice(0, 2)
+                          .map((w) => w[0])
+                          .join("")
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-xs text-text-secondary">
+                    {t.common.chosenByCountTemplate.replace(
+                      "{n}",
+                      visibleBanks
+                        .slice(0, 4)
+                        .reduce((sum, b) => sum + getChosenCount(b.id), 0)
+                        .toLocaleString()
+                    )}
+                  </span>
+                </div>
                 <button
                   type="button"
-                  onClick={() => router.push("/dashboard/ratings")}
-                  className="inline-flex items-center gap-2 rounded-xl bg-accent/20 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/30"
+                  onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-accent/20 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/30"
                 >
                   {t.banks.topRankedViewRating}
                   <span aria-hidden>→</span>
