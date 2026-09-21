@@ -18,7 +18,7 @@ import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
 import { getChosenCount, formatChosenCount } from "../_lib/chosenCount";
 
-const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency", "for_foreigners"] as const;
+const TAG_ORDER = ["no_pesel", "free", "multicurrency", "for_foreigners", "fully_online"] as const;
 
 // Russian noun-plural agreement for "банк" after a count — 1 банк, 2-4 банка,
 // 5+/11-14 банков — only applies when the active language is Russian; every
@@ -202,7 +202,7 @@ function BankAvatar({ name }: { name: string }) {
 
   if (domain && stage < 2) {
     return (
-      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/95 p-1.5">
+      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white/95 p-2">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc(domain, stage === 2 ? 1 : stage)}
@@ -214,7 +214,7 @@ function BankAvatar({ name }: { name: string }) {
     );
   }
   return (
-    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-sm font-semibold text-accent-bright">
+    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-sm font-semibold text-accent-bright">
       {initials}
     </div>
   );
@@ -376,7 +376,7 @@ function BankCard({
             <p className="text-xs text-blue-300/80">{t.common.chosenByCountTemplate.replace("{n}", chosenCount)}</p>
           </div>
           {(stats?.clients || stats?.branches || guide.price_label) && (
-            <div className="mt-3 flex flex-wrap gap-4 border-t border-border-subtle pt-3">
+            <div className="mt-3 flex flex-wrap gap-4">
               {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
               {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} />}
               {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} />}
@@ -456,7 +456,7 @@ export default function BankCardGrid({
   const [modalBankId, setModalBankId] = useState<string | null>(null);
   const [showMoreTags, setShowMoreTags] = useState(false);
 
-  const visibleTagsCount = 3;
+  const visibleTagsCount = 4;
   const visibleTags = TAG_ORDER.slice(0, visibleTagsCount);
   const hiddenTags = TAG_ORDER.slice(visibleTagsCount);
 
@@ -471,8 +471,8 @@ export default function BankCardGrid({
   const rankedGuides = [...guides].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   const bankRankingMap = new Map(rankedGuides.map((g, idx) => [g.id, idx + 1]));
 
-  const featured = filtered.slice(0, 4);
-  const rest = filtered.slice(4);
+  const featured = filtered.slice(0, 6);
+  const rest = filtered.slice(6);
 
   function handleSearchChange(value: string) {
     setSearch(value);
@@ -489,7 +489,7 @@ export default function BankCardGrid({
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setActiveTag(null)}
@@ -544,22 +544,13 @@ export default function BankCardGrid({
           ))}
       </div>
 
-      <div className="mb-6 max-w-sm">
-        <input
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder={searchPlaceholder ?? gc.searchGeneric}
-          className="w-full rounded-full border border-border-strong bg-surface-1 px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-        />
-      </div>
-
       {loading ? (
         <p className="text-sm text-text-muted">{gc.loading}</p>
       ) : filtered.length === 0 ? (
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <>
-          <div className="grid items-start gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((g) => (
               <BankCard
                 key={g.id}
@@ -583,7 +574,7 @@ export default function BankCardGrid({
               </button>
 
               {showAll && (
-                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {rest.map((g) => (
                     <BankCard
                       key={g.id}

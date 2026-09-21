@@ -3923,7 +3923,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Можно ли открыть онлайн?",
       ],
       topRankedTitle: "Топ-4 банка по мнению пользователей",
-      topRankedSubtitle: "Самый популярный выбор среди тех, кто переезжает в Польшу",
+      topRankedSubtitle: "Реальные отзывы, опыт открытия и использования. Обновляется ежемесячно.",
       topRankedViewRating: "Смотреть рейтинг",
       whichBankTitle: "Не знаете какой банк выбрать?",
       whichBankDescription: "Ответьте на пару вопросов — и ИИ подскажет счёт, который подходит именно вам",
@@ -4496,7 +4496,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Начать",
       compareBanksTitle: "Сравнение банков",
       tagsLabel: "Теги",
-      tags: { noPesel: "Без PESEL", fullyOnline: "Полностью онлайн", free: "Бесплатно", multicurrency: "Мультивалютный", forForeigners: "Для иностранцев" },
+      tags: { noPesel: "Без PESEL", fullyOnline: "Полностью онлайн", free: "Бесплатное открытие", multicurrency: "Мультивалютные", forForeigners: "Для иностранцев" },
       headlines: {
         noPesel: "Без PESEL",
         fullyOnline: "Открыть счёт онлайн",

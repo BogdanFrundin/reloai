@@ -92,7 +92,15 @@ export default function BanksPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0c10] via-[#0a0c10]/88 to-[#0a0c10]/45" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/5 to-transparent" />
 
-          <div className="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          {/* Decorative flourish over the photo, bottom-right — purely cosmetic. */}
+          <div className="pointer-events-none absolute bottom-4 right-5 hidden text-right sm:block">
+            <p className="font-serif text-lg italic text-white/50" style={{ fontFamily: "'Brush Script MT', cursive" }}>
+              Polska
+            </p>
+            <p className="text-[10px] tracking-wide text-white/35">Больше возможностей в новой стране</p>
+          </div>
+
+          <div className="relative flex flex-col gap-4 p-6 sm:p-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
             <div className="max-w-lg">
               <h1 className="inline-flex items-center gap-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                 {t.banks.title}
@@ -104,62 +112,74 @@ export default function BanksPage() {
               )}
             </div>
 
-            <div className="w-full lg:max-w-sm">
-              <div className="rounded-2xl border border-white/10 bg-black/35 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/20">
-                    <svg className="h-5 w-5 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.556-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-bold text-white">{t.banks.whichBankTitle}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-white/70">{t.banks.whichBankDescription}</p>
-                    <button
-                      type="button"
-                      onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.whichBankGuide.heading))}
-                      className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-accent px-3.5 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent/90"
-                    >
-                      {t.banks.whichBankLearnMore}
-                      <span aria-hidden>→</span>
-                    </button>
-                  </div>
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.whichBankGuide.heading))}
+              className="group w-full rounded-2xl border border-white/10 bg-black/35 p-4 text-left backdrop-blur-sm transition-colors duration-150 hover:border-accent/40 hover:bg-black/45 lg:max-w-sm"
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/20">
+                  <svg className="h-5 w-5 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.556-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm font-bold text-white">{t.banks.whichBankTitle}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-white/70">{t.banks.whichBankDescription}</p>
+                </div>
+                <span
+                  aria-hidden
+                  className="flex-shrink-0 text-lg text-white/60 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-accent-bright"
+                >
+                  →
+                </span>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </Reveal>
 
       <Reveal delay={60} className="mt-6">
         {!loading && visibleBanks.length > 0 && (
-          <div className="mb-8 rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/10 to-transparent p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
-                {SPARKLE_ICON}
+          <div className="mb-6 rounded-2xl border border-border-subtle bg-surface-1 p-4 sm:p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
+                  <svg className="h-5 w-5 text-accent-bright" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">{t.banks.topRankedTitle}</h3>
+                  <p className="mt-0.5 text-xs text-text-secondary">{t.banks.topRankedSubtitle}</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">{t.banks.topRankedTitle}</h3>
-                <p className="text-sm text-text-secondary mb-4">{t.banks.topRankedSubtitle}</p>
-                <div className="flex items-center gap-3">
+
+              <div className="flex flex-shrink-0 items-center gap-4 pl-[52px] sm:pl-0">
+                <button
+                  type="button"
+                  onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
+                  className="inline-flex flex-shrink-0 items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
+                >
+                  {t.banks.topRankedViewRating}
+                  <span aria-hidden>→</span>
+                </button>
+
+                <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
                     {visibleBanks.slice(0, 4).map((bank) => (
                       <div
                         key={bank.id}
-                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-accent/25 border border-accent/40 text-xs font-semibold text-accent-bright"
+                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-surface-1 bg-surface-hover text-text-secondary"
                         title={bank.name}
                       >
-                        {bank.name
-                          .split(/\s+/)
-                          .slice(0, 2)
-                          .map((w) => w[0])
-                          .join("")
-                          .slice(0, 2)
-                          .toUpperCase()}
+                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M10 9a4 4 0 100-8 4 4 0 000 8zM10 11c-4.42 0-8 2.24-8 5v1a1 1 0 001 1h14a1 1 0 001-1v-1c0-2.76-3.58-5-8-5z" />
+                        </svg>
                       </div>
                     ))}
                   </div>
-                  <span className="text-xs text-text-secondary">
+                  <span className="text-xs leading-tight text-text-secondary">
                     {t.common.chosenByCountTemplate.replace(
                       "{n}",
                       visibleBanks
@@ -169,14 +189,6 @@ export default function BanksPage() {
                     )}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
-                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
-                >
-                  {t.banks.topRankedViewRating}
-                  <span aria-hidden>→</span>
-                </button>
               </div>
             </div>
           </div>
