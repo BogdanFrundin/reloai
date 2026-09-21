@@ -340,24 +340,37 @@ function BankCard({
         </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
-        <button
-          type="button"
-          onClick={onOpenModal}
-          className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
-        >
-          {gc.bankInfo}
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            askAi();
-          }}
-          className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-        >
-          {gc.askAi} ✦
-        </button>
+      <div className="mt-4 flex flex-col gap-2" onClick={(event) => event.stopPropagation()}>
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex items-center justify-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+          >
+            {t.banks.openAccount}
+            <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
+          </a>
+        )}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="flex-1 rounded-xl border border-border-subtle bg-surface-hover text-accent-bright px-3 py-2.5 text-xs font-semibold transition-colors duration-150 hover:border-accent/40 hover:bg-accent/10"
+          >
+            {gc.bankInfo}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              askAi();
+            }}
+            className="flex-1 rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+          >
+            {gc.askAi} ✦
+          </button>
+        </div>
       </div>
     </div>
   );

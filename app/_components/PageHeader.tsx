@@ -15,7 +15,7 @@ export default function PageHeader({
 }) {
   return (
     <Reveal className={center ? "text-center" : undefined}>
-      <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">{title}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight text-text-primary sm:text-4xl">{title}</h1>
       {subtitle && <p className="mt-1 text-sm text-text-muted">{subtitle}</p>}
     </Reveal>
   );
