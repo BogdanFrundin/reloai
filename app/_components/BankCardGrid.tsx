@@ -18,7 +18,7 @@ import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
 import { getChosenCount, formatChosenCount } from "../_lib/chosenCount";
 
-const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"] as const;
+const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency", "for_foreigners"] as const;
 
 // Russian noun-plural agreement for "банк" after a count — 1 банк, 2-4 банка,
 // 5+/11-14 банков — only applies when the active language is Russian; every
@@ -46,12 +46,14 @@ function buildHeadline(guide: DocumentGuide, t: Dictionary): { headline: string;
     fully_online: t.guideCard.tags.fullyOnline,
     free: t.guideCard.tags.free,
     multicurrency: t.guideCard.tags.multicurrency,
+    for_foreigners: t.guideCard.tags.forForeigners,
   };
   const headlinePhrases: Record<string, string> = {
     no_pesel: t.guideCard.headlines.noPesel,
     fully_online: t.guideCard.headlines.fullyOnline,
     free: t.guideCard.headlines.free,
     multicurrency: t.guideCard.headlines.multicurrency,
+    for_foreigners: t.guideCard.headlines.forForeigners,
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
   // Fallback used whenever the tag-derived subtitle would be empty (a bank
@@ -257,11 +259,13 @@ function BankCard({
   chosenBank,
   onChoose,
   onOpenModal,
+  bankRanking,
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
   onChoose: (name: string | null) => void;
   onOpenModal: () => void;
+  bankRanking?: number;
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
@@ -294,9 +298,11 @@ function BankCard({
     <div
       className="group relative flex min-h-[280px] flex-col rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none p-4 sm:p-5"
     >
-      {guide.rating != null && (
+      {bankRanking != null && bankRanking <= 4 && (
         <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
-          <StarRating rating={guide.rating} />
+          <span className="inline-flex items-center rounded-lg bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright border border-accent/20">
+            #{bankRanking}
+          </span>
         </div>
       )}
 
@@ -371,6 +377,13 @@ function BankCard({
             {gc.askAi} ✦
           </button>
         </div>
+        <button
+          type="button"
+          onClick={onOpenModal}
+          className="w-full text-center text-xs font-medium text-accent-bright hover:text-accent transition-colors duration-150"
+        >
+          {t.banks.moreAboutBank} →
+        </button>
       </div>
     </div>
   );
@@ -396,11 +409,17 @@ export default function BankCardGrid({
     fully_online: gc.tags.fullyOnline,
     free: gc.tags.free,
     multicurrency: gc.tags.multicurrency,
+    for_foreigners: gc.tags.forForeigners,
   };
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [modalBankId, setModalBankId] = useState<string | null>(null);
+  const [showMoreTags, setShowMoreTags] = useState(false);
+
+  const visibleTagsCount = 3;
+  const visibleTags = TAG_ORDER.slice(0, visibleTagsCount);
+  const hiddenTags = TAG_ORDER.slice(visibleTagsCount);
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
@@ -409,6 +428,9 @@ export default function BankCardGrid({
         (g) => g.name.toLowerCase().includes(term) || (g.description ?? "").toLowerCase().includes(term)
       )
     : tagFiltered;
+
+  const rankedGuides = [...guides].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  const bankRankingMap = new Map(rankedGuides.map((g, idx) => [g.id, idx + 1]));
 
   const featured = filtered.slice(0, 4);
   const rest = filtered.slice(4);
@@ -441,7 +463,34 @@ export default function BankCardGrid({
           >
             {gc.allTag}
           </button>
-          {TAG_ORDER.map((tag) => (
+          {visibleTags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setActiveTag(tag)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+                activeTag === tag
+                  ? "border-accent bg-accent/15 text-accent-bright"
+                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+              }`}
+            >
+              {tagLabels[tag]}
+            </button>
+          ))}
+          {hiddenTags.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowMoreTags(!showMoreTags)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+                showMoreTags
+                  ? "border-accent bg-accent/15 text-accent-bright"
+                  : "border-border-strong bg-white/[0.1] text-white/90 hover:text-white"
+              }`}
+            >
+              {t.banks.moreFiltersBtn} <span className={`ml-1 transition-transform ${showMoreTags ? "rotate-180" : ""}`}>⌄</span>
+            </button>
+          )}
+          {showMoreTags && hiddenTags.map((tag) => (
             <button
               key={tag}
               type="button"
@@ -483,6 +532,7 @@ export default function BankCardGrid({
                 chosenBank={profile?.chosen_bank}
                 onChoose={chooseBank}
                 onOpenModal={() => setModalBankId(g.id)}
+                bankRanking={bankRankingMap.get(g.id)}
               />
             ))}
           </div>
@@ -506,6 +556,7 @@ export default function BankCardGrid({
                       chosenBank={profile?.chosen_bank}
                       onChoose={chooseBank}
                       onOpenModal={() => setModalBankId(g.id)}
+                      bankRanking={bankRankingMap.get(g.id)}
                     />
                   ))}
                 </div>

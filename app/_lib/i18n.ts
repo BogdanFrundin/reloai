@@ -449,6 +449,23 @@ export type Dictionary = {
     faqHeading: string;
     faqCaption: string;
     faqQuestions: [string, string, string, string];
+    moreFiltersBtn: string;
+    topRankedTitle: string;
+    topRankedSubtitle: string;
+    topRankedViewRating: string;
+    whichBankTitle: string;
+    whichBankDescription: string;
+    whichBankLearnMore: string;
+    whichBankGuide: {
+      heading: string;
+      steps: [string, string, string];
+    };
+    moreAboutBank: string;
+    bankStats: {
+      clientCount: string;
+      branchCount: string;
+      openingCost: string;
+    };
   };
   medicine: {
     title: string;
@@ -767,9 +784,9 @@ export type Dictionary = {
     start: string;
     compareBanksTitle: string;
     tagsLabel: string;
-    tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
-    headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
-    tagDescriptions: { noPesel: string; fullyOnline: string; free: string; multicurrency: string };
+    tags: { noPesel: string; fullyOnline: string; free: string; multicurrency: string; forForeigners: string };
+    headlines: { noPesel: string; fullyOnline: string; free: string; multicurrency: string; forForeigners: string };
+    tagDescriptions: { noPesel: string; fullyOnline: string; free: string; multicurrency: string; forForeigners: string };
     // Fallback one-liner shown in the tag-line slot on a bank card when the
     // bank has fewer than 2 of the standard filter tags (no_pesel/fully_online/
     // free/multicurrency) and that slot would otherwise render empty. Keyed by
@@ -1990,6 +2007,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "How many days does it take to open?",
         "Can I open it online?",
       ],
+      moreFiltersBtn: "More",
+      topRankedTitle: "Top-rated banks by users",
+      topRankedSubtitle: "Banks with the highest ratings from people who've already chosen them",
+      topRankedViewRating: "View ratings",
+      whichBankTitle: "Unsure which bank to choose?",
+      whichBankDescription: "Follow our 3-step guide to find the perfect bank for your situation",
+      whichBankLearnMore: "Learn how to choose",
+      whichBankGuide: {
+        heading: "How to choose a bank in Poland",
+        steps: [
+          "Check if you have a PESEL — if you do, most banks are open to you; if not, look for banks tagged 'No PESEL' or fully online options.",
+          "Think about your needs — do you want a branch network or are you comfortable with online banking? Do you need multi-currency support?",
+          "Compare opening time and support language — mBank and Revolut are fastest for newcomers; mBank and ING offer English support.",
+        ],
+      },
+      moreAboutBank: "More about this bank",
+      bankStats: {
+        clientCount: "Clients",
+        branchCount: "Branches",
+        openingCost: "Opening cost",
+      },
     },
     medicine: {
       title: "Medicine in Poland",
@@ -2553,18 +2591,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Start",
       compareBanksTitle: "Bank comparison",
       tagsLabel: "Tags",
-      tags: { noPesel: "No PESEL", fullyOnline: "Fully online", free: "Free", multicurrency: "Multi-currency" },
+      tags: { noPesel: "No PESEL", fullyOnline: "Fully online", free: "Free", multicurrency: "Multi-currency", forForeigners: "For foreigners" },
       headlines: {
         noPesel: "No PESEL",
         fullyOnline: "Open an account online",
         free: "Free service",
         multicurrency: "Multi-currency account",
+        forForeigners: "Built for newcomers",
       },
       tagDescriptions: {
         noPesel: "You can open an account without a PESEL number (Polish ID number). Most documents can be signed digitally during the process.",
         fullyOnline: "Complete account opening from start to finish entirely online — no need to visit a branch.",
         free: "No monthly service fees or minimum balance requirements.",
         multicurrency: "Hold and exchange multiple currencies at favorable rates.",
+        forForeigners: "Designed specifically for expatriates and newcomers to Poland with multilingual support and flexible requirements.",
       },
       bankHighlights: {
         "Bank Millennium": "Part of Millennium bcp group",
@@ -3893,6 +3933,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Сколько дней занимает открытие?",
         "Можно ли открыть онлайн?",
       ],
+      moreFiltersBtn: "Ещё",
+      topRankedTitle: "Топ-банки по мнению пользователей",
+      topRankedSubtitle: "Банки с наивысшими рейтингами от людей, которые их уже выбрали",
+      topRankedViewRating: "Смотреть рейтинг",
+      whichBankTitle: "Не знаете, какой банк выбрать?",
+      whichBankDescription: "Следуйте нашему простому гайду в 3 шага и выберите банк под вашу ситуацию",
+      whichBankLearnMore: "Узнать, как выбрать",
+      whichBankGuide: {
+        heading: "Как выбрать банк в Польше",
+        steps: [
+          "Проверьте, есть ли у вас PESEL — если да, то большинство банков вам подойдут; если нет, ищите банки с тегом 'Без PESEL' или полностью онлайн-варианты.",
+          "Определитесь с удобством — вам нужна сеть отделений или вы готовы пользоваться интернет-банком? Нужна ли поддержка многовалютности?",
+          "Сравните скорость открытия и язык поддержки — mBank и Revolut открываются быстрее всего для новичков; mBank и ING предлагают поддержку на английском.",
+        ],
+      },
+      moreAboutBank: "Подробнее о банке",
+      bankStats: {
+        clientCount: "Клиентов",
+        branchCount: "Отделений",
+        openingCost: "Стоимость открытия",
+      },
     },
     medicine: {
       title: "Медицина в Польше",
@@ -4456,18 +4517,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Начать",
       compareBanksTitle: "Сравнение банков",
       tagsLabel: "Теги",
-      tags: { noPesel: "Без PESEL", fullyOnline: "Полностью онлайн", free: "Бесплатно", multicurrency: "Мультивалютный" },
+      tags: { noPesel: "Без PESEL", fullyOnline: "Полностью онлайн", free: "Бесплатно", multicurrency: "Мультивалютный", forForeigners: "Для иностранцев" },
       headlines: {
         noPesel: "Без PESEL",
         fullyOnline: "Открыть счёт онлайн",
         free: "Бесплатное обслуживание",
         multicurrency: "Мультивалютный счёт",
+        forForeigners: "Создан для релокантов",
       },
       tagDescriptions: {
         noPesel: "Единый номер учёта населения Польши. Счёт можно открыть без PESEL — большинство документов подписываются цифровым образом в процессе.",
         fullyOnline: "Полное открытие счёта от начала до конца полностью онлайн — не нужно посещать отделение банка.",
         free: "Отсутствуют ежемесячные комиссии за обслуживание и требования к минимальному остатку на счёте.",
         multicurrency: "Открыть счета в нескольких валютах и обмениваться по выгодным курсам прямо в приложении.",
+        forForeigners: "Специально разработан для мигрантов и релокантов с поддержкой иностранных языков и гибкими требованиями при оформлении.",
       },
       bankHighlights: {
         "Bank Millennium": "Часть группы Millennium bcp",
@@ -5793,6 +5856,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Ochish necha kun davom etadi?",
         "Onlayn ochish mumkinmi?",
       ],
+      moreFiltersBtn: "Yana ko'proq",
+      topRankedTitle: "Foydalanuvchilar fikri bo'yicha eng yaxshi banklar",
+      topRankedSubtitle: "Eng yuqori reyting bilan banklar, ular allaqachon tanlangan odamlardan",
+      topRankedViewRating: "Reyting ko'rish",
+      whichBankTitle: "Qaysi bankni tanlaganini bilmaympizmi?",
+      whichBankDescription: "3 bosqichli sodda qo'llanma asosida sizning vaziyatingizga mos bankni tanlang",
+      whichBankLearnMore: "Tanlash usulini bilib oling",
+      whichBankGuide: {
+        heading: "Polshada bankni qanday tanlash kerak",
+        steps: [
+          "PESEL mavjud yoki yo'qligini tekshiring — agar bo'lsa, aksariyat banklar sizga mos; agar bo'lmasa, 'PESELsiz' tegi bilan banklar yoki to'liq onlayn variantlarni qidiring.",
+          "O'z ehtiyojlaringizni aniqlang — filiallar tarmog'iga ehtiyoj bor yoki internet-bank qo'llab-quvvatlashga tayinasiz? Ko'p valyutali qo'llab-quvvatlash kerakmi?",
+          "Ochish tezligini va qo'llab-quvvatlash tilini solishtiring — mBank va Revolut yangi kelganlar uchun eng tezroq; mBank va ING ingliz tilida qo'llab-quvvatlash taklif qiladi.",
+        ],
+      },
+      moreAboutBank: "Bank haqida batafsil",
+      bankStats: {
+        clientCount: "Foydalanuvchilar",
+        branchCount: "Filiallar",
+        openingCost: "Ochish narxi",
+      },
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -6356,18 +6440,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Boshlash",
       compareBanksTitle: "Banklarni solishtirish",
       tagsLabel: "Teglar",
-      tags: { noPesel: "PESELsiz", fullyOnline: "To'liq onlayn", free: "Bepul", multicurrency: "Ko'p valyutali" },
+      tags: { noPesel: "PESELsiz", fullyOnline: "To'liq onlayn", free: "Bepul", multicurrency: "Ko'p valyutali", forForeigners: "Chet elliklar uchun" },
       headlines: {
         noPesel: "PESELsiz",
         fullyOnline: "Hisobni onlayn ochish",
         free: "Bepul xizmat",
         multicurrency: "Ko'p valyutali hisob",
+        forForeigners: "Immigrantlar uchun yaratilgan",
       },
       tagDescriptions: {
         noPesel: "Polsha aholisining yagona identifikatsion raqami. PESEL raqamisiz hisobni ochishingiz mumkin — ko'p hujjatlar jarayonda raqamli imzoning orqali imzolashiladi.",
         fullyOnline: "Hisobni boshidan oxirigacha to'liq onlayn orqali ochish — bankning filialiga tashrif buyurish shart emas.",
         free: "Oylik xizmat komissiyasi va minimal balans talab qilinmaydi.",
         multicurrency: "Bir nechta valyutada hisoblar ochish va qimmat kurslarda almashtirish qiling.",
+        forForeigners: "Migrantlar va yangi kelganlar uchun maxsus tayyorlangan, chet tillarida qo'llab-quvvatlash va moslashtirilgan talablar bilan.",
       },
       bankHighlights: {
         "Bank Millennium": "Millennium bcp guruhi tarkibida",
@@ -7690,6 +7776,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Açılış kaç gün sürer?",
         "Online açabilir miyim?",
       ],
+      moreFiltersBtn: "Daha fazla",
+      topRankedTitle: "Kullanıcılara göre en iyi bankalar",
+      topRankedSubtitle: "Zaten seçen insanlardan en yüksek puanları alan bankalar",
+      topRankedViewRating: "Dereceleri görmek",
+      whichBankTitle: "Hangi bankayı seçeceğinizi bilmiyor musunuz?",
+      whichBankDescription: "Durumunuza uygun bir banka bulmak için 3 adımlı rehberimizi izleyin",
+      whichBankLearnMore: "Seçme yöntemini öğren",
+      whichBankGuide: {
+        heading: "Polonya'da banka nasıl seçilir",
+        steps: [
+          "PESEL'iniz olup olmadığını kontrol edin — varsa, çoğu banka size uygun; yoksa, 'PESEL'siz' etiketi olan bankaları veya tamamen çevrimiçi seçenekleri arayın.",
+          "Gereksinimlerinizi belirleyin — şube ağına mı ihtiyacınız var, yoksa internet bankacılığıyla iyi misiniz? Çoklu döviz desteğine ihtiyacınız var mı?",
+          "Açılış hızını ve destek dilini karşılaştırın — mBank ve Revolut, yeni gelenler için en hızlı; mBank ve ING İngilizce destek sunar.",
+        ],
+      },
+      moreAboutBank: "Banka hakkında daha fazla",
+      bankStats: {
+        clientCount: "Müşteriler",
+        branchCount: "Şubeler",
+        openingCost: "Açılış maliyeti",
+      },
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -8253,18 +8360,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Başla",
       compareBanksTitle: "Banka karşılaştırması",
       tagsLabel: "Etiketler",
-      tags: { noPesel: "PESEL'siz", fullyOnline: "Tamamen online", free: "Ücretsiz", multicurrency: "Çoklu döviz" },
+      tags: { noPesel: "PESEL'siz", fullyOnline: "Tamamen online", free: "Ücretsiz", multicurrency: "Çoklu döviz", forForeigners: "Yabancılar için" },
       headlines: {
         noPesel: "PESEL'siz",
         fullyOnline: "Online hesap aç",
         free: "Ücretsiz hizmet",
         multicurrency: "Çoklu döviz hesabı",
+        forForeigners: "Göçmenler için tasarlandı",
       },
       tagDescriptions: {
         noPesel: "Polanya'nın ulusal kimlik numarası. PESEL numarası olmadan hesap açabilirsiniz — çoğu belge işlem sırasında dijital olarak imzalanır.",
         fullyOnline: "Hesap açmayı başından sonuna kadar tamamen çevrimiçi yapın — şubeyı ziyaret etmeye gerek yoktur.",
         free: "Aylık hizmet ücreti ve minimum bakiye şartı yoktur.",
         multicurrency: "Birden fazla para biriminde hesap açın ve uygun kurlarla değişim yapın.",
+        forForeigners: "Göçmenler ve yeni gelenler için özel olarak tasarlanmış, çok dilli destek ve esnek gereksinimlerle.",
       },
       bankHighlights: {
         "Bank Millennium": "Millennium bcp grubunun bir parçası",
@@ -9587,6 +9696,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Кушодан чанд рӯз вақт мегирад?",
         "Оё онлайн кушодан мумкин аст?",
       ],
+      moreFiltersBtn: "Бештар",
+      topRankedTitle: "Бонкҳои беҳтарин аз назари корбарон",
+      topRankedSubtitle: "Бонкҳо бо баҳои баланди аз одамонҳое, ки онҳоро аллакай интихоб кардаанд",
+      topRankedViewRating: "Баҳаҳоро дидан",
+      whichBankTitle: "Намедонед кадом бонки интихоб кунед?",
+      whichBankDescription: "Раҳнамоии соддаи 3 қадамиро пайравӣ кунед, то бонки мувофиқро барои вазъияти худ ёфтан",
+      whichBankLearnMore: "Роҳи интихобро омӯхтан",
+      whichBankGuide: {
+        heading: "Чӣ тавр бонк дар Полша интихоб кунем",
+        steps: [
+          "Тафтиш кунед, ки آйо PESEL доред ё нақалӯнчун — агар доред, буҳуши бішаҷ бонкҳо ба шумо мувофиқанд; агар надоред, бонкҳоеро бо теги 'Бе PESEL' ё варианҳои пурра онлайн ҷустуҷӯ кунед.",
+          "Талабҳои худро муайян кунед — оё ба шабакаи филиал ниёз доред ё набаркаор бонкдории интернетӣ вӯҷӯд дорад? Оё дастгирии бисёрвалютавӣ ниёз аст?",
+          "Суръати кушодан ва забони дастгириро муқоиса кунед — mBank ва Revolut барои ғарибон бутуҳ зудтарин; mBank ва ING дастгирии забони англисиро таклиф мекунанд.",
+        ],
+      },
+      moreAboutBank: "Дар бораи бонк аз ҳама",
+      bankStats: {
+        clientCount: "Корбарон",
+        branchCount: "Филиалҳо",
+        openingCost: "Қиммати кушодан",
+      },
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -10150,18 +10280,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Оғоз кардан",
       compareBanksTitle: "Муқоисаи бонкҳо",
       tagsLabel: "Тегҳо",
-      tags: { noPesel: "Бе PESEL", fullyOnline: "Комилан онлайн", free: "Ройгон", multicurrency: "Бисёрасъорӣ" },
+      tags: { noPesel: "Бе PESEL", fullyOnline: "Комилан онлайн", free: "Ройгон", multicurrency: "Бисёрасъорӣ", forForeigners: "Барои хориҷӣҳо" },
       headlines: {
         noPesel: "Бе PESEL",
         fullyOnline: "Кушодани ҳисоб онлайн",
         free: "Хизматрасонии ройгон",
         multicurrency: "Ҳисоби бисёрасъорӣ",
+        forForeigners: "Барои муҳоҷирон эҷод шудаост",
       },
       tagDescriptions: {
         noPesel: "Рақами ҳалатӣ дар реестри аҳолии Полша. Шумо метавонед ҳисоб бе PESEL кушоед — аксари ҳуҷҷатҳо бо имзои рақамӣ имзо карда мешаванд.",
         fullyOnline: "Кушодани ҳисобро аз оғоз то охир онлайн анҷом диҳед — нояд қайди бонк рафтан нист.",
         free: "Комиссионҳои луна ва талабҳо барои қаломи ҳадди ақал вуҷуд надоранд.",
         multicurrency: "Ҳисобҳо дар асъорҳои мухталиф кушоед ва дар қиматҳои комиёбӣ табодул кунед.",
+        forForeigners: "Махсус барои муҳоҷирон ва ғарибон элеҳо эҷод шудаост, дар бар гирифта дастгирии забонҳои хориҷӣ ва талабҳои ғайриқатъиҳо.",
       },
       bankHighlights: {
         "Bank Millennium": "Дар ҳайати гурӯҳи Millennium bcp",
@@ -11488,6 +11620,27 @@ export const dictionaries: Record<Lang, Dictionary> = {
         "Скільки днів займає відкриття?",
         "Чи можна відкрити онлайн?",
       ],
+      moreFiltersBtn: "Ще",
+      topRankedTitle: "Найкращі банки за думкою користувачів",
+      topRankedSubtitle: "Банки з найвищими рейтингами від людей, які їх уже обрали",
+      topRankedViewRating: "Переглянути рейтинг",
+      whichBankTitle: "Не знаєте, який банк обрати?",
+      whichBankDescription: "Дотримуйтеся нашого простого 3-кроквого гайду і виберіть банк до своєї ситуації",
+      whichBankLearnMore: "Дізнатися, як обирати",
+      whichBankGuide: {
+        heading: "Як обрати банк у Польщі",
+        steps: [
+          "Перевірте, чи є у вас PESEL — якщо є, то більшість банків вам підходять; якщо немає, шукайте банки з тегом 'Без PESEL' або цілком онлайн-варіанти.",
+          "Визначтеся зі своїми потребами — вам потрібна мережа відділень чи ви готові користуватися інтернет-банком? Потрібна багатовалютність?",
+          "Порівняйте швидкість відкриття й мову підтримки — mBank і Revolut найшвидші для новачків; mBank і ING пропонують англійськомовну підтримку.",
+        ],
+      },
+      moreAboutBank: "Докладніше про банк",
+      bankStats: {
+        clientCount: "Клієнтів",
+        branchCount: "Відділень",
+        openingCost: "Вартість відкриття",
+      },
     },
     medicine: {
       title: "Медицина в Польщі",
@@ -12051,18 +12204,20 @@ export const dictionaries: Record<Lang, Dictionary> = {
       start: "Почати",
       compareBanksTitle: "Порівняння банків",
       tagsLabel: "Теги",
-      tags: { noPesel: "Без PESEL", fullyOnline: "Повністю онлайн", free: "Безкоштовно", multicurrency: "Мультивалютний" },
+      tags: { noPesel: "Без PESEL", fullyOnline: "Повністю онлайн", free: "Безкоштовно", multicurrency: "Мультивалютний", forForeigners: "Для іноземців" },
       headlines: {
         noPesel: "Без PESEL",
         fullyOnline: "Відкрити рахунок онлайн",
         free: "Безкоштовне обслуговування",
         multicurrency: "Мультивалютний рахунок",
+        forForeigners: "Створено для мігрантів",
       },
       tagDescriptions: {
         noPesel: "Єдиний ідентифікаційний номер у реєстрі населення Польщі. Ви можете відкрити рахунок без PESEL — більшість документів підписуються цифровим способом під час процесу.",
         fullyOnline: "Відкрийте рахунок повністю онлайн від початку до кінця — не потрібно відвідувати відділення банку.",
         free: "Немає щомісячних комісій за обслуговування та вимог до мінімального залишку.",
         multicurrency: "Відкривайте рахунки у декількох валютах та обмінюйте за вигідними курсами.",
+        forForeigners: "Спеціально розроблено для мігрантів та новоприбулих з підтримкою іноземних мов та гнучкими вимогами при оформленні.",
       },
       bankHighlights: {
         "Bank Millennium": "Частина групи Millennium bcp",

@@ -94,12 +94,59 @@ export default function BanksPage() {
         {profile?.citizenship && (
           <p className="mb-3 text-xs text-text-muted">{t.guideCard.citizenshipNote}</p>
         )}
+
+        {!loading && visibleBanks.length > 0 && (
+          <div className="mb-8 rounded-2xl border border-accent/20 bg-gradient-to-br from-accent/10 to-transparent p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
+                {SPARKLE_ICON}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-white mb-1">{t.banks.topRankedTitle}</h3>
+                <p className="text-sm text-text-secondary mb-4">{t.banks.topRankedSubtitle}</p>
+                <button
+                  type="button"
+                  onClick={() => router.push("/dashboard/ratings")}
+                  className="inline-flex items-center gap-2 rounded-xl bg-accent/20 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/30"
+                >
+                  {t.banks.topRankedViewRating}
+                  <span aria-hidden>→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <BankCardGrid
           guides={visibleBanks}
           loading={loading}
           emptyText={t.banks.emptyText}
           searchPlaceholder={t.guideCard.searchBanks}
         />
+      </Reveal>
+
+      <Reveal delay={130} className="mt-12">
+        <div className="rounded-2xl border border-border-subtle bg-surface-1 p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15">
+              <svg className="h-6 w-6 text-accent-bright" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.556-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-base font-bold text-white mb-1">{t.banks.whichBankTitle}</h3>
+              <p className="text-sm text-text-secondary mb-4">{t.banks.whichBankDescription}</p>
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.whichBankGuide.heading))}
+                className="inline-flex items-center gap-2 rounded-xl bg-accent/15 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:bg-accent/25"
+              >
+                {t.banks.whichBankLearnMore}
+                <span aria-hidden>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </Reveal>
 
       <Reveal delay={200} className="mt-12">
