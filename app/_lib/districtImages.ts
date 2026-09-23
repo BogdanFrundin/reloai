@@ -1,10 +1,27 @@
 // Background photos for district cards on the Housing page.
-// Currently covers Warsaw's 18 districts (real photos sourced from Wikimedia
-// Commons, stored in /public/districts). Other cities fall back to no photo
-// until images are sourced for them too. Keyed by the Russian city name used
-// throughout the app (matches the `city` column / CitySelect values), since
-// district names like "Śródmieście" repeat across multiple Polish cities and
-// a flat lookup would collide.
+// Real photos sourced from Wikimedia Commons, stored in /public/districts,
+// covering Warsaw plus all 8 other Polish cities the app supports (Kraków,
+// Wrocław, Gdańsk, Poznań, Łódź, Lublin, Szczecin, Katowice) — 65 districts
+// total across 9 cities.
+//
+// Sourcing/verification process (September 2026 rebuild): a previous batch
+// job wrote 80x53px thumbnails for the 8 non-Warsaw cities by mistake — they
+// looked blurry/broken at the actual card size. Every image below was
+// re-sourced from Wikimedia Commons and is verified >=600px wide (all are
+// 900px wide in practice) before being committed here. Where a candidate
+// photo's own title didn't clearly name the district, the depicted subject
+// was independently cross-checked (web search, the source page, or the
+// Commons category API) against the claimed district before acceptance —
+// never assumed from title/thumbnail alone. See the project's
+// "district-photos-safeguard" doc for the full process and the mandatory
+// pre-commit resolution check, so this class of bug (broken/undersized
+// thumbnails silently shipped) cannot recur.
+//
+// Keyed by the Russian city name used throughout the app (matches the
+// `city` column / CitySelect values — see CITY_GENITIVE_RU in
+// app/(app)/(dashboard)/housing/page.tsx for the canonical list), since
+// district names like "Śródmieście" repeat across multiple Polish cities
+// and a flat lookup would collide.
 const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
   Варшава: {
     mokotow: "/districts/mokotow.jpg",
@@ -26,12 +43,25 @@ const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
     wesola: "/districts/wesola.jpg",
     ursus: "/districts/ursus.jpg",
   },
-  Катовице: {
-    srodmiescie: "/districts/katowice/srodmiescie.jpg",
-    "ligota-panewniki": "/districts/katowice/ligota-panewniki.jpg",
-    koszutka: "/districts/katowice/koszutka.jpg",
-    "brynow-osiedle-zgrzebnioka": "/districts/katowice/brynow-osiedle-zgrzebnioka.jpg",
-    "osiedle-tysiaclecia-witosa": "/districts/katowice/osiedle-tysiaclecia.jpg",
+  Краков: {
+    "stare-miasto": "/districts/krakow/stare-miasto.jpg",
+    grzegorzki: "/districts/krakow/grzegorzki.jpg",
+    zwierzyniec: "/districts/krakow/zwierzyniec.jpg",
+    krowodrza: "/districts/krakow/krowodrza.jpg",
+    podgorze: "/districts/krakow/podgorze.jpg",
+    bronowice: "/districts/krakow/bronowice.jpg",
+    "pradnik-czerwony": "/districts/krakow/pradnik-czerwony.jpg",
+    "lagiewniki-borek-falecki": "/districts/krakow/lagiewniki-borek-falecki.jpg",
+    czyzyny: "/districts/krakow/czyzyny.jpg",
+    debniki: "/districts/krakow/debniki.jpg",
+    mistrzejowice: "/districts/krakow/mistrzejowice.jpg",
+    bienczyce: "/districts/krakow/bienczyce.jpg",
+    "biezanow-prokocim": "/districts/krakow/biezanow-prokocim.jpg",
+    "podgorze-duchackie": "/districts/krakow/podgorze-duchackie.jpg",
+    "pradnik-bialy": "/districts/krakow/pradnik-bialy.jpg",
+    "nowa-huta": "/districts/krakow/nowa-huta.jpg",
+    "wzgorza-krzeslawickie": "/districts/krakow/wzgorza-krzeslawickie.jpg",
+    swoszowice: "/districts/krakow/swoszowice.jpg",
   },
   Вроцлав: {
     "stare-miasto": "/districts/wroclaw/stare-miasto.jpg",
@@ -54,14 +84,14 @@ const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
   Лодзь: {
     srodmiescie: "/districts/lodz/srodmiescie.jpg",
     widzew: "/districts/lodz/widzew.jpg",
-    polesie: "/districts/lodz/polesie.jpg",
     baluty: "/districts/lodz/baluty.jpg",
+    polesie: "/districts/lodz/polesie.jpg",
   },
   Люблин: {
     srodmiescie: "/districts/lublin/srodmiescie.jpg",
     czechow: "/districts/lublin/czechow.jpg",
-    weglin: "/districts/lublin/weglin.jpg",
     czuby: "/districts/lublin/czuby.jpg",
+    weglin: "/districts/lublin/weglin.jpg",
   },
   Щецин: {
     srodmiescie: "/districts/szczecin/srodmiescie.jpg",
@@ -69,25 +99,12 @@ const CITY_DISTRICT_IMAGES: Record<string, Record<string, string>> = {
     warszewo: "/districts/szczecin/warszewo.jpg",
     niebuszewo: "/districts/szczecin/niebuszewo.jpg",
   },
-  Краков: {
-    "stare-miasto": "/districts/krakow/stare-miasto.jpg",
-    grzegorzki: "/districts/krakow/grzegorzki.jpg",
-    zwierzyniec: "/districts/krakow/zwierzyniec.jpg",
-    krowodrza: "/districts/krakow/krowodrza.jpg",
-    podgorze: "/districts/krakow/podgorze.jpg",
-    bronowice: "/districts/krakow/bronowice.jpg",
-    "pradnik-czerwony": "/districts/krakow/pradnik-czerwony.jpg",
-    "lagiewniki-borek-falecki": "/districts/krakow/lagiewniki-borek-falecki.jpg",
-    czyzyny: "/districts/krakow/czyzyny.jpg",
-    "podgorze-duchackie": "/districts/krakow/podgorze-duchackie.jpg",
-    "pradnik-bialy": "/districts/krakow/pradnik-bialy.jpg",
-    debniki: "/districts/krakow/debniki.jpg",
-    mistrzejowice: "/districts/krakow/mistrzejowice.jpg",
-    "biezanow-prokocim": "/districts/krakow/biezanow-prokocim.jpg",
-    bienczyce: "/districts/krakow/bienczyce.jpg",
-    "nowa-huta": "/districts/krakow/nowa-huta.jpg",
-    "wzgorza-krzeslawickie": "/districts/krakow/wzgorza-krzeslawickie.jpg",
-    swoszowice: "/districts/krakow/swoszowice.jpg",
+  Катовице: {
+    srodmiescie: "/districts/katowice/srodmiescie.jpg",
+    koszutka: "/districts/katowice/koszutka.jpg",
+    "ligota-panewniki": "/districts/katowice/ligota-panewniki.jpg",
+    "brynow-osiedle-zgrzebnioka": "/districts/katowice/brynow-osiedle-zgrzebnioka.jpg",
+    "osiedle-tysiaclecia": "/districts/katowice/osiedle-tysiaclecia.jpg",
   },
 };
 
