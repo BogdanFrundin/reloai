@@ -465,6 +465,8 @@ export type Dictionary = {
     visitStatusCourier: string;
     visitStatusOnlineIfId: string;
     referralBonusLabel: string;
+    proceedToRegistration: string;
+    openAccountIntro: string;
   };
   medicine: {
     title: string;
@@ -2025,6 +2027,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Courier visit required",
       visitStatusOnlineIfId: "Online — if you already have a Polish ID",
       referralBonusLabel: "Refer a friend: {amount}",
+      proceedToRegistration: "Go to registration →",
+      openAccountIntro: "Follow these steps to open your account with this bank.",
     },
     medicine: {
       title: "Medicine in Poland",
@@ -3948,6 +3952,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Нужен визит курьера",
       visitStatusOnlineIfId: "Онлайн — если уже есть польский ID",
       referralBonusLabel: "Бонус за друга: {amount}",
+      proceedToRegistration: "Перейти к оформлению →",
+      openAccountIntro: "Пройдите эти шаги, чтобы открыть счёт в этом банке.",
     },
     medicine: {
       title: "Медицина в Польше",
@@ -5868,6 +5874,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Kuryer tashrifi kerak",
       visitStatusOnlineIfId: "Onlayn — agar polyak ID'ingiz bo'lsa",
       referralBonusLabel: "Do'stni taklif qiling: {amount}",
+      proceedToRegistration: "Ro'yxatdan o'tishga o'tish →",
+      openAccountIntro: "Ushbu bankda hisob ochish uchun quyidagi qadamlarni bajaring.",
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -7785,6 +7793,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Kurye ziyareti gerekli",
       visitStatusOnlineIfId: "Online — Polonya kimliğiniz varsa",
       referralBonusLabel: "Arkadaşını davet et: {amount}",
+      proceedToRegistration: "Kayda geç →",
+      openAccountIntro: "Bu bankada hesap açmak için şu adımları izleyin.",
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -9702,6 +9712,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Ташрифи курер лозим аст",
       visitStatusOnlineIfId: "Онлайн — агар шиноснномаи лаҳистонӣ дошта бошед",
       referralBonusLabel: "Дӯстро даъват кунед: {amount}",
+      proceedToRegistration: "Гузариш ба сабти ном →",
+      openAccountIntro: "Барои кушодани ҳисоб дар ин бонк ин қадамҳоро иҷро кунед.",
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -11623,6 +11635,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Потрібен візит кур'єра",
       visitStatusOnlineIfId: "Онлайн — якщо вже є польський ID",
       referralBonusLabel: "Запроси друга: {amount}",
+      proceedToRegistration: "Перейти до оформлення →",
+      openAccountIntro: "Виконайте ці кроки, щоб відкрити рахунок у цьому банку.",
     },
     medicine: {
       title: "Медицина в Польщі",
