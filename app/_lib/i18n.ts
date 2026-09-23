@@ -460,6 +460,11 @@ export type Dictionary = {
     moreFiltersBtn: string;
     byReviews: string;
     allBanksTemplate: string;
+    visitStatusOnline: string;
+    visitStatusBranch: string;
+    visitStatusCourier: string;
+    visitStatusOnlineIfId: string;
+    referralBonusLabel: string;
   };
   medicine: {
     title: string;
@@ -2015,6 +2020,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "More",
       byReviews: "by reviews",
       allBanksTemplate: "All banks ({n})",
+      visitStatusOnline: "Fully online",
+      visitStatusBranch: "Branch visit required",
+      visitStatusCourier: "Courier visit required",
+      visitStatusOnlineIfId: "Online — if you already have a Polish ID",
+      referralBonusLabel: "Refer a friend: {amount}",
     },
     medicine: {
       title: "Medicine in Poland",
@@ -3933,6 +3943,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "Ещё",
       byReviews: "по отзывам",
       allBanksTemplate: "Все банки ({n})",
+      visitStatusOnline: "Полностью онлайн",
+      visitStatusBranch: "Нужен визит в отделение",
+      visitStatusCourier: "Нужен визит курьера",
+      visitStatusOnlineIfId: "Онлайн — если уже есть польский ID",
+      referralBonusLabel: "Бонус за друга: {amount}",
     },
     medicine: {
       title: "Медицина в Польше",
@@ -5848,6 +5863,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "Yana",
       byReviews: "sharhlar bo'yicha",
       allBanksTemplate: "Barcha banklar ({n})",
+      visitStatusOnline: "To'liq onlayn",
+      visitStatusBranch: "Filialga tashrif kerak",
+      visitStatusCourier: "Kuryer tashrifi kerak",
+      visitStatusOnlineIfId: "Onlayn — agar polyak ID'ingiz bo'lsa",
+      referralBonusLabel: "Do'stni taklif qiling: {amount}",
     },
     medicine: {
       title: "Polshada tibbiyot",
@@ -7760,6 +7780,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "Daha fazla",
       byReviews: "değerlendirmelere göre",
       allBanksTemplate: "Tüm bankalar ({n})",
+      visitStatusOnline: "Tamamen online",
+      visitStatusBranch: "Şube ziyareti gerekli",
+      visitStatusCourier: "Kurye ziyareti gerekli",
+      visitStatusOnlineIfId: "Online — Polonya kimliğiniz varsa",
+      referralBonusLabel: "Arkadaşını davet et: {amount}",
     },
     medicine: {
       title: "Polonya'da Sağlık",
@@ -9672,6 +9697,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "Боз",
       byReviews: "аз рӯи баррасиҳо",
       allBanksTemplate: "Ҳамаи бонкҳо ({n})",
+      visitStatusOnline: "Пурра онлайн",
+      visitStatusBranch: "Ташрифи филиал лозим аст",
+      visitStatusCourier: "Ташрифи курер лозим аст",
+      visitStatusOnlineIfId: "Онлайн — агар шиноснномаи лаҳистонӣ дошта бошед",
+      referralBonusLabel: "Дӯстро даъват кунед: {amount}",
     },
     medicine: {
       title: "Тибб дар Полша",
@@ -11588,6 +11618,11 @@ export const dictionaries: Record<Lang, Dictionary> = {
       moreFiltersBtn: "Ще",
       byReviews: "за відгуками",
       allBanksTemplate: "Усі банки ({n})",
+      visitStatusOnline: "Повністю онлайн",
+      visitStatusBranch: "Потрібен візит у відділення",
+      visitStatusCourier: "Потрібен візит кур'єра",
+      visitStatusOnlineIfId: "Онлайн — якщо вже є польський ID",
+      referralBonusLabel: "Запроси друга: {amount}",
     },
     medicine: {
       title: "Медицина в Польщі",

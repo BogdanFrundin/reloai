@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { getBankImage } from "../_lib/bankImages";
+import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
@@ -102,6 +103,20 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
 
 function getBankStats(name: string, lang: Lang): BankStat | undefined {
   return BANK_STATS[name]?.[lang];
+}
+
+function visitStatusLabel(status: VisitStatus, t: Dictionary): string {
+  switch (status) {
+    case "online":
+      return t.banks.visitStatusOnline;
+    case "onlineIfId":
+      return t.banks.visitStatusOnlineIfId;
+    case "courier":
+      return t.banks.visitStatusCourier;
+    case "branch":
+    default:
+      return t.banks.visitStatusBranch;
+  }
 }
 
 function StatCell({ value, label }: { value: string; label: string }) {
@@ -278,6 +293,31 @@ function InfoRow({ label, value, showCurrencyHint, currencies, asPanel }: { labe
   return content;
 }
 
+// Compact colored badge showing whether a foreigner without PESEL/Polish ID
+// can open this bank's account fully remotely, or needs to visit a branch
+// (or meet a courier) — see app/_lib/bankAccountInfo.ts for the sourced data
+// behind each verdict. `title` carries the longer explanation as a
+// native-browser tooltip so the card itself stays compact.
+const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string }> = {
+  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10" },
+  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10" },
+  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10" },
+  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10" },
+};
+
+function VisitStatusBadge({ status, label, note }: { status: VisitStatus; label: string; note?: string }) {
+  const style = VISIT_STATUS_STYLE[status];
+  return (
+    <span
+      title={note}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${style.bg} ${style.text}`}
+    >
+      <span className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${style.dot}`} />
+      {label}
+    </span>
+  );
+}
+
 function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" }) {
   const textClass = tone === "warn" ? "text-red-300" : tone === "accent" ? "text-text-secondary" : "text-text-secondary";
   const dotClass = tone === "warn" ? "bg-red-400" : tone === "accent" ? "bg-accent-bright" : "bg-accent-bright";
@@ -311,7 +351,8 @@ function BankCard({
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const chosenCount = formatChosenCount(getChosenCount(guide.id), lang);
-  const rawLink = guide.online_url || guide.links?.[0];
+  const accountInfo = getBankAccountInfo(guide.name);
+  const rawLink = accountInfo?.onlineUrl || guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const isChosen = chosenBank === guide.name;
   const tagChips = buildTagChips(guide, t);
@@ -395,7 +436,19 @@ function BankCard({
                 <TextWithGlossary text={chip} />
               </span>
             ))}
+            {accountInfo && (
+              <VisitStatusBadge
+                status={accountInfo.visitStatus}
+                label={visitStatusLabel(accountInfo.visitStatus, t)}
+                note={accountInfo.visitNote}
+              />
+            )}
           </div>
+          {accountInfo?.referral && (
+            <p className="mt-2 text-[11px] text-text-muted">
+              🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
+            </p>
+          )}
           {guide.description && (
             <p className="mt-2 text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />

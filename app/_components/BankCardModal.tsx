@@ -12,6 +12,14 @@ import TextWithGlossary from "./TextWithGlossary";
 import StarRating from "./StarRating";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import { pressScale } from "../_lib/motion";
+import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
+
+const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
+  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
+  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/30" },
+  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10", border: "border-amber-500/30" },
+  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/30" },
+};
 
 // Reuse helper functions from BankCardGrid
 function BankAvatar({ name }: { name: string }) {
@@ -250,9 +258,24 @@ export default function BankCardModal({
     router.push(`/dashboard/ai?q=${encodeURIComponent(question)}`);
   }
 
-  const rawLink = guide.online_url || guide.links?.[0];
+  const accountInfo = getBankAccountInfo(guide.name);
+  const rawLink = accountInfo?.onlineUrl || guide.online_url || guide.links?.[0];
   const link = rawLink ? (rawLink.startsWith("http") ? rawLink : `https://${rawLink}`) : null;
   const cost = convertPlnText(guide.cost, currency, rates);
+
+  function visitStatusLabel(status: VisitStatus): string {
+    switch (status) {
+      case "online":
+        return t.banks.visitStatusOnline;
+      case "onlineIfId":
+        return t.banks.visitStatusOnlineIfId;
+      case "courier":
+        return t.banks.visitStatusCourier;
+      case "branch":
+      default:
+        return t.banks.visitStatusBranch;
+    }
+  }
 
   const extractCurrencies = (text: string | null | undefined): string[] => {
     if (!text) return [];
@@ -340,6 +363,40 @@ export default function BankCardModal({
                     {tagLabels[tag]}
                   </span>
                 ))}
+              </div>
+            )}
+
+            {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
+            {accountInfo && (
+              <div
+                className={`rounded-xl border p-3 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg}`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
+                  <span className={`text-sm font-semibold ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
+                    {visitStatusLabel(accountInfo.visitStatus)}
+                  </span>
+                </div>
+                {accountInfo.visitNote && (
+                  <p className="mt-1.5 text-xs leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
+                )}
+                {accountInfo.referral && (
+                  <p className="mt-1.5 text-xs text-text-muted">
+                    🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
+                  </p>
+                )}
+                {link && (
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    className={`mt-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                  >
+                    {t.banks.openAccount}
+                    <span aria-hidden>→</span>
+                  </a>
+                )}
               </div>
             )}
 
