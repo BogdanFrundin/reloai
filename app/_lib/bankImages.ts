@@ -29,6 +29,9 @@ const BANK_IMAGES: Record<string, string> = {
   "Volkswagen Bank Polska": "/banks/volkswagen.jpg",
   "BNP Paribas Bank Polska": "/banks/bnp-paribas.jpg",
   "VeloBank": "/banks/velobank.jpg",
+  Revolut: "/banks/revolut.jpg",
+  Wise: "/banks/wise.jpg",
+  N26: "/banks/n26.jpg",
 };
 
 export function getBankImage(name: string): string | null {
@@ -40,9 +43,10 @@ export function getBankImage(name: string): string | null {
 // yet — add a small credits line if/when required.
 //
 // The 9 photos added 2026-09-24 (pekao, credit-agricole, erste, nest,
-// plus-bank, toyota, volkswagen, bnp-paribas, velobank) were supplied
-// directly by the site owner — source/license unconfirmed, so no credit
-// line is listed for them yet. Fill in here if/when the source is known.
+// plus-bank, toyota, volkswagen, bnp-paribas, velobank), plus revolut,
+// wise and n26 added the same day, were supplied directly by the site
+// owner — source/license unconfirmed, so no credit line is listed for
+// them yet. Fill in here if/when the source is known.
 export const BANK_IMAGE_CREDITS: Record<string, string> = {
   "/banks/mbank.jpg": "Luks089, public domain, via Wikimedia Commons",
   "/banks/ing.jpg": "Joa~commonswiki, public domain, via Wikimedia Commons",
