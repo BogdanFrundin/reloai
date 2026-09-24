@@ -344,6 +344,7 @@ function BankCard({
   onOpenModal,
   onOpenAccount,
   bankRanking,
+  highlighted,
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
@@ -351,6 +352,7 @@ function BankCard({
   onOpenModal: () => void;
   onOpenAccount: () => void;
   bankRanking?: number;
+  highlighted?: boolean;
 }) {
   const router = useRouter();
   const { currency, rates } = useCurrency();
@@ -384,7 +386,12 @@ function BankCard({
 
   return (
     <div
-      className="group relative flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none"
+      id={`bank-card-${guide.id}`}
+      className={`group relative flex min-h-[280px] flex-col overflow-hidden rounded-2xl border transition-[transform,box-shadow,background-color,border-color] duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg hover:shadow-accent/20 motion-reduce:transition-none ${
+        highlighted
+          ? "border-accent-bright bg-surface-1 shadow-[0_0_0_4px_rgba(91,141,239,0.35)]"
+          : "border-border-subtle bg-surface-1"
+      }`}
     >
       {bankImage && (
         <div className="relative h-28 w-full flex-shrink-0 overflow-hidden sm:h-32">
@@ -542,10 +549,23 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
   const [openAccountBankId, setOpenAccountBankId] = useState<string | null>(null);
   const [showMoreTags, setShowMoreTags] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
+  const [highlightBankId, setHighlightBankId] = useState<string | null>(null);
 
   useImperativeHandle(ref, () => ({
     openRating: () => setRatingOpen(true),
   }));
+
+  function jumpToBank(guide: DocumentGuide) {
+    setRatingOpen(false);
+    setSearch("");
+    setActiveTag(null);
+    setShowAll(true);
+    setHighlightBankId(guide.id);
+    window.setTimeout(() => {
+      document.getElementById(`bank-card-${guide.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
+    window.setTimeout(() => setHighlightBankId(null), 2500);
+  }
 
   const visibleTagsCount = 4;
   const visibleTags = TAG_ORDER.slice(0, visibleTagsCount);
@@ -651,6 +671,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                 onOpenModal={() => setModalBankId(g.id)}
                 onOpenAccount={() => setOpenAccountBankId(g.id)}
                 bankRanking={bankRankingMap.get(g.id)}
+                highlighted={highlightBankId === g.id}
               />
             ))}
           </div>
@@ -676,6 +697,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                       onOpenModal={() => setModalBankId(g.id)}
                       onOpenAccount={() => setOpenAccountBankId(g.id)}
                       bankRanking={bankRankingMap.get(g.id)}
+                      highlighted={highlightBankId === g.id}
                     />
                   ))}
                 </div>
@@ -743,10 +765,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                   <button
                     key={g.id}
                     type="button"
-                    onClick={() => {
-                      setRatingOpen(false);
-                      setModalBankId(g.id);
-                    }}
+                    onClick={() => jumpToBank(g)}
                     className="mb-1.5 flex w-full items-center gap-3 rounded-2xl border border-accent/20 bg-accent/[0.07] p-2.5 text-left transition-colors duration-150 hover:bg-accent/[0.12]"
                   >
                     <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-bright text-[11px] font-bold text-[#0a1834]">
@@ -776,10 +795,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                       <button
                         key={g.id}
                         type="button"
-                        onClick={() => {
-                          setRatingOpen(false);
-                          setModalBankId(g.id);
-                        }}
+                        onClick={() => jumpToBank(g)}
                         className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors duration-150 hover:bg-surface-hover"
                       >
                         <span className="w-5 flex-shrink-0 text-center text-[11px] text-text-muted">{idx + 5}</span>
