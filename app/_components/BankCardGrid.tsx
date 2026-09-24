@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, forwardRef, useImperativeHandle } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -555,6 +555,19 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
     openRating: () => setRatingOpen(true),
   }));
 
+  // Lock the page behind the rating drawer so it can't be scrolled while
+  // the drawer is open (same pattern BankCardModal.tsx uses).
+  useEffect(() => {
+    if (!ratingOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [ratingOpen]);
+
   function jumpToBank(guide: DocumentGuide) {
     setRatingOpen(false);
     setSearch("");
@@ -766,9 +779,9 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                     key={g.id}
                     type="button"
                     onClick={() => jumpToBank(g)}
-                    className="mb-1.5 flex w-full items-center gap-3 rounded-2xl border border-accent/20 bg-accent/[0.07] p-2.5 text-left transition-colors duration-150 hover:bg-accent/[0.12]"
+                    className="mb-1.5 flex w-full items-center gap-3 rounded-2xl border border-accent-dark/35 bg-accent/[0.07] p-2.5 text-left transition-colors duration-150 hover:bg-accent/[0.12]"
                   >
-                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-bright text-[11px] font-bold text-[#0a1834]">
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/25 text-[11px] font-bold text-accent-bright">
                       {idx + 1}
                     </span>
                     <BankAvatar name={g.name} />
@@ -808,6 +821,9 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
                             <StarRating rating={g.rating} />
                           </div>
                         )}
+                        <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
                       </button>
                     ))}
                   </>
