@@ -253,6 +253,7 @@ function Section({
 }
 
 const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"] as const;
+type TabId = "overview" | "howto" | "docs";
 
 export default function BankCardModal({
   guide,
@@ -271,11 +272,13 @@ export default function BankCardModal({
   const { currency, rates } = useCurrency();
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
+  const [tab, setTab] = useState<TabId>("overview");
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [currencyPickerOpen, setCurrencyPickerOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
+    setTab("overview");
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -373,6 +376,26 @@ export default function BankCardModal({
 
   const collapseCopy = { collapseBtn: t.common.collapseBtn, expandBtn: t.common.expandBtn };
 
+  const hasHowToTab = Boolean(
+    (guide.instructions && guide.instructions.length > 0) ||
+      guide.where_to_submit ||
+      cityMapLinks.length > 0 ||
+      BANK_PHRASES.length > 0
+  );
+  const hasDocsTab = Boolean(
+    (guide.required_docs && guide.required_docs.length > 0) ||
+      (guide.tips && guide.tips.length > 0) ||
+      (guide.common_mistakes && guide.common_mistakes.length > 0)
+  );
+
+  const TABS: { id: TabId; label: string; show: boolean }[] = [
+    { id: "overview", label: gc.tabOverview, show: true },
+    { id: "howto", label: gc.tabHowTo, show: hasHowToTab },
+    { id: "docs", label: gc.tabDocs, show: hasDocsTab },
+  ];
+  const visibleTabs = TABS.filter((tb) => tb.show);
+  const activeTab = visibleTabs.some((tb) => tb.id === tab) ? tab : "overview";
+
   return createPortal(
     <>
     <div
@@ -401,16 +424,77 @@ export default function BankCardModal({
           animation: "scaleIn 200ms ease-out",
         }}
       >
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-10 border-b border-border-subtle bg-panel px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3 min-w-0 flex-1">
-            <BankAvatar name={guide.name} />
-            <div className="min-w-0 flex-1">
-              <p className="text-lg sm:text-xl font-bold text-text-primary truncate">{guide.name}</p>
-              {guide.rating != null && (
-                <div className="mt-1 flex items-center gap-1">
-                  <StarRating rating={guide.rating} />
-                </div>
+        {/* Sticky Header: identity, hero account-opening CTA, and tabs all stay pinned while the tab content below scrolls */}
+        <div className="sticky top-0 z-10 border-b border-border-subtle bg-panel px-4 pt-4 sm:px-6 sm:pt-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3 min-w-0 flex-1">
+              <BankAvatar name={guide.name} />
+              <div className="min-w-0 flex-1">
+                <p className="text-lg sm:text-xl font-bold text-text-primary truncate">{guide.name}</p>
+                {guide.rating != null && (
+                  <div className="mt-1 flex items-center gap-1">
+                    <StarRating rating={guide.rating} />
+                  </div>
+                )}
+                {tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
+                      >
+                        {tagLabels[tag]}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
+              aria-label="Close"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Hero: real account-opening status + CTA (sourced data, see bankAccountInfo.ts) — always visible above the tabs */}
+          {accountInfo && (
+            <div
+              className={`mt-4 rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
+                <span className={`text-base font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
+                  {visitStatusLabel(accountInfo.visitStatus)}
+                </span>
+              </div>
+              {accountInfo.keyRequirement && (
+                <p className="mt-2 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
+              )}
+              {accountInfo.visitNote && (
+                <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
+              )}
+              {accountInfo.referral && (
+                <p className="mt-2.5 text-sm text-text-muted">
+                  🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
+                </p>
+              )}
+              {link && (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => event.stopPropagation()}
+                  className={`mt-3.5 flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-sm font-bold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                >
+                  {t.banks.openAccount}
+                  <span aria-hidden>→</span>
+                </a>
               )}
               {tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1.5">
@@ -425,363 +509,355 @@ export default function BankCardModal({
                 </div>
               )}
             </div>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
-            aria-label="Close"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          )}
+
+          {/* Tab bar */}
+          {visibleTabs.length > 1 && (
+            <div className="mt-4 flex gap-4">
+              {visibleTabs.map((tb) => (
+                <button
+                  key={tb.id}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTab(tb.id);
+                  }}
+                  className={`-mb-px border-b-2 px-0.5 pb-2.5 text-sm font-semibold transition-colors ${
+                    activeTab === tb.id
+                      ? "border-accent-bright text-text-primary"
+                      : "border-transparent text-text-muted hover:text-text-secondary"
+                  }`}
+                >
+                  {tb.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
           <div className="space-y-3 sm:space-y-4">
-            {/* Description */}
-            {guide.description && (
-              <div className="space-y-2 px-1">
-                {guide.description.split("\n\n").map((paragraph, i) => {
-                  const sectionId = `description-${i}`;
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { truncated, isTruncated } = truncateText(paragraph, 2);
-                  const displayText = isExpanded ? paragraph : truncated;
+            {activeTab === "overview" && (
+              <>
+                {/* Description */}
+                {guide.description && (
+                  <div className="space-y-2 px-1">
+                    {guide.description.split("\n\n").map((paragraph, i) => {
+                      const sectionId = `description-${i}`;
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { truncated, isTruncated } = truncateText(paragraph, 2);
+                      const displayText = isExpanded ? paragraph : truncated;
 
-                  return (
-                    <div key={i}>
-                      <p className="text-sm leading-relaxed text-text-secondary">
-                        <TextWithGlossary text={displayText} />
-                      </p>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
-            {accountInfo && (
-              <div
-                className={`rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
-                  <span className={`text-base font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
-                    {visitStatusLabel(accountInfo.visitStatus)}
-                  </span>
-                </div>
-                {accountInfo.keyRequirement && (
-                  <p className="mt-2 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
-                )}
-                {accountInfo.visitNote && (
-                  <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
-                )}
-                {accountInfo.referral && (
-                  <p className="mt-2.5 text-sm text-text-muted">
-                    🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
-                  </p>
-                )}
-                {link && (
-                  <a
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
-                  >
-                    {t.banks.openAccount}
-                    <span aria-hidden>→</span>
-                  </a>
-                )}
-              </div>
-            )}
-
-            {/* Important Info */}
-            {guide.important_2026 && (
-              <div className="rounded-2xl border border-amber-500/30 bg-surface-hover/40 p-3.5 sm:p-4 text-sm leading-relaxed text-amber-200">
-                {guide.important_2026}
-              </div>
-            )}
-
-            {/* Info Rows + Cost, as a clean grid instead of a stacked list */}
-            {(infoRows.length > 0 || cost) && (
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {infoRows.map((row) => (
-                  <InfoRow key={row.label} label={row.label} value={row.value} />
-                ))}
-                {cost && (
-                  <div className={`rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
-                    {currencies.length > 0 ? (
-                      <div className="mt-1.5">
-                        <CurrencyBadges currencies={currencies} />
-                      </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-text-secondary">{cost}</p>
-                    )}
-                    {currencies.length === 0 && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrencyPickerOpen(true);
-                        }}
-                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-semibold text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
-                      >
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
-                        </svg>
-                        {t.settings.currencySection} · {currency}
-                      </button>
-                    )}
+                      return (
+                        <div key={i}>
+                          <p className="text-sm leading-relaxed text-text-secondary">
+                            <TextWithGlossary text={displayText} />
+                          </p>
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
-              </div>
-            )}
 
-            {/* Required Docs */}
-            {guide.required_docs && guide.required_docs.length > 0 && (
-              <Section
-                title={gc.requiredDocs}
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "required-docs";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { items: displayItems, isTruncated } = truncateList(guide.required_docs, 2);
+                {/* Important Info */}
+                {guide.important_2026 && (
+                  <div className="rounded-2xl border border-amber-500/30 bg-surface-hover/40 p-3.5 sm:p-4 text-sm leading-relaxed text-amber-200">
+                    {guide.important_2026}
+                  </div>
+                )}
 
-                  return (
-                    <>
-                      <Bullets items={isExpanded ? guide.required_docs : displayItems} />
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-              </Section>
-            )}
-
-            {/* Instructions */}
-            {guide.instructions && guide.instructions.length > 0 && (
-              <Section
-                title={gc.howToApply}
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "instructions";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { items: displayItems, isTruncated } = truncateList(guide.instructions, 3);
-                  const itemsToShow = isExpanded ? guide.instructions : displayItems;
-
-                  return (
-                    <>
-                      <ol className="space-y-1.5">
-                        {itemsToShow.map((step, i) => (
-                          <li key={step} className="flex items-start gap-2.5 text-sm leading-relaxed text-text-secondary">
-                            <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent-bright">
-                              {i + 1}
-                            </span>
-                            {step}
-                          </li>
-                        ))}
-                      </ol>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-              </Section>
-            )}
-
-            {/* Where to Submit (current city address) */}
-            {guide.where_to_submit && (
-              <Section
-                title={gc.whereToSubmit}
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "where-to-submit";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
-                  const displayText = isExpanded ? guide.where_to_submit : truncated;
-
-                  return (
-                    <>
-                      <p className="text-sm leading-relaxed text-text-secondary">{displayText}</p>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-                <a
-                  href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => event.stopPropagation()}
-                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accent/50 bg-transparent text-sm font-medium text-accent-bright transition-colors hover:bg-accent/10"
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  {gc.showOnMap}
-                </a>
-              </Section>
-            )}
-
-            {/* Branches by city — Google Maps search per city, all districts included */}
-            <Section
-              title={t.banks.branchesByCityLabel}
-              icon={
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-              }
-            >
-              <div className="flex flex-wrap gap-2">
-                {cityMapLinks.map(({ city, url }) => (
-                  <a
-                    key={city}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-border-subtle bg-surface-hover/40 px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
-                  >
-                    <svg className="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    {getCityName(city, lang)}
-                  </a>
-                ))}
-              </div>
-            </Section>
-
-            {/* Useful Polish phrases — spoken via the browser's own TTS voice */}
-            <Section
-              title={t.banks.usefulPhrasesLabel}
-              icon={
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728" />
-                </svg>
-              }
-            >
-              {(() => {
-                const sectionId = "phrases";
-                const isExpanded = expandedSections.has(sectionId);
-                const { items: displayItems, isTruncated } = truncateList(BANK_PHRASES, 4);
-                const itemsToShow = isExpanded ? BANK_PHRASES : displayItems;
-
-                return (
-                  <>
-                    <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-                      {itemsToShow.map((phrase) => (
-                        <li
-                          key={phrase.id}
-                          className="flex items-center gap-2.5 rounded-2xl bg-surface-hover/70 px-3 py-2"
-                        >
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-text-primary">{phrase.pl}</p>
-                            <p className="mt-0.5 text-xs text-text-muted">{phrase.translations[phraseLang]}</p>
+                {/* Info Rows + Cost, as a clean grid instead of a stacked list */}
+                {(infoRows.length > 0 || cost) && (
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {infoRows.map((row) => (
+                      <InfoRow key={row.label} label={row.label} value={row.value} />
+                    ))}
+                    {cost && (
+                      <div className={`rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                        {currencies.length > 0 ? (
+                          <div className="mt-1.5">
+                            <CurrencyBadges currencies={currencies} />
                           </div>
+                        ) : (
+                          <p className="mt-1 text-sm text-text-secondary">{cost}</p>
+                        )}
+                        {currencies.length === 0 && (
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              speakPolish(phrase.pl);
+                              setCurrencyPickerOpen(true);
                             }}
-                            aria-label="Listen"
-                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-strong text-sm text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright ${pressScale}`}
+                            className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-semibold text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
                           >
-                            🔊
+                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
+                            </svg>
+                            {t.settings.currencySection} · {currency}
                           </button>
-                        </li>
-                      ))}
-                    </ul>
-                    {isTruncated && (
-                      <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                        )}
+                      </div>
                     )}
-                  </>
-                );
-              })()}
-            </Section>
-
-            {/* Tips */}
-            {guide.tips && guide.tips.length > 0 && (
-              <Section
-                title={gc.tips}
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "tips";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { items: displayItems, isTruncated } = truncateList(guide.tips, 2);
-
-                  return (
-                    <>
-                      <Bullets items={isExpanded ? guide.tips : displayItems} tone="accent" />
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-              </Section>
+                  </div>
+                )}
+              </>
             )}
 
-            {/* Common Mistakes */}
-            {guide.common_mistakes && guide.common_mistakes.length > 0 && (
-              <Section
-                title={gc.commonMistakes}
-                tone="warn"
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4v2m0 5v.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "common-mistakes";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { items: displayItems, isTruncated } = truncateList(guide.common_mistakes, 2);
+            {activeTab === "howto" && (
+              <>
+                {/* Instructions */}
+                {guide.instructions && guide.instructions.length > 0 && (
+                  <Section
+                    title={gc.howToApply}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "instructions";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { items: displayItems, isTruncated } = truncateList(guide.instructions, 3);
+                      const itemsToShow = isExpanded ? guide.instructions : displayItems;
 
-                  return (
-                    <>
-                      <Bullets items={isExpanded ? guide.common_mistakes : displayItems} tone="warn" />
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-              </Section>
+                      return (
+                        <>
+                          <ol className="space-y-1.5">
+                            {itemsToShow.map((step, i) => (
+                              <li key={step} className="flex items-start gap-2.5 text-sm leading-relaxed text-text-secondary">
+                                <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent-bright">
+                                  {i + 1}
+                                </span>
+                                {step}
+                              </li>
+                            ))}
+                          </ol>
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </Section>
+                )}
+
+                {/* Where to Submit (current city address) */}
+                {guide.where_to_submit && (
+                  <Section
+                    title={gc.whereToSubmit}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "where-to-submit";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
+                      const displayText = isExpanded ? guide.where_to_submit : truncated;
+
+                      return (
+                        <>
+                          <p className="text-sm leading-relaxed text-text-secondary">{displayText}</p>
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                    <a
+                      href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(event) => event.stopPropagation()}
+                      className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accent/50 bg-transparent text-sm font-medium text-accent-bright transition-colors hover:bg-accent/10"
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {gc.showOnMap}
+                    </a>
+                  </Section>
+                )}
+
+                {/* Branches by city — Google Maps search per city, all districts included */}
+                {cityMapLinks.length > 0 && (
+                  <Section
+                    title={t.banks.branchesByCityLabel}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      </svg>
+                    }
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      {cityMapLinks.map(({ city, url }) => (
+                        <a
+                          key={city}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                          className="inline-flex items-center gap-1.5 rounded-xl border border-border-subtle bg-surface-hover/40 px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
+                        >
+                          <svg className="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          {getCityName(city, lang)}
+                        </a>
+                      ))}
+                    </div>
+                  </Section>
+                )}
+
+                {/* Useful Polish phrases — spoken via the browser's own TTS voice */}
+                {BANK_PHRASES.length > 0 && (
+                  <Section
+                    title={t.banks.usefulPhrasesLabel}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "phrases";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { items: displayItems, isTruncated } = truncateList(BANK_PHRASES, 4);
+                      const itemsToShow = isExpanded ? BANK_PHRASES : displayItems;
+
+                      return (
+                        <>
+                          <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                            {itemsToShow.map((phrase) => (
+                              <li
+                                key={phrase.id}
+                                className="flex items-center gap-2.5 rounded-2xl bg-surface-hover/70 px-3 py-2"
+                              >
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-sm font-medium text-text-primary">{phrase.pl}</p>
+                                  <p className="mt-0.5 text-xs text-text-muted">{phrase.translations[phraseLang]}</p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    speakPolish(phrase.pl);
+                                  }}
+                                  aria-label="Listen"
+                                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-strong text-sm text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright ${pressScale}`}
+                                >
+                                  🔊
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </Section>
+                )}
+              </>
+            )}
+
+            {activeTab === "docs" && (
+              <>
+                {/* Required Docs */}
+                {guide.required_docs && guide.required_docs.length > 0 && (
+                  <Section
+                    title={gc.requiredDocs}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "required-docs";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { items: displayItems, isTruncated } = truncateList(guide.required_docs, 2);
+
+                      return (
+                        <>
+                          <Bullets items={isExpanded ? guide.required_docs : displayItems} />
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </Section>
+                )}
+
+                {/* Tips */}
+                {guide.tips && guide.tips.length > 0 && (
+                  <Section
+                    title={gc.tips}
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "tips";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { items: displayItems, isTruncated } = truncateList(guide.tips, 2);
+
+                      return (
+                        <>
+                          <Bullets items={isExpanded ? guide.tips : displayItems} tone="accent" />
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </Section>
+                )}
+
+                {/* Common Mistakes */}
+                {guide.common_mistakes && guide.common_mistakes.length > 0 && (
+                  <Section
+                    title={gc.commonMistakes}
+                    tone="warn"
+                    icon={
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4v2m0 5v.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
+                      </svg>
+                    }
+                  >
+                    {(() => {
+                      const sectionId = "common-mistakes";
+                      const isExpanded = expandedSections.has(sectionId);
+                      const { items: displayItems, isTruncated } = truncateList(guide.common_mistakes, 2);
+
+                      return (
+                        <>
+                          <Bullets items={isExpanded ? guide.common_mistakes : displayItems} tone="warn" />
+                          {isTruncated && (
+                            <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </Section>
+                )}
+              </>
             )}
           </div>
         </div>
