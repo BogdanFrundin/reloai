@@ -177,6 +177,108 @@ function CurrencyBadges({ currencies }: { currencies: string[] }) {
   );
 }
 
+// Small hand-drawn illustrations (inline SVG, no external image assets —
+// nothing to break or fail to load) used to give the header and a couple
+// of overview cards actual "picture" content instead of just icon + text.
+
+// Stylized night skyline with a columned bank-facade landmark building,
+// used as the decorative art behind the modal header.
+function SkylineHeroArt() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 400 160"
+      preserveAspectRatio="xMaxYMax slice"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
+    >
+      <defs>
+        <linearGradient id="bcmSkyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0d1b3d" stopOpacity="0" />
+          <stop offset="100%" stopColor="#0d1b3d" stopOpacity="0.6" />
+        </linearGradient>
+        <linearGradient id="bcmBuildGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#24345f" />
+          <stop offset="100%" stopColor="#101a34" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="400" height="160" fill="url(#bcmSkyGrad)" />
+      <g fill="url(#bcmBuildGrad)" opacity="0.6">
+        <rect x="222" y="95" width="26" height="65" />
+        <rect x="254" y="80" width="22" height="80" />
+        <rect x="284" y="100" width="30" height="60" />
+        <rect x="330" y="70" width="24" height="90" />
+        <rect x="360" y="90" width="30" height="70" />
+      </g>
+      <g fill="url(#bcmBuildGrad)">
+        <rect x="266" y="62" width="66" height="98" rx="2" />
+        <polygon points="266,62 299,36 332,62" />
+        <rect x="279" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+        <rect x="291" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+        <rect x="303" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+        <rect x="315" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+      </g>
+      <g fill="#fbbf6a" opacity="0.65">
+        <rect x="228" y="105" width="3" height="3" />
+        <rect x="236" y="122" width="3" height="3" />
+        <rect x="260" y="96" width="3" height="3" />
+        <rect x="292" y="114" width="3" height="3" />
+        <rect x="336" y="86" width="3" height="3" />
+        <rect x="368" y="106" width="3" height="3" />
+      </g>
+    </svg>
+  );
+}
+
+// A soft organic "map badge" shape filled with the Polish flag colors —
+// reads as a country badge without depending on exact border geometry.
+function PolandFlagBadge() {
+  return (
+    <svg aria-hidden viewBox="0 0 100 100" className="h-full w-full">
+      <defs>
+        <clipPath id="bcmPolandBlob">
+          <path d="M50 4C68 4 79 14 86 28C93 42 94 55 88 66C82 77 74 84 62 90C50 96 38 95 28 88C18 81 9 70 6 56C3 42 6 28 16 18C26 8 38 4 50 4Z" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#bcmPolandBlob)">
+        <rect x="0" y="0" width="100" height="50" fill="#ffffff" />
+        <rect x="0" y="50" width="100" height="50" fill="#dc2626" />
+      </g>
+      <path
+        d="M50 4C68 4 79 14 86 28C93 42 94 55 88 66C82 77 74 84 62 90C50 96 38 95 28 88C18 81 9 70 6 56C3 42 6 28 16 18C26 8 38 4 50 4Z"
+        fill="none"
+        stroke="rgba(0,0,0,0.08)"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+// Stylized Polish ID card + phone-with-app illustration, used on the
+// "visit required" card to show what the user will be asked to bring.
+function IdCardAndPhoneArt() {
+  return (
+    <svg aria-hidden viewBox="0 0 160 110" className="h-full w-full">
+      <g transform="translate(2,16) rotate(-8)">
+        <rect x="0" y="0" width="78" height="50" rx="7" fill="#b91c1c" />
+        <rect x="0" y="0" width="78" height="14" rx="7" fill="#ffffff" opacity="0.92" />
+        <circle cx="16" cy="32" r="9" fill="#ffffff" opacity="0.9" />
+        <rect x="32" y="24" width="34" height="4" rx="2" fill="#ffffff" opacity="0.85" />
+        <rect x="32" y="32" width="28" height="4" rx="2" fill="#ffffff" opacity="0.6" />
+        <rect x="32" y="40" width="22" height="4" rx="2" fill="#ffffff" opacity="0.6" />
+      </g>
+      <g transform="translate(68,2) rotate(6)">
+        <rect x="0" y="0" width="56" height="104" rx="12" fill="#141c2e" />
+        <rect x="4" y="6" width="48" height="92" rx="7" fill="#0b1220" />
+        <circle cx="28" cy="52" r="16" fill="#dc2626" />
+        <circle cx="28" cy="52" r="16" fill="none" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="1.5" />
+        <rect x="21" y="45" width="14" height="4" rx="2" fill="#ffffff" />
+        <rect x="21" y="52" width="14" height="4" rx="2" fill="#ffffff" opacity="0.85" />
+        <rect x="21" y="59" width="14" height="4" rx="2" fill="#ffffff" opacity="0.7" />
+      </g>
+    </svg>
+  );
+}
+
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3">
@@ -489,9 +591,9 @@ export default function BankCardModal({
             present or not) — no guessed pixel offset needed. */}
         <div className="sticky top-0 z-10 bg-panel">
           <div className="relative overflow-hidden border-b border-border-subtle px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
-            {/* Ambient accent glow behind the header, same decorative
-                language used elsewhere on the site (soft blurred accent
-                circle) — purely CSS, no image assets. */}
+            {/* Night-skyline illustration + ambient accent glow behind the
+                header — inline SVG, no external image assets to break. */}
+            <SkylineHeroArt />
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/15 blur-3xl"
@@ -563,7 +665,7 @@ export default function BankCardModal({
             <>
             {/* Description */}
             {guide.description && (
-              <div className="flex gap-3 rounded-2xl border border-border-subtle bg-surface-hover/30 p-4 sm:p-5">
+              <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-surface-hover/30 p-4 sm:p-5">
                 <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -588,6 +690,9 @@ export default function BankCardModal({
                     );
                   })}
                 </div>
+                <div className="h-14 w-14 flex-shrink-0">
+                  <PolandFlagBadge />
+                </div>
               </div>
             )}
 
@@ -596,41 +701,50 @@ export default function BankCardModal({
               <div
                 className={`rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
-                  >
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4" />
-                    </svg>
-                  </span>
-                  <span className={`text-sm font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
-                    {visitStatusLabel(accountInfo.visitStatus)}
-                  </span>
+                <div className="flex items-start gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
+                      >
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4" />
+                        </svg>
+                      </span>
+                      <span className={`text-sm font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
+                        {visitStatusLabel(accountInfo.visitStatus)}
+                      </span>
+                    </div>
+                    {accountInfo.keyRequirement && (
+                      <p className="mt-2.5 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
+                    )}
+                    {accountInfo.visitNote && (
+                      <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
+                    )}
+                    {accountInfo.referral && (
+                      <p className="mt-2.5 text-sm text-text-muted">
+                        🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
+                      </p>
+                    )}
+                    {link && (
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(event) => event.stopPropagation()}
+                        className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                      >
+                        {t.banks.openAccount}
+                        <span aria-hidden>→</span>
+                      </a>
+                    )}
+                  </div>
+                  {accountInfo.visitStatus !== "online" && (
+                    <div className="hidden h-24 w-24 flex-shrink-0 sm:block">
+                      <IdCardAndPhoneArt />
+                    </div>
+                  )}
                 </div>
-                {accountInfo.keyRequirement && (
-                  <p className="mt-2.5 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
-                )}
-                {accountInfo.visitNote && (
-                  <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
-                )}
-                {accountInfo.referral && (
-                  <p className="mt-2.5 text-sm text-text-muted">
-                    🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
-                  </p>
-                )}
-                {link && (
-                  <a
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
-                  >
-                    {t.banks.openAccount}
-                    <span aria-hidden>→</span>
-                  </a>
-                )}
               </div>
             )}
 
