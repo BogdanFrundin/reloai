@@ -586,7 +586,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
-  const filtered = term
+  const searchFiltered = term
     ? tagFiltered.filter(
         (g) => g.name.toLowerCase().includes(term) || (g.description ?? "").toLowerCase().includes(term)
       )
@@ -594,6 +594,11 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
 
   const rankedGuides = [...guides].sort((a, b) => realBankRank(a.name) - realBankRank(b.name));
   const bankRankingMap = new Map(rankedGuides.map((g, idx) => [g.id, idx + 1]));
+
+  // Show the grid in real-ranking order too, so the "#1 по отзывам" /
+  // "#2 по отзывам" badges on the cards above line up with reading order
+  // (1st, 2nd, 3rd, 4th) instead of the cards' original alphabetical order.
+  const filtered = [...searchFiltered].sort((a, b) => realBankRank(a.name) - realBankRank(b.name));
 
   const featured = filtered.slice(0, 6);
   const rest = filtered.slice(6);
