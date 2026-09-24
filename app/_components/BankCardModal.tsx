@@ -42,6 +42,7 @@ function BankAvatar({ name }: { name: string }) {
     "nest bank": "nestbank.pl",
     "velobank": "velobank.pl",
     "revolut": "revolut.com",
+    "wise": "wise.com",
     "n26": "n26.com",
     "erste": "erstebank.com",
     "plus bank": "plusbank.pl",

@@ -133,6 +133,35 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     confidence: "explicit",
     visitNote: "Полностью онлайн — только если уже есть польский dowód osobisty. Без него: бумажная заявка + визит курьера (~10 рабочих дней), отделений почти нет.",
   },
+
+  // Online-only European fintechs (not traditional Polish banks) — added
+  // September 2026. Unlike every bank above, all three genuinely open a
+  // full remote account for a foreigner with no PESEL/Polish ID at all, via
+  // passport/EEA ID + video/selfie verification. See "Revolut / Wise / N26"
+  // in bank-account-opening-research.md for the sourced details and caveats
+  // (Lithuanian IBAN for Revolut, no PLN local account details for Wise,
+  // euro-only German-IBAN account for N26). Referral bonuses are
+  // deliberately omitted here: Revolut's is a variable, per-invite amount
+  // (not a fixed public figure) and no fixed PLN referral figure for
+  // Wise/N26 was verified — see the no-fabrication rule in that doc.
+  Revolut: {
+    onlineUrl: "https://www.revolut.com/en-PL/",
+    visitStatus: "online",
+    confidence: "explicit",
+    visitNote: "Полностью дистанционное открытие счёта через приложение — PESEL не нужен, достаточно загранпаспорта. Удобный онлайн-банк с мультивалютной картой.",
+  },
+  Wise: {
+    onlineUrl: "https://wise.com/",
+    visitStatus: "online",
+    confidence: "explicit",
+    visitNote: "Полностью дистанционно — паспорт и подтверждение адреса, PESEL не нужен. Удобный сервис для мультивалютных переводов и хранения денег в разных валютах.",
+  },
+  N26: {
+    onlineUrl: "https://n26.com/en-eu",
+    visitStatus: "online",
+    confidence: "explicit",
+    visitNote: "Полностью дистанционное открытие через приложение с видеоидентификацией — PESEL не нужен, только загранпаспорт. Быстрый и удобный онлайн-банк.",
+  },
 };
 
 export function getBankAccountInfo(name: string): BankAccountInfo | null {
