@@ -16,6 +16,7 @@ import CurrencyHint from "./CurrencyHint";
 import TextWithGlossary from "./TextWithGlossary";
 import StarRating from "./StarRating";
 import BankCardModal from "./BankCardModal";
+import BankOpenAccountModal from "./BankOpenAccountModal";
 import { supabase } from "../../lib/supabase";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
@@ -339,12 +340,14 @@ function BankCard({
   chosenBank,
   onChoose,
   onOpenModal,
+  onOpenAccount,
   bankRanking,
 }: {
   guide: DocumentGuide;
   chosenBank: string | null | undefined;
   onChoose: (name: string | null) => void;
   onOpenModal: () => void;
+  onOpenAccount: () => void;
   bankRanking?: number;
 }) {
   const router = useRouter();
@@ -467,15 +470,17 @@ function BankCard({
 
       <div className="mt-4 flex flex-col gap-2 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
         {link && (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenAccount();
+            }}
             className={`flex items-center justify-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
           >
             {t.banks.openAccount}
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
-          </a>
+          </button>
         )}
         <button
           type="button"
@@ -525,6 +530,7 @@ export default function BankCardGrid({
   const [showAll, setShowAll] = useState(false);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [modalBankId, setModalBankId] = useState<string | null>(null);
+  const [openAccountBankId, setOpenAccountBankId] = useState<string | null>(null);
   const [showMoreTags, setShowMoreTags] = useState(false);
 
   const visibleTagsCount = 4;
@@ -629,6 +635,7 @@ export default function BankCardGrid({
                 chosenBank={profile?.chosen_bank}
                 onChoose={chooseBank}
                 onOpenModal={() => setModalBankId(g.id)}
+                onOpenAccount={() => setOpenAccountBankId(g.id)}
                 bankRanking={bankRankingMap.get(g.id)}
               />
             ))}
@@ -653,6 +660,7 @@ export default function BankCardGrid({
                       chosenBank={profile?.chosen_bank}
                       onChoose={chooseBank}
                       onOpenModal={() => setModalBankId(g.id)}
+                      onOpenAccount={() => setOpenAccountBankId(g.id)}
                       bankRanking={bankRankingMap.get(g.id)}
                     />
                   ))}
@@ -667,6 +675,12 @@ export default function BankCardGrid({
             onClose={() => setModalBankId(null)}
             chosenBank={profile?.chosen_bank}
             onChoose={chooseBank}
+          />
+
+          <BankOpenAccountModal
+            guide={guides.find((g) => g.id === openAccountBankId) || null}
+            open={openAccountBankId !== null}
+            onClose={() => setOpenAccountBankId(null)}
           />
         </>
       )}
