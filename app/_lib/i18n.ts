@@ -465,6 +465,15 @@ export type Dictionary = {
     rankingDrawerSubtitle: string;
     otherBanksLabel: string;
     rankingSourceNote: string;
+    // Nearest-branch finder (BankCardModal.tsx "Куда подавать" tab) —
+    // geolocation + Google Places search for the closest real branch.
+    nearBranchButton: string;
+    nearBranchLocating: string;
+    nearBranchError: string;
+    nearBranchNotFound: string;
+    nearBranchDistanceTemplate: string;
+    nearBranchDirections: string;
+    nearBranchDisclaimer: string;
     whichBankTitle: string;
     whichBankDescription: string;
     whichBankLearnMore: string;
@@ -2042,6 +2051,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Based on Złoty Bankier 2026, Instytucja Roku 2026, and App Store ratings",
       otherBanksLabel: "Other banks",
       rankingSourceNote: "Sources: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store and Google Play ratings.",
+      nearBranchButton: "Find a branch near me",
+      nearBranchLocating: "Finding your location…",
+      nearBranchError: "Couldn't get your location. Check your browser permissions.",
+      nearBranchNotFound: "No branches found nearby.",
+      nearBranchDistanceTemplate: "≈ {n} from you",
+      nearBranchDirections: "Directions",
+      nearBranchDisclaimer: "Based on Google's live listings — showing the closest branch found.",
       whichBankTitle: "Not sure which bank to choose?",
       whichBankDescription: "Answer a few questions and the AI will suggest the best account for your situation",
       whichBankLearnMore: "Get a recommendation",
@@ -3982,6 +3998,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "По данным Zloty Bankier 2026, Instytucja Roku 2026 и оценок в App Store",
       otherBanksLabel: "Остальные банки",
       rankingSourceNote: "Источники: Zloty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оценки в App Store и Google Play.",
+      nearBranchButton: "Найти отделение рядом со мной",
+      nearBranchLocating: "Определяем ваше местоположение…",
+      nearBranchError: "Не удалось определить местоположение. Проверьте разрешения браузера.",
+      nearBranchNotFound: "Отделения поблизости не найдены.",
+      nearBranchDistanceTemplate: "≈ {n} от вас",
+      nearBranchDirections: "Маршрут",
+      nearBranchDisclaimer: "По актуальным данным Google — показано ближайшее найденное отделение.",
       whichBankTitle: "Не знаете какой банк выбрать?",
       whichBankDescription: "Ответьте на пару вопросов — и ИИ подскажет счёт, который подходит именно вам",
       whichBankLearnMore: "Получить рекомендацию",
@@ -5919,6 +5942,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 va App Store baholariga asosan",
       otherBanksLabel: "Boshqa banklar",
       rankingSourceNote: "Manbalar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store va Google Play baholari.",
+      nearBranchButton: "Yaqinimdagi bo'limni topish",
+      nearBranchLocating: "Joylashuvingiz aniqlanmoqda…",
+      nearBranchError: "Joylashuvni aniqlab bo'lmadi. Brauzer ruxsatlarini tekshiring.",
+      nearBranchNotFound: "Yaqin atrofda bo'lim topilmadi.",
+      nearBranchDistanceTemplate: "≈ {n} sizdan",
+      nearBranchDirections: "Yo'nalish",
+      nearBranchDisclaimer: "Google-ning joriy ma'lumotlariga asosan — eng yaqin topilgan bo'lim ko'rsatilgan.",
       whichBankTitle: "Qaysi bankni tanlashni bilmayapsizmi?",
       whichBankDescription: "Bir nechta savolga javob bering — AI sizga mos hisobni tavsiya qiladi",
       whichBankLearnMore: "Tavsiya olish",
@@ -7853,6 +7883,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 ve App Store puanlarına göre",
       otherBanksLabel: "Diğer bankalar",
       rankingSourceNote: "Kaynaklar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store ve Google Play puanları.",
+      nearBranchButton: "Yakınımdaki şubeyi bul",
+      nearBranchLocating: "Konumunuz belirleniyor…",
+      nearBranchError: "Konum alınamadı. Tarayıcı izinlerini kontrol edin.",
+      nearBranchNotFound: "Yakınlarda şube bulunamadı.",
+      nearBranchDistanceTemplate: "≈ sizden {n}",
+      nearBranchDirections: "Yol tarifi",
+      nearBranchDisclaimer: "Google'ın güncel verilerine göre — bulunan en yakın şube gösteriliyor.",
       whichBankTitle: "Hangi bankayı seçeceğinizi bilmiyor musunuz?",
       whichBankDescription: "Birkaç soruyu yanıtlayın — yapay zeka size uygun hesabı önersin",
       whichBankLearnMore: "Öneri al",
@@ -9787,6 +9824,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Дар асоси Złoty Bankier 2026, Instytucja Roku 2026 ва баҳодиҳиҳои App Store",
       otherBanksLabel: "Дигар бонкҳо",
       rankingSourceNote: "Манбаъҳо: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), баҳодиҳиҳои App Store ва Google Play.",
+      nearBranchButton: "Ёфтани филиали наздик",
+      nearBranchLocating: "Ҷойгиршавии шумо муайян карда мешавад…",
+      nearBranchError: "Ҷойгиршавӣ муайян карда нашуд. Иҷозатҳои браузерро санҷед.",
+      nearBranchNotFound: "Дар наздикӣ филиал ёфт нашуд.",
+      nearBranchDistanceTemplate: "≈ {n} аз шумо",
+      nearBranchDirections: "Масир",
+      nearBranchDisclaimer: "Дар асоси маълумоти зиндаи Google — наздиктарин филиали ёфтшуда нишон дода шудааст.",
       whichBankTitle: "Намедонед кадом бонкро интихоб кунед?",
       whichBankDescription: "Ба чанд савол ҷавоб диҳед — ИИ ҳисобе, ки ба шумо мувофиқ аст, пешниҳод мекунад",
       whichBankLearnMore: "Гирифтани тавсия",
@@ -11725,6 +11769,13 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "За даними Złoty Bankier 2026, Instytucja Roku 2026 та оцінок в App Store",
       otherBanksLabel: "Інші банки",
       rankingSourceNote: "Джерела: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оцінки в App Store та Google Play.",
+      nearBranchButton: "Знайти відділення поруч зі мною",
+      nearBranchLocating: "Визначаємо ваше місцезнаходження…",
+      nearBranchError: "Не вдалося визначити місцезнаходження. Перевірте дозволи браузера.",
+      nearBranchNotFound: "Відділень поблизу не знайдено.",
+      nearBranchDistanceTemplate: "≈ {n} від вас",
+      nearBranchDirections: "Маршрут",
+      nearBranchDisclaimer: "За актуальними даними Google — показано найближче знайдене відділення.",
       whichBankTitle: "Не знаєте, який банк обрати?",
       whichBankDescription: "Дайте відповідь на кілька запитань — і ШІ підкаже рахунок, що підходить саме вам",
       whichBankLearnMore: "Отримати рекомендацію",
