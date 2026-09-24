@@ -225,13 +225,17 @@ export default function BanksPage() {
         />
       </Reveal>
 
-      <Reveal delay={200} className="mt-12">
-        <div className="rounded-[28px] bg-[#1c1f26] p-6">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
+      <Reveal delay={200} className="mt-8">
+        {/* Same card language as the "Топ-4 банка" panel above (border +
+            bg-surface-1 + design-token text colors) instead of a one-off
+            hardcoded dark panel, so the two cards read as one system and
+            adapt correctly in light mode too. */}
+        <div className="rounded-2xl border border-border-subtle bg-surface-1 p-4 sm:p-5">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-bright">
               {SPARKLE_ICON}
             </span>
-            <p className="text-[15px] font-bold text-white">{t.banks.faqHeading}</p>
+            <p className="text-base font-bold text-text-primary">{t.banks.faqHeading}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {t.banks.faqQuestions.map((q) => (
@@ -239,13 +243,13 @@ export default function BanksPage() {
                 key={q}
                 type="button"
                 onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
-                className="rounded-full bg-white/[0.06] px-3.5 py-2.5 text-[13px] text-white/70 transition-colors duration-150 hover:bg-accent hover:text-white"
+                className="rounded-full border border-border-subtle bg-surface-2 px-3.5 py-2.5 text-[13px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
               >
                 {q} →
               </button>
             ))}
           </div>
-          <p className="mt-3.5 text-xs text-white/40">{t.banks.faqCaption}</p>
+          <p className="mt-3.5 text-xs text-text-muted">{t.banks.faqCaption}</p>
         </div>
       </Reveal>
     </div>
