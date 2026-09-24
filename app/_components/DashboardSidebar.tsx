@@ -101,7 +101,11 @@ export default function DashboardSidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-shrink-0 flex-col border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:w-[220px] lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
+        // Fixed width (220px) on every screen size — this used to switch
+        // between w-64 (256px, mobile drawer) and lg:w-[220px] (desktop),
+        // which was the actual source of the sidebar looking a different
+        // size depending on the visitor's window width. One width, always.
+        className={`fixed inset-y-0 left-0 z-40 flex w-[220px] flex-shrink-0 flex-col border-r border-border-subtle bg-panel backdrop-blur-xl transition-transform duration-300 ease-[var(--ease-out-strong)] lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:translate-x-0 lg:self-start lg:bg-panel/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
