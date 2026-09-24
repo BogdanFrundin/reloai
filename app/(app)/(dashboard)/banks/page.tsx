@@ -226,22 +226,30 @@ export default function BanksPage() {
       </Reveal>
 
       <Reveal delay={200} className="mt-8">
-        {/* Same card language as the "Топ-4 банка" panel above (border +
-            bg-surface-1 + design-token text colors), plus a soft ambient
-            accent glow and lifting chip hover so this closing card feels a
-            touch more designed instead of just a plain flat box. */}
-        <div className="relative overflow-hidden rounded-2xl border border-border-subtle bg-surface-1 p-4 sm:p-5">
+        {/* Bolder, more eye-catching version of the same card language —
+            a tinted gradient panel instead of a flat surface, two ambient
+            glows for depth, a solid gradient icon badge, and filled
+            (not just outlined) chips so this reads as an actual highlight
+            rather than another quiet box. */}
+        <div className="relative overflow-hidden rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/10 via-surface-1 to-surface-1 p-5 shadow-lg shadow-accent/5 sm:p-6">
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-accent/10 blur-3xl"
+            className="pointer-events-none absolute -right-14 -top-20 h-56 w-56 rounded-full bg-accent/20 blur-3xl"
           />
-          <div className="relative flex items-center gap-3">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent/30 to-accent/10 text-accent-bright ring-1 ring-accent/20">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-accent-bright/10 blur-3xl"
+          />
+          <div className="relative flex items-center gap-3.5">
+            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-accent-bright text-white shadow-lg shadow-accent/40 ring-2 ring-accent/20">
               {SPARKLE_ICON}
             </span>
-            <p className="text-base font-bold text-text-primary">{t.banks.faqHeading}</p>
+            <div className="min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-accent-bright">AI-помощник</p>
+              <p className="text-lg font-extrabold text-text-primary">{t.banks.faqHeading}</p>
+            </div>
           </div>
-          <div className="relative mt-4 flex flex-wrap gap-2">
+          <div className="relative mt-4 flex flex-wrap gap-2.5">
             {t.banks.faqQuestions.map((q, i) => (
               <button
                 key={q}
@@ -252,13 +260,13 @@ export default function BanksPage() {
                 // general chat, so the AI used to answer about relocation
                 // documents in general instead of bank-account documents.
                 onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(t.banks.faqQueries[i])}`)}
-                className="rounded-full border border-border-subtle bg-surface-2 px-3.5 py-2.5 text-[13px] font-medium text-text-secondary shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright hover:shadow-md hover:shadow-accent/10"
+                className="rounded-full border border-accent/30 bg-accent/15 px-4 py-2.5 text-[13px] font-semibold text-accent-bright shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white hover:shadow-lg hover:shadow-accent/30"
               >
                 {q} →
               </button>
             ))}
           </div>
-          <p className="mt-3.5 text-xs text-text-muted">{t.banks.faqCaption}</p>
+          <p className="relative mt-4 text-xs text-text-muted">{t.banks.faqCaption}</p>
         </div>
       </Reveal>
     </div>
