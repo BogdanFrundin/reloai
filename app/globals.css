@@ -60,17 +60,13 @@
 }
 
 html {
-  /* Fluid root size so the whole rem-based layout (Tailwind spacing, text,
-     radii, etc.) scales smoothly on screens that are generously sized in
-     BOTH dimensions, instead of staying a fixed pixel size on every screen.
-     Uses min(vw-based, vh-based) rather than vw alone: a window that's wide
-     but short (a maximized laptop browser, taskbar/URL bar eating vertical
-     space) is held at the original fixed-size baseline, because scaling it
-     up on width alone made fixed-height chrome like the sidebar overflow
-     and need to scroll. Only when width AND height are both large (a true
-     big monitor) does the root grow, toward ~130% at very large sizes.
-     Tune the numbers here if it still looks off on a specific screen. */
-  font-size: clamp(17.28px, 12.96px + min(0.34vw, 0.363vh), 20.8px);
+  /* Fixed root size — the same on every screen. This used to be a fluid
+     clamp() that grew with viewport width/height, which meant the whole
+     rem-based layout (Tailwind spacing, text, radii, the sidebar, etc.)
+     visibly changed proportions between a laptop and a big monitor. That's
+     the opposite of what we want: a fixed size everywhere keeps the
+     site's look and spacing identical regardless of screen diagonal. */
+  font-size: 17.28px;
   color-scheme: dark;
 }
 
