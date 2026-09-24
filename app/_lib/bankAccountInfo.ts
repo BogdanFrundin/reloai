@@ -10,9 +10,19 @@
 // bank-account-opening-research.md (project docs) for the exact quotes and
 // URLs behind every entry. `confidence: "indirect"` marks the handful of
 // banks where no single explicit "foreigners need a branch" sentence was
-// found on the bank's own site (BOŚ, Bank Pekao, Plus Bank) — the verdict is
-// still real, just resting on document/channel requirements rather than a
-// direct quote, so treat those three as "very likely correct, not 100%".
+// found on the bank's own site (BOŚ, Bank Pekao, Plus Bank, Credit Agricole)
+// — the verdict is still real, just resting on document/channel requirements
+// rather than a direct quote, so treat those as "very likely correct, not
+// 100%".
+//
+// Re-verified against live sources 2026-09-24 (all onlineUrls confirmed
+// live, all visitStatus/referral figures re-checked against the banks' own
+// current pages). Two things flagged during that pass, not yet reflected in
+// data below since they don't change any field: Bank Pocztowy's referral
+// terms are only confirmed through 2026-09-30 and should be re-checked after
+// that date; Wise's "no PESEL needed" claim wasn't re-confirmed with a fresh
+// direct quote this round (nothing contradicts it either) and is worth one
+// more explicit check.
 
 export type VisitStatus = "online" | "onlineIfId" | "branch" | "courier";
 
@@ -104,7 +114,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
   "Credit Agricole Bank Polska": {
     onlineUrl: "https://www.credit-agricole.pl/wniosek/konta/otworz-konto-nav",
     visitStatus: "branch",
-    confidence: "explicit",
+    confidence: "indirect",
     visitNote: "У банка есть отдельная страница именно для иностранцев: открытие только в отделении.",
     keyRequirement: "Иностранцам — только личный визит",
     referral: { program: "Bonus za Twoje polecenie", amount: "100 zł за реферала, лимит 1000 zł/год" },

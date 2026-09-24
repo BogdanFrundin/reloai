@@ -442,6 +442,29 @@ export default function BankCardModal({
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
           <div className="space-y-2.5 sm:space-y-3">
+            {/* Description */}
+            {guide.description && (
+              <div className="space-y-2 px-1">
+                {guide.description.split("\n\n").map((paragraph, i) => {
+                  const sectionId = `description-${i}`;
+                  const isExpanded = expandedSections.has(sectionId);
+                  const { truncated, isTruncated } = truncateText(paragraph, 2);
+                  const displayText = isExpanded ? paragraph : truncated;
+
+                  return (
+                    <div key={i}>
+                      <p className="text-sm leading-relaxed text-text-secondary">
+                        <TextWithGlossary text={displayText} />
+                      </p>
+                      {isTruncated && (
+                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
             {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
             {accountInfo && (
               <div
@@ -479,29 +502,6 @@ export default function BankCardModal({
               </div>
             )}
 
-            {/* Description */}
-            {guide.description && (
-              <div className="space-y-2 px-1">
-                {guide.description.split("\n\n").map((paragraph, i) => {
-                  const sectionId = `description-${i}`;
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { truncated, isTruncated } = truncateText(paragraph, 2);
-                  const displayText = isExpanded ? paragraph : truncated;
-
-                  return (
-                    <div key={i}>
-                      <p className="text-sm leading-relaxed text-text-secondary">
-                        <TextWithGlossary text={displayText} />
-                      </p>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
             {/* Important Info */}
             {guide.important_2026 && (
               <div className="rounded-2xl border border-amber-500/30 bg-surface-hover/40 p-3.5 sm:p-4 text-sm leading-relaxed text-amber-200">
@@ -516,29 +516,32 @@ export default function BankCardModal({
                   <InfoRow key={row.label} label={row.label} value={row.value} />
                 ))}
                 {cost && (
-                  <div className="rounded-2xl border border-sky-500/20 bg-surface-hover/40 px-3.5 py-3">
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                  <div className={`rounded-2xl border border-sky-500/20 bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                      {currencies.length === 0 && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrencyPickerOpen(true);
+                          }}
+                          aria-label={t.settings.currencySection}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent-bright transition-colors hover:text-accent"
+                        >
+                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
+                          </svg>
+                          {currency}
+                        </button>
+                      )}
+                    </div>
                     {currencies.length > 0 ? (
                       <div className="mt-1.5">
                         <CurrencyBadges currencies={currencies} />
                       </div>
                     ) : (
                       <p className="mt-1 text-sm text-text-secondary">{cost}</p>
-                    )}
-                    {currencies.length === 0 && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrencyPickerOpen(true);
-                        }}
-                        className="mt-2 inline-flex items-center gap-1.5 rounded-xl border border-accent/50 bg-transparent px-2.5 py-1.5 text-sm font-semibold text-accent-bright transition-colors hover:bg-accent/10"
-                      >
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
-                        </svg>
-                        {t.settings.currencySection} · {currency}
-                      </button>
                     )}
                   </div>
                 )}
