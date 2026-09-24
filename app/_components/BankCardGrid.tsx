@@ -402,7 +402,7 @@ function BankCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
             <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg border border-white/20 bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
               <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -411,9 +411,13 @@ function BankCard({
               #{bankRanking} {t.banks.byReviews}
             </span>
           )}
-          <div className="absolute inset-x-0 bottom-0 flex items-center gap-2.5 p-3">
+          {/* Extra local scrim right behind the name row (on top of the
+              full-image gradient above) so the name stays readable even
+              when the photo itself is bright right at the bottom edge —
+              guaranteed contrast regardless of what's in the photo. */}
+          <div className="absolute inset-x-0 bottom-0 flex items-center gap-2.5 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-3 pt-9">
             <BankAvatar name={guide.name} />
-            <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:text-lg">
+            <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-lg">
               {guide.name}
             </p>
           </div>
