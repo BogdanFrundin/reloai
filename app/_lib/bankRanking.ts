@@ -21,6 +21,14 @@
 //   (402k ratings), 4.8/5 on the App Store (329k ratings), among the
 //   highest of any Polish bank's app.
 //
+// Revolut, Wise and N26 are foreign fintechs, not Polish-licensed retail
+// banks, so they don't participate in Złoty Bankier / Instytucja Roku and
+// have no result in those surveys. Placed as their own group right after
+// the award-covered banks, ordered by their real global Trustpilot score
+// (checked Sept 2026, each "Great"/"Excellent" on 40k-430k+ reviews):
+// Revolut 4.7/5 (trustpilot.com/review/www.revolut.com), Wise 4.3/5
+// (trustpilot.com/review/wise.com), N26 4.2/5 (trustpilot.com/review/n26.com).
+//
 // Smaller/niche banks not covered by these three surveys (BNP Paribas,
 // Bank Pocztowy, Credit Agricole, BOŚ, Nest Bank, Toyota Bank, Volkswagen
 // Bank, Plus Bank) are ordered after the award-winners by relative
@@ -34,6 +42,9 @@ export const REAL_BANK_RANK: string[] = [
   "mBank",
   "ING Bank Śląski",
   "VeloBank",
+  "Revolut",
+  "Wise",
+  "N26",
   "BNP Paribas Bank Polska",
   "Bank Pocztowy",
   "Credit Agricole Bank Polska",
