@@ -38,6 +38,28 @@ export function getBankImage(name: string): string | null {
   return BANK_IMAGES[name] || null;
 }
 
+// Per-bank crop position for the card header photo. The photo header is a
+// wide/short box (h-28..h-32, full card width), so object-fit: cover always
+// crops vertically only (every source photo here is closer to square/portrait
+// than the box, so full width is always kept — only the Y value matters).
+// Default is a plain center crop; only banks whose logo/wordmark sits off
+// -center need an entry here. Keyed by bank name so a fix for one bank's
+// photo never shifts another bank's crop (a global override was tried once
+// for Bank Pekao and wrongly affected every other bank — don't repeat that).
+const BANK_IMAGE_POSITION: Record<string, string> = {
+  // "Revolut" wordmark sits near the top of the building photo.
+  Revolut: "50% 10%",
+  // Wise's green logo mark sits left-of-center, a bit below the vertical
+  // middle of the office photo.
+  Wise: "50% 55%",
+  // "N26" sign is already close to centered, just nudged up slightly.
+  N26: "50% 45%",
+};
+
+export function getBankImagePosition(name: string): string {
+  return BANK_IMAGE_POSITION[name] || "50% 50%";
+}
+
 // Attribution for the CC-BY / CC-BY-SA licensed photos below (public-domain
 // ones need no credit but are listed for completeness). Not shown in the UI
 // yet — add a small credits line if/when required.

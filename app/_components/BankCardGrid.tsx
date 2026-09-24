@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
-import { getBankImage } from "../_lib/bankImages";
+import { getBankImage, getBankImagePosition } from "../_lib/bankImages";
 import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
 import { realBankRank } from "../_lib/bankRanking";
 import { pressScale } from "../_lib/motion";
@@ -401,15 +401,10 @@ function BankCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
-            // Note: the 95%/30% pan that used to be here was a fix for the
-            // old Bank Pekao interior photo specifically (its sign was
-            // hidden behind the top-right ranking badge). Pekao's photo has
-            // since been replaced with a clean, centered signage shot that
-            // doesn't need panning, and this crop applies to every bank's
-            // photo, not just Pekao's — so back to the default centered
-            // crop. If a specific bank's new photo needs panning, that
-            // should be a per-bank position (keyed off bankImage), not a
-            // global one.
+            // Per-bank crop position (defaults to a plain center crop) so a
+            // fix for one bank's photo framing never shifts another bank's
+            // — see the comment above getBankImagePosition in bankImages.ts.
+            style={{ objectPosition: getBankImagePosition(guide.name) }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
