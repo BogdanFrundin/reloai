@@ -465,6 +465,8 @@ export type Dictionary = {
     visitStatusCourier: string;
     visitStatusOnlineIfId: string;
     referralBonusLabel: string;
+    branchesByCityLabel: string;
+    usefulPhrasesLabel: string;
     proceedToRegistration: string;
     openAccountIntro: string;
   };
@@ -2027,6 +2029,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Courier visit required",
       visitStatusOnlineIfId: "Online — if you already have a Polish ID",
       referralBonusLabel: "Refer a friend: {amount}",
+      branchesByCityLabel: "Find a branch by city",
+      usefulPhrasesLabel: "Useful phrases for the branch",
       proceedToRegistration: "Go to registration →",
       openAccountIntro: "Follow these steps to open your account with this bank.",
     },
@@ -3952,6 +3956,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Нужен визит курьера",
       visitStatusOnlineIfId: "Онлайн — если уже есть польский ID",
       referralBonusLabel: "Бонус за друга: {amount}",
+      branchesByCityLabel: "Отделения по городам",
+      usefulPhrasesLabel: "Полезные фразы для отделения",
       proceedToRegistration: "Перейти к оформлению →",
       openAccountIntro: "Пройдите эти шаги, чтобы открыть счёт в этом банке.",
     },
@@ -5874,6 +5880,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Kuryer tashrifi kerak",
       visitStatusOnlineIfId: "Onlayn — agar polyak ID'ingiz bo'lsa",
       referralBonusLabel: "Do'stni taklif qiling: {amount}",
+      branchesByCityLabel: "Shahar bo'yicha filiallar",
+      usefulPhrasesLabel: "Filial uchun foydali iboralar",
       proceedToRegistration: "Ro'yxatdan o'tishga o'tish →",
       openAccountIntro: "Ushbu bankda hisob ochish uchun quyidagi qadamlarni bajaring.",
     },
@@ -7793,6 +7801,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Kurye ziyareti gerekli",
       visitStatusOnlineIfId: "Online — Polonya kimliğiniz varsa",
       referralBonusLabel: "Arkadaşını davet et: {amount}",
+      branchesByCityLabel: "Şehre göre şube bul",
+      usefulPhrasesLabel: "Şube için faydalı ifadeler",
       proceedToRegistration: "Kayda geç →",
       openAccountIntro: "Bu bankada hesap açmak için şu adımları izleyin.",
     },
@@ -9712,6 +9722,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Ташрифи курер лозим аст",
       visitStatusOnlineIfId: "Онлайн — агар шиноснномаи лаҳистонӣ дошта бошед",
       referralBonusLabel: "Дӯстро даъват кунед: {amount}",
+      branchesByCityLabel: "Филиалҳо аз рӯи шаҳрҳо",
+      usefulPhrasesLabel: "Ибораҳои муфид барои филиал",
       proceedToRegistration: "Гузариш ба сабти ном →",
       openAccountIntro: "Барои кушодани ҳисоб дар ин бонк ин қадамҳоро иҷро кунед.",
     },
@@ -11635,6 +11647,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       visitStatusCourier: "Потрібен візит кур'єра",
       visitStatusOnlineIfId: "Онлайн — якщо вже є польський ID",
       referralBonusLabel: "Запроси друга: {amount}",
+      branchesByCityLabel: "Відділення по містах",
+      usefulPhrasesLabel: "Корисні фрази для відділення",
       proceedToRegistration: "Перейти до оформлення →",
       openAccountIntro: "Виконайте ці кроки, щоб відкрити рахунок у цьому банку.",
     },

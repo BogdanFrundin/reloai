@@ -25,6 +25,12 @@ export interface BankAccountInfo {
   confidence: "explicit" | "indirect";
   /** Optional short clarifying note (Russian; shown as a tooltip/caption). */
   visitNote?: string;
+  /** The single most important practical requirement, compressed to 3-6
+   * words (Russian) — shown as plain visible text under the bank card
+   * (not hidden behind a hover tooltip like visitNote), so mobile users see
+   * it too. E.g. "Нужна видеоидентификация с лицом", "Договор подписывает
+   * курьер". Derived from visitNote / the account-opening research doc. */
+  keyRequirement?: string;
   /** Currently-active "refer a friend" bonus, if any — real PLN amounts. */
   referral?: {
     /** Program's own name, e.g. "PolecamBank". */
@@ -40,6 +46,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "indirect",
     visitNote: "Онлайн-заявка требует PESEL и польский eDowód/паспорт — без них нужен визит в отделение.",
+    keyRequirement: "Нужен PESEL и польский ID",
     referral: { program: "PolecamBank", amount: "150–300 zł приведшему, 60 zł другу" },
   },
   "ING Bank Śląski": {
@@ -47,6 +54,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Банк прямо пишет: онлайн принимается только польский dowód osobisty, другие документы — нет.",
+    keyRequirement: "Видео принимает только польский ID",
     referral: { program: "Poleć ING", amount: "150 zł за реферала (до 10 раз), 100 zł другу" },
   },
   "PKO Bank Polski": {
@@ -54,6 +62,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Удалённое открытие через mObywatel доступно только с польским ID; форма требует PESEL.",
+    keyRequirement: "Нужен PESEL для формы",
     referral: { program: "PKO Polecam", amount: "50–225 zł за реферала, лимит 4500 zł/год" },
   },
   "Bank Millennium": {
@@ -61,18 +70,21 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Заявку можно начать онлайн, но подписать договор — только в отделении по выбору.",
+    keyRequirement: "Договор — только личный визит",
   },
   "BOŚ Bank": {
     onlineUrl: "https://www.bosbank.pl/klient-indywidualny/konta/Konto-bez-Kosztow",
     visitStatus: "branch",
     confidence: "indirect",
     visitNote: "Видео-верификация требует польский e-dowód/незаблокированный PESEL — без них только отделение.",
+    keyRequirement: "Видеоверификация требует польский ID",
   },
   "Bank Pocztowy": {
     onlineUrl: "https://www.pocztowy.pl/indywidualni/konta-osobiste/otwarcie-konta-online",
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Без karty pobytu банк вообще просит паспорт + карту — оба онлайн-способа рассчитаны на уже оформленный польский ID.",
+    keyRequirement: "Нужен уже оформленный польский ID",
     referral: { program: "Polecenie ma znaczenie", amount: "100 zł за реферала, до 1000 zł всего" },
   },
   "Bank Pekao S.A.": {
@@ -80,18 +92,21 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "indirect",
     visitNote: "Онлайн-верификация (PeoPay) принимает только польский dowód/mObywatel/eDowód.",
+    keyRequirement: "Нужен польский dowód/mObywatel",
   },
   "BNP Paribas Bank Polska": {
     onlineUrl: "https://www.bnpparibas.pl/klienci-indywidualni/konta/konto-osobiste",
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Банк прямо пишет: дистанционно счёт может открыть только резидент с польским dowód osobisty.",
+    keyRequirement: "Только с польским dowód osobisty",
   },
   "Credit Agricole Bank Polska": {
     onlineUrl: "https://www.credit-agricole.pl/wniosek/konta/otworz-konto-nav",
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "У банка есть отдельная страница именно для иностранцев: открытие только в отделении.",
+    keyRequirement: "Иностранцам — только личный визит",
     referral: { program: "Bonus za Twoje polecenie", amount: "100 zł за реферала, лимит 1000 zł/год" },
   },
   "Nest Bank": {
@@ -99,6 +114,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Видеозвонок и приложение принимают только польский dowód osobisty — паспорт годится лишь в отделении.",
+    keyRequirement: "Видеозвонок требует польский ID",
     referral: { program: "Nest Profit", amount: "100 zł приведшему, 100 zł другу" },
   },
   VeloBank: {
@@ -106,6 +122,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Банк прямо пишет: для иностранцев это доступно исключительно в отделении.",
+    keyRequirement: "Иностранцам — только личный визит",
     referral: { program: "Polecam Velo", amount: "100 zł приведшему, 50 zł другу" },
   },
   "Plus Bank": {
@@ -113,12 +130,14 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "indirect",
     visitNote: "У банка вообще нет онлайн-заявки — только обратный звонок и визит в партнёрское отделение.",
+    keyRequirement: "Только звонок + личный визит",
   },
   "Erste Bank Polska": {
     onlineUrl: "https://www.erste.pl/klient-indywidualny/konta/konto-smart",
     visitStatus: "branch",
     confidence: "explicit",
     visitNote: "Банк прямо пишет: счёт можно открыть только в стационарном отделении, через интернет — нельзя.",
+    keyRequirement: "Только стационарное отделение",
     referral: { program: "Polecam mój bank", amount: "100 zł приведшему, 100 zł другу" },
   },
   "Toyota Bank Polska": {
@@ -126,12 +145,14 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "courier",
     confidence: "explicit",
     visitNote: "У банка нет отделений вообще — заявка онлайн, а личность проверяет курьер при подписании договора.",
+    keyRequirement: "Договор подписывает курьер",
   },
   "Volkswagen Bank Polska": {
     onlineUrl: "https://vwbank.vwfs.pl/konto_osobiste_edirect.html",
     visitStatus: "onlineIfId",
     confidence: "explicit",
     visitNote: "Полностью онлайн — только если уже есть польский dowód osobisty. Без него: бумажная заявка + визит курьера (~10 рабочих дней), отделений почти нет.",
+    keyRequirement: "Без ID — визит курьера (~10 дней)",
   },
 
   // Online-only European fintechs (not traditional Polish banks) — added
@@ -149,18 +170,21 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "online",
     confidence: "explicit",
     visitNote: "Полностью дистанционное открытие счёта через приложение — PESEL не нужен, достаточно загранпаспорта. Удобный онлайн-банк с мультивалютной картой.",
+    keyRequirement: "Нужен только загранпаспорт",
   },
   Wise: {
     onlineUrl: "https://wise.com/",
     visitStatus: "online",
     confidence: "explicit",
     visitNote: "Полностью дистанционно — паспорт и подтверждение адреса, PESEL не нужен. Удобный сервис для мультивалютных переводов и хранения денег в разных валютах.",
+    keyRequirement: "Нужен паспорт + адрес",
   },
   N26: {
     onlineUrl: "https://n26.com/en-eu",
     visitStatus: "online",
     confidence: "explicit",
     visitNote: "Полностью дистанционное открытие через приложение с видеоидентификацией — PESEL не нужен, только загранпаспорт. Быстрый и удобный онлайн-банк.",
+    keyRequirement: "Нужна видеоидентификация с лицом",
   },
 };
 
