@@ -213,18 +213,17 @@ function ExpandToggle({ isExpanded, onToggle, t }: { isExpanded: boolean; onTogg
 }
 
 // Consistent card-style wrapper used for every content section in the
-// modal — same shape and rhythm everywhere (radius, padding, icon-badge
-// header), but each section gets one of a handful of accent hues already
-// used elsewhere on the site (the same emerald/sky/violet/amber/red set the
-// bank-status dots use) so sections read apart from each other at a glance
-// instead of blurring into one uniform grey wall of cards.
-type SectionTone = "default" | "sky" | "emerald" | "violet" | "warn";
+// modal — same neutral shape, border and icon treatment everywhere, so the
+// eye reads one calm surface instead of a different colored card per
+// section. Color is spent deliberately in exactly one place: `warn`, for
+// the one section (Common Mistakes) that's genuinely a warning. Everything
+// else — including the bank-status dot up top — stays on this same quiet
+// neutral palette, which is what actually reads as premium rather than a
+// grab-bag of every hue at once.
+type SectionTone = "default" | "warn";
 
 const SECTION_TONE_STYLE: Record<SectionTone, { border: string; iconBg: string; iconText: string; titleText: string }> = {
-  default: { border: "border-border-subtle", iconBg: "bg-accent/10", iconText: "text-accent-bright", titleText: "text-text-primary" },
-  sky: { border: "border-sky-500/20", iconBg: "bg-sky-500/10", iconText: "text-sky-300", titleText: "text-text-primary" },
-  emerald: { border: "border-emerald-500/20", iconBg: "bg-emerald-500/10", iconText: "text-emerald-300", titleText: "text-text-primary" },
-  violet: { border: "border-violet-500/20", iconBg: "bg-violet-500/10", iconText: "text-violet-300", titleText: "text-text-primary" },
+  default: { border: "border-border-subtle", iconBg: "bg-white/[0.04]", iconText: "text-text-secondary", titleText: "text-text-primary" },
   warn: { border: "border-red-500/20", iconBg: "bg-red-500/10", iconText: "text-red-400", titleText: "text-red-300/90" },
 };
 
@@ -241,14 +240,14 @@ function Section({
 }) {
   const style = SECTION_TONE_STYLE[tone];
   return (
-    <div className={`rounded-2xl border ${style.border} bg-surface-hover/40 p-3.5 sm:p-4`}>
-      <div className="flex items-center gap-2">
-        <div className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.iconText}`}>
+    <div className={`rounded-2xl border ${style.border} bg-surface-hover/30 p-4 sm:p-5`}>
+      <div className="flex items-center gap-2.5">
+        <div className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.iconText}`}>
           {icon}
         </div>
         <p className={`text-base font-bold tracking-tight ${style.titleText}`}>{title}</p>
       </div>
-      <div className="mt-2.5">{children}</div>
+      <div className="mt-3">{children}</div>
     </div>
   );
 }
@@ -441,7 +440,7 @@ export default function BankCardModal({
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
-          <div className="space-y-2.5 sm:space-y-3">
+          <div className="space-y-3 sm:space-y-4">
             {/* Description */}
             {guide.description && (
               <div className="space-y-2 px-1">
@@ -516,32 +515,29 @@ export default function BankCardModal({
                   <InfoRow key={row.label} label={row.label} value={row.value} />
                 ))}
                 {cost && (
-                  <div className={`rounded-2xl border border-sky-500/20 bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
-                      {currencies.length === 0 && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrencyPickerOpen(true);
-                          }}
-                          aria-label={t.settings.currencySection}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent-bright transition-colors hover:text-accent"
-                        >
-                          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
-                          </svg>
-                          {currency}
-                        </button>
-                      )}
-                    </div>
+                  <div className={`rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
                     {currencies.length > 0 ? (
                       <div className="mt-1.5">
                         <CurrencyBadges currencies={currencies} />
                       </div>
                     ) : (
                       <p className="mt-1 text-sm text-text-secondary">{cost}</p>
+                    )}
+                    {currencies.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrencyPickerOpen(true);
+                        }}
+                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-semibold text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
+                      >
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
+                        </svg>
+                        {t.settings.currencySection} · {currency}
+                      </button>
                     )}
                   </div>
                 )}
@@ -579,7 +575,6 @@ export default function BankCardModal({
             {guide.instructions && guide.instructions.length > 0 && (
               <Section
                 title={gc.howToApply}
-                tone="emerald"
                 icon={
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -658,7 +653,6 @@ export default function BankCardModal({
             {/* Branches by city — Google Maps search per city, all districts included */}
             <Section
               title={t.banks.branchesByCityLabel}
-              tone="sky"
               icon={
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -688,7 +682,6 @@ export default function BankCardModal({
             {/* Useful Polish phrases — spoken via the browser's own TTS voice */}
             <Section
               title={t.banks.usefulPhrasesLabel}
-              tone="violet"
               icon={
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
@@ -721,7 +714,7 @@ export default function BankCardModal({
                               speakPolish(phrase.pl);
                             }}
                             aria-label="Listen"
-                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-violet-500/40 text-sm text-violet-300 transition-colors hover:bg-violet-500/10 ${pressScale}`}
+                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border-strong text-sm text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright ${pressScale}`}
                           >
                             🔊
                           </button>
@@ -740,7 +733,6 @@ export default function BankCardModal({
             {guide.tips && guide.tips.length > 0 && (
               <Section
                 title={gc.tips}
-                tone="sky"
                 icon={
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
