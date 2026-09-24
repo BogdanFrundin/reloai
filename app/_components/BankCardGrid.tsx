@@ -411,13 +411,15 @@ function BankCard({
               #{bankRanking} {t.banks.byReviews}
             </span>
           )}
-          {/* Extra local scrim right behind the name row (on top of the
-              full-image gradient above) so the name stays readable even
-              when the photo itself is bright right at the bottom edge —
-              guaranteed contrast regardless of what's in the photo. */}
-          <div className="absolute inset-x-0 bottom-0 flex items-center gap-2.5 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-3 pt-9">
+          {/* Solid (not gradient) backdrop-blur bar behind the name row —
+              a gradient's contrast still depends on how bright the photo
+              underneath is, so on some photos (bright interiors, glass,
+              light walls) the name stayed hard to read even after
+              darkening the gradient. A flat, mostly-opaque bar guarantees
+              the same contrast no matter what's in the photo. */}
+          <div className="absolute inset-x-0 bottom-0 flex items-center gap-2.5 bg-black/70 p-3 backdrop-blur-[2px]">
             <BankAvatar name={guide.name} />
-            <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-lg">
+            <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] sm:text-lg">
               {guide.name}
             </p>
           </div>
