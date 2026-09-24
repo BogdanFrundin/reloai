@@ -153,7 +153,7 @@ function CurrencyBadges({ currencies }: { currencies: string[] }) {
       {currencies.map((code) => (
         <span
           key={code}
-          className="inline-flex items-center gap-1 rounded-full border border-border-subtle bg-surface-hover px-2.5 py-1 text-xs font-medium text-text-secondary"
+          className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
         >
           {currencyNames[code] || code}
         </span>
@@ -418,7 +418,7 @@ export default function BankCardModal({
                   {tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center gap-1 rounded-full border border-border-subtle bg-surface-hover px-2.5 py-1 text-[11px] font-medium text-text-secondary"
+                      className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
                     >
                       {tagLabels[tag]}
                     </span>
@@ -445,7 +445,7 @@ export default function BankCardModal({
             {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
             {accountInfo && (
               <div
-                className={`rounded-2xl border p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg}`}
+                className={`rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
               >
                 <div className="flex items-center gap-2">
                   <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
@@ -470,7 +470,7 @@ export default function BankCardModal({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(event) => event.stopPropagation()}
-                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
                   >
                     {t.banks.openAccount}
                     <span aria-hidden>→</span>
@@ -504,7 +504,7 @@ export default function BankCardModal({
 
             {/* Important Info */}
             {guide.important_2026 && (
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3.5 sm:p-4 text-sm leading-relaxed text-amber-200">
+              <div className="rounded-2xl border border-amber-500/30 bg-surface-hover/40 p-3.5 sm:p-4 text-sm leading-relaxed text-amber-200">
                 {guide.important_2026}
               </div>
             )}
@@ -516,7 +516,7 @@ export default function BankCardModal({
                   <InfoRow key={row.label} label={row.label} value={row.value} />
                 ))}
                 {cost && (
-                  <div className="rounded-2xl border border-sky-500/20 bg-sky-500/5 px-3.5 py-3">
+                  <div className="rounded-2xl border border-sky-500/20 bg-surface-hover/40 px-3.5 py-3">
                     <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
                     {currencies.length > 0 ? (
                       <div className="mt-1.5">
@@ -532,9 +532,9 @@ export default function BankCardModal({
                           e.stopPropagation();
                           setCurrencyPickerOpen(true);
                         }}
-                        className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-accent/50 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright transition-colors hover:border-accent hover:bg-accent/20"
+                        className="mt-2 inline-flex items-center gap-1.5 rounded-xl border border-accent/50 bg-transparent px-2.5 py-1.5 text-sm font-semibold text-accent-bright transition-colors hover:bg-accent/10"
                       >
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
                         </svg>
                         {t.settings.currencySection} · {currency}
@@ -641,7 +641,7 @@ export default function BankCardModal({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(event) => event.stopPropagation()}
-                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/50 bg-transparent text-xs font-medium text-accent-bright transition-colors hover:border-accent hover:bg-accent/10"
+                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accent/50 bg-transparent text-sm font-medium text-accent-bright transition-colors hover:bg-accent/10"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -670,7 +670,7 @@ export default function BankCardModal({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(event) => event.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-1 px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border-subtle bg-surface-hover/40 px-3 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
                   >
                     <svg className="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -799,14 +799,14 @@ export default function BankCardModal({
               e.stopPropagation();
               askAi();
             }}
-            className={`flex-1 rounded-full bg-slate-700 px-5 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600 ${pressScale}`}
+            className={`flex-1 rounded-full bg-slate-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-slate-600 ${pressScale}`}
           >
             {gc.askAi} ✦
           </button>
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
+            className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
           >
             {t.dashboard.collapseBtn} ^
           </button>
