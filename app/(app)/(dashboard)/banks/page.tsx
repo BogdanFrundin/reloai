@@ -92,8 +92,8 @@ export default function BanksPage() {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0c10] via-[#0a0c10]/88 to-[#0a0c10]/45" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-[#0a0c10]/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/45" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/5 to-transparent" />
 
 
           <div className="relative flex flex-col gap-4 p-6 sm:p-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
