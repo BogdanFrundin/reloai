@@ -238,11 +238,16 @@ export default function BanksPage() {
             <p className="text-base font-bold text-text-primary">{t.banks.faqHeading}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {t.banks.faqQuestions.map((q) => (
+            {t.banks.faqQuestions.map((q, i) => (
               <button
                 key={q}
                 type="button"
-                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(q)}`)}
+                // Sends the full, bank-scoped question (faqQueries) to the AI
+                // chat instead of the short chip label (faqQuestions) — the
+                // short label alone has no bank context once it reaches a
+                // general chat, so the AI used to answer about relocation
+                // documents in general instead of bank-account documents.
+                onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(t.banks.faqQueries[i])}`)}
                 className="rounded-full border border-border-subtle bg-surface-2 px-3.5 py-2.5 text-[13px] font-medium text-text-secondary transition-colors duration-150 hover:border-accent/50 hover:bg-accent/10 hover:text-accent-bright"
               >
                 {q} →
