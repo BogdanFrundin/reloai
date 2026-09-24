@@ -173,7 +173,11 @@ export default function BanksPage() {
               <div className="flex flex-shrink-0 items-center gap-4 pl-[52px] sm:pl-0">
                 <button
                   type="button"
+<<<<<<< HEAD
                   onClick={() => bankCardGridRef.current?.openRating()}
+=======
+                  onClick={() => bankGridRef.current?.openRating()}
+>>>>>>> 07f45c438737af25cead468bc3b598fb8ae6cd67
                   className="inline-flex flex-shrink-0 items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
                 >
                   {t.banks.topRankedViewRating}
@@ -209,7 +213,11 @@ export default function BanksPage() {
         )}
 
         <BankCardGrid
+<<<<<<< HEAD
           ref={bankCardGridRef}
+=======
+          ref={bankGridRef}
+>>>>>>> 07f45c438737af25cead468bc3b598fb8ae6cd67
           guides={visibleBanks}
           loading={loading}
           emptyText={t.banks.emptyText}
