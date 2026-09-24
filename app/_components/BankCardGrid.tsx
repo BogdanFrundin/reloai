@@ -618,14 +618,19 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
 
   return (
     <div>
+      {/* Same soft tab styling as the bank-details modal's tab bar
+          (border-accent/40 + bg-accent/15 for the active state, a
+          borderless filled pill for the rest) instead of every pill
+          carrying its own visible border — reads as one calmer row
+          instead of 6 competing outlined chips. */}
       <div className="mb-6 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setActiveTag(null)}
             className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
               activeTag === null
-                ? "border-accent bg-accent/20 text-accent-bright"
-                : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
+                ? "border-accent/40 bg-accent/15 text-accent-bright"
+                : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             }`}
           >
             {t.banks.allBanksTemplate.replace("{n}", String(guides.length))}
@@ -637,8 +642,8 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
               onClick={() => setActiveTag(tag)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 activeTag === tag
-                  ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
+                  ? "border-accent/40 bg-accent/15 text-accent-bright"
+                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {tagLabels[tag]}
@@ -650,8 +655,8 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
               onClick={() => setShowMoreTags(!showMoreTags)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 showMoreTags
-                  ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
+                  ? "border-accent/40 bg-accent/15 text-accent-bright"
+                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {t.banks.moreFiltersBtn} <span className={`ml-1 transition-transform ${showMoreTags ? "rotate-180" : ""}`}>⌄</span>
@@ -664,8 +669,8 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
               onClick={() => setActiveTag(tag)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                 activeTag === tag
-                  ? "border-accent bg-accent/15 text-accent-bright"
-                  : "border-border-strong bg-surface-1 text-text-secondary hover:text-text-primary"
+                  ? "border-accent/40 bg-accent/15 text-accent-bright"
+                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {tagLabels[tag]}
@@ -679,7 +684,12 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
         <p className="text-sm text-text-muted">{emptyText}</p>
       ) : (
         <>
-          <div className="grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* No items-start here on purpose: letting the grid row stretch
+              (the default) makes every card in a row the same height, and
+              BankCard's content block already has flex-1 to absorb the
+              slack so the buttons still line up at the bottom regardless
+              of how much description/stats text a given bank has. */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((g) => (
               <BankCard
                 key={g.id}
@@ -705,7 +715,7 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
               </button>
 
               {showAll && (
-                <div className="mt-6 grid w-full items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-6 grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {rest.map((g) => (
                     <BankCard
                       key={g.id}
