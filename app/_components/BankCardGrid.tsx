@@ -401,11 +401,15 @@ function BankCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
-            // Pan the crop toward the right side of the source photo so
-            // whatever's printed/shown on the wall in the shot (bank name,
-            // logo) shifts away from the top-right ranking badge instead
-            // of sitting right under it.
-            style={{ objectPosition: "95% 30%" }}
+            // Note: the 95%/30% pan that used to be here was a fix for the
+            // old Bank Pekao interior photo specifically (its sign was
+            // hidden behind the top-right ranking badge). Pekao's photo has
+            // since been replaced with a clean, centered signage shot that
+            // doesn't need panning, and this crop applies to every bank's
+            // photo, not just Pekao's — so back to the default centered
+            // crop. If a specific bank's new photo needs panning, that
+            // should be a per-bank position (keyed off bankImage), not a
+            // global one.
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
