@@ -405,7 +405,7 @@ function BankCard({
             // whatever's printed/shown on the wall in the shot (bank name,
             // logo) shifts away from the top-right ranking badge instead
             // of sitting right under it.
-            style={{ objectPosition: "78% 30%" }}
+            style={{ objectPosition: "95% 30%" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
