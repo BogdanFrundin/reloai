@@ -401,6 +401,11 @@ function BankCard({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 ease-[var(--ease-out-strong)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+            // Pan the crop toward the right side of the source photo so
+            // whatever's printed/shown on the wall in the shot (bank name,
+            // logo) shifts away from the top-right ranking badge instead
+            // of sitting right under it.
+            style={{ objectPosition: "78% 30%" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
