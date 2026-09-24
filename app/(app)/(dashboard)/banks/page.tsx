@@ -96,22 +96,30 @@ export default function BanksPage() {
         {/* Hero photo: dusk skyline of Warsaw's left bank (skyscrapers +
             Vistula reflections), by Oleslawlama, CC BY-SA 4.0, via Wikimedia
             Commons — https://commons.wikimedia.org/wiki/File:Evening_skyline_Warsaw_skyscrapers_Vistula_River.jpg */}
-        <div className="relative isolate">
-          {/* The photo itself fades to fully transparent well before every
-              edge (radial mask, not a clipped rectangle) so it blends into
-              the page's own background on all four sides instead of ending
-              in a hard, visible edge — no card/box shape at all. */}
-          <Image
-            src="/hero/warsaw-skyline.jpg"
-            alt=""
-            fill
-            priority
-            className="object-cover"
+        <div className="relative isolate overflow-hidden">
+          {/* Two independent linear masks (one per axis) feather all four
+              edges of the photo into the page background — a radial mask
+              centered off to one side can only fully fade the near edge,
+              leaving the far/top/bottom edges hard; nesting a horizontal and
+              a vertical fade composites into a soft rectangle with no
+              visible photo boundary on any side. */}
+          <div
+            className="pointer-events-none absolute inset-0"
             style={{
-              maskImage: "radial-gradient(ellipse 62% 70% at 64% 42%, black 30%, transparent 88%)",
-              WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 64% 42%, black 30%, transparent 88%)",
+              maskImage: "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
             }}
-          />
+          >
+            <div
+              className="absolute inset-0"
+              style={{
+                maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+              }}
+            >
+              <Image src="/hero/warsaw-skyline.jpg" alt="" fill priority className="object-cover" />
+            </div>
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
 
 
