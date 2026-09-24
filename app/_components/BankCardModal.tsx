@@ -7,7 +7,7 @@ import type { DocumentGuide } from "./DocumentGuideList";
 import { useCurrency } from "./CurrencyProvider";
 import { useLanguage } from "./LanguageProvider";
 import { convertPlnText } from "../_lib/currency";
-import CurrencyHint from "./CurrencyHint";
+import CurrencyPickerModal from "./CurrencyPickerModal";
 import TextWithGlossary from "./TextWithGlossary";
 import StarRating from "./StarRating";
 import { buildGoogleMapsUrl } from "../_lib/mapsLink";
@@ -162,20 +162,11 @@ function CurrencyBadges({ currencies }: { currencies: string[] }) {
   );
 }
 
-function InfoRow({ label, value, showCurrencyHint, currencies }: { label: string; value: string; showCurrencyHint?: boolean; currencies?: string[] }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg bg-surface-hover/70 px-3 py-2.5">
-      <p className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-text-muted">
-        {label}
-        {showCurrencyHint && <CurrencyHint />}
-      </p>
-      {currencies && currencies.length > 0 ? (
-        <div className="mt-1.5">
-          <CurrencyBadges currencies={currencies} />
-        </div>
-      ) : (
-        <p className="mt-1 text-sm text-text-secondary">{value}</p>
-      )}
+      <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{label}</p>
+      <p className="mt-1 text-sm text-text-secondary">{value}</p>
     </div>
   );
 }
@@ -184,7 +175,7 @@ function Bullets({ items, tone }: { items: string[]; tone?: "warn" | "accent" })
   const textClass = tone === "warn" ? "text-red-300" : "text-text-secondary";
   const dotClass = tone === "warn" ? "bg-red-400" : "bg-accent-bright";
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1.5">
       {items.map((it) => (
         <li key={it} className={`flex items-start gap-2.5 text-sm leading-relaxed ${textClass}`}>
           <span className={`mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full ${dotClass}`} />
@@ -222,9 +213,21 @@ function ExpandToggle({ isExpanded, onToggle, t }: { isExpanded: boolean; onTogg
 }
 
 // Consistent card-style wrapper used for every content section in the
-// modal — same border, radius, padding and icon-badge header everywhere,
-// so the eye has one rhythm to follow instead of a mix of bare text blocks
-// and border-top dividers.
+// modal — same shape and rhythm everywhere (radius, padding, icon-badge
+// header), but each section gets one of a handful of accent hues already
+// used elsewhere on the site (the same emerald/sky/violet/amber/red set the
+// bank-status dots use) so sections read apart from each other at a glance
+// instead of blurring into one uniform grey wall of cards.
+type SectionTone = "default" | "sky" | "emerald" | "violet" | "warn";
+
+const SECTION_TONE_STYLE: Record<SectionTone, { border: string; iconBg: string; iconText: string; titleText: string }> = {
+  default: { border: "border-border-subtle", iconBg: "bg-accent/10", iconText: "text-accent-bright", titleText: "text-text-primary" },
+  sky: { border: "border-sky-500/20", iconBg: "bg-sky-500/10", iconText: "text-sky-300", titleText: "text-text-primary" },
+  emerald: { border: "border-emerald-500/20", iconBg: "bg-emerald-500/10", iconText: "text-emerald-300", titleText: "text-text-primary" },
+  violet: { border: "border-violet-500/20", iconBg: "bg-violet-500/10", iconText: "text-violet-300", titleText: "text-text-primary" },
+  warn: { border: "border-red-500/20", iconBg: "bg-red-500/10", iconText: "text-red-400", titleText: "text-red-300/90" },
+};
+
 function Section({
   icon,
   title,
@@ -233,22 +236,19 @@ function Section({
 }: {
   icon: ReactNode;
   title: string;
-  tone?: "default" | "warn";
+  tone?: SectionTone;
   children: ReactNode;
 }) {
+  const style = SECTION_TONE_STYLE[tone];
   return (
-    <div className="rounded-2xl border border-border-subtle bg-surface-hover/40 p-4 sm:p-5">
-      <div className="flex items-center gap-2.5">
-        <div
-          className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full ${
-            tone === "warn" ? "bg-red-500/10 text-red-400" : "bg-accent/10 text-accent-bright"
-          }`}
-        >
+    <div className={`rounded-2xl border ${style.border} bg-surface-hover/40 p-3.5 sm:p-4`}>
+      <div className="flex items-center gap-2">
+        <div className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.iconText}`}>
           {icon}
         </div>
-        <p className={`text-sm font-semibold sm:text-base ${tone === "warn" ? "text-red-300/90" : "text-text-primary"}`}>{title}</p>
+        <p className={`text-sm font-semibold ${style.titleText}`}>{title}</p>
       </div>
-      <div className="mt-3">{children}</div>
+      <div className="mt-2.5">{children}</div>
     </div>
   );
 }
@@ -273,6 +273,7 @@ export default function BankCardModal({
   const { t, lang } = useLanguage();
   const gc = t.guideCard;
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [currencyPickerOpen, setCurrencyPickerOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -312,7 +313,7 @@ export default function BankCardModal({
     };
   }
 
-  function truncateList(items: string[], count: number = 2): { items: string[]; isTruncated: boolean } {
+  function truncateList<T>(items: T[], count: number = 2): { items: T[]; isTruncated: boolean } {
     if (items.length <= count) {
       return { items, isTruncated: false };
     }
@@ -374,6 +375,7 @@ export default function BankCardModal({
   const collapseCopy = { collapseBtn: t.common.collapseBtn, expandBtn: t.common.expandBtn };
 
   return createPortal(
+    <>
     <div
       role="dialog"
       aria-modal="true"
@@ -439,11 +441,11 @@ export default function BankCardModal({
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-2.5 sm:space-y-3">
             {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
             {accountInfo && (
               <div
-                className={`rounded-2xl border p-4 sm:p-5 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg}`}
+                className={`rounded-2xl border p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg}`}
               >
                 <div className="flex items-center gap-2">
                   <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
@@ -502,7 +504,7 @@ export default function BankCardModal({
 
             {/* Important Info */}
             {guide.important_2026 && (
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs leading-relaxed text-amber-200">
+              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs leading-relaxed text-amber-200">
                 {guide.important_2026}
               </div>
             )}
@@ -514,12 +516,31 @@ export default function BankCardModal({
                   <InfoRow key={row.label} label={row.label} value={row.value} />
                 ))}
                 {cost && (
-                  <InfoRow
-                    label={gc.cost}
-                    value={cost}
-                    showCurrencyHint={currencies.length === 0}
-                    currencies={currencies}
-                  />
+                  <div className="rounded-lg border border-sky-500/15 bg-sky-500/5 px-3 py-2.5">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                    {currencies.length > 0 ? (
+                      <div className="mt-1.5">
+                        <CurrencyBadges currencies={currencies} />
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-text-secondary">{cost}</p>
+                    )}
+                    {currencies.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrencyPickerOpen(true);
+                        }}
+                        className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-accent/50 bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright transition-colors hover:border-accent hover:bg-accent/20"
+                      >
+                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
+                        </svg>
+                        {t.settings.currencySection} · {currency}
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             )}
@@ -569,6 +590,7 @@ export default function BankCardModal({
             {/* Branches by city — Google Maps search per city, all districts included */}
             <Section
               title={t.banks.branchesByCityLabel}
+              tone="sky"
               icon={
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -598,6 +620,7 @@ export default function BankCardModal({
             {/* Useful Polish phrases — spoken via the browser's own TTS voice */}
             <Section
               title={t.banks.usefulPhrasesLabel}
+              tone="violet"
               icon={
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
@@ -605,30 +628,44 @@ export default function BankCardModal({
                 </svg>
               }
             >
-              <ul className="space-y-2">
-                {BANK_PHRASES.map((phrase) => (
-                  <li
-                    key={phrase.id}
-                    className="flex items-center gap-3 rounded-xl bg-surface-hover/70 px-3.5 py-2.5"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-text-primary">{phrase.pl}</p>
-                      <p className="mt-0.5 text-xs text-text-muted">{phrase.translations[phraseLang]}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        speakPolish(phrase.pl);
-                      }}
-                      aria-label="Listen"
-                      className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-accent/40 text-base text-accent-bright transition-colors hover:bg-accent/10 ${pressScale}`}
-                    >
-                      🔊
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              {(() => {
+                const sectionId = "phrases";
+                const isExpanded = expandedSections.has(sectionId);
+                const { items: displayItems, isTruncated } = truncateList(BANK_PHRASES, 4);
+                const itemsToShow = isExpanded ? BANK_PHRASES : displayItems;
+
+                return (
+                  <>
+                    <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                      {itemsToShow.map((phrase) => (
+                        <li
+                          key={phrase.id}
+                          className="flex items-center gap-2.5 rounded-xl bg-surface-hover/70 px-3 py-2"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-text-primary">{phrase.pl}</p>
+                            <p className="mt-0.5 text-xs text-text-muted">{phrase.translations[phraseLang]}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              speakPolish(phrase.pl);
+                            }}
+                            aria-label="Listen"
+                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-violet-500/40 text-sm text-violet-300 transition-colors hover:bg-violet-500/10 ${pressScale}`}
+                          >
+                            🔊
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    {isTruncated && (
+                      <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                    )}
+                  </>
+                );
+              })()}
             </Section>
 
             {/* Required Docs */}
@@ -662,6 +699,7 @@ export default function BankCardModal({
             {guide.instructions && guide.instructions.length > 0 && (
               <Section
                 title={gc.howToApply}
+                tone="emerald"
                 icon={
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -676,7 +714,7 @@ export default function BankCardModal({
 
                   return (
                     <>
-                      <ol className="space-y-2">
+                      <ol className="space-y-1.5">
                         {itemsToShow.map((step, i) => (
                           <li key={step} className="flex items-start gap-2.5 text-sm leading-relaxed text-text-secondary">
                             <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent-bright">
@@ -699,6 +737,7 @@ export default function BankCardModal({
             {guide.tips && guide.tips.length > 0 && (
               <Section
                 title={gc.tips}
+                tone="sky"
                 icon={
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -773,7 +812,9 @@ export default function BankCardModal({
           </button>
         </div>
       </div>
-    </div>,
+    </div>
+    <CurrencyPickerModal open={currencyPickerOpen} onClose={() => setCurrencyPickerOpen(false)} />
+    </>,
     document.body,
   );
 }
