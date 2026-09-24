@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
@@ -11,7 +11,7 @@ import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 import { localizeDocumentGuides } from "../../../_lib/localizeGuide";
 import { getChosenCount } from "../../../_lib/chosenCount";
-import BankCardGrid, { type BankCardGridHandle } from "../../../_components/BankCardGrid";
+import BankCardGrid from "../../../_components/BankCardGrid";
 
 const SPARKLE_ICON = (
   <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -50,7 +50,6 @@ export default function BanksPage() {
   const router = useRouter();
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
-  const bankGridRef = useRef<BankCardGridHandle>(null);
 
   const visibleBanks = banks.filter((g) =>
     guideAppliesTo(g, {
@@ -85,16 +84,23 @@ export default function BanksPage() {
         {/* Hero photo: dusk skyline of Warsaw's left bank (skyscrapers +
             Vistula reflections), by Oleslawlama, CC BY-SA 4.0, via Wikimedia
             Commons — https://commons.wikimedia.org/wiki/File:Evening_skyline_Warsaw_skyscrapers_Vistula_River.jpg */}
-        <div className="relative isolate overflow-hidden rounded-[28px]">
+        <div className="relative isolate">
+          {/* The photo itself fades to fully transparent well before every
+              edge (radial mask, not a clipped rectangle) so it blends into
+              the page's own background on all four sides instead of ending
+              in a hard, visible edge — no card/box shape at all. */}
           <Image
             src="/hero/warsaw-skyline.jpg"
             alt=""
             fill
             priority
             className="object-cover"
+            style={{
+              maskImage: "radial-gradient(ellipse 62% 70% at 64% 42%, black 30%, transparent 88%)",
+              WebkitMaskImage: "radial-gradient(ellipse 62% 70% at 64% 42%, black 30%, transparent 88%)",
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/45" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
 
 
           <div className="relative flex flex-col gap-4 p-6 sm:p-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
@@ -155,7 +161,7 @@ export default function BanksPage() {
               <div className="flex flex-shrink-0 items-center gap-4 pl-[52px] sm:pl-0">
                 <button
                   type="button"
-                  onClick={() => bankGridRef.current?.openRating()}
+                  onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
                   className="inline-flex flex-shrink-0 items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
                 >
                   {t.banks.topRankedViewRating}
@@ -192,7 +198,6 @@ export default function BanksPage() {
         )}
 
         <BankCardGrid
-          ref={bankGridRef}
           guides={visibleBanks}
           loading={loading}
           emptyText={t.banks.emptyText}
