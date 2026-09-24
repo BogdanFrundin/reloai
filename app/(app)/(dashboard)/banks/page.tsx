@@ -81,9 +81,12 @@ export default function BanksPage() {
   return (
     <div className="px-6 py-8 lg:px-10 lg:py-10">
       <Reveal>
+        {/* Hero photo: dusk skyline of Warsaw's left bank (skyscrapers +
+            Vistula reflections), by Oleslawlama, CC BY-SA 4.0, via Wikimedia
+            Commons — https://commons.wikimedia.org/wiki/File:Evening_skyline_Warsaw_skyscrapers_Vistula_River.jpg */}
         <div className="relative isolate overflow-hidden rounded-[28px] border border-border-subtle">
           <Image
-            src="/districts/srodmiescie.jpg"
+            src="/hero/warsaw-skyline.jpg"
             alt=""
             fill
             priority
