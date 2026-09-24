@@ -408,8 +408,8 @@ function BankCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
-            <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg border border-orange-400/50 bg-orange-500/30 px-2.5 py-1 text-xs font-semibold text-white shadow-[0_2px_10px_rgba(0,0,0,0.45)] backdrop-blur-md">
-              <svg className="h-3 w-3 text-orange-200" viewBox="0 0 20 20" fill="currentColor">
+            <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg border border-orange-300/60 bg-gradient-to-b from-orange-400 to-orange-500 px-2.5 py-1 text-xs font-semibold text-white shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
+              <svg className="h-3 w-3 text-orange-100" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
               </svg>
               #{bankRanking} {t.banks.byReviews}
