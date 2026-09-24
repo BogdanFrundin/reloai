@@ -895,7 +895,7 @@ export default function BankCardModal({
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 rounded-full border border-border-strong bg-surface-1 px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors duration-150 hover:border-border-strong hover:text-text-primary ${pressScale}`}
+            className={`flex-1 rounded-full bg-red-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-red-800 ${pressScale}`}
           >
             {t.dashboard.collapseBtn} ^
           </button>
