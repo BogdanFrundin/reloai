@@ -10,7 +10,6 @@ import { convertPlnText } from "../_lib/currency";
 import CurrencyPickerModal from "./CurrencyPickerModal";
 import TextWithGlossary from "./TextWithGlossary";
 import StarRating from "./StarRating";
-import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import { pressScale } from "../_lib/motion";
 import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
 import { getBankCityMapLinks } from "../_lib/bankBranches";
@@ -20,7 +19,7 @@ import { BANK_PHRASES, type PhraseLang } from "../_lib/bankPhrases";
 const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
   online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
   onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/30" },
-  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10", border: "border-amber-500/30" },
+  branch: { dot: "bg-amber-400", text: "text-amber-200/90", bg: "bg-amber-500/10", border: "border-amber-500/30" },
   courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/30" },
 };
 
@@ -471,7 +470,7 @@ export default function BankCardModal({
               >
                 <div className="flex items-center gap-2">
                   <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
-                  <span className={`text-base font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
+                  <span className={`text-sm font-semibold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
                     {visitStatusLabel(accountInfo.visitStatus)}
                   </span>
                 </div>
@@ -608,57 +607,36 @@ export default function BankCardModal({
               </Section>
             )}
 
-            {/* Where to Submit (current city address) */}
-            {guide.where_to_submit && (
-              <Section
-                title={gc.whereToSubmit}
-                icon={
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                }
-              >
-                {(() => {
-                  const sectionId = "where-to-submit";
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
-                  const displayText = isExpanded ? guide.where_to_submit : truncated;
-
-                  return (
-                    <>
-                      <p className="text-sm leading-relaxed text-text-secondary">{displayText}</p>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </>
-                  );
-                })()}
-                <a
-                  href={buildGoogleMapsUrl([guide.where_to_submit, "Poland"])}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(event) => event.stopPropagation()}
-                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accent/50 bg-transparent text-sm font-medium text-accent-bright transition-colors hover:bg-accent/10"
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  {gc.showOnMap}
-                </a>
-              </Section>
-            )}
-
-            {/* Branches by city — Google Maps search per city, all districts included */}
+            {/* Where to Submit — merged with the per-city branch links, since
+                showing "where to submit" text + a single map button right
+                above a whole grid of per-city map links was the same
+                "find a branch" job done twice. One section now covers both:
+                the submission note (if any) up top, then every city as a
+                map link below it. */}
             <Section
-              title={t.banks.branchesByCityLabel}
+              title={gc.whereToSubmit}
               icon={
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               }
             >
+              {guide.where_to_submit && (() => {
+                const sectionId = "where-to-submit";
+                const isExpanded = expandedSections.has(sectionId);
+                const { truncated, isTruncated } = truncateText(guide.where_to_submit, 1);
+                const displayText = isExpanded ? guide.where_to_submit : truncated;
+
+                return (
+                  <div className="mb-3">
+                    <p className="text-sm leading-relaxed text-text-secondary">{displayText}</p>
+                    {isTruncated && (
+                      <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                    )}
+                  </div>
+                );
+              })()}
               <div className="flex flex-wrap gap-2">
                 {cityMapLinks.map(({ city, url }) => (
                   <a
