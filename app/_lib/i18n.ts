@@ -467,6 +467,7 @@ export type Dictionary = {
     referralBonusLabel: string;
     branchesByCityLabel: string;
     usefulPhrasesLabel: string;
+    overviewTabLabel: string;
     proceedToRegistration: string;
     openAccountIntro: string;
   };
@@ -2034,6 +2035,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Refer a friend: {amount}",
       branchesByCityLabel: "Find a branch by city",
       usefulPhrasesLabel: "Useful phrases for the branch",
+      overviewTabLabel: "Overview",
       proceedToRegistration: "Go to registration →",
       openAccountIntro: "Follow these steps to open your account with this bank.",
     },
@@ -3964,6 +3966,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Бонус за друга: {amount}",
       branchesByCityLabel: "Отделения по городам",
       usefulPhrasesLabel: "Полезные фразы для отделения",
+      overviewTabLabel: "Обзор",
       proceedToRegistration: "Перейти к оформлению →",
       openAccountIntro: "Пройдите эти шаги, чтобы открыть счёт в этом банке.",
     },
@@ -5891,6 +5894,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Do'stni taklif qiling: {amount}",
       branchesByCityLabel: "Shahar bo'yicha filiallar",
       usefulPhrasesLabel: "Filial uchun foydali iboralar",
+      overviewTabLabel: "Umumiy",
       proceedToRegistration: "Ro'yxatdan o'tishga o'tish →",
       openAccountIntro: "Ushbu bankda hisob ochish uchun quyidagi qadamlarni bajaring.",
     },
@@ -7815,6 +7819,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Arkadaşını davet et: {amount}",
       branchesByCityLabel: "Şehre göre şube bul",
       usefulPhrasesLabel: "Şube için faydalı ifadeler",
+      overviewTabLabel: "Genel Bakış",
       proceedToRegistration: "Kayda geç →",
       openAccountIntro: "Bu bankada hesap açmak için şu adımları izleyin.",
     },
@@ -9739,6 +9744,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Дӯстро даъват кунед: {amount}",
       branchesByCityLabel: "Филиалҳо аз рӯи шаҳрҳо",
       usefulPhrasesLabel: "Ибораҳои муфид барои филиал",
+      overviewTabLabel: "Умумӣ",
       proceedToRegistration: "Гузариш ба сабти ном →",
       openAccountIntro: "Барои кушодани ҳисоб дар ин бонк ин қадамҳоро иҷро кунед.",
     },
@@ -11667,6 +11673,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       referralBonusLabel: "Запроси друга: {amount}",
       branchesByCityLabel: "Відділення по містах",
       usefulPhrasesLabel: "Корисні фрази для відділення",
+      overviewTabLabel: "Огляд",
       proceedToRegistration: "Перейти до оформлення →",
       openAccountIntro: "Виконайте ці кроки, щоб відкрити рахунок у цьому банку.",
     },

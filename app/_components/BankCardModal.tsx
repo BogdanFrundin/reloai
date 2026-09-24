@@ -253,6 +253,10 @@ function Section({
 
 const TAG_ORDER = ["no_pesel", "fully_online", "free", "multicurrency"] as const;
 
+// Content is split into tabs — switching tabs instead of one long scroll —
+// so opening the card doesn't dump every section on the user at once.
+type TabId = "overview" | "documents" | "submit" | "phrases" | "tips";
+
 export default function BankCardModal({
   guide,
   open,
@@ -272,10 +276,12 @@ export default function BankCardModal({
   const gc = t.guideCard;
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [currencyPickerOpen, setCurrencyPickerOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
 
   useEffect(() => {
     if (!open) return;
 
+    setActiveTab("overview");
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -285,7 +291,7 @@ export default function BankCardModal({
         window.speechSynthesis.cancel();
       }
     };
-  }, [open]);
+  }, [open, guide?.name]);
 
   if (!open || !guide) return null;
 
@@ -372,6 +378,67 @@ export default function BankCardModal({
 
   const collapseCopy = { collapseBtn: t.common.collapseBtn, expandBtn: t.common.expandBtn };
 
+  const hasDocumentsTab = (guide.required_docs && guide.required_docs.length > 0) || (guide.instructions && guide.instructions.length > 0);
+  const hasTipsTab = (guide.tips && guide.tips.length > 0) || (guide.common_mistakes && guide.common_mistakes.length > 0);
+
+  const tabs: { id: TabId; label: string; icon: ReactNode }[] = [
+    {
+      id: "overview",
+      label: t.banks.overviewTabLabel,
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+    },
+    ...(hasDocumentsTab
+      ? [
+          {
+            id: "documents" as TabId,
+            label: gc.requiredDocs,
+            icon: (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            ),
+          },
+        ]
+      : []),
+    {
+      id: "submit",
+      label: gc.whereToSubmit,
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
+    {
+      id: "phrases",
+      label: t.banks.usefulPhrasesLabel,
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728" />
+        </svg>
+      ),
+    },
+    ...(hasTipsTab
+      ? [
+          {
+            id: "tips" as TabId,
+            label: gc.tips,
+            icon: (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            ),
+          },
+        ]
+      : []),
+  ];
+
   return createPortal(
     <>
     <div
@@ -400,46 +467,77 @@ export default function BankCardModal({
           animation: "scaleIn 200ms ease-out",
         }}
       >
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-10 border-b border-border-subtle bg-panel px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3 min-w-0 flex-1">
-            <BankAvatar name={guide.name} />
-            <div className="min-w-0 flex-1">
-              <p className="text-lg sm:text-xl font-bold text-text-primary truncate">{guide.name}</p>
-              {guide.rating != null && (
-                <div className="mt-1 flex items-center gap-1">
-                  <StarRating rating={guide.rating} />
-                </div>
-              )}
-              {tags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
-                    >
-                      {tagLabels[tag]}
-                    </span>
-                  ))}
-                </div>
-              )}
+        {/* Sticky Header + Tab switcher, wrapped in one shared sticky
+            container so the tab bar always sits directly under the header
+            regardless of the header's actual height (rating stars / tags
+            present or not) — no guessed pixel offset needed. */}
+        <div className="sticky top-0 z-10 bg-panel">
+          <div className="border-b border-border-subtle px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3 min-w-0 flex-1">
+              <BankAvatar name={guide.name} />
+              <div className="min-w-0 flex-1">
+                <p className="text-lg sm:text-xl font-bold text-text-primary truncate">{guide.name}</p>
+                {guide.rating != null && (
+                  <div className="mt-1 flex items-center gap-1">
+                    <StarRating rating={guide.rating} />
+                  </div>
+                )}
+                {tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
+                      >
+                        {tagLabels[tag]}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
+              aria-label="Close"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Tab switcher — content is split into tabs, not one long scroll */}
+          <div className="border-b border-border-subtle px-4 py-2.5 sm:px-6">
+            <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTab(tab.id);
+                  }}
+                  className={`flex-shrink-0 inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+                    activeTab === tab.id
+                      ? "border border-accent/40 bg-accent/15 text-accent-bright"
+                      : "border border-transparent text-text-muted hover:bg-surface-hover/40 hover:text-text-secondary"
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
-            aria-label="Close"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
         </div>
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
           <div className="space-y-3 sm:space-y-4">
+            {activeTab === "overview" && (
+            <>
             {/* Description */}
             {guide.description && (
               <div className="space-y-2 px-1">
@@ -542,7 +640,11 @@ export default function BankCardModal({
                 )}
               </div>
             )}
+            </>
+            )}
 
+            {activeTab === "documents" && (
+            <>
             {/* Required Docs */}
             {guide.required_docs && guide.required_docs.length > 0 && (
               <Section
@@ -606,7 +708,11 @@ export default function BankCardModal({
                 })()}
               </Section>
             )}
+            </>
+            )}
 
+            {activeTab === "submit" && (
+            <>
             {/* Where to Submit — merged with the per-city branch links, since
                 showing "where to submit" text + a single map button right
                 above a whole grid of per-city map links was the same
@@ -656,7 +762,11 @@ export default function BankCardModal({
                 ))}
               </div>
             </Section>
+            </>
+            )}
 
+            {activeTab === "phrases" && (
+            <>
             {/* Useful Polish phrases — spoken via the browser's own TTS voice */}
             <Section
               title={t.banks.usefulPhrasesLabel}
@@ -706,7 +816,11 @@ export default function BankCardModal({
                 );
               })()}
             </Section>
+            </>
+            )}
 
+            {activeTab === "tips" && (
+            <>
             {/* Tips */}
             {guide.tips && guide.tips.length > 0 && (
               <Section
@@ -760,6 +874,8 @@ export default function BankCardModal({
                   );
                 })()}
               </Section>
+            )}
+            </>
             )}
           </div>
         </div>
