@@ -24,7 +24,7 @@ import { buildGoogleMapsUrl } from "../_lib/mapsLink";
 import type { Dictionary, Lang } from "../_lib/i18n";
 import { getChosenCount, formatChosenCount } from "../_lib/chosenCount";
 
-const TAG_ORDER = ["no_pesel", "free", "multicurrency", "for_foreigners", "fully_online"] as const;
+const TAG_ORDER = ["no_pesel", "free", "multicurrency", "fully_online"] as const;
 
 // Russian noun-plural agreement for "банк" after a count — 1 банк, 2-4 банка,
 // 5+/11-14 банков — only applies when the active language is Russian; every
@@ -551,7 +551,6 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [modalBankId, setModalBankId] = useState<string | null>(null);
   const [openAccountBankId, setOpenAccountBankId] = useState<string | null>(null);
-  const [showMoreTags, setShowMoreTags] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
   const [highlightBankId, setHighlightBankId] = useState<string | null>(null);
 
@@ -583,10 +582,6 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
     }, 80);
     window.setTimeout(() => setHighlightBankId(null), 2500);
   }
-
-  const visibleTagsCount = 4;
-  const visibleTags = TAG_ORDER.slice(0, visibleTagsCount);
-  const hiddenTags = TAG_ORDER.slice(visibleTagsCount);
 
   const term = search.trim().toLowerCase();
   const tagFiltered = activeTag === null ? guides : guides.filter((g) => g.tags?.includes(activeTag));
@@ -639,47 +634,23 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
           >
             {t.banks.allBanksTemplate.replace("{n}", String(guides.length))}
           </button>
-          {visibleTags.map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => setActiveTag(tag)}
-              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
-                activeTag === tag
-                  ? "border-accent/40 bg-accent/15 text-accent-bright"
-                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-              }`}
-            >
-              {tagLabels[tag]}
-            </button>
-          ))}
-          {hiddenTags.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setShowMoreTags(!showMoreTags)}
-              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
-                showMoreTags
-                  ? "border-accent/40 bg-accent/15 text-accent-bright"
-                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-              }`}
-            >
-              {t.banks.moreFiltersBtn} <span className={`ml-1 transition-transform ${showMoreTags ? "rotate-180" : ""}`}>⌄</span>
-            </button>
-          )}
-          {showMoreTags && hiddenTags.map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => setActiveTag(tag)}
-              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
-                activeTag === tag
-                  ? "border-accent/40 bg-accent/15 text-accent-bright"
-                  : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-              }`}
-            >
-              {tagLabels[tag]}
-            </button>
-          ))}
+          {TAG_ORDER.map((tag) => {
+            const count = guides.filter((g) => g.tags?.includes(tag)).length;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setActiveTag(tag)}
+                className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors duration-150 ${
+                  activeTag === tag
+                    ? "border-accent/40 bg-accent/15 text-accent-bright"
+                    : "border-transparent bg-surface-2 text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                }`}
+              >
+                {tagLabels[tag]} ({count})
+              </button>
+            );
+          })}
       </div>
 
       {loading ? (
