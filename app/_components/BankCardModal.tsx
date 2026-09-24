@@ -115,7 +115,7 @@ function BankAvatar({ name }: { name: string }) {
 
   if (domain && stage < 2) {
     return (
-      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/95 p-1.5 ring-1 ring-black/5">
+      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-white/95 p-2 ring-1 ring-black/5 shadow-sm">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc(domain, stage === 2 ? 1 : stage)}
@@ -127,7 +127,7 @@ function BankAvatar({ name }: { name: string }) {
     );
   }
   return (
-    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-sm font-semibold text-accent-bright">
+    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-base font-semibold text-accent-bright">
       {initials}
     </div>
   );
@@ -147,13 +147,29 @@ function CurrencyBadges({ currencies }: { currencies: string[] }) {
     HUF: "HUF",
   };
 
+  const currencyFlags: Record<string, string> = {
+    PLN: "🇵🇱",
+    EUR: "🇪🇺",
+    USD: "🇺🇸",
+    GBP: "🇬🇧",
+    CHF: "🇨🇭",
+    SEK: "🇸🇪",
+    NOK: "🇳🇴",
+    DKK: "🇩🇰",
+    CZK: "🇨🇿",
+    HUF: "🇭🇺",
+  };
+
   return (
     <div className="flex flex-wrap gap-1.5">
       {currencies.map((code) => (
         <span
           key={code}
-          className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-hover/40 py-1 pl-1 pr-3 text-sm font-semibold text-text-secondary"
         >
+          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-white/95 text-[13px] leading-none ring-1 ring-black/5">
+            {currencyFlags[code] || "💱"}
+          </span>
           {currencyNames[code] || code}
         </span>
       ))}
@@ -462,7 +478,7 @@ export default function BankCardModal({
       `}</style>
       <div
         onClick={(event) => event.stopPropagation()}
-        className="flex w-full max-w-2xl flex-col h-[90vh] rounded-2xl border border-border-subtle bg-panel shadow-2xl shadow-black/40"
+        className="flex w-full max-w-2xl flex-col h-[90vh] rounded-2xl border border-accent/15 bg-panel shadow-2xl shadow-black/40 ring-1 ring-black/5"
         style={{
           animation: "scaleIn 200ms ease-out",
         }}
@@ -472,8 +488,15 @@ export default function BankCardModal({
             regardless of the header's actual height (rating stars / tags
             present or not) — no guessed pixel offset needed. */}
         <div className="sticky top-0 z-10 bg-panel">
-          <div className="border-b border-border-subtle px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3 min-w-0 flex-1">
+          <div className="relative overflow-hidden border-b border-border-subtle px-4 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4">
+            {/* Ambient accent glow behind the header, same decorative
+                language used elsewhere on the site (soft blurred accent
+                circle) — purely CSS, no image assets. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/15 blur-3xl"
+            />
+            <div className="relative flex items-start gap-3 min-w-0 flex-1">
               <BankAvatar name={guide.name} />
               <div className="min-w-0 flex-1">
                 <p className="text-lg sm:text-xl font-bold text-text-primary truncate">{guide.name}</p>
@@ -487,7 +510,7 @@ export default function BankCardModal({
                     {tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center rounded-xl border border-border-subtle bg-surface-hover/40 px-2.5 py-1.5 text-sm font-medium text-text-secondary"
+                        className="inline-flex items-center rounded-full border border-accent/25 bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright"
                       >
                         {tagLabels[tag]}
                       </span>
@@ -499,7 +522,7 @@ export default function BankCardModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
+              className="relative flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
               aria-label="Close"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -540,24 +563,31 @@ export default function BankCardModal({
             <>
             {/* Description */}
             {guide.description && (
-              <div className="space-y-2 px-1">
-                {guide.description.split("\n\n").map((paragraph, i) => {
-                  const sectionId = `description-${i}`;
-                  const isExpanded = expandedSections.has(sectionId);
-                  const { truncated, isTruncated } = truncateText(paragraph, 2);
-                  const displayText = isExpanded ? paragraph : truncated;
+              <div className="flex gap-3 rounded-2xl border border-border-subtle bg-surface-hover/30 p-4 sm:p-5">
+                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="min-w-0 flex-1 space-y-2">
+                  {guide.description.split("\n\n").map((paragraph, i) => {
+                    const sectionId = `description-${i}`;
+                    const isExpanded = expandedSections.has(sectionId);
+                    const { truncated, isTruncated } = truncateText(paragraph, 2);
+                    const displayText = isExpanded ? paragraph : truncated;
 
-                  return (
-                    <div key={i}>
-                      <p className="text-sm leading-relaxed text-text-secondary">
-                        <TextWithGlossary text={displayText} />
-                      </p>
-                      {isTruncated && (
-                        <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
-                      )}
-                    </div>
-                  );
-                })}
+                    return (
+                      <div key={i}>
+                        <p className="text-sm leading-relaxed text-text-secondary">
+                          <TextWithGlossary text={displayText} />
+                        </p>
+                        {isTruncated && (
+                          <ExpandToggle isExpanded={isExpanded} onToggle={(e) => { e.stopPropagation(); toggleSection(sectionId); }} t={collapseCopy} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
@@ -566,14 +596,20 @@ export default function BankCardModal({
               <div
                 className={`rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
               >
-                <div className="flex items-center gap-2">
-                  <span className={`h-2 w-2 flex-shrink-0 rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].dot}`} />
-                  <span className={`text-sm font-semibold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4" />
+                    </svg>
+                  </span>
+                  <span className={`text-sm font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
                     {visitStatusLabel(accountInfo.visitStatus)}
                   </span>
                 </div>
                 {accountInfo.keyRequirement && (
-                  <p className="mt-2 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
+                  <p className="mt-2.5 text-sm font-medium text-text-primary">{accountInfo.keyRequirement}</p>
                 )}
                 {accountInfo.visitNote && (
                   <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{accountInfo.visitNote}</p>
@@ -589,7 +625,7 @@ export default function BankCardModal({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(event) => event.stopPropagation()}
-                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                    className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
                   >
                     {t.banks.openAccount}
                     <span aria-hidden>→</span>
@@ -613,7 +649,14 @@ export default function BankCardModal({
                 ))}
                 {cost && (
                   <div className={`rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                    <div className="flex items-center gap-1.5">
+                      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .672-3 1.5S10.343 11 12 11s3 .672 3 1.5S13.657 14 12 14m0-6c1.11 0 2.08.402 2.599 1M12 8V6.5M12 14v1.5m0-1.5c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
+                    </div>
                     {currencies.length > 0 ? (
                       <div className="mt-1.5">
                         <CurrencyBadges currencies={currencies} />
@@ -888,14 +931,14 @@ export default function BankCardModal({
               e.stopPropagation();
               askAi();
             }}
-            className={`flex-1 rounded-full bg-slate-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-slate-600 ${pressScale}`}
+            className={`flex-1 rounded-full bg-gradient-to-r from-accent to-accent-bright px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-opacity duration-150 hover:opacity-90 ${pressScale}`}
           >
             {gc.askAi} ✦
           </button>
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 rounded-full bg-[#6c1919] px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-red-900 ${pressScale}`}
+            className={`flex-1 rounded-full bg-[#141c2e] px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-[#1b2740] ${pressScale}`}
           >
             {t.dashboard.collapseBtn} ^
           </button>
