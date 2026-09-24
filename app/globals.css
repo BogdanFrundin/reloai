@@ -68,6 +68,12 @@ html {
      site's look and spacing identical regardless of screen diagonal. */
   font-size: 17.28px;
   color-scheme: dark;
+  /* Stops mobile browsers from silently bumping text size up on their own
+     ("text autosizing" — Safari/Chrome do this on some phones/tablets to
+     make small text more readable), which would make font sizes drift
+     from device to device even though the CSS itself never changes. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 :root[data-theme="light"] {
