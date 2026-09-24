@@ -748,6 +748,9 @@ export type Dictionary = {
     };
   };
   guideCard: {
+    tabOverview: string;
+    tabHowTo: string;
+    tabDocs: string;
     whenToGet: string;
     whereToSubmit: string;
     showOnMap: string;
@@ -2555,6 +2558,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Overview",
+      tabHowTo: "How to apply",
+      tabDocs: "Documents",
       whenToGet: "When to apply",
       whereToSubmit: "Where to submit",
       showOnMap: "Show on map",
@@ -4482,6 +4488,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Обзор",
+      tabHowTo: "Как оформить",
+      tabDocs: "Документы",
       whenToGet: "Когда оформлять",
       whereToSubmit: "Куда подавать",
       showOnMap: "Показать на карте",
@@ -6406,6 +6415,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Umumiy",
+      tabHowTo: "Qanday rasmiylashtiriladi",
+      tabDocs: "Hujjatlar",
       whenToGet: "Qachon rasmiylashtirish kerak",
       whereToSubmit: "Qayerga topshiriladi",
       showOnMap: "Xaritada ko'rsatish",
@@ -8327,6 +8339,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Genel bakış",
+      tabHowTo: "Nasıl başvurulur",
+      tabDocs: "Belgeler",
       whenToGet: "Ne zaman başvurulmalı",
       whereToSubmit: "Nereye başvurulmalı",
       showOnMap: "Haritada göster",
@@ -10248,6 +10263,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Дар бораи",
+      tabHowTo: "Чӣ тавр гирифта мешавад",
+      tabDocs: "Ҳуҷҷатҳо",
       whenToGet: "Кай гирифта мешавад",
       whereToSubmit: "Ба куҷо супорида мешавад",
       showOnMap: "Дар харита нишон додан",
@@ -12173,6 +12191,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
     },
     guideCard: {
+      tabOverview: "Огляд",
+      tabHowTo: "Як оформити",
+      tabDocs: "Документи",
       whenToGet: "Коли оформлювати",
       whereToSubmit: "Куди подавати",
       showOnMap: "Показати на карті",
