@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Reveal from "../../../_components/Reveal";
 import { useLanguage } from "../../../_components/LanguageProvider";
@@ -11,7 +11,18 @@ import { supabase } from "../../../../lib/supabase";
 import { guideAppliesTo, type DocumentGuide } from "../../../_components/DocumentGuideList";
 import { localizeDocumentGuides } from "../../../_lib/localizeGuide";
 import { getChosenCount } from "../../../_lib/chosenCount";
-import BankCardGrid from "../../../_components/BankCardGrid";
+import BankCardGrid, { type BankCardGridHandle } from "../../../_components/BankCardGrid";
+
+// A small, fixed sample of the real (consenting) customer photos already
+// used for testimonials on the landing page (see reviewAvatars.ts) — reused
+// here as the "already chosen by N people" avatar stack instead of empty
+// placeholder icons.
+const CHOSEN_BY_AVATARS = [
+  "/images/reviews/woman-1.jpg",
+  "/images/reviews/man-1.jpg",
+  "/images/reviews/woman-2.jpg",
+  "/images/reviews/man-2.jpg",
+];
 
 const SPARKLE_ICON = (
   <svg className="h-[17px] w-[17px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
@@ -50,6 +61,7 @@ export default function BanksPage() {
   const router = useRouter();
   const [banks, setBanks] = useState<DocumentGuide[]>([]);
   const [loading, setLoading] = useState(true);
+  const bankCardGridRef = useRef<BankCardGridHandle>(null);
 
   const visibleBanks = banks.filter((g) =>
     guideAppliesTo(g, {
@@ -161,7 +173,7 @@ export default function BanksPage() {
               <div className="flex flex-shrink-0 items-center gap-4 pl-[52px] sm:pl-0">
                 <button
                   type="button"
-                  onClick={() => router.push("/dashboard/ai?q=" + encodeURIComponent(t.banks.topRankedViewRating))}
+                  onClick={() => bankCardGridRef.current?.openRating()}
                   className="inline-flex flex-shrink-0 items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm font-semibold text-accent-bright transition-colors duration-150 hover:border-accent hover:bg-accent/10"
                 >
                   {t.banks.topRankedViewRating}
@@ -170,16 +182,15 @@ export default function BanksPage() {
 
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
-                    {visibleBanks.slice(0, 4).map((bank) => (
-                      <div
-                        key={bank.id}
-                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-surface-1 bg-surface-hover text-text-secondary"
-                        title={bank.name}
-                      >
-                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M10 9a4 4 0 100-8 4 4 0 000 8zM10 11c-4.42 0-8 2.24-8 5v1a1 1 0 001 1h14a1 1 0 001-1v-1c0-2.76-3.58-5-8-5z" />
-                        </svg>
-                      </div>
+                    {CHOSEN_BY_AVATARS.map((src) => (
+                      <Image
+                        key={src}
+                        src={src}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 flex-shrink-0 rounded-full border-2 border-surface-1 object-cover"
+                      />
                     ))}
                   </div>
                   <span className="text-xs leading-tight text-text-secondary">
@@ -198,6 +209,7 @@ export default function BanksPage() {
         )}
 
         <BankCardGrid
+          ref={bankCardGridRef}
           guides={visibleBanks}
           loading={loading}
           emptyText={t.banks.emptyText}
