@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { getBankImage } from "../_lib/bankImages";
 import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
+import { realBankRank } from "../_lib/bankRanking";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
@@ -512,17 +514,16 @@ function BankCard({
   );
 }
 
-export default function BankCardGrid({
-  guides,
-  loading,
-  emptyText,
-  searchPlaceholder,
-}: {
+export type BankCardGridHandle = {
+  openRating: () => void;
+};
+
+const BankCardGrid = forwardRef<BankCardGridHandle, {
   guides: DocumentGuide[];
   loading: boolean;
   emptyText: string;
   searchPlaceholder?: string;
-}) {
+}>(function BankCardGrid({ guides, loading, emptyText, searchPlaceholder }, ref) {
   const { user, profile, refreshProfile } = useAuth();
   const { t, lang } = useLanguage();
   const { setStepCompletion } = useDashboardProgress();
@@ -540,6 +541,11 @@ export default function BankCardGrid({
   const [modalBankId, setModalBankId] = useState<string | null>(null);
   const [openAccountBankId, setOpenAccountBankId] = useState<string | null>(null);
   const [showMoreTags, setShowMoreTags] = useState(false);
+  const [ratingOpen, setRatingOpen] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    openRating: () => setRatingOpen(true),
+  }));
 
   const visibleTagsCount = 4;
   const visibleTags = TAG_ORDER.slice(0, visibleTagsCount);
@@ -553,7 +559,7 @@ export default function BankCardGrid({
       )
     : tagFiltered;
 
-  const rankedGuides = [...guides].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  const rankedGuides = [...guides].sort((a, b) => realBankRank(a.name) - realBankRank(b.name));
   const bankRankingMap = new Map(rankedGuides.map((g, idx) => [g.id, idx + 1]));
 
   const featured = filtered.slice(0, 6);
@@ -692,6 +698,115 @@ export default function BankCardGrid({
           />
         </>
       )}
+
+      {ratingOpen &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setRatingOpen(false)}
+            className="fixed inset-0 z-[9999] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center sm:p-4"
+            style={{ animation: "fadeInRating 150ms ease-out" }}
+          >
+            <style>{`
+              @keyframes fadeInRating { from { opacity: 0; } to { opacity: 1; } }
+              @keyframes slideUpRating { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+            `}</style>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex w-full max-w-lg flex-col max-h-[85vh] rounded-t-3xl border border-border-subtle bg-panel shadow-2xl shadow-black/40 sm:rounded-3xl"
+              style={{ animation: "slideUpRating 200ms ease-out" }}
+            >
+              <div className="flex justify-center pt-2.5 sm:hidden">
+                <span className="h-1 w-9 rounded-full bg-white/15" />
+              </div>
+
+              <div className="flex flex-shrink-0 items-center justify-between gap-4 border-b border-border-subtle px-5 py-4">
+                <div>
+                  <p className="text-base font-bold text-text-primary">{t.banks.topRankedTitle}</p>
+                  <p className="mt-0.5 text-xs text-text-secondary">{t.banks.rankingDrawerSubtitle}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setRatingOpen(false)}
+                  className="flex-shrink-0 rounded-lg border border-transparent p-1.5 text-text-muted transition-colors hover:text-text-primary"
+                  aria-label="Close"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-3.5 py-3">
+                {rankedGuides.slice(0, 4).map((g, idx) => (
+                  <button
+                    key={g.id}
+                    type="button"
+                    onClick={() => {
+                      setRatingOpen(false);
+                      setModalBankId(g.id);
+                    }}
+                    className="mb-1.5 flex w-full items-center gap-3 rounded-2xl border border-accent/20 bg-accent/[0.07] p-2.5 text-left transition-colors duration-150 hover:bg-accent/[0.12]"
+                  >
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-bright text-[11px] font-bold text-[#0a1834]">
+                      {idx + 1}
+                    </span>
+                    <BankAvatar name={g.name} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-text-primary">{g.name}</p>
+                      {g.rating != null && (
+                        <div className="mt-0.5 flex items-center gap-1">
+                          <StarRating rating={g.rating} />
+                        </div>
+                      )}
+                    </div>
+                    <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                ))}
+
+                {rankedGuides.length > 4 && (
+                  <>
+                    <p className="mb-1.5 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted">
+                      {t.banks.otherBanksLabel}
+                    </p>
+                    {rankedGuides.slice(4).map((g, idx) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => {
+                          setRatingOpen(false);
+                          setModalBankId(g.id);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors duration-150 hover:bg-surface-hover"
+                      >
+                        <span className="w-5 flex-shrink-0 text-center text-[11px] text-text-muted">{idx + 5}</span>
+                        <div className="scale-[0.82] origin-left">
+                          <BankAvatar name={g.name} />
+                        </div>
+                        <p className="min-w-0 flex-1 truncate text-sm text-text-secondary">{g.name}</p>
+                        {g.rating != null && (
+                          <div className="flex-shrink-0">
+                            <StarRating rating={g.rating} />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </>
+                )}
+              </div>
+
+              <div className="flex-shrink-0 border-t border-border-subtle px-5 py-3">
+                <p className="text-[11px] leading-relaxed text-text-muted">{t.banks.rankingSourceNote}</p>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
-}
+});
+
+export default BankCardGrid;

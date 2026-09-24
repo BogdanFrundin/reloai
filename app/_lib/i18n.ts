@@ -452,6 +452,9 @@ export type Dictionary = {
     topRankedTitle: string;
     topRankedSubtitle: string;
     topRankedViewRating: string;
+    rankingDrawerSubtitle: string;
+    otherBanksLabel: string;
+    rankingSourceNote: string;
     whichBankTitle: string;
     whichBankDescription: string;
     whichBankLearnMore: string;
@@ -2020,6 +2023,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "Top 4 banks, according to users",
       topRankedSubtitle: "The most popular choices among people relocating to Poland",
       topRankedViewRating: "See the ranking",
+      rankingDrawerSubtitle: "Based on Złoty Bankier 2026, Instytucja Roku 2026 and app-store ratings",
+      otherBanksLabel: "Other banks",
+      rankingSourceNote: "Sources: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), app-store ratings",
       whichBankTitle: "Not sure which bank to choose?",
       whichBankDescription: "Answer a few questions and the AI will suggest the best account for your situation",
       whichBankLearnMore: "Get a recommendation",
@@ -3951,6 +3957,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "Топ-4 банка по мнению пользователей",
       topRankedSubtitle: "Реальные отзывы, опыт открытия и использования. Обновляется ежемесячно.",
       topRankedViewRating: "Смотреть рейтинг",
+      rankingDrawerSubtitle: "По данным Złoty Bankier 2026, Instytucja Roku 2026 и оценкам в app store",
+      otherBanksLabel: "Остальные банки",
+      rankingSourceNote: "Источники: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оценки в App Store/Google Play",
       whichBankTitle: "Не знаете какой банк выбрать?",
       whichBankDescription: "Ответьте на пару вопросов — и ИИ подскажет счёт, который подходит именно вам",
       whichBankLearnMore: "Получить рекомендацию",
@@ -5879,6 +5888,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "Foydalanuvchilar fikricha eng yaxshi 4 ta bank",
       topRankedSubtitle: "Polshaga ko'chib o'tayotganlar orasida eng mashhur tanlov",
       topRankedViewRating: "Reytingni ko'rish",
+      rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 va app-store reytinglariga asoslangan",
+      otherBanksLabel: "Boshqa banklar",
+      rankingSourceNote: "Manbalar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), app-store reytinglari",
       whichBankTitle: "Qaysi bankni tanlashni bilmayapsizmi?",
       whichBankDescription: "Bir nechta savolga javob bering — AI sizga mos hisobni tavsiya qiladi",
       whichBankLearnMore: "Tavsiya olish",
@@ -7804,6 +7816,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "Kullanıcılara göre en iyi 4 banka",
       topRankedSubtitle: "Polonya'ya taşınanlar arasında en popüler tercih",
       topRankedViewRating: "Sıralamayı gör",
+      rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 ve app store puanlarına dayanır",
+      otherBanksLabel: "Diğer bankalar",
+      rankingSourceNote: "Kaynaklar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), app store puanları",
       whichBankTitle: "Hangi bankayı seçeceğinizi bilmiyor musunuz?",
       whichBankDescription: "Birkaç soruyu yanıtlayın — yapay zeka size uygun hesabı önersin",
       whichBankLearnMore: "Öneri al",
@@ -9729,6 +9744,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "4 бонки беҳтарин ба гуфтаи корбарон",
       topRankedSubtitle: "Интихоби маъмултарин дар байни онҳое, ки ба Полша кӯч мебанданд",
       topRankedViewRating: "Дидани рейтинг",
+      rankingDrawerSubtitle: "Дар асоси Złoty Bankier 2026, Instytucja Roku 2026 ва рейтингҳои app store",
+      otherBanksLabel: "Дигар бонкҳо",
+      rankingSourceNote: "Манбаъҳо: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), рейтингҳои App Store/Google Play",
       whichBankTitle: "Намедонед кадом бонкро интихоб кунед?",
       whichBankDescription: "Ба чанд савол ҷавоб диҳед — ИИ ҳисобе, ки ба шумо мувофиқ аст, пешниҳод мекунад",
       whichBankLearnMore: "Гирифтани тавсия",
@@ -11658,6 +11676,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       topRankedTitle: "Топ-4 банки на думку користувачів",
       topRankedSubtitle: "Найпопулярніший вибір серед тих, хто переїжджає до Польщі",
       topRankedViewRating: "Дивитися рейтинг",
+      rankingDrawerSubtitle: "На основі Złoty Bankier 2026, Instytucja Roku 2026 та оцінок в app store",
+      otherBanksLabel: "Інші банки",
+      rankingSourceNote: "Джерела: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оцінки App Store/Google Play",
       whichBankTitle: "Не знаєте, який банк обрати?",
       whichBankDescription: "Дайте відповідь на кілька запитань — і ШІ підкаже рахунок, що підходить саме вам",
       whichBankLearnMore: "Отримати рекомендацію",
