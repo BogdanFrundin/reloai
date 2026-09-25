@@ -53,7 +53,12 @@ export default function NearestBranchFinder({ bankName }: { bankName: string }) 
         new g.maps.Marker({ position: origin, map, label: "•" });
         new g.maps.Marker({ position: result.location, map, title: result.name });
       }, 0);
-    } catch {
+    } catch (err) {
+      // Logged (not swallowed) so a real device/browser issue — permission
+      // denied, no GPS/Wi-Fi positioning available, Places API error, missing
+      // referrer allowlist entry — is diagnosable from devtools instead of
+      // just showing the generic banner text.
+      console.error("NearestBranchFinder:", err);
       setStatus("error");
     }
   }
