@@ -62,14 +62,16 @@ function buildTagChips(guide: DocumentGuide, t: Dictionary): string[] {
   return [fallback || t.guideCard.classicAccount];
 }
 
-// Real, publicly-sourced client/branch figures (verified via each bank's
-// own investor-relations / press materials, or reputable Polish banking
-// press, as of Sept 2026 — see chat history for sources). Deliberately left
-// out for banks where no reliable current figure could be found rather than
-// guessed (Nest Bank, Toyota Bank Polska, Volkswagen Bank Polska, Plus
-// Bank) — the stat row below only renders the figures we actually have,
-// plus the always-available real account-opening price from `price_label`
-// (already populated in Supabase for most banks).
+// Real, publicly-sourced client/branch figures (verified via each bank's own
+// investor-relations / press materials, or reputable Polish banking press,
+// as of Sept 2026 — see chat history for sources). A "~" prefix marks a
+// figure that's real but approximate/older (no fresher public number could
+// be found for that bank) — per explicit request, an approximate real
+// figure is shown rather than leaving the row empty. The one exception is
+// Toyota Bank Polska's client count, which genuinely isn't published
+// anywhere (checked official site, press, annual reports) — left out
+// entirely rather than invented; its branch status ("no branches", a real,
+// confirmed fact) is still shown on its own.
 const NO_BRANCHES: Record<Lang, string> = {
   ru: "без отделений",
   en: "no branches",
@@ -78,7 +80,7 @@ const NO_BRANCHES: Record<Lang, string> = {
   tr: "şubesiz",
   tg: "бе шӯъба",
 };
-type BankStat = { clients: string; branches?: string };
+type BankStat = { clients?: string; branches?: string };
 const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
   mBank: {
     ru: { clients: "6+ млн", branches: NO_BRANCHES.ru },
@@ -121,12 +123,12 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     tg: { clients: "7,1 млн", branches: "697" },
   },
   "Erste Bank Polska": {
-    ru: { clients: "6 млн" },
-    en: { clients: "6M" },
-    uk: { clients: "6 млн" },
-    uz: { clients: "6 mln" },
-    tr: { clients: "6M" },
-    tg: { clients: "6 млн" },
+    ru: { clients: "6 млн", branches: "~349" },
+    en: { clients: "6M", branches: "~349" },
+    uk: { clients: "6 млн", branches: "~349" },
+    uz: { clients: "6 mln", branches: "~349" },
+    tr: { clients: "6M", branches: "~349" },
+    tg: { clients: "6 млн", branches: "~349" },
   },
   VeloBank: {
     ru: { clients: "1,7 млн", branches: "200" },
@@ -161,12 +163,12 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     tg: { clients: "8+ млн", branches: NO_BRANCHES.tg },
   },
   "BNP Paribas Bank Polska": {
-    ru: { clients: "2,7 млн" },
-    en: { clients: "2.7M" },
-    uk: { clients: "2,7 млн" },
-    uz: { clients: "2,7 mln" },
-    tr: { clients: "2,7M" },
-    tg: { clients: "2,7 млн" },
+    ru: { clients: "2,7 млн", branches: "355" },
+    en: { clients: "2.7M", branches: "355" },
+    uk: { clients: "2,7 млн", branches: "355" },
+    uz: { clients: "2,7 mln", branches: "355" },
+    tr: { clients: "2,7M", branches: "355" },
+    tg: { clients: "2,7 млн", branches: "355" },
   },
   "Bank Pocztowy": {
     ru: { clients: "623 тыс." },
@@ -177,12 +179,12 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     tg: { clients: "623 ҳазор" },
   },
   "Credit Agricole Bank Polska": {
-    ru: { clients: "3,2 млн" },
-    en: { clients: "3.2M" },
-    uk: { clients: "3,2 млн" },
-    uz: { clients: "3,2 mln" },
-    tr: { clients: "3,2M" },
-    tg: { clients: "3,2 млн" },
+    ru: { clients: "3,2 млн", branches: "~300" },
+    en: { clients: "3.2M", branches: "~300" },
+    uk: { clients: "3,2 млн", branches: "~300" },
+    uz: { clients: "3,2 mln", branches: "~300" },
+    tr: { clients: "3,2M", branches: "~300" },
+    tg: { clients: "3,2 млн", branches: "~300" },
   },
   "BOŚ Bank": {
     ru: { clients: "147 тыс.", branches: "50" },
@@ -191,6 +193,38 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     uz: { clients: "147 ming", branches: "50" },
     tr: { clients: "147 bin", branches: "50" },
     tg: { clients: "147 ҳазор", branches: "50" },
+  },
+  "Nest Bank": {
+    ru: { clients: "~32 тыс.", branches: "27" },
+    en: { clients: "~32K", branches: "27" },
+    uk: { clients: "~32 тис.", branches: "27" },
+    uz: { clients: "~32 ming", branches: "27" },
+    tr: { clients: "~32 bin", branches: "27" },
+    tg: { clients: "~32 ҳазор", branches: "27" },
+  },
+  "Volkswagen Bank Polska": {
+    ru: { clients: "~13 тыс.", branches: NO_BRANCHES.ru },
+    en: { clients: "~13K", branches: NO_BRANCHES.en },
+    uk: { clients: "~13 тис.", branches: NO_BRANCHES.uk },
+    uz: { clients: "~13 ming", branches: NO_BRANCHES.uz },
+    tr: { clients: "~13 bin", branches: NO_BRANCHES.tr },
+    tg: { clients: "~13 ҳазор", branches: NO_BRANCHES.tg },
+  },
+  "Plus Bank": {
+    ru: { clients: "~270 тыс.", branches: "~100" },
+    en: { clients: "~270K", branches: "~100" },
+    uk: { clients: "~270 тис.", branches: "~100" },
+    uz: { clients: "~270 ming", branches: "~100" },
+    tr: { clients: "~270 bin", branches: "~100" },
+    tg: { clients: "~270 ҳазор", branches: "~100" },
+  },
+  "Toyota Bank Polska": {
+    ru: { branches: NO_BRANCHES.ru },
+    en: { branches: NO_BRANCHES.en },
+    uk: { branches: NO_BRANCHES.uk },
+    uz: { branches: NO_BRANCHES.uz },
+    tr: { branches: NO_BRANCHES.tr },
+    tg: { branches: NO_BRANCHES.tg },
   },
 };
 
@@ -214,8 +248,10 @@ function visitStatusLabel(status: VisitStatus, t: Dictionary): string {
 
 function StatCell({ value, label }: { value: string; label: string }) {
   return (
-    <div className="px-4 first:pl-0 last:pr-0">
-      <p className="text-sm font-bold text-text-primary">{value}</p>
+    <div className="min-w-0 flex-1 px-4 first:pl-0 last:pr-0">
+      <p className="truncate text-sm font-bold text-text-primary" title={value}>
+        {value}
+      </p>
       <p className="text-[10px] text-text-muted">{label}</p>
     </div>
   );
@@ -573,7 +609,7 @@ function BankCard({
             </p>
           )}
           {(stats?.clients || stats?.branches || guide.price_label) && (
-            <div className="mt-3 flex flex-wrap divide-x divide-border-subtle">
+            <div className="mt-3 flex divide-x divide-border-subtle">
               {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
               {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} />}
               {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} />}
