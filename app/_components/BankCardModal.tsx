@@ -226,41 +226,52 @@ function SkylineHeroArt() {
       aria-hidden
       viewBox="0 0 400 160"
       preserveAspectRatio="xMaxYMax slice"
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
+      className="pointer-events-none absolute inset-0 h-full w-full"
     >
       <defs>
         <linearGradient id="bcmSkyGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#0d1b3d" stopOpacity="0" />
-          <stop offset="100%" stopColor="#0d1b3d" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#0d1b3d" stopOpacity="0.55" />
+        </linearGradient>
+        {/* A soft red/white diagonal ribbon standing in for the Polish flag,
+            kept low-opacity so it reads as ambient color rather than a
+            literal flag graphic competing with the bank name. */}
+        <linearGradient id="bcmFlagRibbon" x1="0" y1="0" x2="1" y2="0.35">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#ef4444" stopOpacity="0.22" />
         </linearGradient>
         <linearGradient id="bcmBuildGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#24345f" />
-          <stop offset="100%" stopColor="#101a34" />
+          <stop offset="0%" stopColor="#e8c98a" />
+          <stop offset="100%" stopColor="#b8934f" />
         </linearGradient>
+        <radialGradient id="bcmGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#f5d59a" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#f5d59a" stopOpacity="0" />
+        </radialGradient>
       </defs>
       <rect x="0" y="0" width="400" height="160" fill="url(#bcmSkyGrad)" />
-      <g fill="url(#bcmBuildGrad)" opacity="0.6">
-        <rect x="222" y="95" width="26" height="65" />
-        <rect x="254" y="80" width="22" height="80" />
-        <rect x="284" y="100" width="30" height="60" />
-        <rect x="330" y="70" width="24" height="90" />
-        <rect x="360" y="90" width="30" height="70" />
-      </g>
+      <polygon points="180,0 400,0 400,160 260,160" fill="url(#bcmFlagRibbon)" />
+      <circle cx="330" cy="55" r="70" fill="url(#bcmGlow)" />
+
+      {/* Classical bank-facade landmark: pediment + columns, warm gold so it
+          reads clearly against the dark header instead of blending in. */}
       <g fill="url(#bcmBuildGrad)">
-        <rect x="266" y="62" width="66" height="98" rx="2" />
-        <polygon points="266,62 299,36 332,62" />
-        <rect x="279" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="291" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="303" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="315" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+        <polygon points="270,58 331,58 350,86 251,86" opacity="0.95" />
+        <rect x="255" y="86" width="90" height="8" opacity="0.9" />
+        {[262, 278, 294, 310, 326].map((x) => (
+          <rect key={x} x={x} y="96" width="8" height="52" rx="1.5" opacity="0.85" />
+        ))}
+        <rect x="251" y="150" width="99" height="9" rx="1.5" />
       </g>
-      <g fill="#fbbf6a" opacity="0.65">
+      <g fill="#fff4da" opacity="0.9">
+        <rect x="296" y="66" width="9" height="12" rx="1" />
+      </g>
+      <g fill="#f5d59a" opacity="0.55">
         <rect x="228" y="105" width="3" height="3" />
         <rect x="236" y="122" width="3" height="3" />
-        <rect x="260" y="96" width="3" height="3" />
-        <rect x="292" y="114" width="3" height="3" />
-        <rect x="336" y="86" width="3" height="3" />
         <rect x="368" y="106" width="3" height="3" />
+        <rect x="384" y="130" width="3" height="3" />
       </g>
     </svg>
   );
@@ -314,6 +325,41 @@ function IdCardAndPhoneArt() {
       </g>
     </svg>
   );
+}
+
+// Distinct glyph per visit status, so the status circle actually signals
+// what kind of requirement this is (checkmark / ID card / courier box /
+// warning) instead of the same generic "people" icon for every status.
+function VisitStatusGlyph({ status, className }: { status: VisitStatus; className?: string }) {
+  switch (status) {
+    case "online":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      );
+    case "onlineIfId":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <circle cx="9" cy="12" r="2" />
+          <path strokeLinecap="round" d="M14 10h4M14 14h4" />
+        </svg>
+      );
+    case "courier":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4m0-14v14m9-14v10l-9 4" />
+        </svg>
+      );
+    case "branch":
+    default:
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
+        </svg>
+      );
+  }
 }
 
 function InfoRow({ label, value }: { label: string; value: string }) {
@@ -744,9 +790,7 @@ export default function BankCardModal({
                       <span
                         className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
                       >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4" />
-                        </svg>
+                        <VisitStatusGlyph status={accountInfo.visitStatus} className="h-4 w-4" />
                       </span>
                       <span className={`text-sm font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
                         {visitStatusLabel(accountInfo.visitStatus)}
