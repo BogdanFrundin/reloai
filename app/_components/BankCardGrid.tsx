@@ -302,23 +302,30 @@ function InfoRow({ label, value, showCurrencyHint, currencies, asPanel }: { labe
 // (or meet a courier) — see app/_lib/bankAccountInfo.ts for the sourced data
 // behind each verdict. `title` carries the longer explanation as a
 // native-browser tooltip so the card itself stays compact.
-const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string }> = {
-  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10" },
-  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10" },
-  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10" },
-  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10" },
+const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
+  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/25" },
+  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/25" },
+  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10", border: "border-amber-500/25" },
+  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/25" },
 };
 
-function VisitStatusBadge({ status, label, note }: { status: VisitStatus; label: string; note?: string }) {
+// One combined status banner (icon + bold headline + the specific practical
+// requirement underneath) instead of the old split layout — a small pill
+// chip in the tag row plus a separate barely-visible muted line below it.
+// Merging them into a single bordered card makes the single most important
+// fact about opening this account ("do I need to visit a branch or not")
+// impossible to miss when scanning the grid, matching how it reads on the
+// full bank-details modal.
+function VisitStatusBanner({ status, label, requirement }: { status: VisitStatus; label: string; requirement?: string }) {
   const style = VISIT_STATUS_STYLE[status];
   return (
-    <span
-      title={note}
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${style.bg} ${style.text}`}
-    >
-      <span className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${style.dot}`} />
-      {label}
-    </span>
+    <div className={`mt-3 flex items-start gap-2.5 rounded-xl border px-3 py-2.5 ${style.border} ${style.bg}`}>
+      <span className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${style.dot}`} />
+      <div className="min-w-0">
+        <p className={`text-sm font-semibold ${style.text}`}>{label}</p>
+        {requirement && <p className="mt-0.5 text-xs leading-snug text-text-secondary">{requirement}</p>}
+      </div>
+    </div>
   );
 }
 
@@ -457,21 +464,13 @@ function BankCard({
                 <TextWithGlossary text={chip} />
               </span>
             ))}
-            {accountInfo && (
-              <VisitStatusBadge
-                status={accountInfo.visitStatus}
-                label={visitStatusLabel(accountInfo.visitStatus, t)}
-                note={accountInfo.visitNote}
-              />
-            )}
           </div>
-          {accountInfo?.keyRequirement && (
-            <p className="mt-1.5 flex items-start gap-1 text-[11px] leading-snug text-text-muted">
-              <svg className="mt-0.5 h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {accountInfo.keyRequirement}
-            </p>
+          {accountInfo && (
+            <VisitStatusBanner
+              status={accountInfo.visitStatus}
+              label={visitStatusLabel(accountInfo.visitStatus, t)}
+              requirement={accountInfo.keyRequirement}
+            />
           )}
           {accountInfo?.referral && (
             <p className="mt-2 text-[11px] text-text-muted">
