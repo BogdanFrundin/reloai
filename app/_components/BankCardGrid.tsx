@@ -787,7 +787,7 @@ function BankCard({
               e.stopPropagation();
               onOpenAccount();
             }}
-            className={`flex items-center justify-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+            className={`flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
           >
             {t.banks.openAccount}
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
