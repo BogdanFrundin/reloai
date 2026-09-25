@@ -348,7 +348,7 @@ function StatIconGlyph({ icon, className }: { icon: StatIcon; className?: string
 function StatCell({ value, label, icon }: { value: string; label: string; icon: StatIcon }) {
   return (
     <div className="min-w-0 flex-1 px-1.5 first:pl-0 last:pr-0">
-      <p className="truncate text-lg font-bold text-text-primary sm:text-xl" title={value}>
+      <p className="truncate text-lg font-semibold text-text-primary sm:text-xl" title={value}>
         {value}
       </p>
       <p className="mt-0.5 flex items-center gap-1 text-[11px] text-text-muted">
@@ -793,23 +793,31 @@ function BankCard({
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
           </button>
         )}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            askAi();
-          }}
-          className="w-full rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-        >
-          {gc.askAi} ✦
-        </button>
-        <button
-          type="button"
-          onClick={onOpenModal}
-          className="w-full text-center text-xs font-medium text-accent-bright hover:text-accent transition-colors duration-150"
-        >
-          {t.banks.moreAboutBank} →
-        </button>
+        <div className="flex items-center justify-center gap-6 pt-0.5">
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
+          >
+            <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5h12M4 10h12M4 14.5h8" />
+            </svg>
+            {t.banks.moreAboutBank}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              askAi();
+            }}
+            className="flex items-center gap-1.5 text-sm font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 flex-shrink-0">
+              <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1 1 5.79L10 14.77l-5.21 2.74 1-5.79-4.21-4.1 5.82-.85L10 1.5z" />
+            </svg>
+            {gc.askAi}
+          </button>
+        </div>
       </div>
     </div>
   );
