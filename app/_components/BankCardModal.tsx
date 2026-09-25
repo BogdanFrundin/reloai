@@ -286,17 +286,40 @@ function PolandFlagBadge() {
         <clipPath id="bcmPolandBlob">
           <path d="M50 4C68 4 79 14 86 28C93 42 94 55 88 66C82 77 74 84 62 90C50 96 38 95 28 88C18 81 9 70 6 56C3 42 6 28 16 18C26 8 38 4 50 4Z" />
         </clipPath>
+        {/* Same white/red flag palette as before, just given a gradient
+            instead of a flat fill, plus a soft gloss highlight and drop
+            shadow — a more polished "enamel badge" look without actually
+            changing what colors are used. */}
+        <linearGradient id="bcmPolandWhite" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#e4e6ea" />
+        </linearGradient>
+        <linearGradient id="bcmPolandRed" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ef4444" />
+          <stop offset="100%" stopColor="#9f1616" />
+        </linearGradient>
+        <radialGradient id="bcmPolandSheen" cx="32%" cy="18%" r="70%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+        <filter id="bcmPolandShadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#000000" floodOpacity="0.35" />
+        </filter>
       </defs>
-      <g clipPath="url(#bcmPolandBlob)">
-        <rect x="0" y="0" width="100" height="50" fill="#ffffff" />
-        <rect x="0" y="50" width="100" height="50" fill="#dc2626" />
+      <g filter="url(#bcmPolandShadow)">
+        <g clipPath="url(#bcmPolandBlob)">
+          <rect x="0" y="0" width="100" height="50" fill="url(#bcmPolandWhite)" />
+          <rect x="0" y="50" width="100" height="50" fill="url(#bcmPolandRed)" />
+          <rect x="0" y="0" width="100" height="100" fill="url(#bcmPolandSheen)" />
+        </g>
+        <path
+          d="M50 4C68 4 79 14 86 28C93 42 94 55 88 66C82 77 74 84 62 90C50 96 38 95 28 88C18 81 9 70 6 56C3 42 6 28 16 18C26 8 38 4 50 4Z"
+          fill="none"
+          stroke="rgba(0,0,0,0.08)"
+          strokeWidth="2"
+        />
       </g>
-      <path
-        d="M50 4C68 4 79 14 86 28C93 42 94 55 88 66C82 77 74 84 62 90C50 96 38 95 28 88C18 81 9 70 6 56C3 42 6 28 16 18C26 8 38 4 50 4Z"
-        fill="none"
-        stroke="rgba(0,0,0,0.08)"
-        strokeWidth="2"
-      />
     </svg>
   );
 }
@@ -306,22 +329,48 @@ function PolandFlagBadge() {
 function IdCardAndPhoneArt() {
   return (
     <svg aria-hidden viewBox="0 0 160 110" className="h-full w-full">
-      <g transform="translate(2,16) rotate(-8)">
-        <rect x="0" y="0" width="78" height="50" rx="7" fill="#b91c1c" />
+      <defs>
+        {/* Same red/navy/white palette as before, just turned into
+            gradients + a soft shadow + a glass-style sheen on the phone
+            screen, for a more premium look without changing the colors
+            themselves. */}
+        <linearGradient id="bcmIdCardFill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#dc2626" />
+          <stop offset="100%" stopColor="#7f1414" />
+        </linearGradient>
+        <linearGradient id="bcmPhoneFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#232c44" />
+          <stop offset="100%" stopColor="#0b1220" />
+        </linearGradient>
+        <radialGradient id="bcmPhoneIconFill" cx="35%" cy="28%" r="80%">
+          <stop offset="0%" stopColor="#f04747" />
+          <stop offset="100%" stopColor="#b91c1c" />
+        </radialGradient>
+        <linearGradient id="bcmPhoneSheen" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
+          <stop offset="40%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <filter id="bcmIdShadow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3.5" floodColor="#000000" floodOpacity="0.4" />
+        </filter>
+      </defs>
+      <g transform="translate(2,16) rotate(-8)" filter="url(#bcmIdShadow)">
+        <rect x="0" y="0" width="78" height="50" rx="7" fill="url(#bcmIdCardFill)" />
         <rect x="0" y="0" width="78" height="14" rx="7" fill="#ffffff" opacity="0.92" />
         <circle cx="16" cy="32" r="9" fill="#ffffff" opacity="0.9" />
         <rect x="32" y="24" width="34" height="4" rx="2" fill="#ffffff" opacity="0.85" />
         <rect x="32" y="32" width="28" height="4" rx="2" fill="#ffffff" opacity="0.6" />
         <rect x="32" y="40" width="22" height="4" rx="2" fill="#ffffff" opacity="0.6" />
       </g>
-      <g transform="translate(68,2) rotate(6)">
-        <rect x="0" y="0" width="56" height="104" rx="12" fill="#141c2e" />
+      <g transform="translate(68,2) rotate(6)" filter="url(#bcmIdShadow)">
+        <rect x="0" y="0" width="56" height="104" rx="12" fill="url(#bcmPhoneFill)" />
         <rect x="4" y="6" width="48" height="92" rx="7" fill="#0b1220" />
-        <circle cx="28" cy="52" r="16" fill="#dc2626" />
+        <circle cx="28" cy="52" r="16" fill="url(#bcmPhoneIconFill)" />
         <circle cx="28" cy="52" r="16" fill="none" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="1.5" />
         <rect x="21" y="45" width="14" height="4" rx="2" fill="#ffffff" />
         <rect x="21" y="52" width="14" height="4" rx="2" fill="#ffffff" opacity="0.85" />
         <rect x="21" y="59" width="14" height="4" rx="2" fill="#ffffff" opacity="0.7" />
+        <rect x="4" y="6" width="48" height="92" rx="7" fill="url(#bcmPhoneSheen)" />
       </g>
     </svg>
   );
