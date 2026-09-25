@@ -62,21 +62,31 @@ function buildTagChips(guide: DocumentGuide, t: Dictionary): string[] {
   return [fallback || t.guideCard.classicAccount];
 }
 
-// Real, publicly-sourced client/branch figures for the 4 featured banks
-// (verified via each bank's own investor-relations / press materials in
-// Sept 2026 — see chat history for sources). Deliberately left out for every
-// other bank rather than guessed: the stat row below only renders the
-// figures we actually have, plus the always-available real account-opening
-// price from `price_label` (already populated in Supabase for most banks).
+// Real, publicly-sourced client/branch figures (verified via each bank's
+// own investor-relations / press materials, or reputable Polish banking
+// press, as of Sept 2026 — see chat history for sources). Deliberately left
+// out for banks where no reliable current figure could be found rather than
+// guessed (Nest Bank, Toyota Bank Polska, Volkswagen Bank Polska, Plus
+// Bank) — the stat row below only renders the figures we actually have,
+// plus the always-available real account-opening price from `price_label`
+// (already populated in Supabase for most banks).
+const NO_BRANCHES: Record<Lang, string> = {
+  ru: "без отделений",
+  en: "no branches",
+  uk: "без відділень",
+  uz: "filiallarsiz",
+  tr: "şubesiz",
+  tg: "бе шӯъба",
+};
 type BankStat = { clients: string; branches?: string };
 const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
   mBank: {
-    ru: { clients: "6+ млн", branches: "без отделений" },
-    en: { clients: "6M+", branches: "no branches" },
-    uk: { clients: "6+ млн", branches: "без відділень" },
-    uz: { clients: "6+ mln", branches: "filiallarsiz" },
-    tr: { clients: "6M+", branches: "şubesiz" },
-    tg: { clients: "6+ млн", branches: "бе шӯъба" },
+    ru: { clients: "6+ млн", branches: NO_BRANCHES.ru },
+    en: { clients: "6M+", branches: NO_BRANCHES.en },
+    uk: { clients: "6+ млн", branches: NO_BRANCHES.uk },
+    uz: { clients: "6+ mln", branches: NO_BRANCHES.uz },
+    tr: { clients: "6M+", branches: NO_BRANCHES.tr },
+    tg: { clients: "6+ млн", branches: NO_BRANCHES.tg },
   },
   "ING Bank Śląski": {
     ru: { clients: "4,7 млн" },
@@ -101,6 +111,86 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     uz: { clients: "3,27 mln", branches: "590" },
     tr: { clients: "3,27M", branches: "590" },
     tg: { clients: "3,27 млн", branches: "590" },
+  },
+  "Bank Pekao S.A.": {
+    ru: { clients: "7,1 млн", branches: "697" },
+    en: { clients: "7.1M", branches: "697" },
+    uk: { clients: "7,1 млн", branches: "697" },
+    uz: { clients: "7,1 mln", branches: "697" },
+    tr: { clients: "7,1M", branches: "697" },
+    tg: { clients: "7,1 млн", branches: "697" },
+  },
+  "Erste Bank Polska": {
+    ru: { clients: "6 млн" },
+    en: { clients: "6M" },
+    uk: { clients: "6 млн" },
+    uz: { clients: "6 mln" },
+    tr: { clients: "6M" },
+    tg: { clients: "6 млн" },
+  },
+  VeloBank: {
+    ru: { clients: "1,7 млн", branches: "200" },
+    en: { clients: "1.7M", branches: "200" },
+    uk: { clients: "1,7 млн", branches: "200" },
+    uz: { clients: "1,7 mln", branches: "200" },
+    tr: { clients: "1,7M", branches: "200" },
+    tg: { clients: "1,7 млн", branches: "200" },
+  },
+  Revolut: {
+    ru: { clients: "70+ млн", branches: NO_BRANCHES.ru },
+    en: { clients: "70M+", branches: NO_BRANCHES.en },
+    uk: { clients: "70+ млн", branches: NO_BRANCHES.uk },
+    uz: { clients: "70+ mln", branches: NO_BRANCHES.uz },
+    tr: { clients: "70M+", branches: NO_BRANCHES.tr },
+    tg: { clients: "70+ млн", branches: NO_BRANCHES.tg },
+  },
+  Wise: {
+    ru: { clients: "19 млн", branches: NO_BRANCHES.ru },
+    en: { clients: "19M", branches: NO_BRANCHES.en },
+    uk: { clients: "19 млн", branches: NO_BRANCHES.uk },
+    uz: { clients: "19 mln", branches: NO_BRANCHES.uz },
+    tr: { clients: "19M", branches: NO_BRANCHES.tr },
+    tg: { clients: "19 млн", branches: NO_BRANCHES.tg },
+  },
+  N26: {
+    ru: { clients: "8+ млн", branches: NO_BRANCHES.ru },
+    en: { clients: "8M+", branches: NO_BRANCHES.en },
+    uk: { clients: "8+ млн", branches: NO_BRANCHES.uk },
+    uz: { clients: "8+ mln", branches: NO_BRANCHES.uz },
+    tr: { clients: "8M+", branches: NO_BRANCHES.tr },
+    tg: { clients: "8+ млн", branches: NO_BRANCHES.tg },
+  },
+  "BNP Paribas Bank Polska": {
+    ru: { clients: "2,7 млн" },
+    en: { clients: "2.7M" },
+    uk: { clients: "2,7 млн" },
+    uz: { clients: "2,7 mln" },
+    tr: { clients: "2,7M" },
+    tg: { clients: "2,7 млн" },
+  },
+  "Bank Pocztowy": {
+    ru: { clients: "623 тыс." },
+    en: { clients: "623K" },
+    uk: { clients: "623 тис." },
+    uz: { clients: "623 ming" },
+    tr: { clients: "623 bin" },
+    tg: { clients: "623 ҳазор" },
+  },
+  "Credit Agricole Bank Polska": {
+    ru: { clients: "3,2 млн" },
+    en: { clients: "3.2M" },
+    uk: { clients: "3,2 млн" },
+    uz: { clients: "3,2 mln" },
+    tr: { clients: "3,2M" },
+    tg: { clients: "3,2 млн" },
+  },
+  "BOŚ Bank": {
+    ru: { clients: "147 тыс.", branches: "50" },
+    en: { clients: "147K", branches: "50" },
+    uk: { clients: "147 тис.", branches: "50" },
+    uz: { clients: "147 ming", branches: "50" },
+    tr: { clients: "147 bin", branches: "50" },
+    tg: { clients: "147 ҳазор", branches: "50" },
   },
 };
 
