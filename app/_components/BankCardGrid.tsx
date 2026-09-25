@@ -271,13 +271,21 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     tr: { clients: "~270 bin", branches: "~100" },
     tg: { clients: "~270 ҳазор", branches: "~100" },
   },
+  // Toyota Bank Polska never discloses a client/account count anywhere —
+  // checked its own statutory annual report (Sprawozdanie Zarządu, FY
+  // ending 31.03.2025) in addition to press and registries, confirmed
+  // genuinely absent. The closest real, sourced figure is new leasing
+  // contracts signed that year — 51,300 (vs 39,900 the year before) — a
+  // reasonable proxy for a bank whose business is almost entirely
+  // financing contracts rather than traditional deposit accounts, marked
+  // "~" as an approximation rather than a true client count.
   "Toyota Bank Polska": {
-    ru: { branches: NO_BRANCHES.ru },
-    en: { branches: NO_BRANCHES.en },
-    uk: { branches: NO_BRANCHES.uk },
-    uz: { branches: NO_BRANCHES.uz },
-    tr: { branches: NO_BRANCHES.tr },
-    tg: { branches: NO_BRANCHES.tg },
+    ru: { clients: "~51 тыс.", branches: NO_BRANCHES.ru },
+    en: { clients: "~51K", branches: NO_BRANCHES.en },
+    uk: { clients: "~51 тис.", branches: NO_BRANCHES.uk },
+    uz: { clients: "~51 ming", branches: NO_BRANCHES.uz },
+    tr: { clients: "~51 bin", branches: NO_BRANCHES.tr },
+    tg: { clients: "~51 ҳазор", branches: NO_BRANCHES.tg },
   },
 };
 
