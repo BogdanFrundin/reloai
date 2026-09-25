@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { getBankImage, getBankImagePosition } from "../_lib/bankImages";
 import { getBankAccountInfo, type VisitStatus } from "../_lib/bankAccountInfo";
-import { realBankRank } from "../_lib/bankRanking";
+import { realBankRank, bankRankGroup, BANK_RANK_REASON, type BankRankGroup } from "../_lib/bankRanking";
 import { pressScale } from "../_lib/motion";
 import { useAuth } from "./AuthProvider";
 import { useCurrency } from "./CurrencyProvider";
@@ -901,6 +901,24 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
 
   const rankedGuides = [...guides].sort((a, b) => realBankRank(a.name) - realBankRank(b.name));
   const bankRankingMap = new Map(rankedGuides.map((g, idx) => [g.id, idx + 1]));
+  const topThree = rankedGuides.slice(0, 3);
+  const RANK_GROUP_ORDER: BankRankGroup[] = ["awards", "apps", "fintech", "other"];
+  const RANK_GROUP_LABEL: Record<BankRankGroup, string> = {
+    awards: t.banks.rankGroupAwards,
+    apps: t.banks.rankGroupApps,
+    fintech: t.banks.rankGroupFintech,
+    other: t.banks.rankGroupOther,
+  };
+  const rankedGroups = RANK_GROUP_ORDER.map((group) => ({
+    group,
+    label: RANK_GROUP_LABEL[group],
+    guides: rankedGuides.filter((g) => bankRankGroup(g.name) === group),
+  })).filter((section) => section.guides.length > 0);
+  const TROPHY_STYLE = [
+    { medal: "bg-amber-400 text-amber-950", ring: "border-amber-400/40 bg-amber-500/10" },
+    { medal: "bg-slate-300 text-slate-800", ring: "border-slate-300/30 bg-white/5" },
+    { medal: "bg-orange-400/90 text-orange-950", ring: "border-orange-400/30 bg-orange-500/10" },
+  ];
 
   // Show the grid in real-ranking order too, so the "#1 по отзывам" /
   // "#2 по отзывам" badges on the cards above line up with reading order
@@ -1072,60 +1090,68 @@ const BankCardGrid = forwardRef<BankCardGridHandle, {
               </div>
 
               <div className="flex-1 overflow-y-auto px-3.5 py-3">
-                {rankedGuides.slice(0, 4).map((g, idx) => (
-                  <button
-                    key={g.id}
-                    type="button"
-                    onClick={() => jumpToBank(g)}
-                    className="mb-1.5 flex w-full items-center gap-3 rounded-2xl border border-accent-dark/35 bg-accent/[0.07] p-2.5 text-left transition-colors duration-150 hover:bg-accent/[0.12]"
-                  >
-                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/25 text-[11px] font-bold text-accent-bright">
-                      {idx + 1}
-                    </span>
-                    <BankAvatar name={g.name} />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-text-primary">{g.name}</p>
-                      {g.rating != null && (
-                        <div className="mt-0.5 flex items-center gap-1">
-                          <StarRating rating={g.rating} />
-                        </div>
-                      )}
-                    </div>
-                    <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                ))}
-
-                {rankedGuides.length > 4 && (
-                  <>
-                    <p className="mb-1.5 mt-3 px-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted">
-                      {t.banks.otherBanksLabel}
-                    </p>
-                    {rankedGuides.slice(4).map((g, idx) => (
+                {/* Top-3 trophy strip */}
+                <div className="mb-4 grid grid-cols-3 gap-2">
+                  {topThree.map((g, idx) => {
+                    const style = TROPHY_STYLE[idx];
+                    return (
                       <button
                         key={g.id}
                         type="button"
                         onClick={() => jumpToBank(g)}
-                        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors duration-150 hover:bg-surface-hover"
+                        className={`flex flex-col items-center gap-1.5 rounded-2xl border p-3 text-center transition-colors duration-150 hover:brightness-110 ${style.ring}`}
                       >
-                        <span className="w-5 flex-shrink-0 text-center text-[11px] text-text-muted">{idx + 5}</span>
-                        <div className="scale-[0.82] origin-left">
-                          <BankAvatar name={g.name} />
-                        </div>
-                        <p className="min-w-0 flex-1 truncate text-sm text-text-secondary">{g.name}</p>
+                        <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${style.medal}`}>
+                          {idx + 1}
+                        </span>
+                        <BankAvatar name={g.name} />
+                        <p className="w-full truncate text-xs font-semibold text-text-primary">{g.name}</p>
                         {g.rating != null && (
-                          <div className="flex-shrink-0">
+                          <div className="flex items-center gap-1">
                             <StarRating rating={g.rating} />
                           </div>
                         )}
-                        <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
                       </button>
-                    ))}
-                  </>
-                )}
+                    );
+                  })}
+                </div>
+
+                {rankedGroups.map((section) => (
+                  <div key={section.group} className="mb-3">
+                    <p className="mb-1.5 px-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted">
+                      {section.label}
+                    </p>
+                    {section.guides.map((g) => {
+                      const rank = bankRankingMap.get(g.id) ?? 0;
+                      const reason = BANK_RANK_REASON[g.name];
+                      return (
+                        <button
+                          key={g.id}
+                          type="button"
+                          onClick={() => jumpToBank(g)}
+                          className="mb-1 flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors duration-150 hover:bg-surface-hover"
+                        >
+                          <span className="w-5 flex-shrink-0 text-center text-[11px] text-text-muted">{rank}</span>
+                          <div className="scale-[0.82] origin-left">
+                            <BankAvatar name={g.name} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-semibold text-text-primary">{g.name}</p>
+                            {reason && <p className="truncate text-[11px] text-text-secondary">{reason}</p>}
+                          </div>
+                          {g.rating != null && (
+                            <div className="flex-shrink-0">
+                              <StarRating rating={g.rating} />
+                            </div>
+                          )}
+                          <svg className="h-4 w-4 flex-shrink-0 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
 
               <div className="flex-shrink-0 border-t border-border-subtle px-5 py-3">

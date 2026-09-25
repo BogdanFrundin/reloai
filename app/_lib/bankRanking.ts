@@ -59,3 +59,46 @@ export function realBankRank(name: string): number {
   const idx = REAL_BANK_RANK.indexOf(name);
   return idx === -1 ? REAL_BANK_RANK.length : idx;
 }
+
+// Grouping for the "Топ банков" drawer's v3 (grouped-by-reason) layout —
+// same underlying ranking as REAL_BANK_RANK above, just bucketed by *why*
+// each bank is well-regarded instead of shown as one flat numbered list.
+export type BankRankGroup = "awards" | "apps" | "fintech" | "other";
+
+const AWARD_BANKS = new Set([
+  "Bank Pekao S.A.",
+  "Bank Millennium",
+  "PKO Bank Polski",
+  "Erste Bank Polska",
+  "ING Bank Śląski",
+]);
+
+const APP_BANKS = new Set(["mBank", "VeloBank"]);
+
+const FINTECH_BANKS = new Set(["Revolut", "Wise", "N26"]);
+
+export function bankRankGroup(name: string): BankRankGroup {
+  if (AWARD_BANKS.has(name)) return "awards";
+  if (APP_BANKS.has(name)) return "apps";
+  if (FINTECH_BANKS.has(name)) return "fintech";
+  return "other";
+}
+
+// Short, factual "why" line for each ranked bank — Russian only (same
+// convention as BANK_ACCOUNT_INFO.keyRequirement elsewhere in the app,
+// which is also shown as-is regardless of the active site language).
+// Sourced from the same surveys documented in the comment above
+// REAL_BANK_RANK; banks with no specific citable result (the "other" group)
+// intentionally have no entry here rather than an invented reason.
+export const BANK_RANK_REASON: Record<string, string> = {
+  "Bank Pekao S.A.": "Лучший банк 2026 — Instytucja Roku",
+  "Bank Millennium": "Золотой банк 2 года подряд",
+  "PKO Bank Polski": "3 место — Złoty Bankier 2026",
+  "Erste Bank Polska": "2 место — Złoty Bankier 2026",
+  "ING Bank Śląski": "Лидер приватного банкинга",
+  mBank: "4.6★ Google Play, 402 тыс. оценок",
+  VeloBank: "Топ мобильного приложения, 85.2%",
+  Revolut: "4.7★ на Trustpilot",
+  Wise: "4.3★ на Trustpilot",
+  N26: "4.2★ на Trustpilot",
+};

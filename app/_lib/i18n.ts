@@ -465,6 +465,13 @@ export type Dictionary = {
     rankingDrawerSubtitle: string;
     otherBanksLabel: string;
     rankingSourceNote: string;
+    // Ranking drawer v2 — grouped-by-reason layout (award winners / top
+    // apps / foreign fintechs / everyone else) instead of one flat
+    // numbered list.
+    rankGroupAwards: string;
+    rankGroupApps: string;
+    rankGroupFintech: string;
+    rankGroupOther: string;
     // Nearest-branch finder (BankCardModal.tsx "Куда подавать" tab) —
     // geolocation + Google Places search for the closest real branch.
     nearBranchButton: string;
@@ -2052,6 +2059,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Based on Złoty Bankier 2026, Instytucja Roku 2026, and App Store ratings",
       otherBanksLabel: "Other banks",
       rankingSourceNote: "Sources: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store and Google Play ratings.",
+      rankGroupAwards: "Award winners",
+      rankGroupApps: "Best-rated apps",
+      rankGroupFintech: "Foreign fintechs",
+      rankGroupOther: "Other banks",
       nearBranchButton: "Find a branch near me",
       nearBranchLocating: "Finding your location…",
       nearBranchError: "Couldn't get your location. Check your browser permissions.",
@@ -4000,6 +4011,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "По данным Zloty Bankier 2026, Instytucja Roku 2026 и оценок в App Store",
       otherBanksLabel: "Остальные банки",
       rankingSourceNote: "Источники: Zloty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оценки в App Store и Google Play.",
+      rankGroupAwards: "Победители наград",
+      rankGroupApps: "Лучшие приложения",
+      rankGroupFintech: "Иностранные финтехи",
+      rankGroupOther: "Остальные банки",
       nearBranchButton: "Найти отделение рядом со мной",
       nearBranchLocating: "Определяем ваше местоположение…",
       nearBranchError: "Не удалось определить местоположение. Проверьте разрешения браузера.",
@@ -5945,6 +5960,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 va App Store baholariga asosan",
       otherBanksLabel: "Boshqa banklar",
       rankingSourceNote: "Manbalar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store va Google Play baholari.",
+      rankGroupAwards: "Mukofot g'oliblari",
+      rankGroupApps: "Eng yaxshi ilovalar",
+      rankGroupFintech: "Xorijiy fintexlar",
+      rankGroupOther: "Boshqa banklar",
       nearBranchButton: "Yaqinimdagi bo'limni topish",
       nearBranchLocating: "Joylashuvingiz aniqlanmoqda…",
       nearBranchError: "Joylashuvni aniqlab bo'lmadi. Brauzer ruxsatlarini tekshiring.",
@@ -7887,6 +7906,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Złoty Bankier 2026, Instytucja Roku 2026 ve App Store puanlarına göre",
       otherBanksLabel: "Diğer bankalar",
       rankingSourceNote: "Kaynaklar: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), App Store ve Google Play puanları.",
+      rankGroupAwards: "Ödül sahipleri",
+      rankGroupApps: "En iyi uygulamalar",
+      rankGroupFintech: "Yabancı fintekler",
+      rankGroupOther: "Diğer bankalar",
       nearBranchButton: "Yakınımdaki şubeyi bul",
       nearBranchLocating: "Konumunuz belirleniyor…",
       nearBranchError: "Konum alınamadı. Tarayıcı izinlerini kontrol edin.",
@@ -9829,6 +9852,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "Дар асоси Złoty Bankier 2026, Instytucja Roku 2026 ва баҳодиҳиҳои App Store",
       otherBanksLabel: "Дигар бонкҳо",
       rankingSourceNote: "Манбаъҳо: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), баҳодиҳиҳои App Store ва Google Play.",
+      rankGroupAwards: "Ғолибони мукофот",
+      rankGroupApps: "Барномаҳои беҳтарин",
+      rankGroupFintech: "Финтехҳои хориҷӣ",
+      rankGroupOther: "Бонкҳои дигар",
       nearBranchButton: "Ёфтани филиали наздик",
       nearBranchLocating: "Ҷойгиршавии шумо муайян карда мешавад…",
       nearBranchError: "Ҷойгиршавӣ муайян карда нашуд. Иҷозатҳои браузерро санҷед.",
@@ -11775,6 +11802,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       rankingDrawerSubtitle: "За даними Złoty Bankier 2026, Instytucja Roku 2026 та оцінок в App Store",
       otherBanksLabel: "Інші банки",
       rankingSourceNote: "Джерела: Złoty Bankier 2026 (Bankier.pl), Instytucja Roku 2026 (MojeBankowanie.pl), оцінки в App Store та Google Play.",
+      rankGroupAwards: "Переможці нагород",
+      rankGroupApps: "Найкращі застосунки",
+      rankGroupFintech: "Іноземні фінтехи",
+      rankGroupOther: "Інші банки",
       nearBranchButton: "Знайти відділення поруч зі мною",
       nearBranchLocating: "Визначаємо ваше місцезнаходження…",
       nearBranchError: "Не вдалося визначити місцезнаходження. Перевірте дозволи браузера.",
