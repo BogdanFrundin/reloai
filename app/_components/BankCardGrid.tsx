@@ -797,24 +797,24 @@ function BankCard({
           <button
             type="button"
             onClick={onOpenModal}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
           >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
               <rect x="3.5" y="3" width="13" height="14" rx="1.5" />
               <path strokeLinecap="round" d="M6.5 7h7M6.5 10h7M6.5 13h4" />
             </svg>
             {t.banks.moreAboutBank}
           </button>
-          <span className="h-3 w-px flex-shrink-0 bg-border-strong" />
+          <span className="h-3.5 w-px flex-shrink-0 bg-border-strong" />
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               askAi();
             }}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
           >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 2l1.7 4.9 5.3.2-4.2 3.4 1.5 5.1-4.3-3-4.3 3 1.5-5.1-4.2-3.4 5.3-.2z" />
             </svg>
             {gc.askAi}
