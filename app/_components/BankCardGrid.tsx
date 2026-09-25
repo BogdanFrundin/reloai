@@ -124,7 +124,7 @@ function visitStatusLabel(status: VisitStatus, t: Dictionary): string {
 
 function StatCell({ value, label }: { value: string; label: string }) {
   return (
-    <div>
+    <div className="px-4 first:pl-0 last:pr-0">
       <p className="text-sm font-bold text-text-primary">{value}</p>
       <p className="text-[10px] text-text-muted">{label}</p>
     </div>
@@ -483,7 +483,7 @@ function BankCard({
             </p>
           )}
           {(stats?.clients || stats?.branches || guide.price_label) && (
-            <div className="mt-3 flex flex-wrap gap-4">
+            <div className="mt-3 flex flex-wrap divide-x divide-border-subtle">
               {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
               {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} />}
               {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} />}
