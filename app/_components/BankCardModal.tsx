@@ -767,7 +767,7 @@ export default function BankCardModal({
 
           {/* Tab switcher — content is split into tabs, not one long scroll */}
           <div className="border-b border-border-subtle px-4 py-2.5 sm:px-6">
-            <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-1">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -776,7 +776,7 @@ export default function BankCardModal({
                     e.stopPropagation();
                     setActiveTab(tab.id);
                   }}
-                  className={`flex-shrink-0 inline-flex items-center gap-1 rounded-xl px-2 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-colors ${
+                  className={`flex-1 inline-flex items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-colors ${
                     activeTab === tab.id
                       ? "border border-accent/40 bg-accent/15 text-accent-bright"
                       : "border border-transparent text-text-muted hover:bg-surface-hover/40 hover:text-text-secondary"
