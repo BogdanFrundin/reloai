@@ -756,8 +756,18 @@ function BankCard({
             />
           )}
           {guide.description && (
-            <p className="mt-2 line-clamp-2 text-center text-xs leading-relaxed text-text-secondary">
-              <TextWithGlossary text={guide.description} />
+            <p className="mt-2 text-center text-xs leading-relaxed text-text-secondary">
+              {/* Every description now follows the same two-sentence
+                  template ("[type]. Работает с [year] года.") — split on
+                  sentence boundaries and force each onto its own line so
+                  the card always wraps the same way (2 lines), instead of
+                  a short description like Bank Pekao's running both
+                  sentences onto one line while a longer one wraps to two. */}
+              {guide.description.split(/(?<=[.!?])\s+(?=\S)/).map((sentence, i) => (
+                <span key={i} className="block">
+                  <TextWithGlossary text={sentence} />
+                </span>
+              ))}
             </p>
           )}
         </div>
