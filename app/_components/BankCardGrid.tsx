@@ -43,12 +43,16 @@ function moreBanksLabel(n: number, lang: Lang, t: Dictionary): string {
   return lang === "ru" ? template.replace("{word}", bankWord(n)) : template;
 }
 
+type TagChip = { key: string; label: string };
+
 // Up to 2 short pill-style tag chips shown under the bank name (matching the
 // "Надёжный / Популярный" chip row in the reference design) — replaces the
 // old parenthetical headline+subtitle text. Falls back to a curated
 // per-bank highlight (or a generic "classic account" label) for banks with
 // none of the 5 standard filter tags, so the chip row never renders empty.
-function buildTagChips(guide: DocumentGuide, t: Dictionary): string[] {
+// Each chip keeps its source tag key (or "fallback") so the chip row can
+// render a matching icon next to the label.
+function buildTagChips(guide: DocumentGuide, t: Dictionary): TagChip[] {
   const tagLabels: Record<string, string> = {
     no_pesel: t.guideCard.tags.noPesel,
     fully_online: t.guideCard.tags.fullyOnline,
@@ -57,9 +61,55 @@ function buildTagChips(guide: DocumentGuide, t: Dictionary): string[] {
     for_foreigners: t.guideCard.tags.forForeigners,
   };
   const tags = TAG_ORDER.filter((tag) => guide.tags?.includes(tag));
-  if (tags.length > 0) return tags.slice(0, 2).map((tag) => tagLabels[tag]);
+  if (tags.length > 0) return tags.slice(0, 2).map((tag) => ({ key: tag, label: tagLabels[tag] }));
   const fallback = t.guideCard.bankHighlights[guide.name];
-  return [fallback || t.guideCard.classicAccount];
+  return [{ key: "fallback", label: fallback || t.guideCard.classicAccount }];
+}
+
+function TagChipGlyph({ tagKey, className }: { tagKey: string; className?: string }) {
+  switch (tagKey) {
+    case "no_pesel":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <rect x="3.5" y="3" width="13" height="14" rx="1.5" />
+          <path strokeLinecap="round" d="M6.5 7h7M6.5 10h7M6.5 13h4" />
+        </svg>
+      );
+    case "multicurrency":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <ellipse cx="10" cy="5" rx="6" ry="2.2" />
+          <path strokeLinecap="round" d="M4 5v10c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2V5M4 10c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2" />
+        </svg>
+      );
+    case "free":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <rect x="3" y="8" width="14" height="9" rx="1.2" />
+          <path strokeLinecap="round" d="M10 8v9M3 8V6a2 2 0 012-2h1.5a2 2 0 012 2c0-1.1.9-2 2-2H12a2 2 0 012 2v2" />
+        </svg>
+      );
+    case "fully_online":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <circle cx="10" cy="10" r="7" />
+          <path strokeLinecap="round" d="M3 10h14M10 3c1.8 2 1.8 12 0 14M10 3c-1.8 2-1.8 12 0 14" />
+        </svg>
+      );
+    case "for_foreigners":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4h9l-1.3 4L13 12H4z" />
+          <path strokeLinecap="round" d="M4 4v13" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2l1.7 4.9 5.3.2-4.2 3.4 1.5 5.1-4.3-3-4.3 3 1.5-5.1-4.2-3.4 5.3-.2z" />
+        </svg>
+      );
+  }
 }
 
 // Real, publicly-sourced client/branch figures (verified via each bank's own
@@ -246,13 +296,45 @@ function visitStatusLabel(status: VisitStatus, t: Dictionary): string {
   }
 }
 
-function StatCell({ value, label }: { value: string; label: string }) {
+type StatIcon = "clients" | "branches" | "price";
+
+function StatIconGlyph({ icon, className }: { icon: StatIcon; className?: string }) {
+  switch (icon) {
+    case "clients":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <circle cx="10" cy="6.5" r="3" />
+          <path strokeLinecap="round" d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+        </svg>
+      );
+    case "branches":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 17V8l6-4 6 4v9" />
+          <path strokeLinecap="round" d="M2.5 17h15M8 17v-4h4v4" />
+        </svg>
+      );
+    case "price":
+    default:
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+          <circle cx="10" cy="10" r="7" />
+          <path strokeLinecap="round" d="M12.2 7.8a2.3 2.3 0 00-2.2-1.3c-1.4 0-2.4.9-2.4 2s1 1.7 2.4 2 2.4.8 2.4 2-1 2-2.4 2a2.3 2.3 0 01-2.2-1.3" />
+        </svg>
+      );
+  }
+}
+
+function StatCell({ value, label, icon }: { value: string; label: string; icon: StatIcon }) {
   return (
     <div className="min-w-0 flex-1 px-4 first:pl-0 last:pr-0">
       <p className="truncate text-lg font-bold text-text-primary sm:text-xl" title={value}>
         {value}
       </p>
-      <p className="text-[11px] text-text-muted">{label}</p>
+      <p className="mt-0.5 flex items-center gap-1 text-[11px] text-text-muted">
+        <StatIconGlyph icon={icon} className="h-3 w-3 flex-shrink-0" />
+        {label}
+      </p>
     </div>
   );
 }
@@ -428,12 +510,51 @@ function InfoRow({ label, value, showCurrencyHint, currencies, asPanel }: { labe
 // (or meet a courier) — see app/_lib/bankAccountInfo.ts for the sourced data
 // behind each verdict. `title` carries the longer explanation as a
 // native-browser tooltip so the card itself stays compact.
-const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
-  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/25" },
-  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/25" },
-  branch: { dot: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10", border: "border-amber-500/25" },
-  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/25" },
+const VISIT_STATUS_STYLE: Record<
+  VisitStatus,
+  { icon: string; iconBg: string; text: string; bg: string; border: string }
+> = {
+  online: { icon: "text-emerald-950", iconBg: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/25" },
+  onlineIfId: { icon: "text-sky-950", iconBg: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/25" },
+  branch: { icon: "text-amber-950", iconBg: "bg-amber-400", text: "text-amber-300", bg: "bg-amber-500/10", border: "border-amber-500/25" },
+  courier: { icon: "text-violet-950", iconBg: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/25" },
 };
+
+// A small round glyph inside each status banner's icon circle — a check for
+// "no visit needed", an ID card for "online but ID-gated", an exclamation
+// for "branch visit required", a box for "courier drops off the contract".
+function VisitStatusGlyph({ status, className }: { status: VisitStatus; className?: string }) {
+  switch (status) {
+    case "online":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 10.5l3.5 3.5L16 6" />
+        </svg>
+      );
+    case "onlineIfId":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
+          <rect x="3" y="5" width="14" height="10" rx="1.5" />
+          <circle cx="7.5" cy="9.5" r="1.4" />
+          <path strokeLinecap="round" d="M11.5 8.5h3M11.5 11h3M5.5 12.5h4" />
+        </svg>
+      );
+    case "courier":
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l7-3.5L17 7v6l-7 3.5L3 13V7z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l7 3.5L17 7M10 10.5V17" />
+        </svg>
+      );
+    case "branch":
+    default:
+      return (
+        <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a1.25 1.25 0 011.25 1.25v6.5a1.25 1.25 0 01-2.5 0v-6.5A1.25 1.25 0 0110 2zm0 12a1.4 1.4 0 110 2.8 1.4 1.4 0 010-2.8z" />
+        </svg>
+      );
+  }
+}
 
 // One combined status banner (icon + bold headline + the specific practical
 // requirement underneath) instead of the old split layout — a small pill
@@ -441,17 +562,39 @@ const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: s
 // Merging them into a single bordered card makes the single most important
 // fact about opening this account ("do I need to visit a branch or not")
 // impossible to miss when scanning the grid, matching how it reads on the
-// full bank-details modal.
-function VisitStatusBanner({ status, label, requirement }: { status: VisitStatus; label: string; requirement?: string }) {
+// full bank-details modal. Clicking it opens the full bank details, signalled
+// by the trailing chevron.
+function VisitStatusBanner({
+  status,
+  label,
+  requirement,
+  onClick,
+}: {
+  status: VisitStatus;
+  label: string;
+  requirement?: string;
+  onClick?: () => void;
+}) {
   const style = VISIT_STATUS_STYLE[status];
   return (
-    <div className={`mt-3 flex items-start gap-2.5 rounded-xl border px-3 py-2.5 ${style.border} ${style.bg}`}>
-      <span className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${style.dot}`} />
-      <div className="min-w-0">
+    <button
+      type="button"
+      onClick={onClick}
+      className={`mt-3 flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors duration-150 ${style.border} ${style.bg} ${onClick ? "hover:brightness-110" : ""}`}
+    >
+      <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.icon}`}>
+        <VisitStatusGlyph status={status} className="h-3.5 w-3.5" />
+      </span>
+      <div className="min-w-0 flex-1">
         <p className={`text-sm font-semibold ${style.text}`}>{label}</p>
         {requirement && <p className="mt-0.5 text-xs leading-snug text-text-secondary">{requirement}</p>}
       </div>
-    </div>
+      {onClick && (
+        <svg className="h-4 w-4 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 4.5l6 5.5-6 5.5" />
+        </svg>
+      )}
+    </button>
   );
 }
 
@@ -541,8 +684,8 @@ function BankCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
           {bankRanking != null && bankRanking <= 4 && (
-            <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-lg border border-orange-600/40 bg-gradient-to-b from-orange-600 to-orange-700 px-2.5 py-1 text-xs font-semibold text-orange-50 shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
-              <svg className="h-3 w-3 text-orange-200" viewBox="0 0 20 20" fill="currentColor">
+            <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+              <svg className="h-3 w-3 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
               </svg>
               #{bankRanking} {t.banks.byReviews}
@@ -557,14 +700,17 @@ function BankCard({
             <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-lg">
               {guide.name}
             </p>
+            <svg className="h-4 w-4 flex-shrink-0 text-white/60" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 4.5l6 5.5-6 5.5" />
+            </svg>
           </div>
         </div>
       )}
 
       {!bankImage && bankRanking != null && bankRanking <= 4 && (
         <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
-          <span className="inline-flex items-center gap-1 rounded-lg border border-accent/20 bg-accent/15 px-2.5 py-1 text-xs font-semibold text-accent-bright">
-            <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+          <span className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+            <svg className="h-3 w-3 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.062 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
             </svg>
             #{bankRanking} {t.banks.byReviews}
@@ -584,10 +730,11 @@ function BankCard({
           <div className="flex flex-wrap gap-1.5">
             {tagChips.map((chip) => (
               <span
-                key={chip}
-                className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-1 text-[11px] font-semibold text-accent-bright"
+                key={chip.key + chip.label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-2/60 px-2.5 py-1 text-[11px] font-medium text-text-secondary"
               >
-                <TextWithGlossary text={chip} />
+                <TagChipGlyph tagKey={chip.key} className="h-3 w-3 flex-shrink-0 text-text-muted" />
+                <TextWithGlossary text={chip.label} />
               </span>
             ))}
           </div>
@@ -596,6 +743,7 @@ function BankCard({
               status={accountInfo.visitStatus}
               label={visitStatusLabel(accountInfo.visitStatus, t)}
               requirement={accountInfo.keyRequirement}
+              onClick={onOpenModal}
             />
           )}
           {accountInfo?.referral && (
@@ -604,21 +752,21 @@ function BankCard({
             </p>
           )}
           {guide.description && (
-            <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-text-secondary">
+            <p className="mt-2 line-clamp-1 text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />
             </p>
           )}
           {(stats?.clients || stats?.branches || guide.price_label) && (
             <div className="mt-3 flex divide-x divide-border-subtle">
-              {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} />}
-              {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} />}
-              {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} />}
+              {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} icon="clients" />}
+              {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} icon="branches" />}
+              {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} icon="price" />}
             </div>
           )}
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-2 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
+      <div className="mt-4 flex flex-col gap-2.5 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
         {link && (
           <button
             type="button"
@@ -632,23 +780,33 @@ function BankCard({
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
           </button>
         )}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            askAi();
-          }}
-          className="w-full rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
-        >
-          {gc.askAi} ✦
-        </button>
-        <button
-          type="button"
-          onClick={onOpenModal}
-          className="w-full text-center text-xs font-medium text-accent-bright hover:text-accent transition-colors duration-150"
-        >
-          {t.banks.moreAboutBank} →
-        </button>
+        <div className="flex items-center justify-center gap-5">
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
+          >
+            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+              <rect x="3.5" y="3" width="13" height="14" rx="1.5" />
+              <path strokeLinecap="round" d="M6.5 7h7M6.5 10h7M6.5 13h4" />
+            </svg>
+            {t.banks.moreAboutBank}
+          </button>
+          <span className="h-3 w-px bg-border-subtle" />
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              askAi();
+            }}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
+          >
+            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2l1.7 4.9 5.3.2-4.2 3.4 1.5 5.1-4.3-3-4.3 3 1.5-5.1-4.2-3.4 5.3-.2z" />
+            </svg>
+            {gc.askAi}
+          </button>
+        </div>
       </div>
     </div>
   );
