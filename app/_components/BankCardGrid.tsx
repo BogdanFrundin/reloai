@@ -263,13 +263,17 @@ const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
     tr: { clients: "~13 bin", branches: NO_BRANCHES.tr },
     tg: { clients: "~13 ҳазор", branches: NO_BRANCHES.tg },
   },
+  // Dropped the "~" from the client figure specifically (kept on branches,
+  // which is shorter) — "~270 тыс." was one character too many to fit this
+  // cell without truncating; "270 тыс." is the same length as other
+  // 3-digit-thousands values elsewhere on the site that render fine.
   "Plus Bank": {
-    ru: { clients: "~270 тыс.", branches: "~100" },
-    en: { clients: "~270K", branches: "~100" },
-    uk: { clients: "~270 тис.", branches: "~100" },
-    uz: { clients: "~270 ming", branches: "~100" },
-    tr: { clients: "~270 bin", branches: "~100" },
-    tg: { clients: "~270 ҳазор", branches: "~100" },
+    ru: { clients: "270 тыс.", branches: "~100" },
+    en: { clients: "270K", branches: "~100" },
+    uk: { clients: "270 тис.", branches: "~100" },
+    uz: { clients: "270 ming", branches: "~100" },
+    tr: { clients: "270 bin", branches: "~100" },
+    tg: { clients: "270 ҳазор", branches: "~100" },
   },
   // Toyota Bank Polska never discloses a client/account count anywhere —
   // checked its own statutory annual report (Sprawozdanie Zarządu, FY
@@ -343,7 +347,7 @@ function StatIconGlyph({ icon, className }: { icon: StatIcon; className?: string
 // net for the odd future value, not the normal way content fits here.
 function StatCell({ value, label, icon }: { value: string; label: string; icon: StatIcon }) {
   return (
-    <div className="min-w-0 flex-1 px-2.5 first:pl-0 last:pr-0">
+    <div className="min-w-0 flex-1 px-1.5 first:pl-0 last:pr-0">
       <p className="truncate text-lg font-bold text-text-primary sm:text-xl" title={value}>
         {value}
       </p>
