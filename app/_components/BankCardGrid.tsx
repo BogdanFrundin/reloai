@@ -713,9 +713,6 @@ function BankCard({
             <p className="line-clamp-1 flex-1 text-base font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-lg">
               {guide.name}
             </p>
-            <svg className="h-4 w-4 flex-shrink-0 text-white/60" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 4.5l6 5.5-6 5.5" />
-            </svg>
           </div>
         </div>
       )}
