@@ -793,27 +793,29 @@ function BankCard({
             <span aria-hidden className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
           </button>
         )}
-        <div className="flex items-center justify-center gap-6 pt-0.5">
+        <div className="flex items-center justify-center gap-5">
           <button
             type="button"
             onClick={onOpenModal}
-            className="flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary"
           >
-            <svg className="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5h12M4 10h12M4 14.5h8" />
+            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75}>
+              <rect x="3.5" y="3" width="13" height="14" rx="1.5" />
+              <path strokeLinecap="round" d="M6.5 7h7M6.5 10h7M6.5 13h4" />
             </svg>
             {t.banks.moreAboutBank}
           </button>
+          <span className="h-3 w-px flex-shrink-0 bg-border-strong" />
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               askAi();
             }}
-            className="flex items-center gap-1.5 text-sm font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-accent-bright transition-colors duration-150 hover:text-accent"
           >
-            <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 flex-shrink-0">
-              <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1 1 5.79L10 14.77l-5.21 2.74 1-5.79-4.21-4.1 5.82-.85L10 1.5z" />
+            <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 2l1.7 4.9 5.3.2-4.2 3.4 1.5 5.1-4.3-3-4.3 3 1.5-5.1-4.2-3.4 5.3-.2z" />
             </svg>
             {gc.askAi}
           </button>
