@@ -606,8 +606,8 @@ function VisitStatusBanner({
         <VisitStatusGlyph status={status} className="h-3.5 w-3.5" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className={`text-sm font-semibold ${style.text}`}>{label}</p>
-        {requirement && <p className="mt-0.5 text-xs leading-snug text-text-secondary">{requirement}</p>}
+        <p className={`truncate text-sm font-semibold ${style.text}`}>{label}</p>
+        {requirement && <p className="mt-0.5 truncate text-xs leading-snug text-text-secondary">{requirement}</p>}
       </div>
       {onClick && (
         <svg className="h-4 w-4 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>

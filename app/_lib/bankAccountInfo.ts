@@ -87,7 +87,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "branch",
     confidence: "indirect",
     visitNote: "Видео-верификация требует польский e-dowód/незаблокированный PESEL — без них только отделение.",
-    keyRequirement: "Видеоверификация требует польский ID",
+    keyRequirement: "Нужен польский ID",
   },
   "Bank Pocztowy": {
     onlineUrl: "https://www.pocztowy.pl/indywidualni/konta-osobiste/otwarcie-konta-online",
@@ -162,7 +162,7 @@ export const BANK_ACCOUNT_INFO: Record<string, BankAccountInfo> = {
     visitStatus: "onlineIfId",
     confidence: "explicit",
     visitNote: "Полностью онлайн — только если уже есть польский dowód osobisty. Без него: бумажная заявка + визит курьера (~10 рабочих дней), отделений почти нет.",
-    keyRequirement: "Без ID — визит курьера (~10 дней)",
+    keyRequirement: "Без ID — визит курьера",
   },
 
   // Online-only European fintechs (not traditional Polish banks) — added
