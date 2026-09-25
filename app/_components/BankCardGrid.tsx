@@ -347,11 +347,11 @@ function StatIconGlyph({ icon, className }: { icon: StatIcon; className?: string
 // net for the odd future value, not the normal way content fits here.
 function StatCell({ value, label, icon }: { value: string; label: string; icon: StatIcon }) {
   return (
-    <div className="min-w-0 flex-1 px-1.5 first:pl-0 last:pr-0">
-      <p className="truncate text-lg font-semibold text-text-primary sm:text-xl" title={value}>
+    <div className="min-w-0 flex-1 px-1.5 text-center">
+      <p className="truncate text-base font-semibold text-text-primary sm:text-lg" title={value}>
         {value}
       </p>
-      <p className="mt-0.5 flex items-center gap-1 text-[11px] text-text-muted">
+      <p className="mt-0.5 flex items-center justify-center gap-1 text-[11px] text-text-muted">
         <StatIconGlyph icon={icon} className="h-3 w-3 flex-shrink-0" />
         {label}
       </p>
