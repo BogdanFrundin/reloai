@@ -1,7 +1,7 @@
 "use client";
 
 import { createPortal } from "react-dom";
-import { useState, useEffect, type ReactNode, type MouseEvent as ReactMouseEvent } from "react";
+import { Fragment, useState, useEffect, type ReactNode, type MouseEvent as ReactMouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { DocumentGuide } from "./DocumentGuideList";
 import { useCurrency } from "./CurrencyProvider";
@@ -768,23 +768,27 @@ export default function BankCardModal({
           {/* Tab switcher — content is split into tabs, not one long scroll */}
           <div className="border-b border-border-subtle px-4 py-2.5 sm:px-6">
             <div className="flex gap-1">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveTab(tab.id);
-                  }}
-                  className={`flex-1 inline-flex items-center justify-center gap-1 rounded-xl px-2 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
-                    activeTab === tab.id
-                      ? "border border-accent/40 bg-accent/15 text-accent-bright"
-                      : "border border-transparent text-text-muted hover:bg-surface-hover/40 hover:text-text-secondary"
-                  }`}
-                >
-                  {tab.icon}
-                  {tab.label}
-                </button>
+              {tabs.map((tab, index) => (
+                <Fragment key={tab.id}>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTab(tab.id);
+                    }}
+                    className={`flex-1 inline-flex items-center justify-center gap-1 rounded-xl px-2 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+                      activeTab === tab.id
+                        ? "border border-accent/40 bg-accent/15 text-accent-bright"
+                        : "border border-transparent text-text-muted hover:bg-surface-hover/40 hover:text-text-secondary"
+                    }`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                  {index < tabs.length - 1 && (
+                    <span aria-hidden="true" className="my-auto h-4 w-px flex-shrink-0 bg-border-subtle" />
+                  )}
+                </Fragment>
               ))}
             </div>
           </div>
