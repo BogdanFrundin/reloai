@@ -16,12 +16,48 @@ import { getBankCityMapLinks } from "../_lib/bankBranches";
 import { getCityName } from "../_lib/cities";
 import { BANK_PHRASES, type PhraseLang } from "../_lib/bankPhrases";
 import NearestBranchFinder from "./NearestBranchFinder";
+import { hasGoogleMapsKey } from "../_lib/googleMaps";
 
-const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
-  online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
-  onlineIfId: { dot: "bg-sky-400", text: "text-sky-300", bg: "bg-sky-500/10", border: "border-sky-500/30" },
-  branch: { dot: "bg-amber-400", text: "text-amber-200/90", bg: "bg-amber-500/10", border: "border-amber-500/30" },
-  courier: { dot: "bg-violet-400", text: "text-violet-300", bg: "bg-violet-500/10", border: "border-violet-500/30" },
+// Each status carries its own color all the way through — icon, text,
+// card border/background AND the CTA button + its glow — so "Открыть счёт"
+// reads as part of that status card instead of a generic blue button
+// dropped into a differently-colored section.
+const VISIT_STATUS_STYLE: Record<
+  VisitStatus,
+  { dot: string; text: string; bg: string; border: string; button: string; glow: string }
+> = {
+  online: {
+    dot: "bg-emerald-400",
+    text: "text-emerald-300",
+    bg: "bg-emerald-500/10",
+    border: "border-emerald-500/30",
+    button: "bg-gradient-to-r from-emerald-500 to-emerald-400 hover:opacity-90",
+    glow: "shadow-lg shadow-emerald-500/25",
+  },
+  onlineIfId: {
+    dot: "bg-sky-400",
+    text: "text-sky-300",
+    bg: "bg-sky-500/10",
+    border: "border-sky-500/30",
+    button: "bg-gradient-to-r from-sky-500 to-sky-400 hover:opacity-90",
+    glow: "shadow-lg shadow-sky-500/25",
+  },
+  branch: {
+    dot: "bg-amber-400",
+    text: "text-amber-200/90",
+    bg: "bg-amber-500/10",
+    border: "border-amber-500/30",
+    button: "bg-gradient-to-r from-amber-500 to-amber-400 hover:opacity-90",
+    glow: "shadow-lg shadow-amber-500/25",
+  },
+  courier: {
+    dot: "bg-violet-400",
+    text: "text-violet-300",
+    bg: "bg-violet-500/10",
+    border: "border-violet-500/30",
+    button: "bg-gradient-to-r from-violet-500 to-violet-400 hover:opacity-90",
+    glow: "shadow-lg shadow-violet-500/25",
+  },
 };
 
 const PHRASE_LANGS = ["en", "ru", "uz", "tr", "tg", "uk"] as const;
@@ -190,41 +226,52 @@ function SkylineHeroArt() {
       aria-hidden
       viewBox="0 0 400 160"
       preserveAspectRatio="xMaxYMax slice"
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
+      className="pointer-events-none absolute inset-0 h-full w-full"
     >
       <defs>
         <linearGradient id="bcmSkyGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#0d1b3d" stopOpacity="0" />
-          <stop offset="100%" stopColor="#0d1b3d" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#0d1b3d" stopOpacity="0.55" />
+        </linearGradient>
+        {/* A soft red/white diagonal ribbon standing in for the Polish flag,
+            kept low-opacity so it reads as ambient color rather than a
+            literal flag graphic competing with the bank name. */}
+        <linearGradient id="bcmFlagRibbon" x1="0" y1="0" x2="1" y2="0.35">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="55%" stopColor="#ffffff" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#ef4444" stopOpacity="0.22" />
         </linearGradient>
         <linearGradient id="bcmBuildGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#24345f" />
-          <stop offset="100%" stopColor="#101a34" />
+          <stop offset="0%" stopColor="#e8c98a" />
+          <stop offset="100%" stopColor="#b8934f" />
         </linearGradient>
+        <radialGradient id="bcmGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#f5d59a" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#f5d59a" stopOpacity="0" />
+        </radialGradient>
       </defs>
       <rect x="0" y="0" width="400" height="160" fill="url(#bcmSkyGrad)" />
-      <g fill="url(#bcmBuildGrad)" opacity="0.6">
-        <rect x="222" y="95" width="26" height="65" />
-        <rect x="254" y="80" width="22" height="80" />
-        <rect x="284" y="100" width="30" height="60" />
-        <rect x="330" y="70" width="24" height="90" />
-        <rect x="360" y="90" width="30" height="70" />
-      </g>
+      <polygon points="180,0 400,0 400,160 260,160" fill="url(#bcmFlagRibbon)" />
+      <circle cx="330" cy="55" r="70" fill="url(#bcmGlow)" />
+
+      {/* Classical bank-facade landmark: pediment + columns, warm gold so it
+          reads clearly against the dark header instead of blending in. */}
       <g fill="url(#bcmBuildGrad)">
-        <rect x="266" y="62" width="66" height="98" rx="2" />
-        <polygon points="266,62 299,36 332,62" />
-        <rect x="279" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="291" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="303" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
-        <rect x="315" y="78" width="6" height="16" fill="#fbbf6a" opacity="0.85" />
+        <polygon points="270,58 331,58 350,86 251,86" opacity="0.95" />
+        <rect x="255" y="86" width="90" height="8" opacity="0.9" />
+        {[262, 278, 294, 310, 326].map((x) => (
+          <rect key={x} x={x} y="96" width="8" height="52" rx="1.5" opacity="0.85" />
+        ))}
+        <rect x="251" y="150" width="99" height="9" rx="1.5" />
       </g>
-      <g fill="#fbbf6a" opacity="0.65">
+      <g fill="#fff4da" opacity="0.9">
+        <rect x="296" y="66" width="9" height="12" rx="1" />
+      </g>
+      <g fill="#f5d59a" opacity="0.55">
         <rect x="228" y="105" width="3" height="3" />
         <rect x="236" y="122" width="3" height="3" />
-        <rect x="260" y="96" width="3" height="3" />
-        <rect x="292" y="114" width="3" height="3" />
-        <rect x="336" y="86" width="3" height="3" />
         <rect x="368" y="106" width="3" height="3" />
+        <rect x="384" y="130" width="3" height="3" />
       </g>
     </svg>
   );
@@ -278,6 +325,41 @@ function IdCardAndPhoneArt() {
       </g>
     </svg>
   );
+}
+
+// Distinct glyph per visit status, so the status circle actually signals
+// what kind of requirement this is (checkmark / ID card / courier box /
+// warning) instead of the same generic "people" icon for every status.
+function VisitStatusGlyph({ status, className }: { status: VisitStatus; className?: string }) {
+  switch (status) {
+    case "online":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      );
+    case "onlineIfId":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <circle cx="9" cy="12" r="2" />
+          <path strokeLinecap="round" d="M14 10h4M14 14h4" />
+        </svg>
+      );
+    case "courier":
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4m0-14v14m9-14v10l-9 4" />
+        </svg>
+      );
+    case "branch":
+    default:
+      return (
+        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
+        </svg>
+      );
+  }
 }
 
 function InfoRow({ label, value }: { label: string; value: string }) {
@@ -358,7 +440,7 @@ function Section({
 }) {
   const style = SECTION_TONE_STYLE[tone];
   return (
-    <div className={`rounded-2xl border ${style.border} bg-surface-hover/30 p-4 sm:p-5`}>
+    <div className={`rounded-2xl border ${style.border} bg-gradient-to-b from-white/[0.04] to-surface-hover/30 p-4 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-5`}>
       <div className="flex items-center gap-2.5">
         <div className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.iconText}`}>
           {icon}
@@ -581,7 +663,7 @@ export default function BankCardModal({
       `}</style>
       <div
         onClick={(event) => event.stopPropagation()}
-        className="flex w-full max-w-2xl flex-col h-[90vh] rounded-2xl border border-accent/15 bg-panel shadow-2xl shadow-black/40 ring-1 ring-black/5"
+        className="flex w-full max-w-2xl flex-col h-[90vh] rounded-2xl border border-accent/15 bg-gradient-to-b from-white/[0.03] to-panel bg-panel shadow-2xl shadow-black/50 ring-1 ring-white/5"
         style={{
           animation: "scaleIn 200ms ease-out",
         }}
@@ -666,7 +748,7 @@ export default function BankCardModal({
             <>
             {/* Description */}
             {guide.description && (
-              <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-surface-hover/30 p-4 sm:p-5">
+              <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/30 p-4 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-5">
                 <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -700,7 +782,7 @@ export default function BankCardModal({
             {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
             {accountInfo && (
               <div
-                className={`rounded-2xl border bg-surface-hover/40 p-3.5 sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
+                className={`relative overflow-hidden rounded-2xl border bg-gradient-to-b from-white/[0.04] to-surface-hover/40 p-3.5 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
               >
                 <div className="flex items-start gap-4">
                   <div className="min-w-0 flex-1">
@@ -708,9 +790,7 @@ export default function BankCardModal({
                       <span
                         className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
                       >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4" />
-                        </svg>
+                        <VisitStatusGlyph status={accountInfo.visitStatus} className="h-4 w-4" />
                       </span>
                       <span className={`text-sm font-bold tracking-tight ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}>
                         {visitStatusLabel(accountInfo.visitStatus)}
@@ -733,7 +813,7 @@ export default function BankCardModal({
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(event) => event.stopPropagation()}
-                        className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors duration-150 hover:bg-accent/90 ${pressScale}`}
+                        className={`mt-3.5 inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-white transition-opacity duration-150 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].button} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].glow} ${pressScale}`}
                       >
                         {t.banks.openAccount}
                         <span aria-hidden>→</span>
@@ -763,37 +843,36 @@ export default function BankCardModal({
                   <InfoRow key={row.label} label={row.label} value={row.value} />
                 ))}
                 {cost && (
-                  <div className={`rounded-2xl border border-border-subtle bg-surface-hover/40 px-3.5 py-3 ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
+                  <div className={`rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/40 px-3.5 py-3 shadow-inner shadow-black/10 backdrop-blur-sm ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
                     <div className="flex items-center gap-1.5">
                       <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .672-3 1.5S10.343 11 12 11s3 .672 3 1.5S13.657 14 12 14m0-6c1.11 0 2.08.402 2.599 1M12 8V6.5M12 14v1.5m0-1.5c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 7c0-1.1 3.58-2 8-2s8 .9 8 2-3.58 2-8 2-8-.9-8-2z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v5c0 1.1 3.58 2 8 2s8-.9 8-2V7" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v5c0 1.1 3.58 2 8 2s8-.9 8-2v-5" />
                         </svg>
                       </span>
                       <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{gc.cost}</p>
                     </div>
-                    {currencies.length > 0 ? (
-                      <div className="mt-1.5">
+                    <p className="mt-1 text-sm text-text-secondary">{cost}</p>
+                    {currencies.length > 0 && (
+                      <div className="mt-2">
                         <CurrencyBadges currencies={currencies} />
                       </div>
-                    ) : (
-                      <p className="mt-1 text-sm text-text-secondary">{cost}</p>
                     )}
-                    {currencies.length === 0 && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrencyPickerOpen(true);
-                        }}
-                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-semibold text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
-                      >
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
-                        </svg>
-                        {t.settings.currencySection} · {currency}
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrencyPickerOpen(true);
+                      }}
+                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-border-strong bg-surface-1 px-3 py-1.5 text-sm font-semibold text-text-secondary transition-colors hover:border-accent/50 hover:text-accent-bright"
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h11m0 0l-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0l3.5 3.5M6 17l3.5-3.5" />
+                      </svg>
+                      {t.settings.currencySection} · {currency}
+                    </button>
                   </div>
                 )}
               </div>
@@ -902,6 +981,9 @@ export default function BankCardModal({
                   </div>
                 );
               })()}
+              {hasGoogleMapsKey() && (
+                <p className="mb-2 text-xs text-text-muted">{t.banks.nearBranchOrSelectCity}</p>
+              )}
               <div className="flex flex-wrap gap-2">
                 {cityMapLinks.map(({ city, url }) => (
                   <a
