@@ -767,7 +767,7 @@ function BankCard({
             />
           )}
           {guide.description && (
-            <p className="mt-2 line-clamp-1 text-xs leading-relaxed text-text-secondary">
+            <p className="mt-2 line-clamp-1 text-center text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />
             </p>
           )}
