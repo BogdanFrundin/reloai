@@ -122,13 +122,16 @@ function TagChipGlyph({ tagKey, className }: { tagKey: string; className?: strin
 // anywhere (checked official site, press, annual reports) — left out
 // entirely rather than invented; its branch status ("no branches", a real,
 // confirmed fact) is still shown on its own.
+// Kept to one short word (rather than "без отделений" / "no branches") so
+// it always fits the stat cell at full size — see the comment on StatCell
+// about never shrinking text or truncating with "…" to make room.
 const NO_BRANCHES: Record<Lang, string> = {
-  ru: "без отделений",
-  en: "no branches",
-  uk: "без відділень",
-  uz: "filiallarsiz",
-  tr: "şubesiz",
-  tg: "бе шӯъба",
+  ru: "Онлайн",
+  en: "Online",
+  uk: "Онлайн",
+  uz: "Onlayn",
+  tr: "Online",
+  tg: "Онлайн",
 };
 type BankStat = { clients?: string; branches?: string };
 const BANK_STATS: Record<string, Partial<Record<Lang, BankStat>>> = {
@@ -325,9 +328,14 @@ function StatIconGlyph({ icon, className }: { icon: StatIcon; className?: string
   }
 }
 
+// Every value shown here (BANK_STATS above, and each bank's price_label)
+// is deliberately kept short enough to fit this cell at full size on its
+// own — so this never needs to shrink the font or fall back to "…"
+// truncation to make a long value fit; `truncate` stays only as a safety
+// net for the odd future value, not the normal way content fits here.
 function StatCell({ value, label, icon }: { value: string; label: string; icon: StatIcon }) {
   return (
-    <div className="min-w-0 flex-1 px-4 first:pl-0 last:pr-0">
+    <div className="min-w-0 flex-1 px-2.5 first:pl-0 last:pr-0">
       <p className="truncate text-lg font-bold text-text-primary sm:text-xl" title={value}>
         {value}
       </p>
@@ -746,24 +754,25 @@ function BankCard({
               onClick={onOpenModal}
             />
           )}
-          {accountInfo?.referral && (
-            <p className="mt-2 text-[11px] text-text-muted">
-              🎁 {t.banks.referralBonusLabel.replace("{amount}", accountInfo.referral.amount)}
-            </p>
-          )}
           {guide.description && (
             <p className="mt-2 line-clamp-1 text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />
             </p>
           )}
-          {(stats?.clients || stats?.branches || guide.price_label) && (
-            <div className="mt-3 flex divide-x divide-border-subtle">
-              {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} icon="clients" />}
-              {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} icon="branches" />}
-              {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} icon="price" />}
-            </div>
-          )}
         </div>
+
+        {/* Pinned to the bottom of this flex-1 area (via mt-auto) rather than
+            flowing right after the description — so the stat row lands at
+            the same height across every card in a grid row regardless of
+            how many lines the tag chips / status banner above happen to
+            take on that particular bank. */}
+        {(stats?.clients || stats?.branches || guide.price_label) && (
+          <div className="mt-auto flex w-full divide-x divide-border-subtle pt-3">
+            {stats?.clients && <StatCell value={stats.clients} label={gc.statClients} icon="clients" />}
+            {stats?.branches && <StatCell value={stats.branches} label={gc.statBranches} icon="branches" />}
+            {guide.price_label && <StatCell value={guide.price_label} label={gc.statOpeningCost} icon="price" />}
+          </div>
+        )}
       </div>
 
       <div className="mt-4 flex flex-col gap-2.5 px-4 pb-4 sm:px-5 sm:pb-5" onClick={(event) => event.stopPropagation()}>
