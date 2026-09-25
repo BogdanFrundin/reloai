@@ -799,14 +799,14 @@ function BankCard({
             e.stopPropagation();
             askAi();
           }}
-          className="w-full rounded-xl bg-slate-700 px-4 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
+          className="w-full rounded-xl bg-slate-700 px-4 py-2.5 text-xs font-semibold text-white transition-colors duration-150 hover:bg-slate-600"
         >
           {gc.askAi} ✦
         </button>
         <button
           type="button"
           onClick={onOpenModal}
-          className="w-full rounded-xl py-1.5 text-center text-sm font-medium text-accent-bright hover:text-accent transition-colors duration-150"
+          className="w-full text-center text-xs font-medium text-accent-bright hover:text-accent transition-colors duration-150"
         >
           {t.banks.moreAboutBank} →
         </button>
