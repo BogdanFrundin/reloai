@@ -474,6 +474,7 @@ export type Dictionary = {
     nearBranchDistanceTemplate: string;
     nearBranchDirections: string;
     nearBranchDisclaimer: string;
+    nearBranchOrSelectCity: string;
     whichBankTitle: string;
     whichBankDescription: string;
     whichBankLearnMore: string;
@@ -2058,6 +2059,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ {n} from you",
       nearBranchDirections: "Directions",
       nearBranchDisclaimer: "Based on Google's live listings — showing the closest branch found.",
+      nearBranchOrSelectCity: "or pick a city",
       whichBankTitle: "Not sure which bank to choose?",
       whichBankDescription: "Answer a few questions and the AI will suggest the best account for your situation",
       whichBankLearnMore: "Get a recommendation",
@@ -4005,6 +4007,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ {n} от вас",
       nearBranchDirections: "Маршрут",
       nearBranchDisclaimer: "По актуальным данным Google — показано ближайшее найденное отделение.",
+      nearBranchOrSelectCity: "или выберите город",
       whichBankTitle: "Не знаете какой банк выбрать?",
       whichBankDescription: "Ответьте на пару вопросов — и ИИ подскажет счёт, который подходит именно вам",
       whichBankLearnMore: "Получить рекомендацию",
@@ -5949,6 +5952,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ {n} sizdan",
       nearBranchDirections: "Yo'nalish",
       nearBranchDisclaimer: "Google-ning joriy ma'lumotlariga asosan — eng yaqin topilgan bo'lim ko'rsatilgan.",
+      nearBranchOrSelectCity: "yoki shaharni tanlang",
       whichBankTitle: "Qaysi bankni tanlashni bilmayapsizmi?",
       whichBankDescription: "Bir nechta savolga javob bering — AI sizga mos hisobni tavsiya qiladi",
       whichBankLearnMore: "Tavsiya olish",
@@ -7890,6 +7894,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ sizden {n}",
       nearBranchDirections: "Yol tarifi",
       nearBranchDisclaimer: "Google'ın güncel verilerine göre — bulunan en yakın şube gösteriliyor.",
+      nearBranchOrSelectCity: "ya da bir şehir seçin",
       whichBankTitle: "Hangi bankayı seçeceğinizi bilmiyor musunuz?",
       whichBankDescription: "Birkaç soruyu yanıtlayın — yapay zeka size uygun hesabı önersin",
       whichBankLearnMore: "Öneri al",
@@ -9831,6 +9836,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ {n} аз шумо",
       nearBranchDirections: "Масир",
       nearBranchDisclaimer: "Дар асоси маълумоти зиндаи Google — наздиктарин филиали ёфтшуда нишон дода шудааст.",
+      nearBranchOrSelectCity: "ё шаҳрро интихоб кунед",
       whichBankTitle: "Намедонед кадом бонкро интихоб кунед?",
       whichBankDescription: "Ба чанд савол ҷавоб диҳед — ИИ ҳисобе, ки ба шумо мувофиқ аст, пешниҳод мекунад",
       whichBankLearnMore: "Гирифтани тавсия",
@@ -11776,6 +11782,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       nearBranchDistanceTemplate: "≈ {n} від вас",
       nearBranchDirections: "Маршрут",
       nearBranchDisclaimer: "За актуальними даними Google — показано найближче знайдене відділення.",
+      nearBranchOrSelectCity: "або оберіть місто",
       whichBankTitle: "Не знаєте, який банк обрати?",
       whichBankDescription: "Дайте відповідь на кілька запитань — і ШІ підкаже рахунок, що підходить саме вам",
       whichBankLearnMore: "Отримати рекомендацію",

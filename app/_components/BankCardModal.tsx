@@ -16,6 +16,7 @@ import { getBankCityMapLinks } from "../_lib/bankBranches";
 import { getCityName } from "../_lib/cities";
 import { BANK_PHRASES, type PhraseLang } from "../_lib/bankPhrases";
 import NearestBranchFinder from "./NearestBranchFinder";
+import { hasGoogleMapsKey } from "../_lib/googleMaps";
 
 const VISIT_STATUS_STYLE: Record<VisitStatus, { dot: string; text: string; bg: string; border: string }> = {
   online: { dot: "bg-emerald-400", text: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
@@ -902,6 +903,9 @@ export default function BankCardModal({
                   </div>
                 );
               })()}
+              {hasGoogleMapsKey() && (
+                <p className="mb-2 text-xs text-text-muted">{t.banks.nearBranchOrSelectCity}</p>
+              )}
               <div className="flex flex-wrap gap-2">
                 {cityMapLinks.map(({ city, url }) => (
                   <a
