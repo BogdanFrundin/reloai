@@ -249,10 +249,10 @@ function visitStatusLabel(status: VisitStatus, t: Dictionary): string {
 function StatCell({ value, label }: { value: string; label: string }) {
   return (
     <div className="min-w-0 flex-1 px-4 first:pl-0 last:pr-0">
-      <p className="truncate text-sm font-bold text-text-primary" title={value}>
+      <p className="truncate text-lg font-bold text-text-primary sm:text-xl" title={value}>
         {value}
       </p>
-      <p className="text-[10px] text-text-muted">{label}</p>
+      <p className="text-[11px] text-text-muted">{label}</p>
     </div>
   );
 }
@@ -604,7 +604,7 @@ function BankCard({
             </p>
           )}
           {guide.description && (
-            <p className="mt-2 text-xs leading-relaxed text-text-secondary">
+            <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-text-secondary">
               <TextWithGlossary text={guide.description} />
             </p>
           )}
