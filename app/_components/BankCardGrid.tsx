@@ -584,24 +584,22 @@ function VisitStatusGlyph({ status, className }: { status: VisitStatus; classNam
 // impossible to miss when scanning the grid, matching how it reads on the
 // full bank-details modal. Clicking it opens the full bank details, signalled
 // by the trailing chevron.
+// Purely informational — not a button, no chevron, and doesn't open the
+// modal on click (that's what the "Подробнее" link at the bottom of the
+// card is for). Kept low-height (py-1.5 instead of py-2.5) since it's just
+// a status label + one line of requirement text, not something you tap.
 function VisitStatusBanner({
   status,
   label,
   requirement,
-  onClick,
 }: {
   status: VisitStatus;
   label: string;
   requirement?: string;
-  onClick?: () => void;
 }) {
   const style = VISIT_STATUS_STYLE[status];
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`mt-3 flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors duration-150 ${style.border} ${style.bg} ${onClick ? "hover:brightness-110" : ""}`}
-    >
+    <div className={`mt-3 flex w-full items-center gap-2.5 rounded-xl border px-3 py-1.5 text-left ${style.border} ${style.bg}`}>
       <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${style.iconBg} ${style.icon}`}>
         <VisitStatusGlyph status={status} className="h-3.5 w-3.5" />
       </span>
@@ -609,12 +607,7 @@ function VisitStatusBanner({
         <p className={`truncate text-sm font-semibold ${style.text}`}>{label}</p>
         {requirement && <p className="mt-0.5 truncate text-xs leading-snug text-text-secondary">{requirement}</p>}
       </div>
-      {onClick && (
-        <svg className="h-4 w-4 flex-shrink-0 text-text-muted" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 4.5l6 5.5-6 5.5" />
-        </svg>
-      )}
-    </button>
+    </div>
   );
 }
 
@@ -763,7 +756,6 @@ function BankCard({
               status={accountInfo.visitStatus}
               label={visitStatusLabel(accountInfo.visitStatus, t)}
               requirement={accountInfo.keyRequirement}
-              onClick={onOpenModal}
             />
           )}
           {guide.description && (
