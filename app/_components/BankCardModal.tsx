@@ -32,8 +32,8 @@ const VISIT_STATUS_STYLE: Record<
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/30",
     button: "bg-gradient-to-r from-emerald-500 to-emerald-400 hover:opacity-90",
-    glow: "shadow-lg shadow-emerald-500/25",
-    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(16,185,129,0.35)]",
+    glow: "shadow-[0_0_22px_rgba(16,185,129,0.55)]",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_36px_-4px_rgba(16,185,129,0.5)]",
   },
   onlineIfId: {
     dot: "bg-sky-400",
@@ -41,8 +41,8 @@ const VISIT_STATUS_STYLE: Record<
     bg: "bg-sky-500/10",
     border: "border-sky-500/30",
     button: "bg-gradient-to-r from-sky-500 to-sky-400 hover:opacity-90",
-    glow: "shadow-lg shadow-sky-500/25",
-    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(14,165,233,0.35)]",
+    glow: "shadow-[0_0_22px_rgba(14,165,233,0.55)]",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_36px_-4px_rgba(14,165,233,0.5)]",
   },
   branch: {
     dot: "bg-amber-400",
@@ -50,8 +50,8 @@ const VISIT_STATUS_STYLE: Record<
     bg: "bg-amber-500/10",
     border: "border-amber-500/30",
     button: "bg-gradient-to-r from-amber-500 to-amber-400 hover:opacity-90",
-    glow: "shadow-lg shadow-amber-500/25",
-    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(245,158,11,0.35)]",
+    glow: "shadow-[0_0_22px_rgba(245,158,11,0.55)]",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_36px_-4px_rgba(245,158,11,0.5)]",
   },
   courier: {
     dot: "bg-violet-400",
@@ -59,8 +59,8 @@ const VISIT_STATUS_STYLE: Record<
     bg: "bg-violet-500/10",
     border: "border-violet-500/30",
     button: "bg-gradient-to-r from-violet-500 to-violet-400 hover:opacity-90",
-    glow: "shadow-lg shadow-violet-500/25",
-    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(139,92,246,0.35)]",
+    glow: "shadow-[0_0_22px_rgba(139,92,246,0.55)]",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_36px_-4px_rgba(139,92,246,0.5)]",
   },
 };
 
@@ -255,27 +255,22 @@ function SkylineHeroArt() {
         </radialGradient>
       </defs>
       <rect x="0" y="0" width="400" height="160" fill="url(#bcmSkyGrad)" />
-      <polygon points="180,0 400,0 400,160 260,160" fill="url(#bcmFlagRibbon)" />
-      <circle cx="330" cy="55" r="70" fill="url(#bcmGlow)" />
+      <polygon points="150,0 400,0 400,160 230,160" fill="url(#bcmFlagRibbon)" />
+      <circle cx="310" cy="70" r="95" fill="url(#bcmGlow)" />
 
-      {/* Classical bank-facade landmark: pediment + columns, warm gold so it
-          reads clearly against the dark header instead of blending in. */}
+      {/* Classical bank-facade landmark: pediment + columns, warm gold and
+          noticeably larger/brighter so it reads immediately against the
+          dark header instead of needing a second look. */}
       <g fill="url(#bcmBuildGrad)">
-        <polygon points="270,58 331,58 350,86 251,86" opacity="0.95" />
-        <rect x="255" y="86" width="90" height="8" opacity="0.9" />
-        {[262, 278, 294, 310, 326].map((x) => (
-          <rect key={x} x={x} y="96" width="8" height="52" rx="1.5" opacity="0.85" />
+        <polygon points="248,42 344,42 368,78 224,78" opacity="1" />
+        <rect x="230" y="78" width="112" height="9" opacity="0.95" />
+        {[238, 258, 278, 298, 318, 334].map((x) => (
+          <rect key={x} x={x} y="90" width="10" height="60" rx="2" opacity="0.92" />
         ))}
-        <rect x="251" y="150" width="99" height="9" rx="1.5" />
+        <rect x="224" y="150" width="124" height="10" rx="2" />
       </g>
-      <g fill="#fff4da" opacity="0.9">
-        <rect x="296" y="66" width="9" height="12" rx="1" />
-      </g>
-      <g fill="#f5d59a" opacity="0.55">
-        <rect x="228" y="105" width="3" height="3" />
-        <rect x="236" y="122" width="3" height="3" />
-        <rect x="368" y="106" width="3" height="3" />
-        <rect x="384" y="130" width="3" height="3" />
+      <g fill="#fff4da" opacity="0.95">
+        <rect x="278" y="52" width="11" height="15" rx="1.5" />
       </g>
     </svg>
   );
@@ -806,7 +801,7 @@ export default function BankCardModal({
             {/* Description */}
             {guide.description && (
               <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/30 p-4 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-5">
-                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright shadow-[0_0_12px_rgba(59,130,246,0.35)]">
+                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent-bright shadow-[0_0_18px_rgba(59,130,246,0.6)]">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -902,7 +897,7 @@ export default function BankCardModal({
                 {cost && (
                   <div className={`rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/40 px-3.5 py-3 shadow-inner shadow-black/10 backdrop-blur-sm ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
                     <div className="flex items-center gap-1.5">
-                      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright shadow-[0_0_10px_rgba(59,130,246,0.35)]">
+                      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent-bright shadow-[0_0_14px_rgba(59,130,246,0.6)]">
                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7c0-1.1 3.58-2 8-2s8 .9 8 2-3.58 2-8 2-8-.9-8-2z" />
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v5c0 1.1 3.58 2 8 2s8-.9 8-2V7" />
