@@ -34,6 +34,33 @@ const SPARKLE_ICON = (
   </svg>
 );
 
+// One distinct icon per FAQ chip (matched to faqQuestions' fixed order —
+// PESEL/ID, documents, timing, online) instead of the same question-mark
+// glyph repeated on every chip.
+const FAQ_ICONS = [
+  // ID card — "without PESEL / ID" question
+  <svg key="id" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <circle cx="8.5" cy="12" r="2" />
+    <path strokeLinecap="round" d="M13.5 10h4M13.5 14h4" />
+  </svg>,
+  // Document — "which documents" question
+  <svg key="docs" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    <path strokeLinecap="round" d="M8.5 12.5h7M8.5 16h7" />
+  </svg>,
+  // Clock — "how many days" question
+  <svg key="clock" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <circle cx="12" cy="12" r="9" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3.5 2" />
+  </svg>,
+  // Phone — "can it be done online" question
+  <svg key="phone" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+    <rect x="7" y="2.5" width="10" height="19" rx="2.5" />
+    <path strokeLinecap="round" d="M11 18.5h2" />
+  </svg>,
+];
+
 // Fixed display order: first 4 are the featured banks BankCardGrid shows by
 // default, the rest appear under "Другие банки". Anything not in this list
 // (there shouldn't be any, once prune-banks.sql has been run) sorts last.
@@ -260,8 +287,9 @@ export default function BanksPage() {
                 // general chat, so the AI used to answer about relocation
                 // documents in general instead of bank-account documents.
                 onClick={() => router.push(`/dashboard/ai?q=${encodeURIComponent(t.banks.faqQueries[i])}`)}
-                className="rounded-full border border-accent/30 bg-accent/15 px-4 py-2.5 text-[13px] font-semibold text-accent-bright shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white hover:shadow-lg hover:shadow-accent/30"
+                className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/15 px-4 py-2.5 text-[13px] font-semibold text-accent-bright shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white hover:shadow-lg hover:shadow-accent/30"
               >
+                {FAQ_ICONS[i]}
                 {q} →
               </button>
             ))}
