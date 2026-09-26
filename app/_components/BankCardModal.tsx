@@ -249,12 +249,21 @@ function SkylineHeroArt() {
           <stop offset="0%" stopColor="#e8c98a" />
           <stop offset="100%" stopColor="#b8934f" />
         </linearGradient>
+        <linearGradient id="bcmMountainGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a3b63" />
+          <stop offset="100%" stopColor="#18234a" />
+        </linearGradient>
         <radialGradient id="bcmGlow" cx="0.5" cy="0.5" r="0.5">
           <stop offset="0%" stopColor="#f5d59a" stopOpacity="0.35" />
           <stop offset="100%" stopColor="#f5d59a" stopOpacity="0" />
         </radialGradient>
       </defs>
       <rect x="0" y="0" width="400" height="160" fill="url(#bcmSkyGrad)" />
+
+      {/* Soft mountain silhouette behind the building for depth, same idea
+          as the reference composition. */}
+      <polygon points="0,160 40,110 90,150 150,95 210,150 260,120 320,150 400,105 400,160" fill="url(#bcmMountainGrad)" opacity="0.55" />
+
       <polygon points="150,0 400,0 400,160 230,160" fill="url(#bcmFlagRibbon)" />
       <circle cx="310" cy="70" r="95" fill="url(#bcmGlow)" />
 
@@ -269,8 +278,22 @@ function SkylineHeroArt() {
         ))}
         <rect x="224" y="150" width="124" height="10" rx="2" />
       </g>
+      {/* Small red eagle-silhouette badge centered on the pediment — a
+          simplified nod to the Polish national emblem rather than a literal
+          reproduction. */}
+      <g fill="#dc2626" opacity="0.9">
+        <path d="M296 46 q-6 0 -8 6 q3 -1 5 0 q-4 3 -4 7 q3 -2 5 -2 q-1 4 2 6 q0 -3 2 -4 q2 1 2 4 q3 -2 2 -6 q2 0 5 2 q0 -4 -4 -7 q2 -1 5 0 q-2 -6 -8 -6 q-2 -1 -4 -1 q-2 0 -4 1 z" />
+      </g>
       <g fill="#fff4da" opacity="0.95">
         <rect x="278" y="52" width="11" height="15" rx="1.5" />
+      </g>
+
+      {/* Polish flag on a short pole, bottom-right — a clearer, more literal
+          flag than the earlier ambient ribbon alone. */}
+      <g transform="translate(348,96)">
+        <rect x="0" y="0" width="2.5" height="58" fill="#d8d8dc" />
+        <path d="M2.5 4 L40 4 Q34 14 40 24 L2.5 24 Z" fill="#ffffff" />
+        <path d="M2.5 24 L40 24 Q34 34 40 44 L2.5 44 Z" fill="#dc2626" />
       </g>
     </svg>
   );
