@@ -24,7 +24,7 @@ import { hasGoogleMapsKey } from "../_lib/googleMaps";
 // dropped into a differently-colored section.
 const VISIT_STATUS_STYLE: Record<
   VisitStatus,
-  { dot: string; text: string; bg: string; border: string; button: string; glow: string }
+  { dot: string; text: string; bg: string; border: string; button: string; glow: string; cardGlow: string }
 > = {
   online: {
     dot: "bg-emerald-400",
@@ -33,6 +33,7 @@ const VISIT_STATUS_STYLE: Record<
     border: "border-emerald-500/30",
     button: "bg-gradient-to-r from-emerald-500 to-emerald-400 hover:opacity-90",
     glow: "shadow-lg shadow-emerald-500/25",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(16,185,129,0.35)]",
   },
   onlineIfId: {
     dot: "bg-sky-400",
@@ -41,6 +42,7 @@ const VISIT_STATUS_STYLE: Record<
     border: "border-sky-500/30",
     button: "bg-gradient-to-r from-sky-500 to-sky-400 hover:opacity-90",
     glow: "shadow-lg shadow-sky-500/25",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(14,165,233,0.35)]",
   },
   branch: {
     dot: "bg-amber-400",
@@ -49,6 +51,7 @@ const VISIT_STATUS_STYLE: Record<
     border: "border-amber-500/30",
     button: "bg-gradient-to-r from-amber-500 to-amber-400 hover:opacity-90",
     glow: "shadow-lg shadow-amber-500/25",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(245,158,11,0.35)]",
   },
   courier: {
     dot: "bg-violet-400",
@@ -57,6 +60,7 @@ const VISIT_STATUS_STYLE: Record<
     border: "border-violet-500/30",
     button: "bg-gradient-to-r from-violet-500 to-violet-400 hover:opacity-90",
     glow: "shadow-lg shadow-violet-500/25",
+    cardGlow: "shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_28px_-6px_rgba(139,92,246,0.35)]",
   },
 };
 
@@ -798,7 +802,7 @@ export default function BankCardModal({
             {/* Description */}
             {guide.description && (
               <div className="flex items-start gap-3 rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/30 p-4 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-5">
-                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright shadow-[0_0_12px_rgba(59,130,246,0.35)]">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -831,13 +835,13 @@ export default function BankCardModal({
             {/* Real account-opening status + link (sourced data, see bankAccountInfo.ts) */}
             {accountInfo && (
               <div
-                className={`relative overflow-hidden rounded-2xl border bg-gradient-to-b from-white/[0.04] to-surface-hover/40 p-3.5 shadow-inner shadow-black/10 backdrop-blur-sm sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border}`}
+                className={`relative overflow-hidden rounded-2xl border bg-gradient-to-b from-white/[0.04] to-surface-hover/40 p-3.5 backdrop-blur-sm sm:p-4 ${VISIT_STATUS_STYLE[accountInfo.visitStatus].border} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].cardGlow}`}
               >
                 <div className="flex items-start gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2.5">
                       <span
-                        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text}`}
+                        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${VISIT_STATUS_STYLE[accountInfo.visitStatus].bg} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].text} ${VISIT_STATUS_STYLE[accountInfo.visitStatus].glow}`}
                       >
                         <VisitStatusGlyph status={accountInfo.visitStatus} className="h-4 w-4" />
                       </span>
@@ -894,7 +898,7 @@ export default function BankCardModal({
                 {cost && (
                   <div className={`rounded-2xl border border-border-subtle bg-gradient-to-b from-white/[0.04] to-surface-hover/40 px-3.5 py-3 shadow-inner shadow-black/10 backdrop-blur-sm ${infoRows.length === 0 ? "sm:col-span-2" : ""}`}>
                     <div className="flex items-center gap-1.5">
-                      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright">
+                      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-bright shadow-[0_0_10px_rgba(59,130,246,0.35)]">
                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7c0-1.1 3.58-2 8-2s8 .9 8 2-3.58 2-8 2-8-.9-8-2z" />
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v5c0 1.1 3.58 2 8 2s8-.9 8-2V7" />
@@ -1185,7 +1189,7 @@ export default function BankCardModal({
           <button
             type="button"
             onClick={onClose}
-            className={`flex-1 rounded-full bg-[#6c1919] px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-red-900 ${pressScale}`}
+            className={`flex-1 rounded-full border border-accent/25 bg-accent/10 px-5 py-2.5 text-sm font-semibold text-accent-bright backdrop-blur-sm transition-colors duration-150 hover:bg-accent/15 ${pressScale}`}
           >
             {t.dashboard.collapseBtn} ^
           </button>
